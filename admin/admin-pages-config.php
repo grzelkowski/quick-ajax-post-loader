@@ -1,0 +1,484 @@
+<?php 
+if (!defined('ABSPATH')) {
+    exit;
+}
+if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Admin_Pages')) {
+    class WPG_Quick_Ajax_Admin_Pages {
+        public function __construct() {
+            add_action('admin_menu', array($this, 'add_quick_ajax_menu'));
+            add_action('admin_menu', array($this, 'add_quick_ajax_settings_page'));
+            add_action('admin_init', array($this, 'register_quick_ajax_settings'));
+        }
+        public function add_quick_ajax_menu(){
+            // Quick Ajax Menu
+            add_menu_page(
+                'Quick AJAX',
+                'Quick AJAX',
+                'manage_options',
+                WPG_Quick_Ajax_Helper::quick_ajax_menu_slug(),
+                array($this, 'options_page_content'),
+                'dashicons-editor-code',
+                80
+            );
+            // "Add New"
+            add_submenu_page(
+                WPG_Quick_Ajax_Helper::quick_ajax_menu_slug(),
+                __('Add New', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                __('Add New', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'edit_posts',
+                'post-new.php?post_type=' . WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug()
+            );
+        }
+        public function add_quick_ajax_settings_page() {
+            // "settings"
+            add_submenu_page(
+                WPG_Quick_Ajax_Helper::quick_ajax_menu_slug(),
+                __('Settings & Features', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                __('Settings & Features', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'manage_options',
+                WPG_Quick_Ajax_Helper::quick_ajax_settings_page_slug(),
+                array($this, 'render_quick_ajax_settings_page')
+            );
+        }
+        public function render_quick_ajax_settings_page() {
+            // "settings Page"
+            if (!current_user_can('manage_options')) {
+                wp_die(__('You do not have sufficient permissions to access this page.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()));
+            }
+            if (class_exists('WPG_Quick_Ajax_Creator_Settings_Page') && method_exists('WPG_Quick_Ajax_Creator_Settings_Page', 'init_quick_ajax_creator_fields')) {
+                $form = new WPG_Quick_Ajax_Creator_Settings_Page(WPG_Quick_Ajax_Helper::quick_ajax_admin_page_settings_field_option_group(), WPG_Quick_Ajax_Helper::quick_ajax_admin_page_global_options_name());
+                $form->render_quick_ajax_page();
+            }
+        }
+        public function register_quick_ajax_settings() {
+            // Register the settings group
+            register_setting(
+                WPG_Quick_Ajax_Helper::quick_ajax_admin_page_settings_field_option_group(),
+                WPG_Quick_Ajax_Helper::quick_ajax_admin_page_global_options_name(),
+                array($this, 'quick_ajax_sanitize_callback')
+            );
+        }
+        
+        public function quick_ajax_sanitize_callback($values){
+        //error_log('quick_ajax_sanitize_callback: ' . print_r($values, true));
+        $sanitized_value = is_array($values) ? array() : '';
+        if (is_array($values)) {
+            foreach ($values as $key => $value) {
+                $sanitized_value[$key] = sanitize_text_field($value);
+            }
+        } else {
+            $sanitized_value = sanitize_text_field($values);
+        }
+        //error_log('Sanitized value: ' . print_r($sanitized_value, true));
+        return $sanitized_value;
+        }    
+    }
+    $quick_ajax_admin_pages = new WPG_Quick_Ajax_Admin_Pages();
+}
+
+
+if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Post_Type')) {
+    class WPG_Quick_Ajax_Post_Type {
+        public function __construct() {
+            add_action('init', array($this, 'register_quick_ajax_post_type'));
+            add_action('manage_' . WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug() . '_posts_columns', array($this, 'quick_ajax_shortcode_column'));
+            add_action('manage_' . WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug() . '_posts_custom_column', array($this, 'quick_ajax_shortcode_column_content'), 10, 2);
+            add_filter('manage_' . WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug() . '_posts_columns', array($this, 'quick_ajax_shortcode_column_sort'));
+        }
+
+        public function register_quick_ajax_post_type() {
+        // Quick Ajax CPT
+            $labels = array(
+                'name'               => __('Quick Ajax Shortcodes', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'singular_name'      => __('Quick Ajax Shortcode', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'add_new'            => __('Add New', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'add_new_item'       => __('Add New Quick Ajax', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'edit_item'          => __('Edit Quick Ajax', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'new_item'           => __('New Quick Ajax', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'view_item'          => __('View Quick Ajax', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'search_items'       => __('Search Quick Ajax', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'not_found'          => __('No Items found', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'not_found_in_trash' => __('No Items found in trash', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'parent_item_colon'  => '',
+                'menu_name'          => __('Shortcodes', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+            );
+            $args = array(
+                'labels'              => $labels,
+                'public'              => false,
+                'publicly_queryable'  => false,
+                'show_ui'             => true,
+                'show_in_menu'        => WPG_Quick_Ajax_Helper::quick_ajax_menu_slug(),
+                'query_var'           => true,
+                'rewrite'             => array( 'slug' => WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug() ),
+                'capability_type'     => 'post',
+                'has_archive'         => true,
+                'hierarchical'        => false,
+                'menu_position'       => 25,
+                'supports'            => array( 'title'),
+                'menu_icon'            => 'dashicons-editor-code'
+            );
+            register_post_type( WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug(), $args );
+        }
+
+        public function quick_ajax_shortcode_column($columns) {
+            //add Shortcode Column
+            $columns['quick_ajax_shortcode_column'] = 'Shortcode';
+            return $columns;
+        }
+
+        public function quick_ajax_shortcode_column_content($column_name, $post_id) {
+            //add Shortcode Column Content
+            if ($column_name === 'quick_ajax_shortcode_column') {
+                $custom_value = get_post_meta($post_id, 'quick_ajax_meta_box_shortcode_shortcode', true);
+                echo '<div class="quick-ajax-shortcode">' . $custom_value . '</div>';
+            }
+        }
+
+        public function quick_ajax_shortcode_column_sort($columns) {
+            //sort Columns
+            $new_columns = array('cb' => $columns['cb']);
+            unset($columns['cb']);
+            $new_columns['title'] = $columns['title'];
+            $new_columns['quick_ajax_shortcode_column'] = 'Shortcode';
+            $new_columns['author'] = 'Autor';
+            $new_columns['date'] = $columns['date'];
+            return array_merge($new_columns, $columns);
+        }
+    }
+    $quick_ajax_post_type = new WPG_Quick_Ajax_Post_Type();
+}
+
+
+abstract class WPG_Quick_Ajax_Content_Builder{
+    protected $fields = array();
+    protected $existing_values = array();
+    protected function create_field($field_properties) {
+        if (!empty($field_properties['name'])) {
+            $field = [
+                'name' => $field_properties['name'],
+                'label' => isset($field_properties['label']) ? $field_properties['label'] : null,
+                'type' => isset($field_properties['type']) ? $field_properties['type'] : null,
+                'options' => isset($field_properties['options']) ? $field_properties['options'] : null,
+                'default' => isset($field_properties['default']) ? $field_properties['default'] : null,
+                'placeholder' => isset($field_properties['placeholder']) ? $field_properties['placeholder'] : null,
+                'description' => isset($field_properties['description']) ? $field_properties['description'] : null,
+            ];
+            $this->fields[$field_properties['name']] = $field;
+        }
+    }
+    protected function add_field($field_name, $show_hide_element_id = false){
+        if($this->fields[$field_name]['type'] == 'checkbox'){
+            return $this->add_checkbox_field($field_name, $show_hide_element_id);
+        }
+        elseif($this->fields[$field_name]['type'] == 'select'){
+            return $this->add_select_field($field_name, $show_hide_element_id);
+        }
+        elseif($this->fields[$field_name]['type'] == 'number'){
+            return $this->add_number_field($field_name, $show_hide_element_id);
+        }
+        elseif($this->fields[$field_name]['type'] == 'text'){
+            return $this->add_text_input_field($field_name, $show_hide_element_id);
+        }
+        elseif($this->fields[$field_name]['type'] == 'color_picker'){
+            return $this->add_color_picker_field($field_name, $show_hide_element_id);
+        }
+        
+    }
+    protected function get_the_value_if_exist($field_name){
+        if(isset($this->existing_values[$field_name]['value'])){
+            return $this->existing_values[$field_name]['value'];
+        }elseif(isset($this->fields[$field_name]['default'])){
+            return $this->fields[$field_name]['default'];
+        }else{
+            return false;
+        }
+    }
+    protected function get_quick_ajax_form_class() {
+        $current_user = wp_get_current_user();
+        $scheme = get_user_option('admin_color', $current_user->ID);
+        return $scheme . '-style';
+    }
+    private function add_checkbox_field($field_name, $show_hide_element = false){
+        $checked = $this->get_the_value_if_exist($field_name);
+        $field_container_class = '';
+        if(!empty($show_hide_element)){
+            $field_container_class =' show-hide-element';
+        }
+        $field = '<div class="quick-ajax-field-container quick-ajax-select-field qa-inline-block' . $field_container_class . '">';
+        $field .= '<label for="' . $this->fields[$field_name]['name'] . '">' . $this->fields[$field_name]['label'] . '</label>';
+        $field .= '<div class="quick-ajax-field">';
+        $field .= '<div class="switch-checkbox">';
+        $field .= '<div class="switch-wrap">';
+        $field .= '<label for="' . $this->fields[$field_name]['name'] . '">';
+        $field .= '<input type="checkbox" name="' . $this->fields[$field_name]['name'] . '" id="' . $this->fields[$field_name]['name'] . '" value="1" ' . checked($checked, 1, false) . ' />';
+        $field .= '<span class="switch"></span>';
+        $field .= '</label>';
+        $field .= '</div>';            
+        $field .= '</div>';
+        $field .= $this->add_field_description($this->fields[$field_name]['description']);
+        $field .= '</div>';            
+        $field .= '</div>';
+    
+        return $field;
+    }
+    private function add_select_field($field_name, $show_hide_element_id = false){
+        $current_value = $this->get_the_value_if_exist($field_name);
+        $show_hide_element = $this->show_hide_element($show_hide_element_id);
+        $field_container_data_item = $show_hide_element['field_container_data_item'];
+        $field_container_class = $show_hide_element['field_container_class'];   
+        
+        $field = '<div class="quick-ajax-field-container quick-ajax-checkbox-field' . $field_container_class . '"' . $field_container_data_item . '>';
+        $field .= '<label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>';
+        $field .= '<div class="quick-ajax-field">';
+        $field .= '<select name="' . esc_attr($this->fields[$field_name]['name']) . '" id="' . esc_attr($this->fields[$field_name]['name']) . '">';
+
+        foreach ($this->fields[$field_name]['options'] as $option) {
+            $field .= '<option value="' . esc_attr($option['value']) . '"' . selected($current_value, $option['value'], false) . '>';
+            $field .= esc_html($option['label']);
+            $field .= '</option>';
+        }
+
+        $field .= '</select>';
+        $field .= $this->add_field_description($this->fields[$field_name]['description']);
+        $field .= '</div>';
+        $field .= '</div>';
+
+        return $field;
+    }
+    private function add_number_field($field_name, $show_hide_element_id = false){
+        $current_value = $this->get_the_value_if_exist($field_name);
+        $show_hide_element = $this->show_hide_element($show_hide_element_id);
+        $field_container_data_item = $show_hide_element['field_container_data_item'];
+        $field_container_class = $show_hide_element['field_container_class'];
+        
+        $field = '<div class="quick-ajax-field-container quick-ajax-number-field' . $field_container_class . '"' . $field_container_data_item . '>';
+        $field .= '<label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>';
+        $field .= '<div class="quick-ajax-field">';
+        $field .= '<input type="number" name="' . esc_attr($this->fields[$field_name]['name']) . '" id="' . esc_attr($this->fields[$field_name]['name']) . '" value="' . esc_attr($current_value) . '" />';
+        $field .= $this->add_field_description($this->fields[$field_name]['description']);
+        $field .= '</div>';
+        $field .= '</div>';
+
+        return $field;
+    }
+    private function add_text_input_field($field_name, $show_hide_element_id = false){
+        $current_value = $this->get_the_value_if_exist($field_name);
+        $show_hide_element = $this->show_hide_element($show_hide_element_id);
+        $field_container_data_item = $show_hide_element['field_container_data_item'];
+        $field_container_class = $show_hide_element['field_container_class'];
+        $placeholder = !empty($this->fields[$field_name]['placeholder']) ? ' placeholder="' . esc_attr($this->fields[$field_name]['placeholder']) . '"' : '';
+        
+        $field = '<div class="quick-ajax-field-container quick-ajax-text-input-field' . $field_container_class . '"' . $field_container_data_item . '>';
+        $field .= '<label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>';
+        $field .= '<div class="quick-ajax-field">';
+        $field .= '<input type="text" name="' . esc_attr($this->fields[$field_name]['name']) . '" id="' . esc_attr($this->fields[$field_name]['name']) . '" value="' . esc_attr($current_value) . '"' . $placeholder . '/>';
+        $field .= $this->add_field_description($this->fields[$field_name]['description']);
+        $field .= '</div>';
+        $field .= '</div>';
+    
+        return $field;
+    }
+    private function add_color_picker_field($field_name, $show_hide_element_id = false){
+        ob_start();
+        $current_value = $this->get_the_value_if_exist($field_name);
+        $show_hide_element = $this->show_hide_element($show_hide_element_id);
+        $field_container_data_item = $show_hide_element['field_container_data_item'];
+        $field_container_class = $show_hide_element['field_container_class'];
+
+        $field = '<div class="quick-ajax-field-container quick-ajax-text-input-field' . $field_container_class . '"' . $field_container_data_item . '>';
+        $field .= '<label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>';
+        $field .= '<div class="quick-ajax-field">';
+        $field .= '<input type="text" class="color-picker-field" name="' . esc_attr($this->fields[$field_name]['name']) . '" id="' . esc_attr($this->fields[$field_name]['name']) . '" value="' . esc_attr($current_value) . '"/>';
+        $field .= $this->add_field_description($this->fields[$field_name]['description']);
+        $field .= '</div>';
+        $field .= '</div>';
+    
+        return $field;
+    }
+    private function show_hide_element($show_hide_element_id){
+        $element_data['field_container_data_item'] = '';
+        $element_data['field_container_class'] = '';
+        if(!empty($show_hide_element_id)){
+            $element_data['field_container_data_item'] = ' data-item="'.$show_hide_element_id.'"';
+            $toggle_value = $this->get_the_value_if_exist($show_hide_element_id);
+            if(empty($toggle_value) || $toggle_value == 0){
+                $element_data['field_container_class'] = ' inactive';
+            }
+        }
+        return $element_data;
+    }
+    private function add_field_description($field_description){
+         if(isset($field_description) && !empty($field_description)){
+            return '<p class="quick-ajax-field-desc">' . esc_html($field_description) . '</p>';
+        }
+    }
+    protected function create_accordion_block($title, $content){
+        return '<div class="quick-ajax-accordion-wrapper">
+            <div class="quick-ajax-accordion-toggle" tabindex="0">
+                <h3 class="accordion-title">'.$title.'</h3>
+                <span class="accordion-icon">
+                    <span></span>
+                </span>
+            </div>
+            <div class="quick-ajax-accordion-content">
+                '.$content.'
+            </div>
+        </div>';
+    }
+}
+
+abstract class WPG_Quick_Ajax_Post_Type_Form extends WPG_Quick_Ajax_Content_Builder {
+    protected $form_id;
+    protected $post_type;
+    public function __construct($form_id, $post_type) {
+        $this->form_id = $form_id;
+        $this->post_type = $post_type;
+        if($this->post_type){
+            add_action('init', array($this, 'init_quick_ajax_creator_fields'), 10);
+            add_action('edit_form_after_title', array($this, 'add_quick_ajax_form'));
+            add_action('save_post_'.$this->post_type, array($this, 'save_quick_ajax_form'));
+        }
+    }
+    abstract public function init_quick_ajax_creator_fields();
+    abstract public function render_quick_ajax_form();
+    
+    private function unserialize_data($post_id){ 
+        $serialized_data = get_post_meta($post_id, $this->form_id, true);
+        if ($serialized_data) {
+            $form_data = unserialize($serialized_data);
+            foreach ($form_data as $field_name => $field_value) {
+                $this->existing_values[$field_name]=array(
+                    'name' => $field_name,
+                    'value' => $field_value
+                );
+            }
+        }
+    }
+    public function add_quick_ajax_form($post){ 
+        if ($post->post_type === $this->post_type) {
+            $this->unserialize_data($post->ID);
+            echo '<div class="quick-ajax-form-wrap '.$this->get_quick_ajax_form_class().'" id="' . esc_attr($this->form_id) . '">';
+            echo $this->render_quick_ajax_form();
+            wp_nonce_field('quick_ajax_form_nonce', 'quick_ajax_form_nonce');
+            echo '</div>';
+        }
+    }
+    public function save_quick_ajax_form($post_id) {
+        //error_log("display POST: " . print_r($_POST, true));
+        //error_log("display $this->fields: " . print_r($this->fields, true));
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
+        if (!isset($_POST['quick_ajax_form_nonce']) || !wp_verify_nonce($_POST['quick_ajax_form_nonce'], 'quick_ajax_form_nonce')) {
+            return;
+        }
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }        
+        $form_data = array();
+        foreach ($this->fields as $field) {
+            if (($field['type'] == 'checkbox') && !isset($_POST[$field['name']])) {
+                $form_data[$field['name']] = 0;
+            } elseif (isset($_POST[$field['name']])) {
+                $field_value = sanitize_text_field($_POST[$field['name']]);
+                $form_data[$field['name']] = $field_value;
+            }
+        }        
+        $serialized_data = serialize($form_data);
+        update_post_meta($post_id, $this->form_id, $serialized_data);
+    }
+}
+
+abstract class WPG_Quick_Ajax_Manage_Options_Form extends WPG_Quick_Ajax_Content_Builder {
+    protected $option_group;
+    protected $option_name;
+    protected $tabs = [];
+    
+    public function __construct($option_group, $option_name) {
+        $this->option_group = $option_group;
+        $this->option_name = $option_name;
+        $this->unserialize_data();
+        $this->init_quick_ajax_creator_fields();
+        $this->init_quick_ajax_content();
+    }
+    
+    abstract public function render_quick_ajax_page_heading();
+    abstract public function init_quick_ajax_creator_fields();
+    abstract public function init_quick_ajax_content();
+
+    public function add_quick_ajax_page_content($id, $title, $content) {
+        $this->tabs[$id] = ['title' => $title, 'content' => $content];
+    }
+
+    private function unserialize_data(){ 
+        $data = get_option($this->option_name);
+        if (is_array($data)) {
+            foreach ($data as $field_name => $field_value) {
+                $field_key = $this->option_name . '[' . $field_name . ']';
+                $this->existing_values[$field_key]=array(
+                    'name' => $field_key,
+                    'value' => $field_value
+                );
+            }
+        }
+    }
+
+    public function render_quick_ajax_page(){ 
+        echo '<div class="wrap">';
+        echo '<div class="quick-ajax-heading">';
+        echo $this->render_quick_ajax_page_heading();
+        echo '</div>';
+        echo '<div class="quick-ajax-form-wrap ' . $this->get_quick_ajax_form_class() . '" id="form-' . esc_attr($this->option_group) . '">';
+        echo '<form method="post" action="options.php">';
+        settings_fields($this->option_group); // Output security fields for the registered settings
+        echo $this->render_quick_ajax_tabs_navigation();
+        echo $this->render_quick_ajax_tabs_content();
+        echo '</form>';
+        echo '</div>';
+    }
+
+    private function render_quick_ajax_tabs_navigation() {
+        // create navigation only if there is more than 1 tab
+        if (count($this->tabs) <= 1) {
+            return '';
+        }
+        $html = '<div class="quick-ajax-tabs">';
+        $firstTab = true;    
+        foreach ($this->tabs as $id => $tab) {
+            $class = $firstTab ? ' active' : '';
+            $html .= '<button type="button" class="quick-ajax-tab-button' . $class . '" data-tab="quick-ajax-tab-' . esc_attr($id) . '">' . esc_html($tab['title']) . '</button>';
+            $firstTab = false;
+        }    
+        $html .= '</div>';
+        return $html;
+    }
+    private function render_quick_ajax_tabs_content() {
+        $html = '';
+        $firstTab = true;
+        foreach ($this->tabs as $id => $tab) {
+            $class = $firstTab ? 'quick-ajax-tab-content active' : 'quick-ajax-tab-content';
+            $html .= '<div id="quick-ajax-tab-' . esc_attr($id) . '" class="' . $class . '">';
+            $html .= $tab['content'];
+            $html .= '</div>';
+            $firstTab = false;
+        }
+        return $html;
+    }
+}
+
+    /* copy
+    private function add_quick_ajax_form(){
+        $current_user = wp_get_current_user();
+        $scheme = get_user_option( 'admin_color', $current_user->ID );
+        $quick_ajax_form_class = $scheme.'-style';
+        echo '<div class="wrap">';
+        echo '<div class="quick-ajax-heading">';
+        echo $this->render_quick_ajax_page_heading();
+        echo '</div>';
+        echo '<div class="quick-ajax-form-wrap '.$quick_ajax_form_class.'" id="form-' . esc_attr($this->option_group) . '">';
+        echo '<form method="post" action="options.php">';
+        settings_fields($this->option_group); // Output security fields for the registered settings
+        echo $this->render_quick_ajax_form();
+        echo '</form>';
+        echo '</div>';
+    }*/
