@@ -3,7 +3,7 @@
 * Plugin Name: Quick Ajax Post Loader
 * Text Domain: wpg-quick-ajax-post-loader
 * Domain Path: /languages
-* Version: 1.0
+* Version: 1.0.1
 * Description: Supercharge post loading with Quick Ajax Post Loader. Enhance user experience and optimize site performance using AJAX technology.
 * Author: Pawel Grzelkowski
 * License: GPLv2 or later
@@ -15,11 +15,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-
 function wpg_quick_ajax_post_loader_load_textdomain() {
     $locale = get_locale();
     $mo_file_path = WP_PLUGIN_DIR . '/' . dirname(plugin_basename(__FILE__)) . '/languages/' . $locale . '.mo';
-    load_textdomain(WPG_Quick_Ajax_Helper::quick_ajax_text_domain(), $mo_file_path);
+    load_textdomain('wpg-quick-ajax-post-loader', $mo_file_path);
 }
 add_action('plugins_loaded', 'wpg_quick_ajax_post_loader_load_textdomain');
 

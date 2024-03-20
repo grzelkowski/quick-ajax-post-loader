@@ -6,7 +6,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Cre
     class WPG_Quick_Ajax_Creator_Settings_Page extends WPG_Quick_Ajax_Manage_Options_Form {
         private $tabIndex = 0;
         public function render_quick_ajax_page_heading() {
-        return '<h1>'.__('Quick AJAX settings', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()).'</h1>';
+        return '<h1>'.__('Quick AJAX settings', 'wpg-quick-ajax-post-loader').'</h1>';
         }
         public function init_quick_ajax_creator_fields(){            
             //select custom load more post quantity
@@ -67,23 +67,23 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Cre
         }
         
         public function init_quick_ajax_content(){
-            $tab_title = __('Global Options', WPG_Quick_Ajax_Helper::quick_ajax_text_domain());
+            $tab_title = __('Global Options', 'wpg-quick-ajax-post-loader');
             $this->add_quick_ajax_page_content($this->tabIndex++, $tab_title,  $this->quick_ajax_content_global_options());
-            $tab_title = __('Function Generator', WPG_Quick_Ajax_Helper::quick_ajax_text_domain());
+            $tab_title = __('Function Generator', 'wpg-quick-ajax-post-loader');
             $this->add_quick_ajax_page_content($this->tabIndex++, $tab_title, $this->quick_ajax_content_function_generator());
-            $tab_title = __('Help', WPG_Quick_Ajax_Helper::quick_ajax_text_domain());
+            $tab_title = __('Help', 'wpg-quick-ajax-post-loader');
             $this->add_quick_ajax_page_content($this->tabIndex++, $tab_title, $this->quick_ajax_content_help());
         }
 
         private function quick_ajax_content_global_options() {
-            $content = '<div id="quick-ajax-example-code"><h3>'.__('Global Options', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()).'</h3></div>';
+            $content = '<div id="quick-ajax-example-code"><h3>'.__('Global Options', 'wpg-quick-ajax-post-loader').'</h3></div>';
             $content .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_global_options_field_select_loader_icon());
-            $content .= get_submit_button(__('Save Settings', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()), 'primary', 'save_settings_button', false);
+            $content .= get_submit_button(__('Save Settings', 'wpg-quick-ajax-post-loader'), 'primary', 'save_settings_button', false);
             return $content;
         }
         
         private function quick_ajax_content_function_generator() {
-            $form_tab_function_generator = '<h3>'.__('Function Generator', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()).'</h3>
+            $form_tab_function_generator = '<h3>'.__('Function Generator', 'wpg-quick-ajax-post-loader').'</h3>
             <div class="function-generator-wrap">
                 <div class="function-generator-options" id="'.WPG_Quick_Ajax_Helper::quick_ajax_settings_wrapper_id().'">';
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings">';
@@ -117,7 +117,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Cre
             $form_tab_function_generator .= '</div>';
             //post settings
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
-            $form_tab_function_generator .= '<h4>'.__('Query Settings', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()).'</h4>';            
+            $form_tab_function_generator .= '<h4>'.__('Query Settings', 'wpg-quick-ajax-post-loader').'</h4>';            
             $form_tab_function_generator .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_post_status());
             $form_tab_function_generator .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_posts_per_page());
             $form_tab_function_generator .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_order());
@@ -125,7 +125,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Cre
             $form_tab_function_generator .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_set_post_not_in());
             $form_tab_function_generator .= '</div>';
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
-            $form_tab_function_generator .= '<h4>'.__('Layout Settings', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()).'</h4>';
+            $form_tab_function_generator .= '<h4>'.__('Layout Settings', 'wpg-quick-ajax-post-loader').'</h4>';
             //Layout Settings
             $form_tab_function_generator .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_quick_ajax_css_style(), true);
             $form_tab_function_generator .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_select_columns_qty(), WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_quick_ajax_css_style());
@@ -140,8 +140,8 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Cre
             $form_tab_function_generator .= '</div>';
             $form_tab_function_generator .= '<div class="function-generator-result">';  
             $form_tab_function_generator .= '<div class="function-generator-buttons">
-                            <button class="generate-function-button button button-primary" data-output="code-snippet-2" type="button">'.__('Generate Function', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()).'</button>
-                            <button class="copy-button button button-primary" data-copy="code-snippet-2" type="button">'.__('Copy Code', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()).'</button>
+                            <button class="generate-function-button button button-primary" data-output="code-snippet-2" type="button">'.__('Generate Function', 'wpg-quick-ajax-post-loader').'</button>
+                            <button class="copy-button button button-primary" data-copy="code-snippet-2" type="button">'.__('Copy Code', 'wpg-quick-ajax-post-loader').'</button>
                         </div>';  
             $form_tab_function_generator .= '<pre id="code-snippet-2" style="margin-top:20px"></pre>';
             $form_tab_function_generator .= '</div>';
@@ -150,7 +150,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Cre
         }
 
         private function quick_ajax_content_help() {
-            $content = '<h3>'.__('Help', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()).'</h3>';
+            $content = '<h3>'.__('Help', 'wpg-quick-ajax-post-loader').'</h3>';
             $locale = get_locale();
             if($locale == 'pl_PL'){
                 $location = 'help/'.$locale.'/';

@@ -129,7 +129,6 @@
                         inputData[input.id] = $(input).val();
                     }
                 });
-                console.log(inputData);
                 let inputDataString = Object.values(inputData).join('');
                 //quickAjaxArgs code
                 var quickAjaxArgsText = "";

@@ -17,6 +17,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Sho
             $merged_atts = shortcode_atts($defaults, $attributes, 'quick-ajax');
             $this->shortcode_args = $merged_atts;
         }
+        
         private function unserialize_shortcode_data($id){
             $serialized_data = get_post_meta($id, WPG_Quick_Ajax_Helper::quick_ajax_settings_wrapper_id(), true);
             if ($serialized_data) {
@@ -26,6 +27,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Sho
                 }
             }
         }
+
         private function create_shortcode_args(){
             if(!empty($this->shortcode_args['id'])){
                 $selected_post_type = $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_post_type()];
@@ -51,6 +53,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Sho
             }
             return false;
         }
+
         private function create_shortcode_attributes(){
             if(!empty($this->shortcode_args['id'])){
                 $attributes['shortcode'] = true;
@@ -82,6 +85,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Sho
             }
             return false;
         }
+
         private function create_shortcode_taxonomy(){
             if(!empty($this->shortcode_args['id'])){
                 //$postID = $this->shortcode_args['id'];
@@ -97,6 +101,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Sho
             }
             return null;
         }
+
         public function render_quick_ajax_shortcode($atts) {
             $this->get_shortcode_attributes($atts);
             $this->unserialize_shortcode_data($this->shortcode_args['id']);

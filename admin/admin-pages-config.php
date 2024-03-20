@@ -23,8 +23,8 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Adm
             // "Add New"
             add_submenu_page(
                 WPG_Quick_Ajax_Helper::quick_ajax_menu_slug(),
-                __('Add New', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
-                __('Add New', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                __('Add New', 'wpg-quick-ajax-post-loader'),
+                __('Add New', 'wpg-quick-ajax-post-loader'),
                 'edit_posts',
                 'post-new.php?post_type=' . WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug()
             );
@@ -33,8 +33,8 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Adm
             // "settings"
             add_submenu_page(
                 WPG_Quick_Ajax_Helper::quick_ajax_menu_slug(),
-                __('Settings & Features', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
-                __('Settings & Features', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                __('Settings & Features', 'wpg-quick-ajax-post-loader'),
+                __('Settings & Features', 'wpg-quick-ajax-post-loader'),
                 'manage_options',
                 WPG_Quick_Ajax_Helper::quick_ajax_settings_page_slug(),
                 array($this, 'render_quick_ajax_settings_page')
@@ -43,7 +43,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Adm
         public function render_quick_ajax_settings_page() {
             // "settings Page"
             if (!current_user_can('manage_options')) {
-                wp_die(__('You do not have sufficient permissions to access this page.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()));
+                wp_die(__('You do not have sufficient permissions to access this page.', 'wpg-quick-ajax-post-loader'));
             }
             if (class_exists('WPG_Quick_Ajax_Creator_Settings_Page') && method_exists('WPG_Quick_Ajax_Creator_Settings_Page', 'init_quick_ajax_creator_fields')) {
                 $form = new WPG_Quick_Ajax_Creator_Settings_Page(WPG_Quick_Ajax_Helper::quick_ajax_admin_page_settings_field_option_group(), WPG_Quick_Ajax_Helper::quick_ajax_admin_page_global_options_name());
@@ -89,18 +89,18 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Pos
         public function register_quick_ajax_post_type() {
         // Quick Ajax CPT
             $labels = array(
-                'name'               => __('Quick Ajax Shortcodes', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
-                'singular_name'      => __('Quick Ajax Shortcode', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
-                'add_new'            => __('Add New', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
-                'add_new_item'       => __('Add New Quick Ajax', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
-                'edit_item'          => __('Edit Quick Ajax', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
-                'new_item'           => __('New Quick Ajax', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
-                'view_item'          => __('View Quick Ajax', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
-                'search_items'       => __('Search Quick Ajax', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
-                'not_found'          => __('No Items found', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
-                'not_found_in_trash' => __('No Items found in trash', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'name'               => __('Quick Ajax Shortcodes', 'wpg-quick-ajax-post-loader'),
+                'singular_name'      => __('Quick Ajax Shortcode', 'wpg-quick-ajax-post-loader'),
+                'add_new'            => __('Add New', 'wpg-quick-ajax-post-loader'),
+                'add_new_item'       => __('Add New Quick Ajax', 'wpg-quick-ajax-post-loader'),
+                'edit_item'          => __('Edit Quick Ajax', 'wpg-quick-ajax-post-loader'),
+                'new_item'           => __('New Quick Ajax', 'wpg-quick-ajax-post-loader'),
+                'view_item'          => __('View Quick Ajax', 'wpg-quick-ajax-post-loader'),
+                'search_items'       => __('Search Quick Ajax', 'wpg-quick-ajax-post-loader'),
+                'not_found'          => __('No Items found', 'wpg-quick-ajax-post-loader'),
+                'not_found_in_trash' => __('No Items found in trash', 'wpg-quick-ajax-post-loader'),
                 'parent_item_colon'  => '',
-                'menu_name'          => __('Shortcodes', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'menu_name'          => __('Shortcodes', 'wpg-quick-ajax-post-loader'),
             );
             $args = array(
                 'labels'              => $labels,
@@ -465,20 +465,3 @@ abstract class WPG_Quick_Ajax_Manage_Options_Form extends WPG_Quick_Ajax_Content
         return $html;
     }
 }
-
-    /* copy
-    private function add_quick_ajax_form(){
-        $current_user = wp_get_current_user();
-        $scheme = get_user_option( 'admin_color', $current_user->ID );
-        $quick_ajax_form_class = $scheme.'-style';
-        echo '<div class="wrap">';
-        echo '<div class="quick-ajax-heading">';
-        echo $this->render_quick_ajax_page_heading();
-        echo '</div>';
-        echo '<div class="quick-ajax-form-wrap '.$quick_ajax_form_class.'" id="form-' . esc_attr($this->option_group) . '">';
-        echo '<form method="post" action="options.php">';
-        settings_fields($this->option_group); // Output security fields for the registered settings
-        echo $this->render_quick_ajax_form();
-        echo '</form>';
-        echo '</div>';
-    }*/

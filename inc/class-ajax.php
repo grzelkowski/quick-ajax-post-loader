@@ -11,7 +11,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
         public $layout = array();
         private $quick_ajax_id;
         private $quick_ajax_block_id;
-
+        
         public function __construct(){
             add_action('before_quick_ajax_filter_wrapper', function() {});            
             add_action('quick_ajax_filter_wrapper_start', function() {});
@@ -37,9 +37,11 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
             }
             return self::$instance;
         }
+
         public function get_quick_ajax_id() {
             return $this->quick_ajax_id;
         }
+
         private function create_post_not_in($excluded_post_ids){
             $post__not_in = $array_ids = array();
 
@@ -59,6 +61,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
             }            
             return $post__not_in;                       
         }
+
         public function quick_ajax_action_modify_query_args($args, $quick_ajax_id) {
             if($quick_ajax_id == $this->quick_ajax_id){
             return $args;
@@ -70,6 +73,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
                 return $buttons;
             }            
         }
+
         private function quick_ajax_generate_block_id($attributes = false) {
             if (!is_array($attributes)) {
                 $attributes = [WPG_Quick_Ajax_Helper::quick_ajax_layout_quick_ajax_id() => $attributes];
@@ -84,6 +88,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
                 $this->quick_ajax_id++;
             }
         }
+
         public function quick_ajax_wp_query_args($args, $attributes = false){
             $this->args = [];
             $this->quick_ajax_generate_block_id($attributes);
@@ -150,7 +155,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
                     'term_id' => 'none',
                     'taxonomy' => $taxonomy,
                     'template' => $button_base['template'],
-                    'button_label' => __('Show All', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'button_label' => __('Show All', 'wpg-quick-ajax-post-loader'),
                     'data-button' => $button_base['data-button'],
                     'data-action' => $this->args,
                     'data-attributes' => $button_base['data-attributes'],
@@ -180,6 +185,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
             $output = ob_get_clean(); // Get the buffered content into a variable
             return $output; // Return the content
         }
+
         private function quick_ajax_update_button_template($button_data) {
             $button_label = isset($button_data['button_label']) ? htmlspecialchars($button_data['button_label']) : '';
             if (empty($button_label)){
@@ -191,6 +197,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
             $modified_content = $this->quick_ajax_add_button_data($content, $button_data);
             return $modified_content;
         }
+
         private function quick_ajax_add_button_data($content, $button_data) {
             $button_data_attributes = htmlspecialchars(json_encode($button_data['data-attributes']), ENT_QUOTES, 'UTF-8');
             $button_data_action = htmlspecialchars(json_encode($button_data['data-action']), ENT_QUOTES, 'UTF-8');
@@ -240,6 +247,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
 
             return $modified_content;
         }
+
         private function quick_ajax_tax_query($taxonomy, $term_slug){
             $term_args = $this->args;
             unset($term_args['paged']);
@@ -253,6 +261,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
             );
             return $term_args;
         }
+
         public function quick_ajax_meta_query($field_name, $field_value, $compare = '='){
             $meta_args = $this->args;
             unset($meta_args['paged']);
@@ -265,10 +274,12 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
                 ),
             );
         }
+
         private function get_global_options(){
             $globalOptions = get_option(WPG_Quick_Ajax_Helper::quick_ajax_admin_page_global_options_name());
             return $globalOptions;
         }
+
         private function extract_classes_from_string($string){
             // Split the input string into an array using whitespace or comma as separators
             $class_container_array = preg_split('/[\s,]+/', esc_attr($string));
@@ -282,6 +293,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
             $container_class = implode(' ', $class_container_array);
             return $container_class;
         }
+
         public function quick_ajax_layout_customization($attributes){
             $this->attributes = [];
             $this->layout = [];
@@ -350,7 +362,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
             $this->load_more_button($query->get('paged'), $query->max_num_pages, $query->found_posts);
             echo '</div>';
             do_action('before_quick_ajax_loader_icon');
-            echo '<div class="quick-ajax-loader-icon-wrapper">';
+            echo '<div class="quick-ajax-loader-icon-wrapper">'; 
             include($this->layout[WPG_Quick_Ajax_Helper::quick_ajax_layout_select_loader_icon()]);
             echo '</div>';
             do_action('after_quick_ajax_loader_icon');
@@ -394,7 +406,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
 
             do_action('before_quick_ajax_load_more_button');
             $button_data['template'] = WPG_Quick_Ajax_Helper::quick_ajax_plugin_templates_load_more_button();
-            $button_data['button_label'] = __('Load More', WPG_Quick_Ajax_Helper::quick_ajax_text_domain());
+            $button_data['button_label'] = __('Load More', 'wpg-quick-ajax-post-loader');
             $button_data['data-button'] = WPG_Quick_Ajax_Helper::quick_ajax_load_more_button_data_button();
             $button_data['data-action'] = $this->args;
             $button_data['data-attributes'] = $this->attributes;
@@ -402,15 +414,14 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
             do_action('after_quick_ajax_load_more_button');
         }
         
-
         public function print_results(){
             print_r($this->args);
         }
+
         public function args_json(){
             $json_data = wp_json_encode($this->args);
             return $json_data;
         }
-
     }
 }
 ?>

@@ -9,7 +9,7 @@ function quick_ajax_display_shortcode_on_single_page($post) {
         $input_value = get_post_meta($post->ID, 'quick_ajax_meta_box_shortcode_shortcode', true);
         if(!empty($input_value)){
             echo '<div id="shortcode-box-wrap" class="click-and-select-all">';
-            echo '<span>'.__('Copy and paste this shortcode on the page to display the posts list', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()).'</span>';
+            echo '<span>'.__('Copy and paste this shortcode on the page to display the posts list', 'wpg-quick-ajax-post-loader').'</span>';
             echo '<div>';
             echo '<pre><code id="quick_ajax_meta_box_shortcode_shortcode">' . esc_attr($input_value) . '</code></pre>';
             echo '</div></div>';
@@ -124,7 +124,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_For
 
             //post settings
             $shortcode_page .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
-            $shortcode_page .= '<h4>'.__('Query Settings', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()).'</h4>';
+            $shortcode_page .= '<h4>'.__('Query Settings', 'wpg-quick-ajax-post-loader').'</h4>';
             $shortcode_page .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_post_status());
             $shortcode_page .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_posts_per_page());
             $shortcode_page .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_order());
@@ -134,7 +134,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_For
 
             //layout Settings
             $shortcode_page .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
-            $shortcode_page .= '<h4>'.__('layout Settings', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()).'</h4>';
+            $shortcode_page .= '<h4>'.__('layout Settings', 'wpg-quick-ajax-post-loader').'</h4>';
             $shortcode_page .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_quick_ajax_css_style(),true);
             $shortcode_page .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_select_columns_qty(), WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_quick_ajax_css_style());
             $shortcode_page .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_post_item_template());

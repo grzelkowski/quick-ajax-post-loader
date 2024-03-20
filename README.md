@@ -48,8 +48,18 @@ A: Yes, you can generate as many shortcodes as needed for different post types o
 
 ## Changelog
 
+### 1.0.1
+- Fixed the loader icon bug.
+- Improved translations for the Polish language.
+
 ### 1.0
 - Initial release.
+
+## Available Languages
+
+Quick Ajax Post Loader currently supports the following languages:
+- English (original)
+- Polish (additional translation added)
 
 ## License
 

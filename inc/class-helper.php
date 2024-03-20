@@ -7,7 +7,7 @@ class WPG_Quick_Ajax_Helper{
     public static $admin_config_loaded = false;
     public static $ajax_class_loaded = false;
     public static function quick_ajax_get_plugin_version() {
-        return '1.0';
+        return '1.0.1';
     }    
     public static function quick_ajax_plugin_name(){
         return 'Quick Ajax Post Loader';
@@ -135,7 +135,7 @@ class WPG_Quick_Ajax_Helper{
     public static function quick_ajax_plugin_templates_loader_icon_template($template_name = false){
         // get the specified template file path if it exist or back to the default template.
         $template_name = empty($template_name) ? WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_loader_icon_default_value() : $template_name;
-        $file_path = self::quick_ajax_get_templates_dir_path('/loader_icon/'.$template_name.'.php');
+        $file_path = self::quick_ajax_get_templates_dir_path('/loader-icon/'.$template_name.'.php');
         if (!file_exists($file_path)) {
             $file_path = self::quick_ajax_get_templates_dir_path('/loader-icon/loader-icon.php');
         }       
@@ -287,7 +287,7 @@ class WPG_Quick_Ajax_Helper{
         return 'qa_layout_quick_ajax_post_item_template';
     }
     public static function quick_ajax_shortcode_page_layout_post_item_template_default_value(){
-        return 'post_item';
+        return 'post-item';
     }
     public static function quick_ajax_shortcode_page_show_custom_load_more_post_quantity(){
         return 'qa_show_custom_load_more_post_quantity';
@@ -311,7 +311,7 @@ class WPG_Quick_Ajax_Helper{
         return 'qa_loader_icon';
     }
     public static function quick_ajax_shortcode_page_select_loader_icon_default_value(){
-        return 'loader_icon';
+        return 'loader-icon';
     }
     // attributes query names
     public static function quick_ajax_layout_quick_ajax_id(){
@@ -386,10 +386,10 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
             }
             $field_properties = array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_post_type(),
-                'label' => __('Select Post Type:', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Select Post Type:', 'wpg-quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => $post_type_options,
-                'description' => __('Choose the post type you want to display using AJAX.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'description' => __('Choose the post type you want to display using AJAX.', 'wpg-quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -397,53 +397,53 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
         public static function get_field_show_taxonomy_filter(){
             return array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_show_taxonomy_filter(),
-                'label' => __('Show Taxonomy Filter', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Show Taxonomy Filter', 'wpg-quick-ajax-post-loader'),
                 'type' => 'checkbox',
                 'default' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_show_taxonomy_filter_default_value(),
-                'description' => __('Enable filtering by taxonomy/category.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'description' => __('Enable filtering by taxonomy/category.', 'wpg-quick-ajax-post-loader')
             );
         }
         //select taxonomy
         public static function get_field_select_taxonomy(){
             return array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_taxonomy(),
-                'label' => __('Select Taxonomy:', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Select Taxonomy:', 'wpg-quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => '',
                 'default' => '',
-                'description' => __('Select the taxonomy to be used for filtering posts.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'description' => __('Select the taxonomy to be used for filtering posts.', 'wpg-quick-ajax-post-loader')
             );
         }
         //post per page number
         public static function get_field_select_posts_per_page(){
             return array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_posts_per_page(),
-                'label' => __('Posts Per Page:', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Posts Per Page:', 'wpg-quick-ajax-post-loader'),
                 'type' => 'number',
                 'options' => '',
                 'default' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_posts_per_page_default_value(),
-                'description' => __('Determine the number of posts to be loaded per AJAX request.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'description' => __('Determine the number of posts to be loaded per AJAX request.', 'wpg-quick-ajax-post-loader')
             );
         }
         //select post order
         public static function get_field_select_order(){
             $order_options = array(
                 array(
-                    'label' => __('Descending - order from highest to lowest', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Descending - order from highest to lowest', 'wpg-quick-ajax-post-loader'),
                     'value' => 'DESC'
                 ),
                 array(
-                    'label' => __('Ascending - order from lowest to highest', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Ascending - order from lowest to highest', 'wpg-quick-ajax-post-loader'),
                     'value' => 'ASC'
                 )
             );
             $field_properties = array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_order(),
-                'label' => __('Posts Order:', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Posts Order:', 'wpg-quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => $order_options,
                 'default' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_order_default_value(),
-                'description' => __('Specify the order of posts.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'description' => __('Specify the order of posts.', 'wpg-quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -451,57 +451,57 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
         public static function get_field_select_orderby(){
             $orderby_options = array(
                 array(
-                    'label' => __('None: No specific sorting criteria', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('None: No specific sorting criteria', 'wpg-quick-ajax-post-loader'),
                     'value' => 'none'
                 ),
                 array(
-                    'label' => __('D: Sort by post ID', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('ID: Sort by post ID', 'wpg-quick-ajax-post-loader'),
                     'value' => 'ID'
                 ),
                 array(
-                    'label' => __('Author: Sort by author ID', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Author: Sort by author ID', 'wpg-quick-ajax-post-loader'),
                     'value' => 'author'
                 ),
                 array(
-                    'label' => __('Title: Sort by post title', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Title: Sort by post title', 'wpg-quick-ajax-post-loader'),
                     'value' => 'title'
                 ),
                 array(
-                    'label' => __('Name: Sort by post slug', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Name: Sort by post slug', 'wpg-quick-ajax-post-loader'),
                     'value' => 'name'
                 ),
                 array(
-                    'label' => __('Date: Sort by publication date', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Date: Sort by publication date', 'wpg-quick-ajax-post-loader'),
                     'value' => 'date'
                 ),
                 array(
-                    'label' => __('Modified: Sort by last modified date', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Modified: Sort by last modified date', 'wpg-quick-ajax-post-loader'),
                     'value' => 'modified'
                 ),
                 array(
-                    'label' => __('Parent: Sort by parent post ID', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Parent: Sort by parent post ID', 'wpg-quick-ajax-post-loader'),
                     'value' => 'parent'
                 ),
                 array(
-                    'label' => __('Random: Random order', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Random: Random order', 'wpg-quick-ajax-post-loader'),
                     'value' => 'rand'
                 ),
                 array(
-                    'label' => __('Comments: Sort by comment count', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Comments: Sort by comment count', 'wpg-quick-ajax-post-loader'),
                     'value' => 'comment_count'
                 ),
                 array(
-                    'label' => __('Menu Order: Sort by custom menu order', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Menu Order: Sort by custom menu order', 'wpg-quick-ajax-post-loader'),
                     'value' => 'menu_order'
                 )
             );
             $field_properties = array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_orderby(),
-                'label' => __('Posts Order by:', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Posts Order by:', 'wpg-quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => $orderby_options,
                 'default' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_orderby_default_value(),
-                'description' => __('Choose the sorting criteria for posts.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'description' => __('Choose the sorting criteria for posts.', 'wpg-quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -509,41 +509,41 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
         public static function get_field_select_post_status(){
             $post_status_options = array(
                 array(
-                    'label' => __('Publish: Published posts', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Publish: Published posts', 'wpg-quick-ajax-post-loader'),
                     'value' => 'publish'
                 ),
                 array(
-                    'label' => __('Draft: Draft posts', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Draft: Draft posts', 'wpg-quick-ajax-post-loader'),
                     'value' => 'draft'
                 ),
                 array(
-                    'label' => __('Pending: Pending review posts', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Pending: Pending review posts', 'wpg-quick-ajax-post-loader'),
                     'value' => 'pending'
                 ),
                 array(
-                    'label' => __('Private: Private posts', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Private: Private posts', 'wpg-quick-ajax-post-loader'),
                     'value' => 'private'
                 ),
                 array(
-                    'label' => __('Trash: Trashed posts', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Trash: Trashed posts', 'wpg-quick-ajax-post-loader'),
                     'value' => 'trash'
                 ),
                 array(
-                    'label' => __('Auto-Draft: Auto-draft posts', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Auto-Draft: Auto-draft posts', 'wpg-quick-ajax-post-loader'),
                     'value' => 'auto-draft'
                 ),
                 array(
-                    'label' => __('Inherit: Inherited posts', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                    'label' => __('Inherit: Inherited posts', 'wpg-quick-ajax-post-loader'),
                     'value' => 'inherit'
                 ),
             );
             $field_properties = array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_post_status(),
-                'label' => __('Post Status:', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Post Status:', 'wpg-quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => $post_status_options,
                 'default' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_post_status_default_value(),
-                'description' => __('Select the post status to be used by AJAX.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'description' => __('Select the post status to be used by AJAX.', 'wpg-quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -551,12 +551,12 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
         public static function get_field_set_post_not_in(){
             $field_properties = array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_set_post_not_in(),
-                'label' => __('Excluded Post IDs', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Excluded Post IDs', 'wpg-quick-ajax-post-loader'),
                 'type' => 'text',
                 'options' => '',
                 'default' => '',
                 'placeholder' => '3, 66, 999',            
-                'description' => __('Enter a list of post IDs to exclude from the query.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'description' => __('Enter a list of post IDs to exclude from the query.', 'wpg-quick-ajax-post-loader'),
             );
             return $field_properties;
         }
@@ -564,11 +564,11 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
         public static function get_field_layout_quick_ajax_css_style(){
             $field_properties = array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_quick_ajax_css_style(),
-                'label' => __('Apply quick AJAX CSS Style', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Apply Quick AJAX CSS Style', 'wpg-quick-ajax-post-loader'),
                 'type' => 'checkbox',
                 'options' => '',
                 'default' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_quick_ajax_css_style_default_value(),
-                'description' => __('Apply Quick AJAX CSS styles and column layout.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'description' => __('Apply Quick AJAX CSS styles and column layout.', 'wpg-quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -583,11 +583,11 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
             }
             $field_properties = array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_select_columns_qty(),
-                'label' => __('Number of columns:', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Number of columns:', 'wpg-quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => $columns_qty_options,
                 'default' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_select_columns_qty_default_value(),
-                'description' => __('Specify the quantity of columns.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'description' => __('Specify the quantity of columns.', 'wpg-quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -603,11 +603,11 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
             }
             $field_properties = array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_post_item_template(),
-                'label' => __('Select Post Item Template', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Select Post Item Template', 'wpg-quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => $post_item_template_options,
                 'default' => WPG_Quick_Ajax_Helper::quick_ajax_plugin_templates_post_item_template(),
-                'description' => __('Choose a template for displaying post items.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'description' => __('Choose a template for displaying post items.', 'wpg-quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -615,12 +615,12 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
         public static function get_field_layout_taxonomy_filter_class(){
             $field_properties = array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_taxonomy_filter_class(),
-                'label' => __('Add class to taxonomy filter', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Add class to taxonomy filter', 'wpg-quick-ajax-post-loader'),
                 'type' => 'text',
                 'options' => '',
                 'default' => '',
-                'placeholder' => __('class-name, another-class-name', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
-                'description' => __('Add classes to the filter: class-one, class-two, class-three', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'placeholder' => __('class-name, another-class-name', 'wpg-quick-ajax-post-loader'),
+                'description' => __('Add classes to the filter: class-one, class-two, class-three', 'wpg-quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -628,12 +628,12 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
         public static function get_field_layout_container_class(){
             $field_properties = array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_container_class(),
-                'label' => __('Add class to post container', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Add class to post container', 'wpg-quick-ajax-post-loader'),
                 'type' => 'text',
                 'options' => '',
                 'default' => '',
-                'placeholder' => __('class-name, another-class-name', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
-                'description' => __('Add classes to the post container: class-one, class-two, class-three', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'placeholder' => __('class-name, another-class-name', 'wpg-quick-ajax-post-loader'),
+                'description' => __('Add classes to the post container: class-one, class-two, class-three', 'wpg-quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -641,10 +641,10 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
         public static function get_field_show_custom_load_more_post_quantity(){
             $field_properties = array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_show_custom_load_more_post_quantity(),
-                'label' => __('Custom Load More Post Quantity', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Custom Load More Post Quantity', 'wpg-quick-ajax-post-loader'),
                 'type' => 'checkbox',
                 'default' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_show_custom_load_more_post_quantity_default_value(),
-                'description' => __('Load a different number of posts than the default page display.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'description' => __('Load a different number of posts than the default page display.', 'wpg-quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -652,10 +652,10 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
         public static function get_field_select_custom_load_more_post_quantity(){
             $field_properties = array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_custom_load_more_post_quantity(),
-                'label' => __('Custom Load More Post Quantity', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Custom Load More Post Quantity', 'wpg-quick-ajax-post-loader'),
                 'type' => 'number',
                 'default' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_custom_load_more_post_quantity_default_value(),
-                'description' => __('Select the custom number of posts to load when using the "Load More" button.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'description' => __('Select the custom number of posts to load when using the "Load More" button.', 'wpg-quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -663,10 +663,10 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
         public static function get_field_override_global_loader_icon(){
             $field_properties = array(
                 'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_override_global_loader_icon(),
-                'label' => __('Override Global Loader Icon', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Override Global Loader Icon', 'wpg-quick-ajax-post-loader'),
                 'type' => 'checkbox',
                 'default' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_override_global_loader_icon_default_value(),
-                'description' => __('Set a different loader icon than the one specified in global options.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'description' => __('Set a different loader icon than the one specified in global options.', 'wpg-quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -692,11 +692,11 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
             }
             $field_properties = array(
                 'name' => $field_name,
-                'label' => __('Select Loader Icon', WPG_Quick_Ajax_Helper::quick_ajax_text_domain()),
+                'label' => __('Select Loader Icon', 'wpg-quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => $loader_icon_options,
                 'default' => $field_default_value,
-                'description' => __('Choose an icon to display as the loading indicator when the "Load More" button is clicked.', WPG_Quick_Ajax_Helper::quick_ajax_text_domain())
+                'description' => __('Choose an icon to display as the loading indicator when the "Load More" button is clicked.', 'wpg-quick-ajax-post-loader')
             );
             return $field_properties;
         }
