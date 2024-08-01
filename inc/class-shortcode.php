@@ -8,14 +8,49 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Sho
         private $shortcode_args = array();
         private $shortcode_settings = array();
         
-        private function get_shortcode_attributes($attributes) {
+        private function get_shortcode_args($args) {
             $defaults = array(
                 'id' => '',
-                'excluded_post_ids' =>''
+                'excluded_post_ids' =>'',
+                'post_type' =>'',
+                'posts_per_page' => '',
+                'order' => '',
+                'orderby' => '',
+                'post_status' => '',
+                'quick_ajax_css_style' => '',
+                'grid_num_columns' => '',
+                'post_item_template' => '',
+                'taxonomy_filter_class' => '',
+                'container_class' => '',
+                'load_more_posts' => '',
+                'loader_icon' => '',
+                'quick_ajax_id' => '',
+                'quick_ajax_taxonomy' => '',
             );
             
-            $merged_atts = shortcode_atts($defaults, $attributes, 'quick-ajax');
+            $merged_atts = shortcode_atts($defaults, $args, 'quick-ajax');
+
+            if (!is_numeric($merged_atts['id'])) {
+                $merged_atts['id'] = '';
+            }
+            $merged_atts['ignore_sticky_posts'] = is_bool($merged_atts['ignore_sticky_posts']) ? $merged_atts['ignore_sticky_posts'] : false;
+            $merged_atts['excluded_post_ids'] = is_string($merged_atts['excluded_post_ids']) ? array_filter(array_map('intval', explode(',', $merged_atts['excluded_post_ids']))) : '';
+            $merged_atts['post_type'] = is_string($merged_atts['post_type']) ? $merged_atts['post_type'] : '';
+            $merged_atts['posts_per_page'] = is_string($merged_atts['posts_per_page'])  ? intval($merged_atts['posts_per_page'])  : '';
+            $merged_atts['order'] = is_string($merged_atts['order']) ? $merged_atts['order'] : '';
+            $merged_atts['orderby'] = is_string($merged_atts['orderby']) ? $merged_atts['orderby'] : '';
+            $merged_atts['post_status'] = is_string($merged_atts['post_status']) ? $merged_atts['post_status'] : '';
+            $merged_atts['quick_ajax_css_style'] = is_numeric($merged_atts['quick_ajax_css_style']) ? intval($merged_atts['quick_ajax_css_style']) : '';
+            $merged_atts['grid_num_columns'] = is_numeric($merged_atts['grid_num_columns']) ? intval($merged_atts['grid_num_columns']) : '';
+            $merged_atts['post_item_template'] = is_string($merged_atts['post_item_template']) ? $merged_atts['post_item_template'] : '';
+            $merged_atts['taxonomy_filter_class'] = is_string($merged_atts['taxonomy_filter_class']) ? $merged_atts['taxonomy_filter_class'] : '';
+            $merged_atts['container_class'] = is_string($merged_atts['container_class']) ? $merged_atts['container_class'] : '';
+            $merged_atts['load_more_posts'] = is_numeric($merged_atts['load_more_posts']) ? intval($merged_atts['load_more_posts']) : '';
+            $merged_atts['loader_icon'] = is_string($merged_atts['loader_icon']) ? $merged_atts['loader_icon'] : '';
+            $merged_atts['quick_ajax_id'] = is_numeric($merged_atts['quick_ajax_id']) ? intval($merged_atts['quick_ajax_id']) : '';
+            $merged_atts['quick_ajax_taxonomy'] = is_string($merged_atts['quick_ajax_taxonomy']) ? $merged_atts['quick_ajax_taxonomy'] : '';
             $this->shortcode_args = $merged_atts;
+            
         }
         
         private function unserialize_shortcode_data($id){
@@ -30,31 +65,40 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Sho
 
         private function create_shortcode_args(){
             if(!empty($this->shortcode_args['id'])){
-                $selected_post_type = $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_post_type()];
-                $post_per_page = $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_posts_per_page()];
-                $post_order = $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_order()];
-                $post_orderby = $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_orderby()];
-                $post_post_status = $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_post_status()];
-                $post_not_in = $this->shortcode_args['excluded_post_ids'];
-                
-                if(!empty($selected_post_type)){
-                    $args = array(
-                        'post_type' => $selected_post_type,
-                        'post_status' => $post_post_status,
-                        'orderby' => $post_orderby, 
-                        'order' => $post_order,                     
-                        'posts_per_page' => $post_per_page,
-                        'post__not_in' => $post_not_in,
-                    );
-                }
+                $selected_post_type = !empty($this->shortcode_args['post_type']) ? $this->shortcode_args['post_type'] : $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_post_type()];
+                $post_per_page = !empty($this->shortcode_args['posts_per_page']) ? $this->shortcode_args['posts_per_page'] : $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_posts_per_page()];
+                $post_order = !empty($this->shortcode_args['order']) ? $this->shortcode_args['order'] : $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_order()];
+                $post_orderby = !empty($this->shortcode_args['orderby']) ? $this->shortcode_args['orderby'] : $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_orderby()];
+                $post_post_status = !empty($this->shortcode_args['post_status']) ? $this->shortcode_args['post_status'] : $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_post_status()];
+                $post_not_in = ($this->shortcode_args['excluded_post_ids']) ? $this->shortcode_args['excluded_post_ids'] : $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_set_post_not_in()];     
+                $ignore_sticky_posts = ($this->shortcode_args['ignore_sticky_posts']) ? $this->shortcode_args['ignore_sticky_posts'] : $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_ignore_sticky_posts()];     
+            }else{
+                $selected_post_type = !empty($this->shortcode_args['post_type']) ? $this->shortcode_args['post_type'] : '';
+                $post_per_page = !empty($this->shortcode_args['posts_per_page']) ? $this->shortcode_args['posts_per_page'] : '';
+                $post_order = !empty($this->shortcode_args['order']) ? $this->shortcode_args['order'] : '';
+                $post_orderby = !empty($this->shortcode_args['orderby']) ? $this->shortcode_args['orderby'] : '';
+                $post_post_status = !empty($this->shortcode_args['post_status']) ? $this->shortcode_args['post_status'] : '';
+                $post_not_in = !empty($this->shortcode_args['excluded_post_ids']) ? $this->shortcode_args['excluded_post_ids'] : '';
+                $ignore_sticky_posts = !empty($this->shortcode_args['ignore_sticky_posts']) ? $this->shortcode_args['ignore_sticky_posts'] : '';
+            }
+            if(!empty($selected_post_type)){
+                $args = array(
+                    'post_type' => $selected_post_type,
+                    'post_status' => $post_post_status,
+                    'orderby' => $post_orderby, 
+                    'order' => $post_order,                     
+                    'posts_per_page' => $post_per_page,
+                    'post__not_in' => $post_not_in,
+                    'ignore_sticky_posts' => $ignore_sticky_posts,
+                );
             }
             if(!empty($args)){
                 return $args;
             }
             return false;
         }
-
-        private function create_shortcode_attributes(){
+        /*
+        private function create_shortcode_attributes_old(){
             if(!empty($this->shortcode_args['id'])){
                 $attributes['shortcode'] = true;
                 $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_quick_ajax_id()] = $this->shortcode_args['id'];
@@ -84,7 +128,99 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Sho
                 return $attributes;
             }
             return false;
-        }
+        }*/
+        // updated version if attributes are added to the shortcode
+        private function create_shortcode_attributes() {
+            $attributes = array();
+        
+            if (!empty($this->shortcode_args['id'])) {
+                $attributes['shortcode'] = true;
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_quick_ajax_id()] = $this->shortcode_args['id'];
+        
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_quick_ajax_css_style()] = 
+                    !empty($this->shortcode_args['quick_ajax_css_style']) ? 
+                    $this->shortcode_args['quick_ajax_css_style'] : 
+                    (isset($this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_quick_ajax_css_style()]) ? 
+                    $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_quick_ajax_css_style()] : '');
+        
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_grid_num_columns()] = 
+                    !empty($this->shortcode_args['grid_num_columns']) ? 
+                    $this->shortcode_args['grid_num_columns'] : 
+                    (isset($this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_select_columns_qty()]) ? 
+                    $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_select_columns_qty()] : '');
+        
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_post_item_template()] = 
+                    !empty($this->shortcode_args['post_item_template']) ? 
+                    $this->shortcode_args['post_item_template'] : 
+                    (isset($this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_post_item_template()]) ? 
+                    $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_post_item_template()] : '');
+        
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_taxonomy_filter_class()] = 
+                    !empty($this->shortcode_args['taxonomy_filter_class']) ? 
+                    $this->shortcode_args['taxonomy_filter_class'] : 
+                    (isset($this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_taxonomy_filter_class()]) ? 
+                    $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_taxonomy_filter_class()] : '');
+        
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_container_class()] = 
+                    !empty($this->shortcode_args['container_class']) ? 
+                    $this->shortcode_args['container_class'] : 
+                    (isset($this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_container_class()]) ? 
+                    $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_container_class()] : '');
+        
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_load_more_posts()] = 
+                    !empty($this->shortcode_args['load_more_posts']) ? 
+                    $this->shortcode_args['load_more_posts'] : 
+                    (isset($this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_show_custom_load_more_post_quantity()]) && 
+                    $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_show_custom_load_more_post_quantity()] != 0 ? 
+                    $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_custom_load_more_post_quantity()] : '');
+        
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_select_loader_icon()] = 
+                    !empty($this->shortcode_args['loader_icon']) ? 
+                    $this->shortcode_args['loader_icon'] : 
+                    (isset($this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_override_global_loader_icon()]) && 
+                    $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_override_global_loader_icon()] != 0 && 
+                    isset($this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_loader_icon()]) ? 
+                    $this->shortcode_settings[WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_loader_icon()] : '');
+            } else {
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_quick_ajax_id()] = 
+                    !empty($this->shortcode_args['quick_ajax_id']) ? 
+                    $this->shortcode_args['quick_ajax_id'] : '';
+               
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_quick_ajax_css_style()] = 
+                    !empty($this->shortcode_args['quick_ajax_css_style']) ? 
+                    $this->shortcode_args['quick_ajax_css_style'] : '';
+        
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_grid_num_columns()] = 
+                    !empty($this->shortcode_args['grid_num_columns']) ? 
+                    $this->shortcode_args['grid_num_columns'] : '';
+        
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_post_item_template()] = 
+                    !empty($this->shortcode_args['post_item_template']) ? 
+                    $this->shortcode_args['post_item_template'] : '';
+        
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_taxonomy_filter_class()] = 
+                    !empty($this->shortcode_args['taxonomy_filter_class']) ? 
+                    $this->shortcode_args['taxonomy_filter_class'] : '';
+        
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_container_class()] = 
+                    !empty($this->shortcode_args['container_class']) ? 
+                    $this->shortcode_args['container_class'] : '';
+        
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_load_more_posts()] = 
+                    !empty($this->shortcode_args['load_more_posts']) ? 
+                    $this->shortcode_args['load_more_posts'] : '';
+        
+                $attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_select_loader_icon()] = 
+                    !empty($this->shortcode_args['loader_icon']) ? 
+                    $this->shortcode_args['loader_icon'] : '';
+            }
+        
+            if (!empty($attributes)) {
+                return $attributes;
+            }
+        
+            return false;
+        }        
 
         private function create_shortcode_taxonomy(){
             if(!empty($this->shortcode_args['id'])){
@@ -103,8 +239,10 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Sho
         }
 
         public function render_quick_ajax_shortcode($atts) {
-            $this->get_shortcode_attributes($atts);
-            $this->unserialize_shortcode_data($this->shortcode_args['id']);
+            $this->get_shortcode_args($atts);
+            if (!empty($this->shortcode_args['id'])) {
+                $this->unserialize_shortcode_data($this->shortcode_args['id']);
+            }
             $args = $this->create_shortcode_args();
             $attributes = $this->create_shortcode_attributes();
             $taxonomy = $this->create_shortcode_taxonomy();

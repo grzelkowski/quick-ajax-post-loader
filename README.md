@@ -1,10 +1,10 @@
-# Quick Ajax Post Loader for WordPress
+# Quick Ajax Post Loader
 
-Supercharge your WordPress site's post loading with the Quick Ajax Post Loader. This plugin enhances the user experience and optimizes site performance using AJAX technology, enabling dynamic display of posts without the need for page refreshes. It offers a smoother browsing experience, making your WordPress site more engaging and responsive to user interactions.
+Boost WordPress performance with Quick Ajax Post Loader. Use AJAX to dynamically display posts, enhancing site speed and user experience.
 
 ## Description
 
-Quick Ajax Post Loader for WordPress leverages AJAX technology to load content dynamically, allowing users to enjoy a seamless browsing experience without interruptions from page reloads. It is packed with features such as generating shortcodes for displaying posts, creating custom post templates, customizing loading icons, and more, making it a powerful tool for enhancing site performance and user engagement.
+Quick Ajax Post Loader for WordPress leverages AJAX technology to load content dynamically, offering users a seamless browsing experience without interruptions from page reloads. This powerful plugin is packed with features such as generating shortcodes for displaying posts, creating custom post templates, and customizing loading icons. By enabling dynamic post display, it significantly enhances site performance and user engagement, making your WordPress site more responsive and engaging to user interactions.
 
 ## Features
 
@@ -48,11 +48,22 @@ A: Yes, you can generate as many shortcodes as needed for different post types o
 
 ## Changelog
 
-### 1.0.1
+### 1.1 - 2024-06-06
+- Improved Template File Overriding Hierarchy: Updated the mechanism for searching and merging template files to ensure that files from the child theme take precedence over those from the parent theme and the plugin. Introduced a system for mapping file names to their paths to retain only the most recent versions.
+- Optimized Template File Search: Enhanced the `find_template_files` function to use `glob` for more efficient searching of template files matching specific patterns.
+- Adopted Recommended Functions for JSON Data Handling: Replaced direct calls to `json_encode` with `wp_json_encode` in accordance with WordPress standards, improving the compatibility and security of JSON data.
+- Safer File Operations: Replaced the use of `fopen` with the WordPress Filesystem API (`WP_Filesystem`) for file operations, ensuring greater compatibility with different hosting configurations and enhancing security.
+- Improved Output Security: Secured all outputs to prevent potential XSS attacks.
+- Optimized Code Structure: Enhanced code performance and maintainability through various optimizations.
+- Improved Security Measures: Strengthened security protocols and addressed vulnerabilities to enhance overall code safety.
+- Support for New Shortcode Attributes: Added support for additional shortcode parameters to increase flexibility and customization.
+- Added 'Ignore Sticky Posts' Option: Introduced a new option to the plugin settings that allows users to ignore sticky posts in the WP_Query.
+
+### 1.0.1 - 2024-03-20
 - Fixed the loader icon bug.
 - Improved translations for the Polish language.
 
-### 1.0
+### 1.0 - 2024-03-13
 - Initial release.
 
 ## Available Languages
@@ -63,8 +74,17 @@ Quick Ajax Post Loader currently supports the following languages:
 
 ## License
 
-This plugin is licensed under the GPLv2 or later.
+This plugin is licensed under the GPLv2 or later.  
+**License URI:** [GPLv2 License](https://www.gnu.org/licenses/gpl-2.0.html)
 
 ## Credits
 
 Developed by Pawel Grzelkowski.
+
+## Additional Links
+
+- [GitHub Repository](https://github.com/grzelkowski/wpg-quick-ajax-post-loader/)
+
+## Privacy Policy
+
+Quick Ajax Post Loader does not collect or store any user data.

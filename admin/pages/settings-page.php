@@ -36,6 +36,9 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Cre
             //add Excluded Post IDs
             $field_properties = WPG_Quick_Ajax_Fields::get_field_set_post_not_in();
             $this->create_field($field_properties);
+            //set ignore sticky
+            $field_properties = WPG_Quick_Ajax_Fields::get_field_set_ignore_sticky_posts();
+            $this->create_field($field_properties);
             //apply quick ajax css style
             $field_properties = WPG_Quick_Ajax_Fields::get_field_layout_quick_ajax_css_style();
             $field_properties['default'] = 0;
@@ -123,6 +126,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Cre
             $form_tab_function_generator .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_order());
             $form_tab_function_generator .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_orderby());
             $form_tab_function_generator .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_set_post_not_in());
+            $form_tab_function_generator .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_ignore_sticky_posts());
             $form_tab_function_generator .= '</div>';
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
             $form_tab_function_generator .= '<h4>'.__('Layout Settings', 'wpg-quick-ajax-post-loader').'</h4>';

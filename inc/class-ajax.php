@@ -89,6 +89,13 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
             }
         }
 
+        public function quick_ajax_modify_posts_where($where, $wp_query){
+            global $wpdb;
+            $exclude_ids = $this->args['post__not_in']; 
+            $where .= " AND {$wpdb->posts}.ID NOT IN ($exclude_ids)";
+            return $where;
+        }
+    
         public function quick_ajax_wp_query_args($args, $attributes = false){
             $this->args = [];
             $this->quick_ajax_generate_block_id($attributes);
@@ -98,6 +105,8 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
             $quick_ajax_args['orderby'] = (isset($args['orderby'])) ? sanitize_text_field($args['orderby']) : WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_orderby_default_value();
             $quick_ajax_args['order'] = (isset($args['order'])) ? sanitize_text_field($args['order']) : WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_order_default_value();
             $quick_ajax_args['post__not_in'] = (isset($args['post__not_in'])) ? $this->create_post_not_in($args['post__not_in']) : '';
+            $quick_ajax_args['ignore_sticky_posts'] = (isset($args['ignore_sticky_posts'])) ? intval($args['ignore_sticky_posts']) : WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_ignore_sticky_posts_default_value();
+           // $quick_ajax_args['excluded_post_ids'] = (isset($args['excluded_post_ids'])) ? $this->create_post_not_in($args['excluded_post_ids']) : '';
             $quick_ajax_args['paged'] = (isset($args['paged'])) ? intval($args['paged']) : 1;
             $quick_ajax_args['offset'] = (isset($args['offset'])) ? intval($args['offset']) : null;
                     
@@ -117,7 +126,24 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
                 return false;
             }
         }
-
+        private function quick_ajax_get_post_assigned_to_the_term($term, $excluded_post_ids){
+            $args = array(
+                'posts_per_page' => -1,
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => $term->taxonomy,
+                        'field'    => 'term_id',
+                        'terms'    => $term->term_id,
+                    ),
+                ),
+                'post__not_in' => $excluded_post_ids,
+            );
+            $posts = get_posts($args);
+            if (!empty($posts)) {
+                return true;
+            }
+            return false;      
+        }
         public function quick_ajax_term_filter($taxonomy){
             if(!$this->args){
                 return false;
@@ -140,7 +166,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
             ob_start(); // Start output buffering
 
             do_action('before_quick_ajax_filter_wrapper');
-            echo '<div id="'.$block_id.'" class="'.$container_class.'">';
+            echo '<div id="'.esc_attr($block_id).'" class="'.esc_attr($container_class).'">';
             do_action('quick_ajax_filter_wrapper_start');
             if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
                 $this->attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_quick_ajax_id()] = $this->quick_ajax_block_id;
@@ -162,21 +188,26 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
                 ];
                 $navigation_buttons[] = $show_all_button;
                 foreach ( $terms as $term ) {
-                    $term_button_data = [                        
-                        'term_id' => $term->term_id,
-                        'taxonomy' => $term->taxonomy,
-                        'template' => $button_base['template'],
-                        'button_label' => $term->name,
-                        'data-button' => $button_base['data-button'],
-                        'data-action' => $this->quick_ajax_tax_query($taxonomy, $term->slug),
-                        'data-attributes' => $button_base['data-attributes'],
-                    ];
-                    $navigation_buttons[] = $term_button_data;
+                    $not_empty = $this->quick_ajax_get_post_assigned_to_the_term($term, $this->args['post__not_in']);
+                    if($not_empty == true){
+                        $term_button_data = [                        
+                            'term_id' => $term->term_id,
+                            'taxonomy' => $term->taxonomy,
+                            'template' => $button_base['template'],
+                            'button_label' => $term->name,
+                            'data-button' => $button_base['data-button'],
+                            'data-action' => $this->quick_ajax_tax_query($taxonomy, $term->slug),
+                            'data-attributes' => $button_base['data-attributes'],
+                        ];
+                        $navigation_buttons[] = $term_button_data;
+                    }
                 }
                 $navigation_buttons = apply_filters('quick_ajax_modify_term_buttons', $navigation_buttons, $this->quick_ajax_id);
+                $filter_buttons='';
                 foreach ( $navigation_buttons as $button ) {
-                    echo $this->quick_ajax_update_button_template($button);
+                    $filter_buttons .= $this->quick_ajax_update_button_template($button);
                 }
+                echo wp_kses_post($filter_buttons);
             }
             do_action('quick_ajax_filter_wrapper_end');
             echo '</div>';
@@ -199,8 +230,8 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
         }
 
         private function quick_ajax_add_button_data($content, $button_data) {
-            $button_data_attributes = htmlspecialchars(json_encode($button_data['data-attributes']), ENT_QUOTES, 'UTF-8');
-            $button_data_action = htmlspecialchars(json_encode($button_data['data-action']), ENT_QUOTES, 'UTF-8');
+            $button_data_attributes = htmlspecialchars(wp_json_encode($button_data['data-attributes']), ENT_QUOTES, 'UTF-8');
+            $button_data_action = htmlspecialchars(wp_json_encode($button_data['data-action']), ENT_QUOTES, 'UTF-8');            
             $button_type = htmlspecialchars($button_data['data-button']);
             $regex = '/<([^>]+)data-button="'.$button_type.'"([^>]*)>/';
             
@@ -244,7 +275,6 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
                 },
                 $modified_content
             );
-
             return $modified_content;
         }
 
@@ -344,12 +374,12 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
             $container_class = $this->extract_classes_from_string($class_container);
             $container_inner_class = $this->extract_classes_from_string($class_inner_container);
             
-            ob_start(); 
+            ob_start();
             // Start output buffering
             do_action('before_quick_ajax_posts_wrapper');
-            echo '<div id="'.$this->attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_quick_ajax_id()].'" class="quick-ajax-posts-wrapper '.$container_class.'">';
+            echo '<div id="'.esc_attr($this->attributes[WPG_Quick_Ajax_Helper::quick_ajax_layout_quick_ajax_id()]).'" class="quick-ajax-posts-wrapper '.esc_attr($container_class).'">';
             do_action('quick_ajax_posts_wrapper_start');
-            echo '<div class="quick-ajax-posts-inner-wrapper '.$container_inner_class.'">';
+            echo '<div class="quick-ajax-posts-inner-wrapper '.esc_attr($container_inner_class).'">';
             if ($query->have_posts()) {
                 while ($query->have_posts()) {
                     $query->the_post();
@@ -410,7 +440,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Han
             $button_data['data-button'] = WPG_Quick_Ajax_Helper::quick_ajax_load_more_button_data_button();
             $button_data['data-action'] = $this->args;
             $button_data['data-attributes'] = $this->attributes;
-            echo $this->quick_ajax_update_button_template($button_data);
+            echo wp_kses_post($this->quick_ajax_update_button_template($button_data));
             do_action('after_quick_ajax_load_more_button');
         }
         

@@ -7,20 +7,27 @@ add_action('edit_form_after_title', 'quick_ajax_display_shortcode_on_single_page
 function quick_ajax_display_shortcode_on_single_page($post) {
     if ($post && $post->post_type === WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug()) {
         $input_value = get_post_meta($post->ID, 'quick_ajax_meta_box_shortcode_shortcode', true);
-        if(!empty($input_value)){
+        if (!empty($input_value)) {
             echo '<div id="shortcode-box-wrap" class="click-and-select-all">';
-            echo '<span>'.__('Copy and paste this shortcode on the page to display the posts list', 'wpg-quick-ajax-post-loader').'</span>';
+            echo '<span>' . esc_html__('Copy and paste this shortcode on the page to display the posts list', 'wpg-quick-ajax-post-loader') . '</span>';
             echo '<div>';
             echo '<pre><code id="quick_ajax_meta_box_shortcode_shortcode">' . esc_attr($input_value) . '</code></pre>';
             echo '</div></div>';
+
         }
     }
 }
 add_action( 'save_post_'.WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug(), 'save_quick_ajax_meta_box_shortcode' );
 function save_quick_ajax_meta_box_shortcode( $post_id ) {
-    if (!current_user_can('edit_post', $post_id)) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return;
     }
+    if (!isset($_POST[WPG_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field()]) || !wp_verify_nonce($_POST[WPG_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field()], WPG_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field())) {
+        return;
+    }
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }    
     if(isset($_POST['post_title']) && !empty($_POST['post_title'])){
         $title = $_POST['post_title'];
     }else{
@@ -61,6 +68,9 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_For
             $this->create_field($field_properties);
             //add Excluded Post IDs
             $field_properties = WPG_Quick_Ajax_Fields::get_field_set_post_not_in();
+            $this->create_field($field_properties);
+            //set ignore sticky
+            $field_properties = WPG_Quick_Ajax_Fields::get_field_set_ignore_sticky_posts();
             $this->create_field($field_properties);
             //apply quick ajax css style
             $field_properties = WPG_Quick_Ajax_Fields::get_field_layout_quick_ajax_css_style();
@@ -130,6 +140,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_For
             $shortcode_page .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_order());
             $shortcode_page .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_orderby());
             $shortcode_page .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_set_post_not_in());
+            $shortcode_page .= $this->add_field(WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_ignore_sticky_posts());
             $shortcode_page .= '</div>';
 
             //layout Settings
@@ -150,10 +161,14 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_For
         }
     }
 
-    $post_id = isset($_GET['post']) ? $_GET['post'] : '';
+  //  $post_id = isset($_GET['post']) ? $_GET['post'] : '';
+    $post_id = filter_input(INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT);
     $post_type = get_post_type($post_id);
     if (empty($post_type)) {
-        $post_type = isset($_GET['post_type']) ? $_GET['post_type'] : (isset($_POST['post_type']) ? $_POST['post_type'] : '');
+        $post_type = filter_input(INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if (empty($post_type)) {
+            $post_type = filter_input(INPUT_POST, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        }
     }
     if ($post_type === WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug()) {
         $form = new WPG_Quick_Ajax_Form_Creator(WPG_Quick_Ajax_Helper::quick_ajax_settings_wrapper_id(),$post_type);

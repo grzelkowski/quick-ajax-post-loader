@@ -40,12 +40,12 @@
                     $(this).empty().fadeIn(100);
                 });
             }
-
             $.ajax({
                 url: quick_ajax.ajax_url,
                 type: 'POST',
                 data: {
                     action: 'quick_ajax_load_posts',
+                    nonce: quick_ajax.nonce,
                     args: args,
                     attributes: attributes,
                     button_type: button_type,

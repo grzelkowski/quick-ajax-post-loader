@@ -43,7 +43,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Adm
         public function render_quick_ajax_settings_page() {
             // "settings Page"
             if (!current_user_can('manage_options')) {
-                wp_die(__('You do not have sufficient permissions to access this page.', 'wpg-quick-ajax-post-loader'));
+                wp_die(esc_html(__('You do not have sufficient permissions to access this page.', 'wpg-quick-ajax-post-loader')));
             }
             if (class_exists('WPG_Quick_Ajax_Creator_Settings_Page') && method_exists('WPG_Quick_Ajax_Creator_Settings_Page', 'init_quick_ajax_creator_fields')) {
                 $form = new WPG_Quick_Ajax_Creator_Settings_Page(WPG_Quick_Ajax_Helper::quick_ajax_admin_page_settings_field_option_group(), WPG_Quick_Ajax_Helper::quick_ajax_admin_page_global_options_name());
@@ -130,7 +130,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Pos
             //add Shortcode Column Content
             if ($column_name === 'quick_ajax_shortcode_column') {
                 $custom_value = get_post_meta($post_id, 'quick_ajax_meta_box_shortcode_shortcode', true);
-                echo '<div class="quick-ajax-shortcode">' . $custom_value . '</div>';
+                echo '<div class="quick-ajax-shortcode">' . esc_html($custom_value)  . '</div>';
             }
         }
 
@@ -325,6 +325,111 @@ abstract class WPG_Quick_Ajax_Content_Builder{
             </div>
         </div>';
     }
+    protected function wp_kses_allowed_tags(){
+        return array(
+            'div' => array(
+                'class' => array(),
+                'id' => array(),
+                'style' => array(),
+                'tabindex' => array(),
+                'data-item' => array(),
+            ),
+            'button' => array(
+                'type' => array(),
+                'class' => array(),
+                'style' => array(),
+                'id' => array(),                
+                'data-tab' => array(),
+                'data-output' => array(),
+                'data-copy' => array(),
+                
+            ),
+            'input' => array(
+                'type' => array(),
+                'name' => array(),
+                'id' => array(),
+                'value' => array(),
+                'checked' => array(),
+                'style' => array(),
+                'placeholder' => array(),
+                'class' => array(),
+                'disabled' => array(),
+                'readonly' => array(),
+                'size' => array(),
+                'maxlength' => array(),
+                'min' => array(),
+                'max' => array(),
+                'step' => array(),
+                'required' => array(),
+            ),
+            'select' => array(
+                'name' => array(),
+                'id' => array(),
+                'style' => array(),
+            ),
+            'option' => array(
+                'value' => array(),
+                'selected' => array(),
+                'style' => array(),
+            ),
+            'label' => array(
+                'for' => array(),
+                'style' => array(),
+            ),
+            'span' => array(
+                'class' => array(),
+                'style' => array(),
+            ),
+            'p' => array(
+                'class' => array(),
+                'style' => array(),
+            ),
+            'h1' => array(
+                'class' => array(),
+                'style' => array(),
+            ),
+            'h2' => array(
+                'class' => array(),
+                'style' => array(),
+            ),
+            'h3' => array(
+                'class' => array(),
+                'style' => array(),
+            ),
+            'h4' => array(
+                'class' => array(),
+                'style' => array(),
+            ),
+            'h5' => array(
+                'class' => array(),
+                'style' => array(),
+            ),
+            'h6' => array(
+                'class' => array(),
+                'style' => array(),
+            ),
+            'strong' => array(
+                'class' => array(),
+            ),
+            'ul' => array(
+                'class' => array(),
+                'style' => array(),
+                'id' => array(),
+            ),
+            'li' => array(
+                'class' => array(),
+                'style' => array(),
+                'id' => array(),
+            ),
+            'code' => array(
+                'class' => array(),
+            ),
+            'pre' => array(
+                'class' => array(),
+                'id' => array(),
+            ),
+        );
+    } 
 }
 
 abstract class WPG_Quick_Ajax_Post_Type_Form extends WPG_Quick_Ajax_Content_Builder {
@@ -354,22 +459,22 @@ abstract class WPG_Quick_Ajax_Post_Type_Form extends WPG_Quick_Ajax_Content_Buil
             }
         }
     }
+    
     public function add_quick_ajax_form($post){ 
         if ($post->post_type === $this->post_type) {
             $this->unserialize_data($post->ID);
-            echo '<div class="quick-ajax-form-wrap '.$this->get_quick_ajax_form_class().'" id="' . esc_attr($this->form_id) . '">';
-            echo $this->render_quick_ajax_form();
-            wp_nonce_field('quick_ajax_form_nonce', 'quick_ajax_form_nonce');
+            echo '<div class="quick-ajax-form-wrap '.esc_attr($this->get_quick_ajax_form_class()).'" id="' . esc_attr($this->form_id) . '">';
+            echo wp_kses($this->render_quick_ajax_form(), $this->wp_kses_allowed_tags());
+            wp_nonce_field(WPG_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field(), WPG_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_action());
             echo '</div>';
         }
-    }
+    }   
+    
     public function save_quick_ajax_form($post_id) {
-        //error_log("display POST: " . print_r($_POST, true));
-        //error_log("display $this->fields: " . print_r($this->fields, true));
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
-        if (!isset($_POST['quick_ajax_form_nonce']) || !wp_verify_nonce($_POST['quick_ajax_form_nonce'], 'quick_ajax_form_nonce')) {
+        if (!isset($_POST[WPG_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field()]) || !wp_verify_nonce($_POST[WPG_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field()], WPG_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field())) {
             return;
         }
         if (!current_user_can('edit_post', $post_id)) {
@@ -426,13 +531,13 @@ abstract class WPG_Quick_Ajax_Manage_Options_Form extends WPG_Quick_Ajax_Content
     public function render_quick_ajax_page(){ 
         echo '<div class="wrap">';
         echo '<div class="quick-ajax-heading">';
-        echo $this->render_quick_ajax_page_heading();
+        echo wp_kses($this->render_quick_ajax_page_heading(), $this->wp_kses_allowed_tags());
         echo '</div>';
-        echo '<div class="quick-ajax-form-wrap ' . $this->get_quick_ajax_form_class() . '" id="form-' . esc_attr($this->option_group) . '">';
+        echo '<div class="quick-ajax-form-wrap ' . esc_attr($this->get_quick_ajax_form_class()) . '" id="form-' . esc_attr($this->option_group) . '">';
         echo '<form method="post" action="options.php">';
         settings_fields($this->option_group); // Output security fields for the registered settings
-        echo $this->render_quick_ajax_tabs_navigation();
-        echo $this->render_quick_ajax_tabs_content();
+        echo wp_kses($this->render_quick_ajax_tabs_navigation(), $this->wp_kses_allowed_tags());
+        echo wp_kses($this->render_quick_ajax_tabs_content(), $this->wp_kses_allowed_tags());
         echo '</form>';
         echo '</div>';
     }

@@ -7,7 +7,7 @@ class WPG_Quick_Ajax_Helper{
     public static $admin_config_loaded = false;
     public static $ajax_class_loaded = false;
     public static function quick_ajax_get_plugin_version() {
-        return '1.0.1';
+        return '1.1';
     }    
     public static function quick_ajax_plugin_name(){
         return 'Quick Ajax Post Loader';
@@ -24,10 +24,10 @@ class WPG_Quick_Ajax_Helper{
         } else if ($type === 'function' && function_exists($name)) {
             $exists = true;
             $type_formatted = 'function';
-        }    
+        }
         if ($exists) {
             add_action('admin_notices', function() use ($name, $type_formatted) {
-                echo '<div class="notice notice-error"><p><strong>'.self::quick_ajax_plugin_name().'</strong> is not working properly. Error: A ' . $type_formatted . ' named <strong>' . esc_html($name) . '</strong> already exists, which may have been declared by another plugin.</p></div>';
+                echo '<div class="notice notice-error"><p><strong>'.esc_html(self::quick_ajax_plugin_name()).'</strong> is not working properly. Error: A ' . esc_html($type_formatted) . ' named <strong>' . esc_html($name) . '</strong> already exists, which may have been declared by another plugin.</p></div>';
             });            
             return false;
         }    
@@ -37,9 +37,9 @@ class WPG_Quick_Ajax_Helper{
         if (file_exists($file_path)) {
             return $file_path;
         }
-        trigger_error($file_path." not exist.", E_USER_WARNING);
+        error_log('File ' . esc_html($file_path) . ' does not exist.');
         return false;
-    }    
+    }   
     public static function quick_ajax_get_plugin_dir_path() {
         return plugin_dir_path( dirname( __FILE__ ) );
     }
@@ -100,6 +100,13 @@ class WPG_Quick_Ajax_Helper{
         }
         return false;        
     }
+    public static function quick_ajax_plugin_update() {
+        if(self::$ajax_class_loaded == true){
+            return self::quick_ajax_get_plugin_dir_path() . 'inc/update.php';
+        }
+        return false;        
+    }
+    //template dir path
     public static function quick_ajax_get_templates_dir_path($file) {
         // Path to the template in the child theme (or the theme itself if not using a child theme)
         $child_theme_template_path = get_stylesheet_directory() . '/wpg-quick-ajax-post-loader/templates' . $file;
@@ -122,58 +129,80 @@ class WPG_Quick_Ajax_Helper{
         // Template was not found
         return false;
     }
-
+    //template file path
+    public static function quick_ajax_get_templates_file_path($template_name, $default_name, $base_path){
+        // Use the provided template name if given; otherwise, use the default name.
+        $template_name = empty($template_name) ? $default_name : $template_name;
+        $file_path = self::quick_ajax_get_templates_dir_path($base_path . $template_name . '.php');    
+        // Check if the template file exists. If not, use the default file.
+        if (!file_exists($file_path)) {
+            $file_path = self::quick_ajax_get_templates_dir_path($base_path . $default_name . '.php');
+        }    
+        return $file_path;
+    } 
+    //template post item   
     public static function quick_ajax_plugin_templates_post_item_template($template_name = false){
-        // get the specified template file path if it exist or back to the default template.
-        $template_name = empty($template_name) ? WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_post_item_template_default_value() : $template_name;
-        $file_path = self::quick_ajax_get_templates_dir_path('/post_items/'.$template_name.'.php');
-        if (!file_exists($file_path)) {
-            $file_path = self::quick_ajax_get_templates_dir_path('/post-items/post-item.php');
-        }
-        return $file_path;
+        $default_name = WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_layout_post_item_template_default_value();
+        return self::quick_ajax_get_templates_file_path($template_name, $default_name, '/post-items/');
     }
+    //template loader icon
     public static function quick_ajax_plugin_templates_loader_icon_template($template_name = false){
-        // get the specified template file path if it exist or back to the default template.
-        $template_name = empty($template_name) ? WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_loader_icon_default_value() : $template_name;
-        $file_path = self::quick_ajax_get_templates_dir_path('/loader-icon/'.$template_name.'.php');
-        if (!file_exists($file_path)) {
-            $file_path = self::quick_ajax_get_templates_dir_path('/loader-icon/loader-icon.php');
-        }       
-        return $file_path;
+        $default_name = WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_select_loader_icon_default_value();
+        return self::quick_ajax_get_templates_file_path($template_name, $default_name, '/loader-icon/');
     }
-    private static function get_template_name_from_file($file_path, $temple_name) {
-        $handle = fopen($file_path, 'r');
-        if ($handle) {
-            while (($line = fgets($handle)) !== false) { 
-                if (stripos($line, $temple_name) !== false) { 
-                    $line = str_replace(['/* ', $temple_name, '*/'], '', $line);
-                    $line = trim($line);
-                    fclose($handle);
-                    return !empty($line) ? $line : basename($file_path, '.php');
-                }
-            }
-            fclose($handle);
+    
+    private static function get_template_name_from_file($file_path, $template_name) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+        WP_Filesystem();
+        global $wp_filesystem; 
+
+        if (!$wp_filesystem->exists($file_path)) {
+            return basename($file_path, '.php');
         }
+        $file_contents = $wp_filesystem->get_contents($file_path);
+        $lines = explode("\n", $file_contents);
+    
+        foreach ($lines as $line) {
+            if (stripos($line, $template_name) !== false) {
+                $line = str_replace(['/* ', $template_name, '*/'], '', $line);
+                $line = trim($line);
+                return !empty($line) ? $line : basename($file_path, '.php');
+            }
+        }    
         return basename($file_path, '.php');
     }
+    private static function find_template_files($path) {
+        $files = [];
+        foreach (glob($path) as $file) {
+            if (is_file($file)) {
+                $files[] = $file;
+            }
+        }
+        return $files;
+    }
     public static function quick_ajax_plugin_get_templates_items_array($template_file_location, $template_name, $default_file = false) {        
-        $plugin_template_files = glob(self::quick_ajax_get_plugin_dir_path() . 'templates/'.$template_file_location);  
+        $plugin_template_files = self::find_template_files(self::quick_ajax_get_plugin_dir_path() . 'templates/'.$template_file_location);
         // Attempt to get templates from the parent theme directory
-        $parent_template_files = glob(get_template_directory() . '/wpg-quick-ajax-post-loader/templates/'.$template_file_location);
+        $parent_template_files = self::find_template_files(get_template_directory() . '/wpg-quick-ajax-post-loader/templates/'.$template_file_location);
         // Attempt to get templates from the child theme directory
         $child_template_files = [];
         if(get_template_directory() !== get_stylesheet_directory()){
-            $child_template_files = glob(get_stylesheet_directory() . '/wpg-quick-ajax-post-loader/templates/'.$template_file_location);  
+            $child_template_files = self::find_template_files(get_stylesheet_directory() . '/wpg-quick-ajax-post-loader/templates/'.$template_file_location);  
         }
-        // Merge the arrays, filtering out duplicates if directories are different
-        $template_files = array_merge($plugin_template_files, $parent_template_files, $child_template_files);
+        
+        $template_files_map = [];
+        foreach ([$plugin_template_files, $parent_template_files, $child_template_files] as $files) {
+            foreach ($files as $file_path) {
+                $file_name = basename($file_path, '.php');
+                $template_files_map[$file_name] = $file_path; // Overwrites the file path if name conflict.
+            }
+        }
 
         $file_names = [];
-        foreach ($template_files as $file) {
-            $file_name = basename($file, '.php');
+        foreach ($template_files_map as $file_name => $file_path) {
             $file_names[] = [
                 'file_name' => $file_name,
-                'template_name' => self::get_template_name_from_file($file, $template_name)
+                'template_name' => self::get_template_name_from_file($file_path, $template_name)
             ];
         }
         if(!empty($default_file)){
@@ -223,6 +252,12 @@ class WPG_Quick_Ajax_Helper{
     public static function quick_ajax_settings_wrapper_id() {
         return 'quick_ajax_settings_wrapper';
     }
+    public static function wp_nonce_form_quick_ajax_field() {
+        return 'save_quick_ajax_meta_nonce_action';
+    }
+    public static function wp_nonce_form_quick_ajax_action() {
+        return 'save_quick_ajax_meta_nonce_action';
+    }
     public static function quick_ajax_shortcode_page_select_post_type() {
         return 'qa_select_post_type';
     }
@@ -261,6 +296,12 @@ class WPG_Quick_Ajax_Helper{
     }
     public static function quick_ajax_shortcode_page_select_post_status_default_value(){
         return 'publish';
+    }
+    public static function quick_ajax_shortcode_page_ignore_sticky_posts(){
+        return 'qa_ignore_sticky_posts';
+    }
+    public static function quick_ajax_shortcode_page_ignore_sticky_posts_default_value() {
+        return false;
     }
     public static function quick_ajax_shortcode_page_set_post_not_in(){
         return 'qa_select_post_not_in';
@@ -359,6 +400,7 @@ class WPG_Quick_Ajax_Helper{
             self::quick_ajax_plugin_ajax_class(),
             self::quick_ajax_plugin_ajax_actions(),
             self::quick_ajax_plugin_functions(),
+            //self::quick_ajax_plugin_update(),
             self::quick_ajax_plugin_shortcode_class()
         ];
         foreach ($initialize_list as $initialize) {
@@ -560,6 +602,17 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
             );
             return $field_properties;
         }
+        //set Ignore Sticky Posts
+        public static function get_field_set_ignore_sticky_posts(){
+            return array(
+                'name' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_ignore_sticky_posts(),
+                'label' => __('Ignore Sticky Posts', 'wpg-quick-ajax-post-loader'),
+                'type' => 'checkbox',
+                'options' => '',
+                'default' => WPG_Quick_Ajax_Helper::quick_ajax_shortcode_page_ignore_sticky_posts_default_value(),
+                'description' => __('Specify to ignore sticky posts, treating them as regular posts in the query.', 'wpg-quick-ajax-post-loader')
+            );
+        }
         //apply quick ajax css style
         public static function get_field_layout_quick_ajax_css_style(){
             $field_properties = array(
@@ -678,7 +731,6 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Fie
         //select loader icon global
         public static function get_global_field_select_loader_icon(){
             $field_properties = self::select_loader_icon_properties(WPG_Quick_Ajax_Helper::quick_ajax_global_options_field_select_loader_icon(), WPG_Quick_Ajax_Helper::quick_ajax_plugin_templates_loader_icon_template());
-            
             return $field_properties;
         }
         private static function select_loader_icon_properties($field_name, $field_default_value) {

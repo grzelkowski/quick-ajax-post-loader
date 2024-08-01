@@ -1,20 +1,21 @@
 <?php
 /*
 * Plugin Name: Quick Ajax Post Loader
+* Plugin URI: https://github.com/grzelkowski/quick-ajax-post-loader/releases
 * Text Domain: wpg-quick-ajax-post-loader
 * Domain Path: /languages
-* Version: 1.0.1
+* Version: 1.1
 * Description: Supercharge post loading with Quick Ajax Post Loader. Enhance user experience and optimize site performance using AJAX technology.
 * Author: Pawel Grzelkowski
+* Author URI: https://grzelkowski.com
 * License: GPLv2 or later
 * Requires PHP: 5.6
 * Requires at least: 5.6
+* Tested up to: 6.6.1
 */
-
 if (!defined('ABSPATH')) {
     exit;
 }
-
 function wpg_quick_ajax_post_loader_load_textdomain() {
     $locale = get_locale();
     $mo_file_path = WP_PLUGIN_DIR . '/' . dirname(plugin_basename(__FILE__)) . '/languages/' . $locale . '.mo';
@@ -27,7 +28,9 @@ if (!class_exists('WPG_Quick_Ajax_Helper')) {
 
         //style
         function wpg_quick_ajax_enqueue_styles() {
-            wp_enqueue_style('quick-ajax-style', WPG_Quick_Ajax_Helper::quick_ajax_plugin_css_directory() . 'style.css', [], WPG_Quick_Ajax_Helper::quick_ajax_get_plugin_version());
+            if (!is_admin()) {
+                wp_enqueue_style('quick-ajax-style', WPG_Quick_Ajax_Helper::quick_ajax_plugin_css_directory() . 'style.css', [], WPG_Quick_Ajax_Helper::quick_ajax_get_plugin_version());
+            }
         }
         add_action('wp_enqueue_scripts', 'wpg_quick_ajax_enqueue_styles');
         //admin style
@@ -37,12 +40,12 @@ if (!class_exists('WPG_Quick_Ajax_Helper')) {
             }
         }
         add_action('admin_enqueue_scripts', 'wpg_quick_ajax_enqueue_admin_styles');  
-
         // script
         function wpg_quick_ajax_enqueue_scripts() {
             wp_enqueue_script('quick-ajax-script', WPG_Quick_Ajax_Helper::quick_ajax_plugin_js_directory() . 'script.js', ['jquery'], WPG_Quick_Ajax_Helper::quick_ajax_get_plugin_version(), true);
             $quick_ajax_data = [
                 'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('quick_ajax_nonce'),
                 'helper' => [
                     'block_id' => WPG_Quick_Ajax_Helper::quick_ajax_layout_quick_ajax_id(),
                     'filter_data_button' => WPG_Quick_Ajax_Helper::quick_ajax_term_filter_button_data_button(),
@@ -61,7 +64,7 @@ if (!class_exists('WPG_Quick_Ajax_Helper')) {
             $page_type = wpg_quick_ajax_check_page_type($values);
             if ($page_type == true) {        
                 wp_register_script('quick-ajax-admin-script', WPG_Quick_Ajax_Helper::quick_ajax_plugin_js_directory().'admin-script.js', ['jquery'], WPG_Quick_Ajax_Helper::quick_ajax_get_plugin_version(), true);
-                wp_localize_script('quick-ajax-admin-script', 'quick_ajax', array('ajax_url' => admin_url('admin-ajax.php')));
+                wp_localize_script('quick-ajax-admin-script', 'quick_ajax', array('ajax_url' => admin_url('admin-ajax.php'), 'nonce' => wp_create_nonce('quick_ajax_nonce')));
                 wp_enqueue_script('quick-ajax-admin-script');            
                 $quick_ajax_helper = array();
                 //quickAjaxHandlePostTypeChange

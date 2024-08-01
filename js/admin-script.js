@@ -22,6 +22,7 @@
                         data: {
                         action: 'get_taxonomies_by_post_type',
                         post_type: postType,
+                        nonce: quick_ajax.nonce
                         },
                         success: function (response) {
                             var taxonomySelect = $('#'+quick_ajax_helper.quick_ajax_settings_wrapper+' #'+quick_ajax_helper.quick_ajax_taxonomy);
@@ -112,9 +113,24 @@
             var result = postNotIn.join(', ');
             return result;
         },
+        cleanClassNames: function(inputDataString) {
+            // Replace commas with spaces
+            let cleaned = inputDataString.replace(/,/g, ' ');
+
+            // Split string into array of class names
+            let classNames = cleaned.split(/\s+/);
+
+            // Filter out class names that start with a digit and remove duplicates
+            classNames = classNames.filter((name, index, self) => {
+                return !/^\d/.test(name) && name !== '' && self.indexOf(name) === index;
+            });
+
+            // Join the cleaned class names with a single space
+            return classNames.join(' ');
+        },
         quickAjaxFunctionGenerator: function() {
             var self = this;
-            $('.generate-function-button').on('click', function() {            
+            $('.generate-function-button').on('click', function() {
                 var button = $(this);
                 var outputDiv = button.attr('data-output');
                 button.prop('disabled', true);            
@@ -144,6 +160,9 @@
                     var excludedPostIds = self.getExcludedPostIds(inputData.qa_select_post_not_in);
                     quickAjaxArgsText += "    'post__not_in' => array(" + excludedPostIds + "),\n";
                 }   
+                if (inputData.qa_ignore_sticky_posts === 1) {
+                    quickAjaxArgsText += "    'ignore_sticky_posts' => " + inputData.qa_ignore_sticky_posts + ",\n";
+                }   
                 quickAjaxArgsText += ");";
                 if (typeof quick_ajax_helper !== 'undefined' && quick_ajax_helper) {
                     var quickAjaxAttributes = {};
@@ -157,11 +176,11 @@
                         quickAjaxAttributes[quick_ajax_helper.post_item_template] = clearContainerClass;
                     }
                     if (inputData.qa_layout_add_taxonomy_filter_class && inputData.qa_layout_add_taxonomy_filter_class !== '') {
-                        var clearContainerClass = inputData.qa_layout_add_taxonomy_filter_class.replace(/,/g, '');
+                        var clearContainerClass = self.cleanClassNames(inputData.qa_layout_add_taxonomy_filter_class);
                         quickAjaxAttributes[quick_ajax_helper.taxonomy_filter_class] = clearContainerClass;
                     }
                     if (inputData.qa_layout_add_container_class && inputData.qa_layout_add_container_class !== '') {
-                        var clearContainerClass = inputData.qa_layout_add_container_class.replace(/,/g, '');
+                        var clearContainerClass =  self.cleanClassNames(inputData.qa_layout_add_container_class);
                         quickAjaxAttributes[quick_ajax_helper.container_class] = clearContainerClass;
                     }
                     if (inputData.qa_show_custom_load_more_post_quantity === 1) {
