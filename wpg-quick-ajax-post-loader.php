@@ -4,7 +4,7 @@
 * Plugin URI: https://github.com/grzelkowski/quick-ajax-post-loader/releases
 * Text Domain: wpg-quick-ajax-post-loader
 * Domain Path: /languages
-* Version: 1.1
+* Version: 1.1.1
 * Description: Supercharge post loading with Quick Ajax Post Loader. Enhance user experience and optimize site performance using AJAX technology.
 * Author: Pawel Grzelkowski
 * Author URI: https://grzelkowski.com
@@ -42,17 +42,19 @@ if (!class_exists('WPG_Quick_Ajax_Helper')) {
         add_action('admin_enqueue_scripts', 'wpg_quick_ajax_enqueue_admin_styles');  
         // script
         function wpg_quick_ajax_enqueue_scripts() {
-            wp_enqueue_script('quick-ajax-script', WPG_Quick_Ajax_Helper::quick_ajax_plugin_js_directory() . 'script.js', ['jquery'], WPG_Quick_Ajax_Helper::quick_ajax_get_plugin_version(), true);
-            $quick_ajax_data = [
-                'ajax_url' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('quick_ajax_nonce'),
-                'helper' => [
-                    'block_id' => WPG_Quick_Ajax_Helper::quick_ajax_layout_quick_ajax_id(),
-                    'filter_data_button' => WPG_Quick_Ajax_Helper::quick_ajax_term_filter_button_data_button(),
-                    'load_more_data_button' => WPG_Quick_Ajax_Helper::quick_ajax_load_more_button_data_button(),
-                ]
-            ];
-            wp_localize_script('quick-ajax-script', 'quick_ajax', $quick_ajax_data);
+            if (!is_admin()) {
+                wp_enqueue_script('quick-ajax-script', WPG_Quick_Ajax_Helper::quick_ajax_plugin_js_directory() . 'script.js', ['jquery'], WPG_Quick_Ajax_Helper::quick_ajax_get_plugin_version(), true);
+                $quick_ajax_data = [
+                    'ajax_url' => admin_url('admin-ajax.php'),
+                    'nonce' => wp_create_nonce('quick_ajax_nonce'),
+                    'helper' => [
+                        'block_id' => WPG_Quick_Ajax_Helper::quick_ajax_layout_quick_ajax_id(),
+                        'filter_data_button' => WPG_Quick_Ajax_Helper::quick_ajax_term_filter_button_data_button(),
+                        'load_more_data_button' => WPG_Quick_Ajax_Helper::quick_ajax_load_more_button_data_button(),
+                    ]
+                ];
+                wp_localize_script('quick-ajax-script', 'quick_ajax', $quick_ajax_data);
+            }
         }
         add_action('wp_enqueue_scripts', 'wpg_quick_ajax_enqueue_scripts');        
         //admin script

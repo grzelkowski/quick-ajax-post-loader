@@ -7,7 +7,7 @@ class WPG_Quick_Ajax_Helper{
     public static $admin_config_loaded = false;
     public static $ajax_class_loaded = false;
     public static function quick_ajax_get_plugin_version() {
-        return '1.1';
+        return '1.1.1';
     }    
     public static function quick_ajax_plugin_name(){
         return 'Quick Ajax Post Loader';

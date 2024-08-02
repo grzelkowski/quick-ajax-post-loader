@@ -1,6 +1,9 @@
 == Changelog ==
 
-= 1.1 = 2024-08-01
+= 1.1.1 = 2024-08-02 =
+- Optimized script loading to only load `quick-ajax-script` on the frontend, improving performance and avoiding unnecessary loading in the admin area.
+
+= 1.1 = 2024-08-01 =
 - Improved Template File Overriding Hierarchy: Updated the template file search and merge mechanism to ensure that files from the child theme take precedence over those from the parent theme and the plugin. Introduced a mapping of file names to their paths, allowing only the most recent versions of template files to be retained.
 - Optimized Template File Search: Enhanced the `find_template_files` function to utilize `glob` for handling search patterns. This allows for efficient searching of template files matching specific patterns.
 - Adopted Recommended Functions for JSON Data Handling: Replaced direct calls to `json_encode` with `wp_json_encode` in accordance with WordPress standards, improving compatibility and security of JSON data.

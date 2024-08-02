@@ -1,9 +1,9 @@
 === Quick Ajax Post Loader ===
 Contributors: grzelkowski
-Tags: ajax, wordpress, dynamic, performance, content display
+Tags: ajax, dynamic, custom post type, content display, post
 Requires at least: 5.6
 Tested up to: 6.6.1
-Stable tag: 1.1
+Stable tag: 1.1.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -38,7 +38,10 @@ Yes, you can generate as many shortcodes as needed for different post types or c
 
 == Changelog ==
 
-= 1.1 - 2024-06-06 =
+= 1.1.1 - 2024-08-02 =
+- Optimized script loading to only load `quick-ajax-script` on the frontend, improving performance and avoiding unnecessary loading in the admin area.
+
+= 1.1 - 2024-08-01 =
 - Improved Template File Overriding Hierarchy: Updated the mechanism for searching and merging template files to ensure that files from the child theme take precedence over those from the parent theme and the plugin. Introduced a system for mapping file names to their paths to retain only the most recent versions.
 - Optimized Template File Search: Enhanced the find_template_files function to use glob for more efficient searching of template files matching specific patterns.
 - Adopted Recommended Functions for JSON Data Handling: Replaced direct calls to json_encode with wp_json_encode in accordance with WordPress standards, improving the compatibility and security of JSON data.
