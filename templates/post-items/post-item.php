@@ -1,4 +1,7 @@
 <?php 
+if (!defined('ABSPATH')) {
+    exit;
+}
 /* Post Item Name: Default Post Item Template */
 ?>
 <div class="quick-ajax-post-item">
@@ -12,7 +15,7 @@
         }
         ?>    
         <div class="post-title">
-            <h3><?php the_title(); ?></h3>
+            <h3><?php echo esc_html(get_the_title()); ?></h3>
         </div>
         <div class="post-desc">
             <p><?php echo esc_html(wp_trim_excerpt()); ?></p>

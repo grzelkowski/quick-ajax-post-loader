@@ -2,38 +2,49 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-
-function wpg_quick_ajax_post_grid($args, $attributes = null, $taxonomy = null, $meta_query = null) {
-    $ajax_class = WPG_Quick_Ajax_Handler::get_instance();
-    $ajax_class->quick_ajax_wp_query_args($args, $attributes);
-    $ajax_class->quick_ajax_layout_customization($attributes);
-    $output = '';
-    if (isset($taxonomy)) {
-        $output .= $ajax_class->quick_ajax_term_filter($taxonomy);
-    }
-    $output .= $ajax_class->quick_ajax_wp_query();
-    echo wp_kses_post($output);
-}
-
-function wpg_quick_ajax_term_filter($args, $attributes, $taxonomy = null, $quick_ajax_id = null){
-    $ajax_class = WPG_Quick_Ajax_Handler::get_instance();
-    $ajax_class->quick_ajax_wp_query_args($args, $attributes);
-    $ajax_class->quick_ajax_layout_customization($attributes);
-    if(isset($taxonomy)){
-        echo wp_kses_post($ajax_class->quick_ajax_term_filter($taxonomy, $quick_ajax_id));
+//add get qapl_quick_ajax_post_grid - echo qapl_quick_ajax_post_grid()
+//add get qapl_quick_ajax_term_filter
+function qapl_quick_ajax_post_grid($args, $attributes = null, $taxonomy = null, $meta_query = null) {
+    if (class_exists('QAPL_Quick_Ajax_Handler') && method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
+        $ajax_class = QAPL_Quick_Ajax_Handler::get_instance();
+        $ajax_class->wp_query_args($args, $attributes);
+        $ajax_class->layout_customization($attributes);
+        $output = '';
+        if (isset($taxonomy)) {
+            $output .= $ajax_class->term_filter($taxonomy);
+        }
+        $output .= $ajax_class->wp_query();
+        echo wp_kses_post($output);
     }
 }
 
-function wpg_get_quick_ajax_id(){
-    $instance = WPG_Quick_Ajax_Handler::get_instance();
-    return $instance->get_quick_ajax_id();
+function qapl_quick_ajax_term_filter($args, $attributes, $taxonomy = null, $quick_ajax_id = null){
+    if (class_exists('QAPL_Quick_Ajax_Handler') && method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
+        $ajax_class = QAPL_Quick_Ajax_Handler::get_instance();
+        $ajax_class->wp_query_args($args, $attributes);
+        $ajax_class->layout_customization($attributes);
+        if(!empty($taxonomy) && is_string($taxonomy)) {
+            echo wp_kses_post($ajax_class->term_filter($taxonomy, $quick_ajax_id));
+        }        
+    }
 }
 
-function wpg_quick_ajax_check_page_type($values){
-    $screen = get_current_screen();
+function qapl_get_quick_ajax_id(){
+    if (class_exists('QAPL_Quick_Ajax_Handler') && method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
+        $instance = QAPL_Quick_Ajax_Handler::get_instance();
+        return sanitize_text_field($instance->get_quick_ajax_id());
+    }
+}
+
+function qapl_quick_ajax_check_page_type($values){
+    $screen = null;
+    if (function_exists('get_current_screen')) {
+        $screen = get_current_screen();
+    }
     $page_type = false;
-    $page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $post_type = filter_input(INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $page = sanitize_text_field(filter_input(INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+    $post_type = sanitize_key(filter_input(INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+
     if ($page) {
         $page_type = $page;
     } elseif ($post_type) {

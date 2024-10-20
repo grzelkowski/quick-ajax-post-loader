@@ -1,5 +1,21 @@
 == Changelog ==
 
+= 1.2 = 2024-10-20 =
+
+- Eliminated use of HEREDOC and NOWDOC syntax to enhance compatibility and security.
+- Sanitized and validated all user inputs including GET, POST, REQUEST, and FILE calls.
+- Improved nonce verification to ensure safer handling by using wp_unslash() and sanitize_text_field().
+- Updated function, class, and define names to use unique prefixes (qapl_) to prevent conflicts.
+- Added checks to prevent direct file access by adding if ( ! defined( 'ABSPATH' ) ) exit; in all PHP files.
+- Optimized several functions for better performance, reducing redundant database queries and improving load times.
+- Updated hooks and actions to use properly namespaced prefixes to avoid conflicts.
+- Removed redundant code blocks and enhanced logic for improved maintainability.
+- Fixed minor bugs related to form submission and data handling.
+
+== Upgrade Notice ==
+= 1.2 = 2024-10-20 =
+- Update recommended: This version introduces significant security enhancements, code optimizations, and prefix changes to prevent compatibility issues.
+
 = 1.1.1 = 2024-08-02 =
 - Optimized script loading to only load `quick-ajax-script` on the frontend, improving performance and avoiding unnecessary loading in the admin area.
 

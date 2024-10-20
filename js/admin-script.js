@@ -1,42 +1,49 @@
 (function($) {
     // Define a unique namespace for your plugin's functions
-    var WpgQuickAjaxPostLoaderAdminScripts = {
+    var qapl_quick_ajax_post_loader_admin_scripts = {
         init: function() {
-            this.quickAjaxClickAndSelectShortcode();
-            this.quickAjaxClickAndSelectAll();
-            this.quickAjaxHandlePostTypeChange();
-            this.quickAjaxShowHideElementOnChange();
-            this.quickAjaxTabs();
-            this.quickAjaxCopyCode();
-            this.quickAjaxFunctionGenerator();
-            this.quickAjaxAccordionBlockToggle();
+            this.click_and_select_shortcode();
+            this.click_and_select_all();
+            this.handle_post_type_change();
+            this.show_hide_element_on_change();
+            this.quick_ajax_tabs();
+            this.copy_code();
+            this.quick_ajax_function_generator();
+            this.accordion_block_toggle();
             // Any other functions you want to initialize
         },
-        quickAjaxHandlePostTypeChange: function() {
-            if (typeof quick_ajax_helper !== 'undefined' && quick_ajax_helper) {
-                $('#'+quick_ajax_helper.quick_ajax_settings_wrapper+' #'+quick_ajax_helper.quick_ajax_post_type).on('change', function () {
-                    var postType = $(this).val();
-                    $.ajax({
-                        url: quick_ajax.ajax_url,
-                        type: 'POST',
-                        data: {
-                        action: 'get_taxonomies_by_post_type',
-                        post_type: postType,
-                        nonce: quick_ajax.nonce
-                        },
-                        success: function (response) {
-                            var taxonomySelect = $('#'+quick_ajax_helper.quick_ajax_settings_wrapper+' #'+quick_ajax_helper.quick_ajax_taxonomy);
-                            taxonomySelect.empty();
-                            taxonomySelect.append(response.data);
-                        },
-                        error: function (xhr, status, error) {
-                            console.error(error);
-                        }
+        handle_post_type_change: function() {
+            if (typeof qapl_quick_ajax_helper !== 'undefined' && qapl_quick_ajax_helper) {
+                if ($('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_post_type).length) {
+                    $('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_post_type).on('change', function () {
+                        var postType = $(this).val();
+                        $.ajax({
+                            url: qapl_quick_ajax_helper.ajax_url,
+                            type: 'POST',
+                            data: {
+                            action: 'qapl_quick_ajax_get_taxonomies_by_post_type',
+                            post_type: postType,
+                            nonce: qapl_quick_ajax_helper.nonce
+                            },
+                            success: function (response) {
+                                if (response && response.data) {
+                                    var taxonomySelect = $('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_taxonomy);
+                                    taxonomySelect.empty();
+                                    taxonomySelect.append(response.data);
+                                }
+                                else {
+                                    console.error('Quick Ajax Post Loader: Invalid response structure');
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
                     });
-                });
+                }
             }
         },
-        quickAjaxShowHideElementOnChange: function() {
+        show_hide_element_on_change: function() {
             $('.show-hide-element').each(function () {
                 var checkbox = $(this).find('input');
                 var targetID = checkbox.attr('id'); 
@@ -49,7 +56,7 @@
                 });
             });
         },
-        quickAjaxTabs: function() {
+        quick_ajax_tabs: function() {
             if ($(".quick-ajax-tabs").length) {
                 const tabButtons = $(".quick-ajax-tab-button");
                 const tabContents = $(".quick-ajax-tab-content");
@@ -65,7 +72,7 @@
                 });
             }
         },
-        quickAjaxCopyCode: function() {
+        copy_code: function() {
             $('.copy-button').on('click', function() {
                 var codeToCopy = $('#' + $(this).data('copy'));
                 // Create a temporary textarea
@@ -128,13 +135,13 @@
             // Join the cleaned class names with a single space
             return classNames.join(' ');
         },
-        quickAjaxFunctionGenerator: function() {
+        quick_ajax_function_generator: function() {
             var self = this;
             $('.generate-function-button').on('click', function() {
                 var button = $(this);
                 var outputDiv = button.attr('data-output');
                 button.prop('disabled', true);            
-                copyButton = $('.copy-button[data-copy="' + outputDiv+ '"]');
+                var copyButton = $('.copy-button[data-copy="' + outputDiv+ '"]');
                 copyButton.prop('disabled', true);
                 var inputData = {};
                 var inputs = $('.function-generator-wrap input, .function-generator-wrap select, .function-generator-wrap checkbox');
@@ -149,45 +156,45 @@
                 //quickAjaxArgs code
                 var quickAjaxArgsText = "";
                 quickAjaxArgsText += "$quick_ajax_args = array(\n";
-                quickAjaxArgsText += "    'post_type' => '" + inputData.qa_select_post_type + "',\n";
-                quickAjaxArgsText += "    'post_status' => '" + inputData.qa_select_post_status + "',\n";
-                quickAjaxArgsText += "    'posts_per_page' => " + inputData.qa_select_posts_per_page + ",\n";
-                if (inputData.qa_select_orderby !== 'none') {
-                    quickAjaxArgsText += "    'orderby' => '" + inputData.qa_select_orderby + "',\n";
+                quickAjaxArgsText += "    'post_type' => '" + inputData.qapl_select_post_type + "',\n";
+                quickAjaxArgsText += "    'post_status' => '" + inputData.qapl_select_post_status + "',\n";
+                quickAjaxArgsText += "    'posts_per_page' => " + inputData.qapl_select_posts_per_page + ",\n";
+                if (inputData.qapl_select_orderby !== 'none') {
+                    quickAjaxArgsText += "    'orderby' => '" + inputData.qapl_select_orderby + "',\n";
                 }         
-                quickAjaxArgsText += "    'order' => '" + inputData.qa_select_order + "',\n";
-                if (inputData.qa_select_post_not_in !== '') {
-                    var excludedPostIds = self.getExcludedPostIds(inputData.qa_select_post_not_in);
+                quickAjaxArgsText += "    'order' => '" + inputData.qapl_select_order + "',\n";
+                if (inputData.qapl_select_post_not_in !== '') {
+                    var excludedPostIds = self.getExcludedPostIds(inputData.qapl_select_post_not_in);
                     quickAjaxArgsText += "    'post__not_in' => array(" + excludedPostIds + "),\n";
                 }   
-                if (inputData.qa_ignore_sticky_posts === 1) {
-                    quickAjaxArgsText += "    'ignore_sticky_posts' => " + inputData.qa_ignore_sticky_posts + ",\n";
+                if (inputData.qapl_ignore_sticky_posts === 1) {
+                    quickAjaxArgsText += "    'ignore_sticky_posts' => " + inputData.qapl_ignore_sticky_posts + ",\n";
                 }   
                 quickAjaxArgsText += ");";
-                if (typeof quick_ajax_helper !== 'undefined' && quick_ajax_helper) {
+                if (typeof qapl_quick_ajax_helper !== 'undefined' && qapl_quick_ajax_helper) {
                     var quickAjaxAttributes = {};
-                    quickAjaxAttributes[quick_ajax_helper.quick_ajax_id] = self.generateId(inputDataString);
-                    if (inputData.qa_layout_quick_ajax_css_style === 1) {
-                        quickAjaxAttributes[quick_ajax_helper.quick_ajax_css_style] = inputData.qa_layout_quick_ajax_css_style;
-                        quickAjaxAttributes[quick_ajax_helper.grid_num_columns] = inputData.qa_layout_select_columns_qty;
+                    quickAjaxAttributes[qapl_quick_ajax_helper.quick_ajax_id] = self.generateId(inputDataString);
+                    if (inputData.qapl_layout_quick_ajax_css_style === 1) {
+                        quickAjaxAttributes[qapl_quick_ajax_helper.quick_ajax_css_style] = inputData.qapl_layout_quick_ajax_css_style;
+                        quickAjaxAttributes[qapl_quick_ajax_helper.grid_num_columns] = inputData.qapl_layout_select_columns_qty;
                     }
-                    if (inputData.qa_layout_quick_ajax_post_item_template) {
-                        var clearContainerClass = inputData.qa_layout_quick_ajax_post_item_template;
-                        quickAjaxAttributes[quick_ajax_helper.post_item_template] = clearContainerClass;
+                    if (inputData.qapl_layout_quick_ajax_post_item_template) {
+                        var clearContainerClass = inputData.qapl_layout_quick_ajax_post_item_template;
+                        quickAjaxAttributes[qapl_quick_ajax_helper.post_item_template] = clearContainerClass;
                     }
-                    if (inputData.qa_layout_add_taxonomy_filter_class && inputData.qa_layout_add_taxonomy_filter_class !== '') {
-                        var clearContainerClass = self.cleanClassNames(inputData.qa_layout_add_taxonomy_filter_class);
-                        quickAjaxAttributes[quick_ajax_helper.taxonomy_filter_class] = clearContainerClass;
+                    if (inputData.qapl_layout_add_taxonomy_filter_class && inputData.qapl_layout_add_taxonomy_filter_class !== '') {
+                        var clearContainerClass = self.cleanClassNames(inputData.qapl_layout_add_taxonomy_filter_class);
+                        quickAjaxAttributes[qapl_quick_ajax_helper.taxonomy_filter_class] = clearContainerClass;
                     }
-                    if (inputData.qa_layout_add_container_class && inputData.qa_layout_add_container_class !== '') {
-                        var clearContainerClass =  self.cleanClassNames(inputData.qa_layout_add_container_class);
-                        quickAjaxAttributes[quick_ajax_helper.container_class] = clearContainerClass;
+                    if (inputData.qapl_layout_add_container_class && inputData.qapl_layout_add_container_class !== '') {
+                        var clearContainerClass =  self.cleanClassNames(inputData.qapl_layout_add_container_class);
+                        quickAjaxAttributes[qapl_quick_ajax_helper.container_class] = clearContainerClass;
                     }
-                    if (inputData.qa_show_custom_load_more_post_quantity === 1) {
-                        quickAjaxAttributes[quick_ajax_helper.load_more_posts] = inputData.qa_select_custom_load_more_post_quantity;
+                    if (inputData.qapl_show_custom_load_more_post_quantity === 1) {
+                        quickAjaxAttributes[qapl_quick_ajax_helper.load_more_posts] = inputData.qapl_select_custom_load_more_post_quantity;
                     }
-                    if (inputData.qa_override_global_loader_icon === 1) {
-                        quickAjaxAttributes[quick_ajax_helper.loader_icon] = inputData.qa_loader_icon;
+                    if (inputData.qapl_override_global_loader_icon === 1) {
+                        quickAjaxAttributes[qapl_quick_ajax_helper.loader_icon] = inputData.qapl_loader_icon;
                     }
                 }
                 //quickAjaxAttributes code
@@ -198,7 +205,7 @@
                     Object.entries(quickAjaxAttributes).forEach(([key, value]) => {
                         let AttributesValue;                 
                         // Check if the resulting value is a finite number
-                        if (self.quickAjaxIsNumeric(value)) {
+                        if (self.quick_ajax_is_numeric(value)) {
                             // Use the numeric value if the conversion was possible
                             AttributesValue = parseInt(value);
                         } else if (typeof value === 'string') {
@@ -216,18 +223,18 @@
                 }
                 //quickAjaxTaxonomy code
                 var quickAjaxTaxonomy = null;
-                if (inputData.qa_show_select_taxonomy === 1) {
-                    var quickAjaxTaxonomy = inputData.qa_select_taxonomy;
+                if (inputData.qapl_show_select_taxonomy === 1) {
+                    var quickAjaxTaxonomy = inputData.qapl_select_taxonomy;
                 }
                 var quickAjaxTaxonomyFilterText = "";
                 var quickAjaxTermFilterText = "";
                 if (quickAjaxTaxonomy !== null) {
                     quickAjaxTaxonomyFilterText = "";
                     quickAjaxTaxonomyFilterText += `$quick_ajax_taxonomy = '${quickAjaxTaxonomy}';`;
-                    //quickAjaxTermFilterText     
+                    //qapl_quick_ajax_term_filter     
                     quickAjaxTermFilterText = "";
-                    quickAjaxTermFilterText += "if(function_exists('wpg_quick_ajax_term_filter')):\n";
-                    quickAjaxTermFilterText += "    wpg_quick_ajax_term_filter(\n";
+                    quickAjaxTermFilterText += "if(function_exists('qapl_quick_ajax_term_filter')):\n";
+                    quickAjaxTermFilterText += "    qapl_quick_ajax_term_filter(\n";
                     quickAjaxTermFilterText += "        $quick_ajax_args,\n";
                     quickAjaxTermFilterText += "        $quick_ajax_attributes,\n";
                     quickAjaxTermFilterText += "        $quick_ajax_taxonomy,\n";
@@ -236,10 +243,10 @@
                     quickAjaxTermFilterText += "    );\n";
                     quickAjaxTermFilterText += "endif;";
                 }
-                //wpg_quick_ajax_post_grid
+                //qapl_quick_ajax_post_grid
                 var quick_ajax_post_gridText = "";
-                    quick_ajax_post_gridText += "if(function_exists('wpg_quick_ajax_post_grid')):\n";
-                    quick_ajax_post_gridText += "   wpg_quick_ajax_post_grid(\n";
+                    quick_ajax_post_gridText += "if(function_exists('qapl_quick_ajax_post_grid')):\n";
+                    quick_ajax_post_gridText += "   qapl_quick_ajax_post_grid(\n";
                     quick_ajax_post_gridText += "       $quick_ajax_args,\n";
                     if (quickAjaxAttributesText !== '') {
                         quick_ajax_post_gridText += "       $quick_ajax_attributes,\n";
@@ -251,7 +258,7 @@
     
                 var formattedText = "";
                 if (quickAjaxArgsText.trim() !== "") {
-                    formattedText += "\n// Define AJAX query parameters for '"+inputData.qa_select_post_type+"' type posts.\n";
+                    formattedText += "\n// Define AJAX query parameters for '"+inputData.qapl_select_post_type+"' type posts.\n";
                     formattedText += quickAjaxArgsText.trim() + "\n";
                 }
                 if (quickAjaxAttributesText.trim() !== "") {
@@ -263,11 +270,11 @@
                     formattedText += quickAjaxTaxonomyFilterText.trim() + "\n";
                 }          
                 if (quickAjaxTermFilterText.trim() !== "") {
-                    formattedText += "\n// Render the navigation for '"+inputData.qa_select_taxonomy+"' terms.\n";
+                    formattedText += "\n// Render the navigation for '"+inputData.qapl_select_taxonomy+"' terms.\n";
                     formattedText += quickAjaxTermFilterText.trim() + "\n";
                 }
                 if (quick_ajax_post_gridText.trim() !== "") {
-                    formattedText += "\n// Render the grid for '"+inputData.qa_select_post_type+"' type posts.\n";
+                    formattedText += "\n// Render the grid for '"+inputData.qapl_select_post_type+"' type posts.\n";
                     formattedText += quick_ajax_post_gridText.trim() + "\n";
                 }
                 var targetDiv = $('#'+outputDiv);
@@ -288,13 +295,13 @@
                 }
             });
         },
-        quickAjaxIsNumeric: function(value) {
+        quick_ajax_is_numeric: function(value) {
             return /^-?\d+(\.\d+)?$/.test(value);
         },
-        quickAjaxColorPicker: function() {
+        quick_ajax_color_picker: function() {
             $('.color-picker-field').wpColorPicker();
         },
-        quickAjaxSelectText: function(element) {
+        quick_ajax_select_text: function(element) {
             var range, selection;
             if (document.body.createTextRange) {
                 range = document.body.createTextRange();
@@ -308,20 +315,20 @@
                 selection.addRange(range);
             }
         },
-        quickAjaxClickAndSelectShortcode: function() {
+        click_and_select_shortcode: function() {
             var self = this;
             $('.quick-ajax-shortcode').on('click', function() {
-                self.quickAjaxSelectText(this);
+                self.quick_ajax_select_text(this);
             });
         },
-        quickAjaxClickAndSelectAll: function() {
+        click_and_select_all: function() {
             var self = this;
             $('.click-and-select-all').on('click', function() {
                 var code = $(this).find('code').get(0);
-                self.quickAjaxSelectText(code);
+                self.quick_ajax_select_text(code);
             });
         },
-        quickAjaxAccordionBlockToggle: function() {
+        accordion_block_toggle: function() {
             // Adjusts min-height of #wpbody-content to fix sticky sidebar issue.
             var wpBodyContent = $('#wpbody-content');
             if (wpBodyContent.find('.quick-ajax-tabs').length > 0) {
@@ -336,6 +343,6 @@
     };
 
     $(document).ready(function() {
-        WpgQuickAjaxPostLoaderAdminScripts.init(); // Initialize all your functions
+        qapl_quick_ajax_post_loader_admin_scripts.init(); // Initialize all your functions
     });
 })(jQuery);

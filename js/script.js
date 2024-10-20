@@ -1,70 +1,81 @@
 
 (function($) {
-    var WpgQuickAjaxPostLoaderScripts = {
+    var qapl_quick_ajax_post_loader_scripts = {
         init: function() {
-            this.quickAjaxHandlers();
+            this.qapl_quick_ajax_handlers();
         },
-        quickAjaxHandlers: function() {
-            if (typeof quick_ajax !== 'undefined' && quick_ajax) {
+        qapl_quick_ajax_handlers: function() {
+            if (typeof qapl_quick_ajax_helper !== 'undefined' && qapl_quick_ajax_helper) {
                 var self = this;
-                $('.quick-ajax-posts-wrapper').on('click', `[data-button="${quick_ajax.helper.load_more_data_button}"]`, function() {
-                    self.quickAjaxHandleAjax($(this));
-                });
-                $('.quick-ajax-filter-wrapper').on('click', `[data-button="${quick_ajax.helper.filter_data_button}"]`, function() {
-                    self.quickAjaxHandleAjax($(this));
-                });
+                if (qapl_quick_ajax_helper.helper.load_more_data_button) {
+                    $('.quick-ajax-posts-wrapper').on('click', `[data-button="${qapl_quick_ajax_helper.helper.load_more_data_button}"]`, function() {
+                        self.qapl_quick_ajax_handle_ajax($(this));
+                    });
+                }
+                if (qapl_quick_ajax_helper.helper.filter_data_button) {
+                    $('.quick-ajax-filter-wrapper').on('click', `[data-button="${qapl_quick_ajax_helper.helper.filter_data_button}"]`, function() {
+                        self.qapl_quick_ajax_handle_ajax($(this));
+                    });
+                }
             }
         },
-        quickAjaxHandleAjax: function(button) {
+        qapl_quick_ajax_handle_ajax: function(button) {
             var self = this;
             try {
                 var args = JSON.parse(button.attr('data-action') || '{}');
                 var attributes = JSON.parse(button.attr('data-attributes') || '{}');
+                if (typeof args !== 'object' || typeof attributes !== 'object') {
+                    throw new Error('Quick Ajax Post Loader: Invalid JSON structure');
+                }
             } catch (error) {
-                console.error('Quick Ajax - Error parsing JSON:', error);
+                console.error('Quick Ajax Post Loader: Error parsing JSON:', error);
                 return;
             }
 
             var button_type = button.attr('data-button');
-            var containerId = attributes[quick_ajax.helper.block_id] || '';
+            var containerId = attributes[qapl_quick_ajax_helper.helper.block_id] || '';
             var container = $('#' + containerId);
-            var containerInner = $('#' + containerId + ' .quick-ajax-posts-inner-wrapper');
-            if (!container.length) {
-                console.error('Quick Ajax - Container not found:', containerId);
+            var container_inner = $('#' + containerId + ' .quick-ajax-posts-inner-wrapper');
+            if (!container.length || !container_inner.length) {
+                console.error('Quick Ajax Post Loader: Container or inner container not found:', containerId);
                 return;
-            }
+            }            
 
             container.addClass('loading');
-            if(button.attr('data-button') === quick_ajax.helper.filter_data_button){
-                containerInner.fadeOut(100, function() {
+            if(button.attr('data-button') === qapl_quick_ajax_helper.helper.filter_data_button){
+                container_inner.fadeOut(100, function() {
                     $(this).empty().fadeIn(100);
                 });
             }
             $.ajax({
-                url: quick_ajax.ajax_url,
+                url: qapl_quick_ajax_helper.ajax_url,
                 type: 'POST',
                 data: {
-                    action: 'quick_ajax_load_posts',
-                    nonce: quick_ajax.nonce,
+                    action: 'qapl_quick_ajax_load_posts',
+                    nonce: qapl_quick_ajax_helper.nonce,
                     args: args,
                     attributes: attributes,
                     button_type: button_type,
                 },
-                success: (response) => {
-                    if(button_type === quick_ajax.helper.load_more_data_button){
-                        self.quickAjaxLoadMoreAddPosts(containerInner, button, response);
-                    } else if(button_type === quick_ajax.helper.filter_data_button){
-                        self.quickAjaxTermFilterShowPosts(containerInner, button, response);
+                success: function(response) {
+                    if (response && response.data) {
+                        if(button_type === qapl_quick_ajax_helper.helper.load_more_data_button){
+                            self.qapl_quick_ajax_load_more_add_posts(container_inner, button, response.data.output);
+                        } else if(button_type === qapl_quick_ajax_helper.helper.filter_data_button){
+                            self.qapl_quick_ajax_term_filter_show_posts(container_inner, button, response.data.output);
+                        }
+                    } else {
+                        console.error('Quick Ajax Post Loader: Error:', response.data.output);
                     }
                     container.removeClass('loading');
                 },
                 error: function(xhr, status, error) {
-                    console.error('Quick Ajax - Error:', error);
+                    console.error('Quick Ajax Post Loader: Error:', error);
                     container.removeClass('loading');
                 }
             });
         },
-        quickAjaxLoadMoreAddPosts: function(container, button, response) {
+        qapl_quick_ajax_load_more_add_posts: function(container, button, response) {
             button.parent().remove();
             var new_posts = $(response).hide();
             container.append(new_posts);
@@ -72,8 +83,8 @@
                 $(this).removeAttr("style");
             });
         },
-        quickAjaxTermFilterShowPosts: function(container, button, response) {
-            $(`[data-button="${quick_ajax.helper.filter_data_button}"]`).removeClass('active');
+        qapl_quick_ajax_term_filter_show_posts: function(container, button, response) {
+            $(`[data-button="${qapl_quick_ajax_helper.helper.filter_data_button}"]`).removeClass('active');
             button.addClass('active');
             var new_posts = $(response).css('opacity', '0');
             container.html(new_posts);
@@ -87,7 +98,7 @@
     };
 
     $(document).ready(function() {
-        WpgQuickAjaxPostLoaderScripts.init();
+        qapl_quick_ajax_post_loader_scripts.init();
     });
 })(jQuery);
   

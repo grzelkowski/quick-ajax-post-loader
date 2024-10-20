@@ -72,9 +72,7 @@
     width: calc(100% / 12); 
 }
 .quick-ajax-posts-wrapper.quick-ajax-style .quick-ajax-post-item a{
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
+    display: block;
     width: 100%;
     text-decoration: none;
     background-color:#fff;
@@ -115,8 +113,10 @@
 .quick-ajax-posts-wrapper.quick-ajax-style .quick-ajax-post-item .post-image{
     order:1;
 }
-.quick-ajax-posts-wrapper.quick-ajax-style .quick-ajax-post-item img{
+.quick-ajax-posts-wrapper.quick-ajax-style .quick-ajax-post-item .post-image img{
+    width: 100%;
     max-width: 100%;
+    object-fit: contain;
     border-top-right-radius: 6px;
     border-top-left-radius: 6px;
 }

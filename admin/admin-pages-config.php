@@ -2,8 +2,8 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Admin_Pages')) {
-    class WPG_Quick_Ajax_Admin_Pages {
+if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Admin_Pages')) {
+    class QAPL_Quick_Ajax_Admin_Pages {
         public function __construct() {
             add_action('admin_menu', array($this, 'add_quick_ajax_menu'));
             add_action('admin_menu', array($this, 'add_quick_ajax_settings_page'));
@@ -15,46 +15,46 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Adm
                 'Quick AJAX',
                 'Quick AJAX',
                 'manage_options',
-                WPG_Quick_Ajax_Helper::quick_ajax_menu_slug(),
+                QAPL_Quick_Ajax_Helper::menu_slug(),
                 array($this, 'options_page_content'),
                 'dashicons-editor-code',
                 80
             );
             // "Add New"
             add_submenu_page(
-                WPG_Quick_Ajax_Helper::quick_ajax_menu_slug(),
-                __('Add New', 'wpg-quick-ajax-post-loader'),
-                __('Add New', 'wpg-quick-ajax-post-loader'),
+                QAPL_Quick_Ajax_Helper::menu_slug(),
+                __('Add New', 'qapl-quick-ajax-post-loader'),
+                __('Add New', 'qapl-quick-ajax-post-loader'),
                 'edit_posts',
-                'post-new.php?post_type=' . WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug()
+                'post-new.php?post_type=' . QAPL_Quick_Ajax_Helper::cpt_shortcode_slug()
             );
         }
         public function add_quick_ajax_settings_page() {
             // "settings"
             add_submenu_page(
-                WPG_Quick_Ajax_Helper::quick_ajax_menu_slug(),
-                __('Settings & Features', 'wpg-quick-ajax-post-loader'),
-                __('Settings & Features', 'wpg-quick-ajax-post-loader'),
+                QAPL_Quick_Ajax_Helper::menu_slug(),
+                __('Settings & Features', 'qapl-quick-ajax-post-loader'),
+                __('Settings & Features', 'qapl-quick-ajax-post-loader'),
                 'manage_options',
-                WPG_Quick_Ajax_Helper::quick_ajax_settings_page_slug(),
+                QAPL_Quick_Ajax_Helper::settings_page_slug(),
                 array($this, 'render_quick_ajax_settings_page')
             );
         }
         public function render_quick_ajax_settings_page() {
             // "settings Page"
             if (!current_user_can('manage_options')) {
-                wp_die(esc_html(__('You do not have sufficient permissions to access this page.', 'wpg-quick-ajax-post-loader')));
+                wp_die(esc_html(__('You do not have sufficient permissions to access this page.', 'qapl-quick-ajax-post-loader')));
             }
-            if (class_exists('WPG_Quick_Ajax_Creator_Settings_Page') && method_exists('WPG_Quick_Ajax_Creator_Settings_Page', 'init_quick_ajax_creator_fields')) {
-                $form = new WPG_Quick_Ajax_Creator_Settings_Page(WPG_Quick_Ajax_Helper::quick_ajax_admin_page_settings_field_option_group(), WPG_Quick_Ajax_Helper::quick_ajax_admin_page_global_options_name());
+            if (class_exists('QAPL_Quick_Ajax_Creator_Settings_Page') && method_exists('QAPL_Quick_Ajax_Creator_Settings_Page', 'init_quick_ajax_creator_fields')) {
+                $form = new QAPL_Quick_Ajax_Creator_Settings_Page(QAPL_Quick_Ajax_Helper::admin_page_settings_field_option_group(), QAPL_Quick_Ajax_Helper::admin_page_global_options_name());
                 $form->render_quick_ajax_page();
             }
         }
         public function register_quick_ajax_settings() {
             // Register the settings group
             register_setting(
-                WPG_Quick_Ajax_Helper::quick_ajax_admin_page_settings_field_option_group(),
-                WPG_Quick_Ajax_Helper::quick_ajax_admin_page_global_options_name(),
+                QAPL_Quick_Ajax_Helper::admin_page_settings_field_option_group(),
+                QAPL_Quick_Ajax_Helper::admin_page_global_options_name(),
                 array($this, 'quick_ajax_sanitize_callback')
             );
         }
@@ -73,43 +73,43 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Adm
         return $sanitized_value;
         }    
     }
-    $quick_ajax_admin_pages = new WPG_Quick_Ajax_Admin_Pages();
+    $quick_ajax_admin_pages = new QAPL_Quick_Ajax_Admin_Pages();
 }
 
 
-if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Post_Type')) {
-    class WPG_Quick_Ajax_Post_Type {
+if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Post_Type')) {
+    class QAPL_Quick_Ajax_Post_Type {
         public function __construct() {
             add_action('init', array($this, 'register_quick_ajax_post_type'));
-            add_action('manage_' . WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug() . '_posts_columns', array($this, 'quick_ajax_shortcode_column'));
-            add_action('manage_' . WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug() . '_posts_custom_column', array($this, 'quick_ajax_shortcode_column_content'), 10, 2);
-            add_filter('manage_' . WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug() . '_posts_columns', array($this, 'quick_ajax_shortcode_column_sort'));
+            add_action('manage_' . QAPL_Quick_Ajax_Helper::cpt_shortcode_slug() . '_posts_columns', array($this, 'quick_ajax_shortcode_column'));
+            add_action('manage_' . QAPL_Quick_Ajax_Helper::cpt_shortcode_slug() . '_posts_custom_column', array($this, 'quick_ajax_shortcode_column_content'), 10, 2);
+            add_filter('manage_' . QAPL_Quick_Ajax_Helper::cpt_shortcode_slug() . '_posts_columns', array($this, 'quick_ajax_shortcode_column_sort'));
         }
 
         public function register_quick_ajax_post_type() {
         // Quick Ajax CPT
             $labels = array(
-                'name'               => __('Quick Ajax Shortcodes', 'wpg-quick-ajax-post-loader'),
-                'singular_name'      => __('Quick Ajax Shortcode', 'wpg-quick-ajax-post-loader'),
-                'add_new'            => __('Add New', 'wpg-quick-ajax-post-loader'),
-                'add_new_item'       => __('Add New Quick Ajax', 'wpg-quick-ajax-post-loader'),
-                'edit_item'          => __('Edit Quick Ajax', 'wpg-quick-ajax-post-loader'),
-                'new_item'           => __('New Quick Ajax', 'wpg-quick-ajax-post-loader'),
-                'view_item'          => __('View Quick Ajax', 'wpg-quick-ajax-post-loader'),
-                'search_items'       => __('Search Quick Ajax', 'wpg-quick-ajax-post-loader'),
-                'not_found'          => __('No Items found', 'wpg-quick-ajax-post-loader'),
-                'not_found_in_trash' => __('No Items found in trash', 'wpg-quick-ajax-post-loader'),
+                'name'               => __('Quick Ajax Shortcodes', 'qapl-quick-ajax-post-loader'),
+                'singular_name'      => __('Quick Ajax Shortcode', 'qapl-quick-ajax-post-loader'),
+                'add_new'            => __('Add New', 'qapl-quick-ajax-post-loader'),
+                'add_new_item'       => __('Add New Quick Ajax', 'qapl-quick-ajax-post-loader'),
+                'edit_item'          => __('Edit Quick Ajax', 'qapl-quick-ajax-post-loader'),
+                'new_item'           => __('New Quick Ajax', 'qapl-quick-ajax-post-loader'),
+                'view_item'          => __('View Quick Ajax', 'qapl-quick-ajax-post-loader'),
+                'search_items'       => __('Search Quick Ajax', 'qapl-quick-ajax-post-loader'),
+                'not_found'          => __('No Items found', 'qapl-quick-ajax-post-loader'),
+                'not_found_in_trash' => __('No Items found in trash', 'qapl-quick-ajax-post-loader'),
                 'parent_item_colon'  => '',
-                'menu_name'          => __('Shortcodes', 'wpg-quick-ajax-post-loader'),
+                'menu_name'          => __('Shortcodes', 'qapl-quick-ajax-post-loader'),
             );
             $args = array(
                 'labels'              => $labels,
                 'public'              => false,
                 'publicly_queryable'  => false,
                 'show_ui'             => true,
-                'show_in_menu'        => WPG_Quick_Ajax_Helper::quick_ajax_menu_slug(),
+                'show_in_menu'        => QAPL_Quick_Ajax_Helper::menu_slug(),
                 'query_var'           => true,
-                'rewrite'             => array( 'slug' => WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug() ),
+                'rewrite'             => array( 'slug' => QAPL_Quick_Ajax_Helper::cpt_shortcode_slug() ),
                 'capability_type'     => 'post',
                 'has_archive'         => true,
                 'hierarchical'        => false,
@@ -117,7 +117,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Pos
                 'supports'            => array( 'title'),
                 'menu_icon'            => 'dashicons-editor-code'
             );
-            register_post_type( WPG_Quick_Ajax_Helper::quick_ajax_cpt_slug(), $args );
+            register_post_type( QAPL_Quick_Ajax_Helper::cpt_shortcode_slug(), $args );
         }
 
         public function quick_ajax_shortcode_column($columns) {
@@ -129,7 +129,7 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Pos
         public function quick_ajax_shortcode_column_content($column_name, $post_id) {
             //add Shortcode Column Content
             if ($column_name === 'quick_ajax_shortcode_column') {
-                $custom_value = get_post_meta($post_id, 'quick_ajax_meta_box_shortcode_shortcode', true);
+                $custom_value = get_post_meta($post_id, QAPL_Quick_Ajax_Helper::meta_box_shortcode_name(), true);
                 echo '<div class="quick-ajax-shortcode">' . esc_html($custom_value)  . '</div>';
             }
         }
@@ -139,17 +139,17 @@ if (WPG_Quick_Ajax_Helper::quick_ajax_element_exists('class','WPG_Quick_Ajax_Pos
             $new_columns = array('cb' => $columns['cb']);
             unset($columns['cb']);
             $new_columns['title'] = $columns['title'];
-            $new_columns['quick_ajax_shortcode_column'] = 'Shortcode';
-            $new_columns['author'] = 'Autor';
+            $new_columns['quick_ajax_shortcode_column'] = __('Shortcode', 'qapl-quick-ajax-post-loader');
+            $new_columns['author'] = __('Author', 'qapl-quick-ajax-post-loader');
             $new_columns['date'] = $columns['date'];
             return array_merge($new_columns, $columns);
         }
     }
-    $quick_ajax_post_type = new WPG_Quick_Ajax_Post_Type();
+    $quick_ajax_post_type = new QAPL_Quick_Ajax_Post_Type();
 }
 
 
-abstract class WPG_Quick_Ajax_Content_Builder{
+abstract class QAPL_Quick_Ajax_Content_Builder{
     protected $fields = array();
     protected $existing_values = array();
     protected function create_field($field_properties) {
@@ -432,7 +432,7 @@ abstract class WPG_Quick_Ajax_Content_Builder{
     } 
 }
 
-abstract class WPG_Quick_Ajax_Post_Type_Form extends WPG_Quick_Ajax_Content_Builder {
+abstract class QAPL_Quick_Ajax_Post_Type_Form extends QAPL_Quick_Ajax_Content_Builder {
     protected $form_id;
     protected $post_type;
     public function __construct($form_id, $post_type) {
@@ -465,7 +465,7 @@ abstract class WPG_Quick_Ajax_Post_Type_Form extends WPG_Quick_Ajax_Content_Buil
             $this->unserialize_data($post->ID);
             echo '<div class="quick-ajax-form-wrap '.esc_attr($this->get_quick_ajax_form_class()).'" id="' . esc_attr($this->form_id) . '">';
             echo wp_kses($this->render_quick_ajax_form(), $this->wp_kses_allowed_tags());
-            wp_nonce_field(WPG_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field(), WPG_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_action());
+            wp_nonce_field(QAPL_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_action(), QAPL_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field());
             echo '</div>';
         }
     }   
@@ -474,9 +474,9 @@ abstract class WPG_Quick_Ajax_Post_Type_Form extends WPG_Quick_Ajax_Content_Buil
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
-        if (!isset($_POST[WPG_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field()]) || !wp_verify_nonce($_POST[WPG_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field()], WPG_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field())) {
+        if (!isset($_POST[QAPL_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field()]) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST[QAPL_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field()])), QAPL_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_action())) {
             return;
-        }
+        }       
         if (!current_user_can('edit_post', $post_id)) {
             return;
         }        
@@ -485,7 +485,7 @@ abstract class WPG_Quick_Ajax_Post_Type_Form extends WPG_Quick_Ajax_Content_Buil
             if (($field['type'] == 'checkbox') && !isset($_POST[$field['name']])) {
                 $form_data[$field['name']] = 0;
             } elseif (isset($_POST[$field['name']])) {
-                $field_value = sanitize_text_field($_POST[$field['name']]);
+                $field_value = $field_value = sanitize_text_field(wp_unslash($_POST[$field['name']]));
                 $form_data[$field['name']] = $field_value;
             }
         }        
@@ -494,7 +494,7 @@ abstract class WPG_Quick_Ajax_Post_Type_Form extends WPG_Quick_Ajax_Content_Buil
     }
 }
 
-abstract class WPG_Quick_Ajax_Manage_Options_Form extends WPG_Quick_Ajax_Content_Builder {
+abstract class QAPL_Quick_Ajax_Manage_Options_Form extends QAPL_Quick_Ajax_Content_Builder {
     protected $option_group;
     protected $option_name;
     protected $tabs = [];

@@ -1,4 +1,7 @@
 <?php 
+if (!defined('ABSPATH')) {
+    exit;
+}
 $accordion_block_title = 'AJAX Function Generator Tool in PHP';
 $accordion_block_content = '<p><strong>Description:</strong> The <strong>AJAX Function Generator</strong> in the <strong>Quick Ajax Post Loader</strong> plugin is a tool available in the Quick Ajax > Settings & Features menu, under the "Function Generator" tab. It enables the creation of PHP code that can be directly woven into the body of a WordPress page, such as in <code class="code-tag">page.php</code>, <code class="code-tag">single.php</code>, or an individual page template. These functions act similarly to shortcodes but offer greater flexibility in implementation and the ability to be directly included in the theme code.</p>';
 $accordion_block_content .= '<h4>Example Application</h4>';
