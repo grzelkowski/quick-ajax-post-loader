@@ -260,4 +260,3 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Shortcode'))
     $quick_ajax_shortcode = new QAPL_Quick_Ajax_Shortcode();
     add_shortcode('qapl-quick-ajax', array($quick_ajax_shortcode, 'render_quick_ajax_shortcode'));
 }
-?>

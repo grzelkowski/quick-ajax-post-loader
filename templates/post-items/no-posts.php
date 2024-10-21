@@ -5,6 +5,6 @@ if (!defined('ABSPATH')) {
 ?>
 <div class="row">
     <div class="col-12 text-center padding-top-3 padding-bottom-2">
-        <p><?php echo esc_html__('No posts found', 'qapl-quick-ajax-post-loader') ?></p>
+        <p><?php echo esc_html__('No posts found', 'quick-ajax-post-loader') ?></p>
     </div>
 </div>

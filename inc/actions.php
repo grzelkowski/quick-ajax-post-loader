@@ -74,4 +74,3 @@ function qapl_quick_ajax_get_taxonomies_by_post_type() {
     $output = ob_get_clean();
     wp_send_json_success($output);
 }
-?>

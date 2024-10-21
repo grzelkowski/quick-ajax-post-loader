@@ -28,4 +28,3 @@ return [
     'title' => $accordion_block_title,
     'content' => $accordion_block_content,
 ];
-?>

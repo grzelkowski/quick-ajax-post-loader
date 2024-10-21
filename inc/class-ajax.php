@@ -212,7 +212,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                     'term_id' => 'none',
                     'taxonomy' => $taxonomy,
                     'template' => $button_base['template'],
-                    'button_label' => __('Show All', 'qapl-quick-ajax-post-loader'),
+                    'button_label' => __('Show All', 'quick-ajax-post-loader'),
                     'data-button' => $button_base['data-button'],
                     'data-action' => $this->args,
                     'data-attributes' => $button_base['data-attributes'],
@@ -472,7 +472,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
 
             do_action('qapl_load_more_button_pre');
             $button_data['template'] = QAPL_Quick_Ajax_Helper::plugin_templates_load_more_button();
-            $button_data['button_label'] = __('Load More', 'qapl-quick-ajax-post-loader');
+            $button_data['button_label'] = __('Load More', 'quick-ajax-post-loader');
             $button_data['data-button'] = QAPL_Quick_Ajax_Helper::load_more_button_data_button();
             $button_data['data-action'] = $this->args;
             $button_data['data-attributes'] = $this->attributes;
@@ -490,4 +490,3 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
         }
     }
 }
-?>

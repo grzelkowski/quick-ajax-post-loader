@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 1.2.1 = 2024-10-21 =
+
+- Fixed issue with text domain
+- Removed closing PHP tags from all PHP files to comply with PSR-2 standards.
+
 = 1.2 = 2024-10-20 =
 
 - Eliminated use of HEREDOC and NOWDOC syntax to enhance compatibility and security.

@@ -2,8 +2,8 @@
 Contributors: grzelkowski
 Tags: ajax, dynamic, custom post type, content display, post
 Requires at least: 5.6
-Tested up to: 6.6.1
-Stable tag: 1.2
+Tested up to: 6.6.2
+Stable tag: 1.2.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -24,7 +24,7 @@ Quick Ajax Post Loader for WordPress leverages AJAX technology to load content d
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/qapl-quick-ajax-post-loader` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the `/wp-content/plugins/quick-ajax-post-loader` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Use the plugin's settings page to configure and customize according to your needs.
 
@@ -37,6 +37,10 @@ Yes, Quick Ajax Post Loader is designed to be compatible with most WordPress the
 Yes, you can generate as many shortcodes as needed for different post types or configurations.
 
 == Changelog ==
+
+= 1.2.1 - 2024-10-21
+- Fixed issue with text domain
+- Removed closing PHP tags from all PHP files to comply with PSR-2 standards.
 
 = 1.2 - 2024-10-20
 - Update recommended: This version introduces significant security enhancements, code optimizations, and prefix changes to prevent compatibility issues.
@@ -85,7 +89,7 @@ Welcome to the first release of the plugin! Enjoy the new features and improveme
 
 == Additional Links ==
 
-- GitHub Repository: https://github.com/grzelkowski/qapl-quick-ajax-post-loader/
+- GitHub Repository: https://github.com/grzelkowski/quick-ajax-post-loader/
 
 == Privacy Policy ==
 
