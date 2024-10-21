@@ -7,13 +7,13 @@ class QAPL_Quick_Ajax_Helper{
     public static $admin_config_loaded = false;
     public static $ajax_class_loaded = false;
     public static function get_plugin_version() {
-        return '1.2';
+        return '1.2.1';
     }    
     public static function plugin_name(){
         return 'Quick Ajax Post Loader';
     }    
     public static function text_domain(){
-        return 'qapl-quick-ajax-post-loader';
+        return 'quick-ajax-post-loader';
     }    
     public static function element_exists($type, $name) {
         $exists = false;
@@ -109,13 +109,13 @@ class QAPL_Quick_Ajax_Helper{
     //template dir path
     public static function get_templates_dir_path($file) {
         // Path to the template in the child theme (or the theme itself if not using a child theme)
-        $child_theme_template_path = get_stylesheet_directory() . '/qapl-quick-ajax-post-loader/templates' . $file;
+        $child_theme_template_path = get_stylesheet_directory() . '/quick-ajax-post-loader/templates' . $file;
         // Check if the template exists in the child theme
         if (file_exists($child_theme_template_path)) {
             return $child_theme_template_path;
         } 
         // Path to the template in the parent theme
-        $theme_template_path = get_template_directory() . '/qapl-quick-ajax-post-loader/templates' . $file;
+        $theme_template_path = get_template_directory() . '/quick-ajax-post-loader/templates' . $file;
         // Check if the template exists in the parent theme
         if (file_exists($theme_template_path)) {
             return $theme_template_path;
@@ -184,11 +184,11 @@ class QAPL_Quick_Ajax_Helper{
     public static function plugin_get_templates_items_array($template_file_location, $template_name, $default_file = false) {        
         $plugin_template_files = self::find_template_files(self::get_plugin_dir_path() . 'templates/'.$template_file_location);
         // Attempt to get templates from the parent theme directory
-        $parent_template_files = self::find_template_files(get_template_directory() . '/qapl-quick-ajax-post-loader/templates/'.$template_file_location);
+        $parent_template_files = self::find_template_files(get_template_directory() . '/quick-ajax-post-loader/templates/'.$template_file_location);
         // Attempt to get templates from the child theme directory
         $child_template_files = [];
         if(get_template_directory() !== get_stylesheet_directory()){
-            $child_template_files = self::find_template_files(get_stylesheet_directory() . '/qapl-quick-ajax-post-loader/templates/'.$template_file_location);  
+            $child_template_files = self::find_template_files(get_stylesheet_directory() . '/quick-ajax-post-loader/templates/'.$template_file_location);  
         }
         
         $template_files_map = [];
@@ -432,10 +432,10 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
             }
             $field_properties = array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_select_post_type(),
-                'label' => __('Select Post Type:', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Select Post Type:', 'quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => $post_type_options,
-                'description' => __('Choose the post type you want to display using AJAX.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Choose the post type you want to display using AJAX.', 'quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -443,53 +443,53 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
         public static function get_field_show_taxonomy_filter(){
             return array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_show_taxonomy_filter(),
-                'label' => __('Show Taxonomy Filter', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Show Taxonomy Filter', 'quick-ajax-post-loader'),
                 'type' => 'checkbox',
                 'default' => QAPL_Quick_Ajax_Helper::shortcode_page_show_taxonomy_filter_default_value(),
-                'description' => __('Enable filtering by taxonomy/category.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Enable filtering by taxonomy/category.', 'quick-ajax-post-loader')
             );
         }
         //select taxonomy
         public static function get_field_select_taxonomy(){
             return array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_select_taxonomy(),
-                'label' => __('Select Taxonomy:', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Select Taxonomy:', 'quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => '',
                 'default' => '',
-                'description' => __('Select the taxonomy to be used for filtering posts.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Select the taxonomy to be used for filtering posts.', 'quick-ajax-post-loader')
             );
         }
         //post per page number
         public static function get_field_select_posts_per_page(){
             return array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_select_posts_per_page(),
-                'label' => __('Posts Per Page:', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Posts Per Page:', 'quick-ajax-post-loader'),
                 'type' => 'number',
                 'options' => '',
                 'default' => QAPL_Quick_Ajax_Helper::shortcode_page_select_posts_per_page_default_value(),
-                'description' => __('Determine the number of posts to be loaded per AJAX request.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Determine the number of posts to be loaded per AJAX request.', 'quick-ajax-post-loader')
             );
         }
         //select post order
         public static function get_field_select_order(){
             $order_options = array(
                 array(
-                    'label' => __('Descending - order from highest to lowest', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Descending - order from highest to lowest', 'quick-ajax-post-loader'),
                     'value' => 'DESC'
                 ),
                 array(
-                    'label' => __('Ascending - order from lowest to highest', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Ascending - order from lowest to highest', 'quick-ajax-post-loader'),
                     'value' => 'ASC'
                 )
             );
             $field_properties = array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_select_order(),
-                'label' => __('Posts Order:', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Posts Order:', 'quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => $order_options,
                 'default' => QAPL_Quick_Ajax_Helper::shortcode_page_select_order_default_value(),
-                'description' => __('Specify the order of posts.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Specify the order of posts.', 'quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -497,57 +497,57 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
         public static function get_field_select_orderby(){
             $orderby_options = array(
                 array(
-                    'label' => __('None: No specific sorting criteria', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('None: No specific sorting criteria', 'quick-ajax-post-loader'),
                     'value' => 'none'
                 ),
                 array(
-                    'label' => __('ID: Sort by post ID', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('ID: Sort by post ID', 'quick-ajax-post-loader'),
                     'value' => 'ID'
                 ),
                 array(
-                    'label' => __('Author: Sort by author ID', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Author: Sort by author ID', 'quick-ajax-post-loader'),
                     'value' => 'author'
                 ),
                 array(
-                    'label' => __('Title: Sort by post title', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Title: Sort by post title', 'quick-ajax-post-loader'),
                     'value' => 'title'
                 ),
                 array(
-                    'label' => __('Name: Sort by post slug', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Name: Sort by post slug', 'quick-ajax-post-loader'),
                     'value' => 'name'
                 ),
                 array(
-                    'label' => __('Date: Sort by publication date', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Date: Sort by publication date', 'quick-ajax-post-loader'),
                     'value' => 'date'
                 ),
                 array(
-                    'label' => __('Modified: Sort by last modified date', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Modified: Sort by last modified date', 'quick-ajax-post-loader'),
                     'value' => 'modified'
                 ),
                 array(
-                    'label' => __('Parent: Sort by parent post ID', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Parent: Sort by parent post ID', 'quick-ajax-post-loader'),
                     'value' => 'parent'
                 ),
                 array(
-                    'label' => __('Random: Random order', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Random: Random order', 'quick-ajax-post-loader'),
                     'value' => 'rand'
                 ),
                 array(
-                    'label' => __('Comments: Sort by comment count', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Comments: Sort by comment count', 'quick-ajax-post-loader'),
                     'value' => 'comment_count'
                 ),
                 array(
-                    'label' => __('Menu Order: Sort by custom menu order', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Menu Order: Sort by custom menu order', 'quick-ajax-post-loader'),
                     'value' => 'menu_order'
                 )
             );
             $field_properties = array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_select_orderby(),
-                'label' => __('Posts Order by:', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Posts Order by:', 'quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => $orderby_options,
                 'default' => QAPL_Quick_Ajax_Helper::shortcode_page_select_orderby_default_value(),
-                'description' => __('Choose the sorting criteria for posts.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Choose the sorting criteria for posts.', 'quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -555,41 +555,41 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
         public static function get_field_select_post_status(){
             $post_status_options = array(
                 array(
-                    'label' => __('Publish: Published posts', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Publish: Published posts', 'quick-ajax-post-loader'),
                     'value' => 'publish'
                 ),
                 array(
-                    'label' => __('Draft: Draft posts', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Draft: Draft posts', 'quick-ajax-post-loader'),
                     'value' => 'draft'
                 ),
                 array(
-                    'label' => __('Pending: Pending review posts', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Pending: Pending review posts', 'quick-ajax-post-loader'),
                     'value' => 'pending'
                 ),
                 array(
-                    'label' => __('Private: Private posts', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Private: Private posts', 'quick-ajax-post-loader'),
                     'value' => 'private'
                 ),
                 array(
-                    'label' => __('Trash: Trashed posts', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Trash: Trashed posts', 'quick-ajax-post-loader'),
                     'value' => 'trash'
                 ),
                 array(
-                    'label' => __('Auto-Draft: Auto-draft posts', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Auto-Draft: Auto-draft posts', 'quick-ajax-post-loader'),
                     'value' => 'auto-draft'
                 ),
                 array(
-                    'label' => __('Inherit: Inherited posts', 'qapl-quick-ajax-post-loader'),
+                    'label' => __('Inherit: Inherited posts', 'quick-ajax-post-loader'),
                     'value' => 'inherit'
                 ),
             );
             $field_properties = array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_select_post_status(),
-                'label' => __('Post Status:', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Post Status:', 'quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => $post_status_options,
                 'default' => QAPL_Quick_Ajax_Helper::shortcode_page_select_post_status_default_value(),
-                'description' => __('Select the post status to be used by AJAX.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Select the post status to be used by AJAX.', 'quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -597,12 +597,12 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
         public static function get_field_set_post_not_in(){
             $field_properties = array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in(),
-                'label' => __('Excluded Post IDs', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Excluded Post IDs', 'quick-ajax-post-loader'),
                 'type' => 'text',
                 'options' => '',
                 'default' => '',
                 'placeholder' => '3, 66, 999',            
-                'description' => __('Enter a list of post IDs to exclude from the query.', 'qapl-quick-ajax-post-loader'),
+                'description' => __('Enter a list of post IDs to exclude from the query.', 'quick-ajax-post-loader'),
             );
             return $field_properties;
         }
@@ -610,22 +610,22 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
         public static function get_field_set_ignore_sticky_posts(){
             return array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_ignore_sticky_posts(),
-                'label' => __('Ignore Sticky Posts', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Ignore Sticky Posts', 'quick-ajax-post-loader'),
                 'type' => 'checkbox',
                 'options' => '',
                 'default' => QAPL_Quick_Ajax_Helper::shortcode_page_ignore_sticky_posts_default_value(),
-                'description' => __('Specify to ignore sticky posts, treating them as regular posts in the query.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Specify to ignore sticky posts, treating them as regular posts in the query.', 'quick-ajax-post-loader')
             );
         }
         //apply quick ajax css style
         public static function get_field_layout_quick_ajax_css_style(){
             $field_properties = array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_quick_ajax_css_style(),
-                'label' => __('Apply Quick AJAX CSS Style', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Apply Quick AJAX CSS Style', 'quick-ajax-post-loader'),
                 'type' => 'checkbox',
                 'options' => '',
                 'default' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_quick_ajax_css_style_default_value(),
-                'description' => __('Apply Quick AJAX CSS styles and column layout.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Apply Quick AJAX CSS styles and column layout.', 'quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -640,11 +640,11 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
             }
             $field_properties = array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_select_columns_qty(),
-                'label' => __('Number of columns:', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Number of columns:', 'quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => $columns_qty_options,
                 'default' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_select_columns_qty_default_value(),
-                'description' => __('Specify the quantity of columns.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Specify the quantity of columns.', 'quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -660,11 +660,11 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
             }
             $field_properties = array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_post_item_template(),
-                'label' => __('Select Post Item Template', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Select Post Item Template', 'quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => $post_item_template_options,
                 'default' => QAPL_Quick_Ajax_Helper::plugin_templates_post_item_template(),
-                'description' => __('Choose a template for displaying post items.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Choose a template for displaying post items.', 'quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -672,12 +672,12 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
         public static function get_field_layout_taxonomy_filter_class(){
             $field_properties = array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_taxonomy_filter_class(),
-                'label' => __('Add class to taxonomy filter', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Add class to taxonomy filter', 'quick-ajax-post-loader'),
                 'type' => 'text',
                 'options' => '',
                 'default' => '',
-                'placeholder' => __('class-name, another-class-name', 'qapl-quick-ajax-post-loader'),
-                'description' => __('Add classes to the filter: class-one, class-two, class-three', 'qapl-quick-ajax-post-loader')
+                'placeholder' => __('class-name, another-class-name', 'quick-ajax-post-loader'),
+                'description' => __('Add classes to the filter: class-one, class-two, class-three', 'quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -685,12 +685,12 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
         public static function get_field_layout_container_class(){
             $field_properties = array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_container_class(),
-                'label' => __('Add class to post container', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Add class to post container', 'quick-ajax-post-loader'),
                 'type' => 'text',
                 'options' => '',
                 'default' => '',
-                'placeholder' => __('class-name, another-class-name', 'qapl-quick-ajax-post-loader'),
-                'description' => __('Add classes to the post container: class-one, class-two, class-three', 'qapl-quick-ajax-post-loader')
+                'placeholder' => __('class-name, another-class-name', 'quick-ajax-post-loader'),
+                'description' => __('Add classes to the post container: class-one, class-two, class-three', 'quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -698,10 +698,10 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
         public static function get_field_show_custom_load_more_post_quantity(){
             $field_properties = array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_show_custom_load_more_post_quantity(),
-                'label' => __('Custom Load More Post Quantity', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Custom Load More Post Quantity', 'quick-ajax-post-loader'),
                 'type' => 'checkbox',
                 'default' => QAPL_Quick_Ajax_Helper::shortcode_page_show_custom_load_more_post_quantity_default_value(),
-                'description' => __('Load a different number of posts than the default page display.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Load a different number of posts than the default page display.', 'quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -709,10 +709,10 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
         public static function get_field_select_custom_load_more_post_quantity(){
             $field_properties = array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_select_custom_load_more_post_quantity(),
-                'label' => __('Custom Load More Post Quantity', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Custom Load More Post Quantity', 'quick-ajax-post-loader'),
                 'type' => 'number',
                 'default' => QAPL_Quick_Ajax_Helper::shortcode_page_select_custom_load_more_post_quantity_default_value(),
-                'description' => __('Select the custom number of posts to load when using the "Load More" button.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Select the custom number of posts to load when using the "Load More" button.', 'quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -720,10 +720,10 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
         public static function get_field_override_global_loader_icon(){
             $field_properties = array(
                 'name' => QAPL_Quick_Ajax_Helper::shortcode_page_override_global_loader_icon(),
-                'label' => __('Override Global Loader Icon', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Override Global Loader Icon', 'quick-ajax-post-loader'),
                 'type' => 'checkbox',
                 'default' => QAPL_Quick_Ajax_Helper::shortcode_page_override_global_loader_icon_default_value(),
-                'description' => __('Set a different loader icon than the one specified in global options.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Set a different loader icon than the one specified in global options.', 'quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -748,11 +748,11 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
             }
             $field_properties = array(
                 'name' => $field_name,
-                'label' => __('Select Loader Icon', 'qapl-quick-ajax-post-loader'),
+                'label' => __('Select Loader Icon', 'quick-ajax-post-loader'),
                 'type' => 'select',
                 'options' => $loader_icon_options,
                 'default' => $field_default_value,
-                'description' => __('Choose an icon to display as the loading indicator when the "Load More" button is clicked.', 'qapl-quick-ajax-post-loader')
+                'description' => __('Choose an icon to display as the loading indicator when the "Load More" button is clicked.', 'quick-ajax-post-loader')
             );
             return $field_properties;
         }
@@ -760,4 +760,3 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Fields')) {
 }
 
 QAPL_Quick_Ajax_Helper::initialize();
-?>

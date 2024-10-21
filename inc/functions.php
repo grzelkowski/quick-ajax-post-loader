@@ -61,4 +61,3 @@ function qapl_quick_ajax_check_page_type($values){
     }
     return false;
 }
-?>

@@ -6,7 +6,7 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Creator_Sett
     class QAPL_Quick_Ajax_Creator_Settings_Page extends QAPL_Quick_Ajax_Manage_Options_Form {
         private $tabIndex = 0;
         public function render_quick_ajax_page_heading() {
-        return '<h1>'.esc_html__('Quick AJAX settings', 'qapl-quick-ajax-post-loader').'</h1>';
+        return '<h1>'.esc_html__('Quick AJAX settings', 'quick-ajax-post-loader').'</h1>';
         }
         public function init_quick_ajax_creator_fields(){            
             //select custom load more post quantity
@@ -70,23 +70,23 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Creator_Sett
         }
         
         public function init_quick_ajax_content(){
-            $tab_title = esc_html__('Global Options', 'qapl-quick-ajax-post-loader');
+            $tab_title = esc_html__('Global Options', 'quick-ajax-post-loader');
             $this->add_quick_ajax_page_content($this->tabIndex++, $tab_title,  $this->quick_ajax_content_global_options());
-            $tab_title = esc_html__('Function Generator', 'qapl-quick-ajax-post-loader');
+            $tab_title = esc_html__('Function Generator', 'quick-ajax-post-loader');
             $this->add_quick_ajax_page_content($this->tabIndex++, $tab_title, $this->quick_ajax_content_function_generator());
-            $tab_title = esc_html__('Help', 'qapl-quick-ajax-post-loader');
+            $tab_title = esc_html__('Help', 'quick-ajax-post-loader');
             $this->add_quick_ajax_page_content($this->tabIndex++, $tab_title, $this->quick_ajax_content_help());
         }
 
         private function quick_ajax_content_global_options() {
-            $content = '<div id="quick-ajax-example-code"><h3>'.__('Global Options', 'qapl-quick-ajax-post-loader').'</h3></div>';
+            $content = '<div id="quick-ajax-example-code"><h3>'.__('Global Options', 'quick-ajax-post-loader').'</h3></div>';
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_select_loader_icon());
-            $content .= get_submit_button(esc_html__('Save Settings', 'qapl-quick-ajax-post-loader'), 'primary', 'save_settings_button', false);
+            $content .= get_submit_button(esc_html__('Save Settings', 'quick-ajax-post-loader'), 'primary', 'save_settings_button', false);
             return $content;
         }
         
         private function quick_ajax_content_function_generator() {
-            $form_tab_function_generator = '<h3>'.esc_html__('Function Generator', 'qapl-quick-ajax-post-loader').'</h3>
+            $form_tab_function_generator = '<h3>'.esc_html__('Function Generator', 'quick-ajax-post-loader').'</h3>
             <div class="function-generator-wrap">
                 <div class="function-generator-options" id="'.QAPL_Quick_Ajax_Helper::settings_wrapper_id().'">';
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings">';
@@ -120,7 +120,7 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Creator_Sett
             $form_tab_function_generator .= '</div>';
             //post settings
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
-            $form_tab_function_generator .= '<h4>'.__('Query Settings', 'qapl-quick-ajax-post-loader').'</h4>';            
+            $form_tab_function_generator .= '<h4>'.__('Query Settings', 'quick-ajax-post-loader').'</h4>';            
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_post_status());
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_posts_per_page());
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_order());
@@ -129,7 +129,7 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Creator_Sett
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ignore_sticky_posts());
             $form_tab_function_generator .= '</div>';
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
-            $form_tab_function_generator .= '<h4>'.__('Layout Settings', 'qapl-quick-ajax-post-loader').'</h4>';
+            $form_tab_function_generator .= '<h4>'.__('Layout Settings', 'quick-ajax-post-loader').'</h4>';
             //Layout Settings
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_layout_quick_ajax_css_style(), true);
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_layout_select_columns_qty(), QAPL_Quick_Ajax_Helper::shortcode_page_layout_quick_ajax_css_style());
@@ -144,8 +144,8 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Creator_Sett
             $form_tab_function_generator .= '</div>';
             $form_tab_function_generator .= '<div class="function-generator-result">';  
             $form_tab_function_generator .= '<div class="function-generator-buttons">
-                            <button class="generate-function-button button button-primary" data-output="code-snippet-2" type="button">'.__('Generate Function', 'qapl-quick-ajax-post-loader').'</button>
-                            <button class="copy-button button button-primary" data-copy="code-snippet-2" type="button">'.__('Copy Code', 'qapl-quick-ajax-post-loader').'</button>
+                            <button class="generate-function-button button button-primary" data-output="code-snippet-2" type="button">'.__('Generate Function', 'quick-ajax-post-loader').'</button>
+                            <button class="copy-button button button-primary" data-copy="code-snippet-2" type="button">'.__('Copy Code', 'quick-ajax-post-loader').'</button>
                         </div>';  
             $form_tab_function_generator .= '<pre id="code-snippet-2" style="margin-top:20px"></pre>';
             $form_tab_function_generator .= '</div>';
@@ -154,7 +154,7 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Creator_Sett
         }
 
         private function quick_ajax_content_help() {
-            $content = '<h3>'.__('Help', 'qapl-quick-ajax-post-loader').'</h3>';
+            $content = '<h3>'.__('Help', 'quick-ajax-post-loader').'</h3>';
             $base_help_dir = plugin_dir_path(__FILE__) . 'help/';
             $locale = get_locale();
             switch ($locale) {

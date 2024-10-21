@@ -23,8 +23,8 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Admin_Pages'
             // "Add New"
             add_submenu_page(
                 QAPL_Quick_Ajax_Helper::menu_slug(),
-                __('Add New', 'qapl-quick-ajax-post-loader'),
-                __('Add New', 'qapl-quick-ajax-post-loader'),
+                __('Add New', 'quick-ajax-post-loader'),
+                __('Add New', 'quick-ajax-post-loader'),
                 'edit_posts',
                 'post-new.php?post_type=' . QAPL_Quick_Ajax_Helper::cpt_shortcode_slug()
             );
@@ -33,8 +33,8 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Admin_Pages'
             // "settings"
             add_submenu_page(
                 QAPL_Quick_Ajax_Helper::menu_slug(),
-                __('Settings & Features', 'qapl-quick-ajax-post-loader'),
-                __('Settings & Features', 'qapl-quick-ajax-post-loader'),
+                __('Settings & Features', 'quick-ajax-post-loader'),
+                __('Settings & Features', 'quick-ajax-post-loader'),
                 'manage_options',
                 QAPL_Quick_Ajax_Helper::settings_page_slug(),
                 array($this, 'render_quick_ajax_settings_page')
@@ -43,7 +43,7 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Admin_Pages'
         public function render_quick_ajax_settings_page() {
             // "settings Page"
             if (!current_user_can('manage_options')) {
-                wp_die(esc_html(__('You do not have sufficient permissions to access this page.', 'qapl-quick-ajax-post-loader')));
+                wp_die(esc_html(__('You do not have sufficient permissions to access this page.', 'quick-ajax-post-loader')));
             }
             if (class_exists('QAPL_Quick_Ajax_Creator_Settings_Page') && method_exists('QAPL_Quick_Ajax_Creator_Settings_Page', 'init_quick_ajax_creator_fields')) {
                 $form = new QAPL_Quick_Ajax_Creator_Settings_Page(QAPL_Quick_Ajax_Helper::admin_page_settings_field_option_group(), QAPL_Quick_Ajax_Helper::admin_page_global_options_name());
@@ -89,18 +89,18 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Post_Type'))
         public function register_quick_ajax_post_type() {
         // Quick Ajax CPT
             $labels = array(
-                'name'               => __('Quick Ajax Shortcodes', 'qapl-quick-ajax-post-loader'),
-                'singular_name'      => __('Quick Ajax Shortcode', 'qapl-quick-ajax-post-loader'),
-                'add_new'            => __('Add New', 'qapl-quick-ajax-post-loader'),
-                'add_new_item'       => __('Add New Quick Ajax', 'qapl-quick-ajax-post-loader'),
-                'edit_item'          => __('Edit Quick Ajax', 'qapl-quick-ajax-post-loader'),
-                'new_item'           => __('New Quick Ajax', 'qapl-quick-ajax-post-loader'),
-                'view_item'          => __('View Quick Ajax', 'qapl-quick-ajax-post-loader'),
-                'search_items'       => __('Search Quick Ajax', 'qapl-quick-ajax-post-loader'),
-                'not_found'          => __('No Items found', 'qapl-quick-ajax-post-loader'),
-                'not_found_in_trash' => __('No Items found in trash', 'qapl-quick-ajax-post-loader'),
+                'name'               => __('Quick Ajax Shortcodes', 'quick-ajax-post-loader'),
+                'singular_name'      => __('Quick Ajax Shortcode', 'quick-ajax-post-loader'),
+                'add_new'            => __('Add New', 'quick-ajax-post-loader'),
+                'add_new_item'       => __('Add New Quick Ajax', 'quick-ajax-post-loader'),
+                'edit_item'          => __('Edit Quick Ajax', 'quick-ajax-post-loader'),
+                'new_item'           => __('New Quick Ajax', 'quick-ajax-post-loader'),
+                'view_item'          => __('View Quick Ajax', 'quick-ajax-post-loader'),
+                'search_items'       => __('Search Quick Ajax', 'quick-ajax-post-loader'),
+                'not_found'          => __('No Items found', 'quick-ajax-post-loader'),
+                'not_found_in_trash' => __('No Items found in trash', 'quick-ajax-post-loader'),
                 'parent_item_colon'  => '',
-                'menu_name'          => __('Shortcodes', 'qapl-quick-ajax-post-loader'),
+                'menu_name'          => __('Shortcodes', 'quick-ajax-post-loader'),
             );
             $args = array(
                 'labels'              => $labels,
@@ -139,8 +139,8 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Post_Type'))
             $new_columns = array('cb' => $columns['cb']);
             unset($columns['cb']);
             $new_columns['title'] = $columns['title'];
-            $new_columns['quick_ajax_shortcode_column'] = __('Shortcode', 'qapl-quick-ajax-post-loader');
-            $new_columns['author'] = __('Author', 'qapl-quick-ajax-post-loader');
+            $new_columns['quick_ajax_shortcode_column'] = __('Shortcode', 'quick-ajax-post-loader');
+            $new_columns['author'] = __('Author', 'quick-ajax-post-loader');
             $new_columns['date'] = $columns['date'];
             return array_merge($new_columns, $columns);
         }

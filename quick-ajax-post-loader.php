@@ -5,9 +5,9 @@ if (!defined('ABSPATH')) {
 /*
 * Plugin Name: Quick Ajax Post Loader
 * Plugin URI: https://github.com/grzelkowski/quick-ajax-post-loader/releases
-* Text Domain: qapl-quick-ajax-post-loader
+* Text Domain: quick-ajax-post-loader
 * Domain Path: /languages
-* Version: 1.2
+* Version: 1.2.1
 * Description: Supercharge post loading with Quick Ajax Post Loader. Enhance user experience and optimize site performance using AJAX technology.
 * Author: Pawel Grzelkowski
 * Author URI: https://grzelkowski.com
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 function qapl_quick_ajax_load_textdomain() {
     $locale = get_locale();
     $mo_file_path = esc_url(WP_PLUGIN_DIR . '/' . dirname(plugin_basename(__FILE__)) . '/languages/' . sanitize_file_name($locale) . '.mo');
-    load_textdomain('qapl-quick-ajax-post-loader', $mo_file_path);
+    load_textdomain('quick-ajax-post-loader', $mo_file_path);
 }
 
 add_action('plugins_loaded', 'qapl_quick_ajax_load_textdomain');
