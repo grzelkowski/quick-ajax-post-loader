@@ -3,8 +3,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// add new element after title
 add_action('edit_form_after_title', 'qapl_quick_ajax_display_shortcode_on_single_page');
 function qapl_quick_ajax_display_shortcode_on_single_page($post) {
+    //check the post type
     if ($post && $post->post_type === QAPL_Quick_Ajax_Helper::cpt_shortcode_slug()) {
         $input_value = get_post_meta($post->ID, 'qapl_quick_ajax_meta_box_shortcode_shortcode', true);
         if (!empty($input_value)) {
@@ -28,11 +30,8 @@ function qapl_save_quick_ajax_meta_box_shortcode( $post_id ) {
     if (!current_user_can('edit_post', $post_id)) {
         return;
     }    
-    if(isset($_POST['post_title']) && !empty($_POST['post_title'])){
-        $title = sanitize_text_field(wp_unslash($_POST['post_title']));
-    }else{
-        $title =  'Untitled';
-    }
+    $title = isset($_POST['post_title']) && !empty($_POST['post_title']) ? sanitize_text_field(wp_unslash($_POST['post_title'])) : 'Untitled';
+    
     $excluded_post_ids = '';
     /*
     if (isset($_POST[QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in()]) && !empty($_POST[QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in()])) {
@@ -50,64 +49,63 @@ function qapl_save_quick_ajax_meta_box_shortcode( $post_id ) {
     $input_value = '[qapl-quick-ajax id="'. $post_id.'" title="'.esc_attr($title).'"'.$excluded_post_ids.']';
     update_post_meta($post_id, 'qapl_quick_ajax_meta_box_shortcode_shortcode', $input_value);
 }
-
-if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Form_Creator')) {
+if (!class_exists('QAPL_Quick_Ajax_Form_Creator')) {
     class QAPL_Quick_Ajax_Form_Creator extends QAPL_Quick_Ajax_Post_Type_Form {
     
         public function init_quick_ajax_creator_fields(){
             //select post type   
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_post_type();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_post_type();
             $this->create_field($field_properties);
             //show taxonomy checkbox
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_show_taxonomy_filter();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_show_taxonomy_filter();
             $this->create_field($field_properties);
             //select taxonomy
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_taxonomy();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_taxonomy();
             $this->create_field($field_properties);
             //post per page number
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_posts_per_page();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_posts_per_page();
             $this->create_field($field_properties);
             //select post order
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_order();        
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_order();        
             $this->create_field($field_properties);
             //select post orderby
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_orderby();    
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_orderby();    
             $this->create_field($field_properties);
             //select post status
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_post_status();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_post_status();
             $this->create_field($field_properties);
             //add Excluded Post IDs
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_set_post_not_in();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_set_post_not_in();
             $this->create_field($field_properties);
             //set ignore sticky
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_set_ignore_sticky_posts();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_set_ignore_sticky_posts();
             $this->create_field($field_properties);
             //apply quick ajax css style
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_layout_quick_ajax_css_style();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_layout_quick_ajax_css_style();
             $this->create_field($field_properties);
             //select number of columns
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_layout_select_columns_qty();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_layout_select_columns_qty();
             $this->create_field($field_properties);
             //select post item template
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_layout_post_item_template();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_layout_post_item_template();
             $this->create_field($field_properties);
             //add custom class for taxonomy filter
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_layout_taxonomy_filter_class();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_layout_taxonomy_filter_class();
             $this->create_field($field_properties);
             //add custom class for container
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_layout_container_class();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_layout_container_class();
             $this->create_field($field_properties);
             //show custom load more post quantity
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_show_custom_load_more_post_quantity();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_show_custom_load_more_post_quantity();
             $this->create_field($field_properties);
             //select custom load more post quantity
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_custom_load_more_post_quantity();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_custom_load_more_post_quantity();
             $this->create_field($field_properties);
             //override loader icon
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_override_global_loader_icon();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_override_global_loader_icon();
             $this->create_field($field_properties);
             //select loader icon
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_loader_icon();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_loader_icon();
             $this->create_field($field_properties);
         }
         
@@ -181,6 +179,6 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Form_Creator
         }
     }
     if ($post_type === QAPL_Quick_Ajax_Helper::cpt_shortcode_slug()) {
-        $form = new QAPL_Quick_Ajax_Form_Creator(QAPL_Quick_Ajax_Helper::settings_wrapper_id(),$post_type);
+        $form = new QAPL_Quick_Ajax_Form_Creator(QAPL_Quick_Ajax_Helper::settings_wrapper_id(), $post_type);
     }
 }

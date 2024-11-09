@@ -2,73 +2,82 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Creator_Settings_Page')) {
+if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
     class QAPL_Quick_Ajax_Creator_Settings_Page extends QAPL_Quick_Ajax_Manage_Options_Form {
         private $tabIndex = 0;
         public function render_quick_ajax_page_heading() {
         return '<h1>'.esc_html__('Quick AJAX settings', 'quick-ajax-post-loader').'</h1>';
         }
-        public function init_quick_ajax_creator_fields(){            
-            //select custom load more post quantity
-            $field_properties = QAPL_Quick_Ajax_Fields::get_global_field_select_loader_icon();
+        //initialize all fields for the settings page
+        public function init_quick_ajax_creator_fields(){             
+            $this->init_global_options_fields();
+            $this->init_function_generator_fields();
+        }
+        //initialize global options fields
+        private function init_global_options_fields() {
+            //select loader icon
+            $field_properties = QAPL_Form_Fields_Helper::get_global_field_select_loader_icon();
             $this->create_field($field_properties);
+        }
+        //initialize function generator fields
+        private function init_function_generator_fields() {
             //select post type
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_post_type();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_post_type();
             $this->create_field($field_properties);
             //show taxonomy checkbox
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_show_taxonomy_filter();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_show_taxonomy_filter();
             $this->create_field($field_properties);
             //select taxonomy
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_taxonomy();
-            $this->create_field($field_properties);
-            //post per page number
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_posts_per_page();
-            $this->create_field($field_properties);
-            //select post order
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_order();        
-            $this->create_field($field_properties);
-            //select post orderby
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_orderby();    
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_taxonomy();
             $this->create_field($field_properties);
             //select post status
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_post_status();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_post_status();
+            $this->create_field($field_properties);
+            //post per page number
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_posts_per_page();
+            $this->create_field($field_properties);
+            //select post order
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_order();        
+            $this->create_field($field_properties);
+            //select post orderby
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_orderby();    
             $this->create_field($field_properties);
             //add Excluded Post IDs
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_set_post_not_in();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_set_post_not_in();
             $this->create_field($field_properties);
             //set ignore sticky
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_set_ignore_sticky_posts();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_set_ignore_sticky_posts();
             $this->create_field($field_properties);
             //apply quick ajax css style
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_layout_quick_ajax_css_style();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_layout_quick_ajax_css_style();
             $field_properties['default'] = 0;
             $this->create_field($field_properties);
             //select number of columns
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_layout_select_columns_qty();  
+            $field_properties = QAPL_Form_Fields_Helper::get_field_layout_select_columns_qty();  
             $this->create_field($field_properties);
             //select post item template
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_layout_post_item_template();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_layout_post_item_template();
             $this->create_field($field_properties);
             //add custom class for taxonomy filter
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_layout_taxonomy_filter_class();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_layout_taxonomy_filter_class();
             $this->create_field($field_properties);
             //add custom class for container
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_layout_container_class();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_layout_container_class();
             $this->create_field($field_properties);
             //show custom load more post quantity
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_show_custom_load_more_post_quantity();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_show_custom_load_more_post_quantity();
             $this->create_field($field_properties);
             //select custom load more post quantity
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_custom_load_more_post_quantity();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_custom_load_more_post_quantity();
             $this->create_field($field_properties);
             //override loader icon
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_override_global_loader_icon();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_override_global_loader_icon();
             $this->create_field($field_properties);
             //select loader icon
-            $field_properties = QAPL_Quick_Ajax_Fields::get_field_select_loader_icon();
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_loader_icon();
             $this->create_field($field_properties);
         }
-        
+
         public function init_quick_ajax_content(){
             $tab_title = esc_html__('Global Options', 'quick-ajax-post-loader');
             $this->add_quick_ajax_page_content($this->tabIndex++, $tab_title,  $this->quick_ajax_content_global_options());
@@ -142,6 +151,7 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Creator_Sett
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_loader_icon(), QAPL_Quick_Ajax_Helper::shortcode_page_override_global_loader_icon());
             $form_tab_function_generator .= '</div>';
             $form_tab_function_generator .= '</div>';
+            //Function generation buttons
             $form_tab_function_generator .= '<div class="function-generator-result">';  
             $form_tab_function_generator .= '<div class="function-generator-buttons">
                             <button class="generate-function-button button button-primary" data-output="code-snippet-2" type="button">'.__('Generate Function', 'quick-ajax-post-loader').'</button>

@@ -2,7 +2,7 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Admin_Pages')) {
+if (!class_exists('QAPL_Quick_Ajax_Admin_Pages')) {
     class QAPL_Quick_Ajax_Admin_Pages {
         public function __construct() {
             add_action('admin_menu', array($this, 'add_quick_ajax_menu'));
@@ -77,7 +77,7 @@ if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Admin_Pages'
 }
 
 
-if (QAPL_Quick_Ajax_Helper::element_exists('class','QAPL_Quick_Ajax_Post_Type')) {
+if (!class_exists('QAPL_Quick_Ajax_Post_Type')) {
     class QAPL_Quick_Ajax_Post_Type {
         public function __construct() {
             add_action('init', array($this, 'register_quick_ajax_post_type'));
@@ -182,7 +182,7 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
         elseif($this->fields[$field_name]['type'] == 'color_picker'){
             return $this->add_color_picker_field($field_name, $show_hide_element_id);
         }
-        
+        return '';        
     }
     protected function get_the_value_if_exist($field_name){
         if(isset($this->existing_values[$field_name]['value'])){
@@ -307,11 +307,13 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
         }
         return $element_data;
     }
-    private function add_field_description($field_description){
-         if(isset($field_description) && !empty($field_description)){
+    private function add_field_description($field_description) {
+        if (!empty($field_description)) {
             return '<p class="quick-ajax-field-desc">' . esc_html($field_description) . '</p>';
         }
+        return '';
     }
+    
     protected function create_accordion_block($title, $content){
         return '<div class="quick-ajax-accordion-wrapper">
             <div class="quick-ajax-accordion-toggle" tabindex="0">
@@ -447,18 +449,25 @@ abstract class QAPL_Quick_Ajax_Post_Type_Form extends QAPL_Quick_Ajax_Content_Bu
     abstract public function init_quick_ajax_creator_fields();
     abstract public function render_quick_ajax_form();
     
-    private function unserialize_data($post_id){ 
+    private function unserialize_data($post_id) {
         $serialized_data = get_post_meta($post_id, $this->form_id, true);
         if ($serialized_data) {
-            $form_data = unserialize($serialized_data);
-            foreach ($form_data as $field_name => $field_value) {
-                $this->existing_values[$field_name]=array(
-                    'name' => $field_name,
-                    'value' => $field_value
-                );
+            $form_data = maybe_unserialize($serialized_data);            
+            if (is_array($form_data)) { // Check if the data was successfully unserialized
+                foreach ($form_data as $field_name => $field_value) {
+                    $this->existing_values[$field_name] = array(
+                        'name' => $field_name,
+                        'value' => $field_value
+                    );
+                }
+            }
+        }else {
+            // Log the error if unserialization fails
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Quick Ajax Post Loader - Failed to unserialize data for post ID: ' . $post_id);
             }
         }
-    }
+    }    
     
     public function add_quick_ajax_form($post){ 
         if ($post->post_type === $this->post_type) {

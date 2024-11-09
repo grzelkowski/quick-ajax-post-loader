@@ -1,10 +1,10 @@
 === Quick Ajax Post Loader ===
 Contributors: grzelkowski
-Tags: ajax, dynamic, custom post type, content display, post
+Tags: ajax, ajax-load-more, load-more, ajax-posts, dynamic, category-filter, content-display, lazy-load, post-filter
 Requires at least: 5.6
 Tested up to: 6.6.2
-Stable tag: 1.2.1
-Requires PHP: 5.6
+Stable tag: 1.3.0
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,14 +37,18 @@ Yes, Quick Ajax Post Loader is designed to be compatible with most WordPress the
 Yes, you can generate as many shortcodes as needed for different post types or configurations.
 
 == Changelog ==
+= 1.3.0 = 2024-11-09 =
+- Added support for automated plugin updates directly from the WordPress repository.
+- Improved code structure and organization for better maintainability and performance.
+- Enhanced security with stricter input validation and nonce verification.
+- Optimized asset loading for improved performance.
+- Fixed various minor bugs and compatibility issues.
 
-= 1.2.1 - 2024-10-21
-- Fixed issue with text domain
+= 1.2.1 = 2024-10-21 =
+- Fixed issue with text domain.
 - Removed closing PHP tags from all PHP files to comply with PSR-2 standards.
 
-= 1.2 - 2024-10-20
-- Update recommended: This version introduces significant security enhancements, code optimizations, and prefix changes to prevent compatibility issues.
-
+= 1.2 = 2024-10-20 =
 - Eliminated use of HEREDOC and NOWDOC syntax to enhance compatibility and security.
 - Sanitized and validated all user inputs including GET, POST, REQUEST, and FILE calls.
 - Improved nonce verification to ensure safer handling by using wp_unslash() and sanitize_text_field().
@@ -55,37 +59,41 @@ Yes, you can generate as many shortcodes as needed for different post types or c
 - Removed redundant code blocks and enhanced logic for improved maintainability.
 - Fixed minor bugs related to form submission and data handling.
 
-= 1.1.1 - 2024-08-02 =
+= 1.1.1 = 2024-08-02 =
 - Optimized script loading to only load `quick-ajax-script` on the frontend, improving performance and avoiding unnecessary loading in the admin area.
 
-= 1.1 - 2024-08-01 =
-- Improved Template File Overriding Hierarchy: Updated the mechanism for searching and merging template files to ensure that files from the child theme take precedence over those from the parent theme and the plugin. Introduced a system for mapping file names to their paths to retain only the most recent versions.
-- Optimized Template File Search: Enhanced the find_template_files function to use glob for more efficient searching of template files matching specific patterns.
-- Adopted Recommended Functions for JSON Data Handling: Replaced direct calls to json_encode with wp_json_encode in accordance with WordPress standards, improving the compatibility and security of JSON data.
-- Safer File Operations: Replaced the use of fopen with the WordPress Filesystem API (WP_Filesystem) for file operations, ensuring greater compatibility with different hosting configurations and enhancing security.
-- Improved Output Security: Secured all outputs to prevent potential XSS attacks.
-- Optimized Code Structure: Enhanced code performance and maintainability through various optimizations.
-- Improved Security Measures: Strengthened security protocols and addressed vulnerabilities to enhance overall code safety.
-- Support for New Shortcode Attributes: Added support for additional shortcode parameters to increase flexibility and customization.
-- Added 'Ignore Sticky Posts' Option: Introduced a new option to the plugin settings that allows users to ignore sticky posts in the WP_Query.
+= 1.1 = 2024-08-01 =
+- Improved Template File Overriding Hierarchy: Ensured child theme templates take precedence over parent themes and plugins.
+- Enhanced template search with `glob` for better efficiency.
+- Replaced `json_encode` with `wp_json_encode` for improved compatibility.
+- Replaced `fopen` with `WP_Filesystem` for safer file operations.
+- Secured all output with functions like `esc_html` and `wp_kses`.
+- Added new shortcode attributes for flexibility (`post_type`, `posts_per_page`, `order`, `orderby`, `post_status`).
+- Introduced 'Ignore Sticky Posts' option.
+- Various security improvements and bug fixes.
 
-= 1.0.1 - 2024-03-20 =
+= 1.0.1 = 2024-03-20 =
 - Fixed the loader icon bug.
-- Improved translations for the Polish language.
+- Improved Polish translations.
 
-= 1.0 - 2024-03-13 =
+= 1.0 = 2024-03-13 =
 - Initial release.
 
 == Upgrade Notice ==
+= 1.3.0 =
+This update introduces automated updates, significant code improvements, and enhanced security measures. Updating is recommended to benefit from these enhancements.
+
+= 1.2 =
+Significant security and performance improvements. Updating is highly recommended.
 
 = 1.1 =
-Update recommended: Implements improved template file overriding hierarchy, optimized template file search, adopted recommended functions for JSON data handling, safer file operations, enhanced output security, and new shortcode attributes support. Released on 2024-06-06.
+Major update with template handling and security enhancements. Strongly recommended to update.
 
 = 1.0.1 =
-Update recommended: Fixes the loader icon bug and improves Polish translations. Released on 2024-03-20.
+Fixes loader icon bug and improves translations. Recommended for update.
 
 = 1.0 =
-Welcome to the first release of the plugin! Enjoy the new features and improvements. Released on 2024-03-13.
+Initial release. Enjoy new features and improvements.
 
 == Additional Links ==
 
