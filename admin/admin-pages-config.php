@@ -441,7 +441,7 @@ abstract class QAPL_Quick_Ajax_Post_Type_Form extends QAPL_Quick_Ajax_Content_Bu
         $this->form_id = $form_id;
         $this->post_type = $post_type;
         if($this->post_type){
-            add_action('init', array($this, 'init_quick_ajax_creator_fields'), 10);
+            add_action('wp_loaded', array($this, 'init_quick_ajax_creator_fields'), 10);
             add_action('edit_form_after_title', array($this, 'add_quick_ajax_form'));
             add_action('save_post_'.$this->post_type, array($this, 'save_quick_ajax_form'));
         }
@@ -464,7 +464,7 @@ abstract class QAPL_Quick_Ajax_Post_Type_Form extends QAPL_Quick_Ajax_Content_Bu
         }else {
             // Log the error if unserialization fails
             if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('Quick Ajax Post Loader - Failed to unserialize data for post ID: ' . $post_id);
+                //error_log('Quick Ajax Post Loader - Failed to unserialize data for post ID: ' . $post_id);
             }
         }
     }    

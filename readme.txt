@@ -1,103 +1,121 @@
 === Quick Ajax Post Loader ===
 Contributors: grzelkowski
-Tags: ajax, ajax-load-more, load-more, ajax-posts, dynamic, category-filter, content-display, lazy-load, post-filter
+Tags: ajax, load-more, ajax-posts, dynamic, category-filter
 Requires at least: 5.6
 Tested up to: 6.6.2
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Boost WordPress performance with Quick Ajax Post Loader. Use AJAX to dynamically display posts, enhancing site speed and user experience.
+Load and display WordPress posts dynamically using AJAX for faster, interactive browsing – no page reloads.
 
 == Description ==
 
-Quick Ajax Post Loader for WordPress leverages AJAX technology to load content dynamically, offering users a seamless browsing experience without interruptions from page reloads. This powerful plugin is packed with features such as generating shortcodes for displaying posts, creating custom post templates, and customizing loading icons. By enabling dynamic post display, it significantly enhances site performance and user engagement, making your WordPress site more responsive and engaging to user interactions.
+**Quick Ajax Post Loader** is designed for users who need an easy way to display posts using AJAX on WordPress without coding. Customize layouts, filter posts by taxonomy, and create personalized post templates with ease. This plugin allows you to dynamically load posts without refreshing the page, ensuring a smooth and engaging user experience. Whether you're showcasing blog posts, portfolios, or custom post types, Quick Ajax Post Loader simplifies the process of implementing AJAX functionality.
+
+
+**Why use Quick Ajax Post Loader?**
+- **Show Posts Without Page Reloads**: Perfect for displaying posts with AJAX to improve user navigation and site interactivity.
+- **Easy to Use**: Generate and use shortcodes to display posts dynamically, even if you don't have coding skills.
+- **Flexible Customization**: Adapt the display with options like grid columns, sorting, and custom templates.
+- **Enhanced User Engagement**: Keep visitors on your site longer with seamless content loading.
+- **Optimized for Speed**: Load only what’s needed, making your site faster and more efficient.
+
+**Main features**:
+- Generate shortcodes for AJAX post loading with custom configurations.
+- Filter posts by taxonomy, such as categories or tags, with clickable buttons.
+- Customize templates for post display, category buttons, load more buttons, and loading icons.
+- Configure the display grid with up to 12 columns and add custom CSS classes for advanced styling.
+- Built-in AJAX Function Generator for easy PHP integration.
+
 == Features ==
 
-- Generating Shortcodes for Displaying Posts: Easily create shortcodes to dynamically display posts using AJAX.
-- Creating and Using Custom Post Templates: Personalize how dynamically loaded content appears.
-- Customizing Loading Icons: Customize the loading icons with your own designs.
-- Customizing the Taxonomy Filter Button: Tailor the taxonomy filter button to seamlessly integrate with your site’s design.
-- AJAX Function Generator Tool: Directly generate PHP code for dynamic content display.
-- Flexible Configuration: Customize AJAX queries and the appearance of the post grid.
+- **Dynamic Shortcodes**: Easily create shortcodes to display posts using AJAX.
+- **Custom Templates**: Personalize post items, buttons, and loading icons.
+- **Flexible Taxonomy Filtering**: Display taxonomies as buttons to filter posts, such as categories for custom post types (e.g., articles, projects).
+- **Customizable Grid Layouts**: Set the number of columns from 1 to 12 and apply custom CSS classes for containers.
+- **Advanced Sorting Options**: Adjust query parameters such as sorting by name, date, and more.
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/quick-ajax-post-loader` directory, or install the plugin through the WordPress plugins screen directly.
-2. Activate the plugin through the 'Plugins' screen in WordPress.
-3. Use the plugin's settings page to configure and customize according to your needs.
+1. **Upload** the plugin to the `/wp-content/plugins/quick-ajax-post-loader` directory or install it via the WordPress Plugins screen.
+2. **Activate** the plugin through the 'Plugins' screen.
+3. **Customize** settings using the plugin’s options page and create shortcodes as needed.
 
 == Frequently Asked Questions ==
 
-= Can I use this plugin with any WordPress theme? =
-Yes, Quick Ajax Post Loader is designed to be compatible with most WordPress themes.
+= Can I filter posts by categories or tags? =
+Yes, the plugin supports taxonomy filtering through clickable buttons that allow users to filter posts by categories or tags.
 
-= Is it possible to create multiple shortcodes for various content types? =
-Yes, you can generate as many shortcodes as needed for different post types or configurations.
+= How can I display WordPress posts using AJAX? =
+Quick Ajax Post Loader makes it easy to display posts using AJAX. Simply generate a shortcode and insert it into your page or post to load content dynamically without reloading the page.
+
+= Can I create my own post templates? =
+Yes, you can create custom templates for post items, loading icons, and category buttons.
+
+= Is coding required to use this plugin? =
+No, you can use the built-in shortcode generator for easy implementation without coding. For advanced users, the plugin also includes an AJAX Function Generator.
+
+= Does the plugin include default styles? =
+Yes, it includes a default grid style (up to 12 columns) that can be disabled if full customization is desired.
 
 == Changelog ==
-= 1.3.0 = 2024-11-09 =
-- Added support for automated plugin updates directly from the WordPress repository.
-- Improved code structure and organization for better maintainability and performance.
-- Enhanced security with stricter input validation and nonce verification.
-- Optimized asset loading for improved performance.
-- Fixed various minor bugs and compatibility issues.
 
-= 1.2.1 = 2024-10-21 =
-- Fixed issue with text domain.
-- Removed closing PHP tags from all PHP files to comply with PSR-2 standards.
+= 1.3.1 - 2024-11-11 =
+- Resolved an issue where custom post types (CPT) were sometimes not selectable in the settings.
+- Fixed minor bugs and enhanced overall stability.
 
-= 1.2 = 2024-10-20 =
-- Eliminated use of HEREDOC and NOWDOC syntax to enhance compatibility and security.
-- Sanitized and validated all user inputs including GET, POST, REQUEST, and FILE calls.
-- Improved nonce verification to ensure safer handling by using wp_unslash() and sanitize_text_field().
-- Updated function, class, and define names to use unique prefixes (qapl_) to prevent conflicts.
-- Added checks to prevent direct file access by adding if ( ! defined( 'ABSPATH' ) ) exit; in all PHP files.
-- Optimized several functions for better performance, reducing redundant database queries and improving load times.
-- Updated hooks and actions to use properly namespaced prefixes to avoid conflicts.
-- Removed redundant code blocks and enhanced logic for improved maintainability.
-- Fixed minor bugs related to form submission and data handling.
+= 1.3.0 - 2024-11-09 =
+- Added support for automatic plugin updates from the WordPress repository.
+- Refactored code structure for better maintainability and performance.
+- Strengthened security with stricter input validation and nonce verification.
+- Optimized asset loading for faster page performance.
+- Fixed several minor bugs and improved compatibility with different WordPress themes.
 
-= 1.1.1 = 2024-08-02 =
-- Optimized script loading to only load `quick-ajax-script` on the frontend, improving performance and avoiding unnecessary loading in the admin area.
+= 1.2.1 - 2024-10-21 =
+- Corrected an issue with the text domain for better localization support.
+- Removed closing PHP tags in all files to comply with PSR-2 standards and prevent unexpected output.
 
-= 1.1 = 2024-08-01 =
-- Improved Template File Overriding Hierarchy: Ensured child theme templates take precedence over parent themes and plugins.
-- Enhanced template search with `glob` for better efficiency.
-- Replaced `json_encode` with `wp_json_encode` for improved compatibility.
-- Replaced `fopen` with `WP_Filesystem` for safer file operations.
-- Secured all output with functions like `esc_html` and `wp_kses`.
-- Added new shortcode attributes for flexibility (`post_type`, `posts_per_page`, `order`, `orderby`, `post_status`).
-- Introduced 'Ignore Sticky Posts' option.
-- Various security improvements and bug fixes.
+= 1.2 - 2024-10-20 =
+- Implemented major security enhancements, including input sanitization and validation.
+- Optimized query handling for improved database performance.
 
-= 1.0.1 = 2024-03-20 =
-- Fixed the loader icon bug.
-- Improved Polish translations.
+= 1.1.1 - 2024-08-02 =
+- Optimized script loading to ensure `quick-ajax-script` loads only on the frontend, improving performance and reducing backend load.
 
-= 1.0 = 2024-03-13 =
+= 1.1 - 2024-08-01 =
+- Enhanced template file handling to support safer file operations and better template hierarchy.
+- Added new shortcode attributes for increased flexibility.
+- Introduced an 'Ignore Sticky Posts' option in the settings.
+
+= 1.0.1 - 2024-03-20 =
+- Fixed a loader icon display issue.
+- Improved Polish language translations.
+
+= 1.0 - 2024-03-13 =
 - Initial release.
 
 == Upgrade Notice ==
+
 = 1.3.0 =
-This update introduces automated updates, significant code improvements, and enhanced security measures. Updating is recommended to benefit from these enhancements.
+This update includes new features like automatic plugin updates and important security enhancements. Update recommended.
 
 = 1.2 =
-Significant security and performance improvements. Updating is highly recommended.
+Includes critical security updates and performance improvements. Strongly recommended to update.
 
 = 1.1 =
-Major update with template handling and security enhancements. Strongly recommended to update.
+Major update introducing new template handling and security features. Update is highly encouraged.
 
 = 1.0.1 =
-Fixes loader icon bug and improves translations. Recommended for update.
+Fixes a loader icon issue and updates Polish translations. Recommended for users affected by these issues.
 
 = 1.0 =
-Initial release. Enjoy new features and improvements.
+Initial release. Enjoy the full set of features and improvements.
 
 == Additional Links ==
 
-- GitHub Repository: https://github.com/grzelkowski/quick-ajax-post-loader/
+- [GitHub Repository](https://github.com/grzelkowski/quick-ajax-post-loader/)
 
 == Privacy Policy ==
 

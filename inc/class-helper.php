@@ -12,7 +12,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.3.0',
+            'version' => '1.3.1',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
@@ -74,7 +74,9 @@ class QAPL_Quick_Ajax_Helper{
     private function get_localized_data() {
         $nonce = wp_create_nonce(self::wp_nonce_form_quick_ajax_action());
         if (!$nonce) {
-            error_log('Quick Ajax Post Loader: issue generating nonce.');
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                //error_log('Quick Ajax Post Loader: issue generating nonce.');
+            }
             return [];
         }
         return [
