@@ -8,12 +8,12 @@ add_action('edit_form_after_title', 'qapl_quick_ajax_display_shortcode_on_single
 function qapl_quick_ajax_display_shortcode_on_single_page($post) {
     //check the post type
     if ($post && $post->post_type === QAPL_Quick_Ajax_Helper::cpt_shortcode_slug()) {
-        $input_value = get_post_meta($post->ID, 'qapl_quick_ajax_meta_box_shortcode_shortcode', true);
+        $input_value = get_post_meta($post->ID, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_code(), true);
         if (!empty($input_value)) {
             echo '<div id="shortcode-box-wrap" class="click-and-select-all">';
             echo '<span>' . esc_html__('Copy and paste this shortcode on the page to display the posts list', 'quick-ajax-post-loader') . '</span>';
             echo '<div>';
-            echo '<pre><code id="' . esc_attr(QAPL_Quick_Ajax_Helper::meta_box_shortcode_name()) . '">' . esc_html($input_value) . '</code></pre>';
+            echo '<pre><code id="' . QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_code() . '">' . esc_html($input_value) . '</code></pre>';
             echo '</div></div>';
         }
     }
@@ -47,7 +47,7 @@ function qapl_save_quick_ajax_meta_box_shortcode( $post_id ) {
     }
     
     $input_value = '[qapl-quick-ajax id="'. $post_id.'" title="'.esc_attr($title).'"'.$excluded_post_ids.']';
-    update_post_meta($post_id, 'qapl_quick_ajax_meta_box_shortcode_shortcode', $input_value);
+    update_post_meta($post_id, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_code(), $input_value);
 }
 if (!class_exists('QAPL_Quick_Ajax_Form_Creator')) {
     class QAPL_Quick_Ajax_Form_Creator extends QAPL_Quick_Ajax_Post_Type_Form {
@@ -179,6 +179,6 @@ if (!class_exists('QAPL_Quick_Ajax_Form_Creator')) {
         }
     }
     if ($post_type === QAPL_Quick_Ajax_Helper::cpt_shortcode_slug()) {
-        $form = new QAPL_Quick_Ajax_Form_Creator(QAPL_Quick_Ajax_Helper::settings_wrapper_id(), $post_type);
+        $form = new QAPL_Quick_Ajax_Form_Creator(QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings(), $post_type);
     }
 }

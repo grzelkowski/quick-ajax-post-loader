@@ -2,8 +2,8 @@
 Contributors: grzelkowski
 Tags: ajax, load-more, ajax-posts, dynamic, category-filter
 Requires at least: 5.6
-Tested up to: 6.6.2
-Stable tag: 1.3.1
+Tested up to: 6.7
+Stable tag: 1.3.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -39,7 +39,7 @@ Load and display WordPress posts dynamically using AJAX for faster, interactive 
 
 == Installation ==
 
-1. **Upload** the plugin to the `/wp-content/plugins/quick-ajax-post-loader` directory or install it via the WordPress Plugins screen.
+1. **Upload** the plugin to the `/wp-content/plugins/` directory or install it via the WordPress Plugins screen.
 2. **Activate** the plugin through the 'Plugins' screen.
 3. **Customize** settings using the plugin’s options page and create shortcodes as needed.
 
@@ -61,6 +61,11 @@ No, you can use the built-in shortcode generator for easy implementation without
 Yes, it includes a default grid style (up to 12 columns) that can be disabled if full customization is desired.
 
 == Changelog ==
+
+= 1.3.2 - 2024-11-13 = 
+- Improved `post_meta`  handling for better shortcode management.
+- Fixed an issue where shortcodes were not visible on the shortcode management page.
+- Enhanced data migration for better backward compatibility.
 
 = 1.3.1 - 2024-11-11 =
 - Resolved an issue where custom post types (CPT) were sometimes not selectable in the settings.

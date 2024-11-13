@@ -12,14 +12,14 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.3.1',
+            'version' => '1.3.2',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
             'repository_url' => 'https://wordpress.org/plugins/quick-ajax-post-loader',
             'minimum_php_version' => '7.4',
             'minimum_wp_version' => '5.6',
-            'tested_wp_version' => '6.6.2'
+            'tested_wp_version' => '6.7'
         ];
     }
     public static function get_instance() {
@@ -208,11 +208,14 @@ class QAPL_Quick_Ajax_Helper{
     }
 
     /* quick-ajax-creator shortcode field names */
+    public static function quick_ajax_shortcode_settings() {
+        return 'qapl_quick_ajax_shortcode_settings';
+    }
+    public static function quick_ajax_shortcode_code() {
+        return 'qapl_quick_ajax_shortcode_code';
+    }
     public static function settings_wrapper_id() {
         return 'qapl_settings_wrapper';
-    }
-    public static function meta_box_shortcode_name() {
-        return 'qapl_quick_ajax_meta_box_shortcode';
     }
     public static function wp_nonce_form_quick_ajax_field() {
         return 'qapl_quick_ajax_nonce';
@@ -877,6 +880,22 @@ class QAPL_Form_Fields_Helper{
     }
 }
 
+class QAPL_Meta_Migrator {
+    // method to check for data and migrate it if needed
+    public static function get_migrated_meta($post_id, $new_key, $old_key) {
+        // check for data using the new key
+        $data = get_post_meta($post_id, $new_key, true);
+        // if no data is found under the new key, check the old key
+        if (!$data) {
+            $data = get_post_meta($post_id, $old_key, true);
+            if ($data) {
+                // save the data under the new key and remove the old key
+                update_post_meta($post_id, $new_key, $data);
+                delete_post_meta($post_id, $old_key);
+            }
+        }
 
-
+        return $data;
+    }
+}
 

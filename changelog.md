@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 1.3.2 - 2024-11-13 = 
+- Improved `post_meta`  handling for better shortcode management.
+- Fixed an issue where shortcodes were not visible on the shortcode management page.
+- Enhanced data migration for better backward compatibility.
+
 = 1.3.1 - 2024-11-11 =
 - Resolved an issue where custom post types (CPT) were sometimes not selectable in the settings.
 - Fixed minor bugs and enhanced overall stability.
