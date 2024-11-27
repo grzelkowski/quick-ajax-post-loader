@@ -1,0 +1,359 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Quick Ajax Post Loader\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-18 17:23+0000\n"
+"PO-Revision-Date: 2024-03-18 17:52+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.2\n"
+"X-Loco-Version: 2.6.6; wp-6.4.3\n"
+"X-Domain: quick-ajax-post-loader\n"
+
+#: inc/class-helper.php:631
+msgid "Add class to post container"
+msgstr ""
+
+#: inc/class-helper.php:618
+msgid "Add class to taxonomy filter"
+msgstr ""
+
+#: inc/class-helper.php:623
+msgid "Add classes to the filter: class-one, class-two, class-three"
+msgstr ""
+
+#: inc/class-helper.php:636
+msgid "Add classes to the post container: class-one, class-two, class-three"
+msgstr ""
+
+#: admin/admin-pages-config.php:26 admin/admin-pages-config.php:27
+#: admin/admin-pages-config.php:94
+msgid "Add New"
+msgstr ""
+
+#: admin/admin-pages-config.php:95
+msgid "Add New Quick Ajax"
+msgstr ""
+
+#: inc/class-helper.php:567
+msgid "Apply Quick AJAX CSS Style"
+msgstr ""
+
+#: inc/class-helper.php:571
+msgid "Apply Quick AJAX CSS styles and column layout."
+msgstr ""
+
+#: inc/class-helper.php:436
+msgid "Ascending - order from lowest to highest"
+msgstr ""
+
+#: inc/class-helper.php:462
+msgid "Author: Sort by author ID"
+msgstr ""
+
+#: inc/class-helper.php:532
+msgid "Auto-Draft: Auto-draft posts"
+msgstr ""
+
+#: inc/class-helper.php:610
+msgid "Choose a template for displaying post items."
+msgstr ""
+
+#: inc/class-helper.php:699
+msgid ""
+"Choose an icon to display as the loading indicator when the \"Load More\" "
+"button is clicked."
+msgstr ""
+
+#: inc/class-helper.php:392
+msgid "Choose the post type you want to display using AJAX."
+msgstr ""
+
+#: inc/class-helper.php:504
+msgid "Choose the sorting criteria for posts."
+msgstr ""
+
+#: inc/class-helper.php:622 inc/class-helper.php:635
+msgid "class-name, another-class-name"
+msgstr ""
+
+#: inc/class-helper.php:490
+msgid "Comments: Sort by comment count"
+msgstr ""
+
+#: admin/pages/shortcode-page.php:12
+msgid "Copy and paste this shortcode on the page to display the posts list"
+msgstr ""
+
+#: admin/pages/settings-page.php:144
+msgid "Copy Code"
+msgstr ""
+
+#: inc/class-helper.php:644 inc/class-helper.php:655
+msgid "Custom Load More Post Quantity"
+msgstr ""
+
+#: inc/class-helper.php:458
+msgid "ID: Sort by post ID"
+msgstr ""
+
+#: inc/class-helper.php:474
+msgid "Date: Sort by publication date"
+msgstr ""
+
+#: inc/class-helper.php:432
+msgid "Descending - order from highest to lowest"
+msgstr ""
+
+#: inc/class-helper.php:425
+msgid "Determine the number of posts to be loaded per AJAX request."
+msgstr ""
+
+#: inc/class-helper.php:516
+msgid "Draft: Draft posts"
+msgstr ""
+
+#: admin/admin-pages-config.php:96
+msgid "Edit Quick Ajax"
+msgstr ""
+
+#: inc/class-helper.php:403
+msgid "Enable filtering by taxonomy/category."
+msgstr ""
+
+#: inc/class-helper.php:559
+msgid "Enter a list of post IDs to exclude from the query."
+msgstr ""
+
+#: inc/class-helper.php:554
+msgid "Excluded Post IDs"
+msgstr ""
+
+#: admin/pages/settings-page.php:72 admin/pages/settings-page.php:86
+msgid "Function Generator"
+msgstr ""
+
+#: admin/pages/settings-page.php:143
+msgid "Generate Function"
+msgstr ""
+
+#: admin/pages/settings-page.php:70 admin/pages/settings-page.php:79
+msgid "Global Options"
+msgstr ""
+
+#: admin/pages/settings-page.php:74 admin/pages/settings-page.php:153
+msgid "Help"
+msgstr ""
+
+#: inc/class-helper.php:536
+msgid "Inherit: Inherited posts"
+msgstr ""
+
+#: admin/pages/settings-page.php:128
+msgid "Layout Settings"
+msgstr ""
+
+#: admin/pages/shortcode-page.php:137
+msgid "layout Settings"
+msgstr ""
+
+#: inc/class-helper.php:647
+msgid "Load a different number of posts than the default page display."
+msgstr ""
+
+#: inc/class-ajax.php:409
+msgid "Load More"
+msgstr ""
+
+#: inc/class-helper.php:494
+msgid "Menu Order: Sort by custom menu order"
+msgstr ""
+
+#: inc/class-helper.php:478
+msgid "Modified: Sort by last modified date"
+msgstr ""
+
+#: inc/class-helper.php:470
+msgid "Name: Sort by post slug"
+msgstr ""
+
+#: admin/admin-pages-config.php:97
+msgid "New Quick Ajax"
+msgstr ""
+
+#: admin/admin-pages-config.php:100
+msgid "No Items found"
+msgstr ""
+
+#: admin/admin-pages-config.php:101
+msgid "No Items found in trash"
+msgstr ""
+
+#: templates/post-items/no-posts.php:3
+msgid "No posts found"
+msgstr ""
+
+#: inc/class-helper.php:454
+msgid "None: No specific sorting criteria"
+msgstr ""
+
+#: inc/class-helper.php:586
+msgid "Number of columns:"
+msgstr ""
+
+#: inc/class-helper.php:666
+msgid "Override Global Loader Icon"
+msgstr ""
+
+#: inc/class-helper.php:482
+msgid "Parent: Sort by parent post ID"
+msgstr ""
+
+#. Author of the plugin
+msgid "Pawel Grzelkowski"
+msgstr ""
+
+#: inc/class-helper.php:520
+msgid "Pending: Pending review posts"
+msgstr ""
+
+#: inc/class-helper.php:542
+msgid "Post Status:"
+msgstr ""
+
+#: inc/class-helper.php:500
+msgid "Posts Order by:"
+msgstr ""
+
+#: inc/class-helper.php:442
+msgid "Posts Order:"
+msgstr ""
+
+#: inc/class-helper.php:421
+msgid "Posts Per Page:"
+msgstr ""
+
+#: inc/class-helper.php:524
+msgid "Private: Private posts"
+msgstr ""
+
+#: inc/class-helper.php:512
+msgid "Publish: Published posts"
+msgstr ""
+
+#: admin/pages/settings-page.php:120 admin/pages/shortcode-page.php:127
+msgid "Query Settings"
+msgstr ""
+
+#. Name of the plugin
+msgid "Quick Ajax Post Loader"
+msgstr ""
+
+#: admin/pages/settings-page.php:9
+msgid "Quick AJAX settings"
+msgstr ""
+
+#: admin/admin-pages-config.php:93
+msgid "Quick Ajax Shortcode"
+msgstr ""
+
+#: admin/admin-pages-config.php:92
+msgid "Quick Ajax Shortcodes"
+msgstr ""
+
+#: inc/class-helper.php:486
+msgid "Random: Random order"
+msgstr ""
+
+#: admin/pages/settings-page.php:81
+msgid "Save Settings"
+msgstr ""
+
+#: admin/admin-pages-config.php:99
+msgid "Search Quick Ajax"
+msgstr ""
+
+#: inc/class-helper.php:695
+msgid "Select Loader Icon"
+msgstr ""
+
+#: inc/class-helper.php:606
+msgid "Select Post Item Template"
+msgstr ""
+
+#: inc/class-helper.php:389
+msgid "Select Post Type:"
+msgstr ""
+
+#: inc/class-helper.php:410
+msgid "Select Taxonomy:"
+msgstr ""
+
+#: inc/class-helper.php:658
+msgid ""
+"Select the custom number of posts to load when using the \"Load More\" "
+"button."
+msgstr ""
+
+#: inc/class-helper.php:546
+msgid "Select the post status to be used by AJAX."
+msgstr ""
+
+#: inc/class-helper.php:414
+msgid "Select the taxonomy to be used for filtering posts."
+msgstr ""
+
+#: inc/class-helper.php:669
+msgid "Set a different loader icon than the one specified in global options."
+msgstr ""
+
+#: admin/admin-pages-config.php:36 admin/admin-pages-config.php:37
+msgid "Settings & Features"
+msgstr ""
+
+#: admin/admin-pages-config.php:103
+msgid "Shortcodes"
+msgstr ""
+
+#: inc/class-ajax.php:158
+msgid "Show All"
+msgstr ""
+
+#: inc/class-helper.php:400
+msgid "Show Taxonomy Filter"
+msgstr ""
+
+#: inc/class-helper.php:446
+msgid "Specify the order of posts."
+msgstr ""
+
+#: inc/class-helper.php:590
+msgid "Specify the quantity of columns."
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"Supercharge post loading with Quick Ajax Post Loader. Enhance user "
+"experience and optimize site performance using AJAX technology."
+msgstr ""
+
+#: inc/class-helper.php:466
+msgid "Title: Sort by post title"
+msgstr ""
+
+#: inc/class-helper.php:528
+msgid "Trash: Trashed posts"
+msgstr ""
+
+#: admin/admin-pages-config.php:98
+msgid "View Quick Ajax"
+msgstr ""
+
+#: admin/admin-pages-config.php:46
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""

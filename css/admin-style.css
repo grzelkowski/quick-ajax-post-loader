@@ -260,7 +260,8 @@ input:checked + .switch:before {
     border-bottom:1px solid #ffffff;
     transition: all 0.1s ease;
 }
-.quick-ajax-tab-content{
+.quick-ajax-tab-content,
+.quick-ajax-tab-content[hidden]{
     position: relative;
     background: #fff;
     padding: 1rem;

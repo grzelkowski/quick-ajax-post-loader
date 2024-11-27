@@ -12,6 +12,7 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
         public function init_quick_ajax_creator_fields(){             
             $this->init_global_options_fields();
             $this->init_function_generator_fields();
+            $this->init_content_clear_old_data_fields();
         }
         //initialize global options fields
         private function init_global_options_fields() {
@@ -78,6 +79,11 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $this->create_field($field_properties);
         }
 
+        private function init_content_clear_old_data_fields() {
+            //select loader icon
+            $field_properties = QAPL_Form_Fields_Helper::get_global_field_remove_old_data();
+            $this->create_field($field_properties);
+        }
         public function init_quick_ajax_content(){
             $tab_title = esc_html__('Global Options', 'quick-ajax-post-loader');
             $this->add_quick_ajax_page_content($this->tabIndex++, $tab_title,  $this->quick_ajax_content_global_options());
@@ -85,12 +91,34 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $this->add_quick_ajax_page_content($this->tabIndex++, $tab_title, $this->quick_ajax_content_function_generator());
             $tab_title = esc_html__('Help', 'quick-ajax-post-loader');
             $this->add_quick_ajax_page_content($this->tabIndex++, $tab_title, $this->quick_ajax_content_help());
+            $cleanup_flags = QAPL_Quick_Ajax_Helper::quick_ajax_plugin_cleanup_flags();
+            if (!empty(get_option($cleanup_flags))) {
+                $tab_title = esc_html__('Purge Old Data', 'quick-ajax-post-loader');
+                $this->add_quick_ajax_page_content($this->tabIndex++, $tab_title, $this->quick_ajax_content_clear_old_data());
+            }
+        }
+
+        //settings_fields to variable
+        private function settings_fields_to_variable($option_group) {
+            $output = '<input type="hidden" name="option_page" value="' . esc_attr($option_group) . '" />';
+            $output .= '<input type="hidden" name="action" value="update" />';
+            $output .= wp_nonce_field("update-options", "_wpnonce", true, false);
+            $output .= '<input type="hidden" name="_wp_http_referer" value="' . esc_attr(wp_unslash($_SERVER['REQUEST_URI'])) . '" />';
+            return $output;
         }
 
         private function quick_ajax_content_global_options() {
-            $content = '<div id="quick-ajax-example-code"><h3>'.__('Global Options', 'quick-ajax-post-loader').'</h3></div>';
+            ob_start();
+            settings_fields($this->option_group);
+            $settings_fields_html = ob_get_clean();
+            $content = '<div id="quick-ajax-example-code">';
+            $content .= '<form method="post" action="options.php">';            
+            $content .= '<h3>'.__('Global Options', 'quick-ajax-post-loader').'</h3>';
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_select_loader_icon());
+            $content .= $settings_fields_html;
             $content .= get_submit_button(esc_html__('Save Settings', 'quick-ajax-post-loader'), 'primary', 'save_settings_button', false);
+            $content .= '</form>';
+            $content .= '</div>';
             return $content;
         }
         
@@ -204,5 +232,21 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             }
             return $content;
         }
+
+        private function quick_ajax_content_clear_old_data() {
+            $action_url = esc_url(admin_url('admin-post.php')); // use admin-post.php for admin actions
+            $content = '<div id="quick-ajax-clear-data">';
+            $content .= '<h3>' . esc_html__('Purge Old Data', 'quick-ajax-post-loader') . '</h3>';
+            $content .= '<form method="post" action="' . $action_url . '">';
+            $content .= $this->add_field('qapl_remove_old_meta', false, true); // add additional form field
+            $content .= '<input type="hidden" name="action" value="qapl_purge_unused_data" />';
+            $content .= '<input type="hidden" name="qapl_purge_unused_data" value="1" />'; // set value to "1" for consistency
+            $content .= wp_nonce_field('qapl_purge_unused_data', 'qapl_purge_nonce', true, false); // create nonce field for security
+            $content .= get_submit_button(esc_html__('Purge Unused Data', 'quick-ajax-post-loader'), 'primary', 'purge_data_button', false); // generate submit button
+            $content .= '</form>';
+            $content .= '</div>';
+            return $content;
+        }
+        
     }
 }

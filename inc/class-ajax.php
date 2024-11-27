@@ -389,8 +389,15 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             }
             //Select Loader Icon
             $global_options = $this->get_global_options();
-            $loader_icon = (isset($attributes[$this->helper->layout_select_loader_icon()])) ? $attributes[$this->helper->layout_select_loader_icon()]  : (isset($global_options['loader_icon']) ? $global_options['loader_icon'] : '');
-        
+            if (isset($attributes[$this->helper->layout_select_loader_icon()]) && !empty($attributes[$this->helper->layout_select_loader_icon()])) {
+                $loader_icon = $attributes[$this->helper->layout_select_loader_icon()];
+            } elseif (isset($global_options['loader_icon']) && !empty($global_options['loader_icon'])) {
+                // fallback to global option if attributes value is invalid
+                $loader_icon = $global_options['loader_icon'];
+            } else {
+                // final fallback to default value
+                $loader_icon = $this->helper->shortcode_page_select_loader_icon_default_value();
+            }
             $this->layout[$this->helper->layout_select_loader_icon()] = $this->helper->plugin_templates_loader_icon_template($loader_icon);
             $this->attributes[$this->helper->layout_select_loader_icon()] = $loader_icon;
         }

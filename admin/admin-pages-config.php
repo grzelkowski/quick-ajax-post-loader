@@ -129,9 +129,20 @@ if (!class_exists('QAPL_Quick_Ajax_Post_Type')) {
         public function quick_ajax_shortcode_column_content($column_name, $post_id) {
             //add Shortcode Column Content
             if ($column_name === 'quick_ajax_shortcode_column') {                
-                //$custom_value = get_post_meta($post_id, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_code(), true);
-                $custom_value = QAPL_Meta_Migrator::get_migrated_meta($post_id, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_code(), 'qapl_quick_ajax_meta_box_shortcode_shortcode');
-                echo '<div class="quick-ajax-shortcode">' . esc_html($custom_value)  . '</div>';
+                $excluded_post_ids = '';
+                $serialized_data = get_post_meta($post_id, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings(), true);
+                if ($serialized_data) {
+                    $form_data = maybe_unserialize($serialized_data);
+                    if (is_array($form_data)) { // ensure data is valid
+                        foreach ($form_data as $field_name => $field_value) {
+                            if ($field_name === QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in() && !empty($field_value)) { 
+                                $excluded_post_ids = ' excluded_post_ids="'.$field_value.'"';
+                            }
+                        }
+                    }
+                }
+                $shortcode = '[qapl-quick-ajax id="' . intval($post_id) . '" title="' . esc_attr(get_the_title($post_id)) . '"'.$excluded_post_ids.']';
+                echo '<div class="quick-ajax-shortcode">' . esc_html($shortcode)  . '</div>';
             }
         }
 
@@ -167,9 +178,9 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
             $this->fields[$field_properties['name']] = $field;
         }
     }
-    protected function add_field($field_name, $show_hide_element_id = false){
+    protected function add_field($field_name, $show_hide_element_id = false, $required = false){
         if($this->fields[$field_name]['type'] == 'checkbox'){
-            return $this->add_checkbox_field($field_name, $show_hide_element_id);
+            return $this->add_checkbox_field($field_name, $show_hide_element_id, $required);
         }
         elseif($this->fields[$field_name]['type'] == 'select'){
             return $this->add_select_field($field_name, $show_hide_element_id);
@@ -199,19 +210,20 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
         $scheme = get_user_option('admin_color', $current_user->ID);
         return $scheme . '-style';
     }
-    private function add_checkbox_field($field_name, $show_hide_element = false){
+    private function add_checkbox_field($field_name, $show_hide_element = false, $required = false){
         $checked = $this->get_the_value_if_exist($field_name);
         $field_container_class = '';
         if(!empty($show_hide_element)){
             $field_container_class =' show-hide-element';
         }
+        $is_required = $required ? 'required' : '';
         $field = '<div class="quick-ajax-field-container quick-ajax-select-field qa-inline-block' . $field_container_class . '">';
         $field .= '<label for="' . $this->fields[$field_name]['name'] . '">' . $this->fields[$field_name]['label'] . '</label>';
         $field .= '<div class="quick-ajax-field">';
         $field .= '<div class="switch-checkbox">';
         $field .= '<div class="switch-wrap">';
         $field .= '<label for="' . $this->fields[$field_name]['name'] . '">';
-        $field .= '<input type="checkbox" name="' . $this->fields[$field_name]['name'] . '" id="' . $this->fields[$field_name]['name'] . '" value="1" ' . checked($checked, 1, false) . ' />';
+        $field .= '<input type="checkbox" name="' . $this->fields[$field_name]['name'] . '" id="' . $this->fields[$field_name]['name'] . '" value="1" ' . checked($checked, 1, false) . ' '. $is_required .' />';
         $field .= '<span class="switch"></span>';
         $field .= '</label>';
         $field .= '</div>';            
@@ -336,6 +348,8 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
                 'style' => array(),
                 'tabindex' => array(),
                 'data-item' => array(),
+                'role' => array(),
+                'hidden' => array(),
             ),
             'button' => array(
                 'type' => array(),
@@ -345,7 +359,9 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
                 'data-tab' => array(),
                 'data-output' => array(),
                 'data-copy' => array(),
-                
+                'role' => array(),
+                'aria-selected' => array(),
+                'aria-controls' => array(),
             ),
             'input' => array(
                 'type' => array(),
@@ -430,6 +446,12 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
             'pre' => array(
                 'class' => array(),
                 'id' => array(),
+            ),            
+            'form' => array(
+                'class' => array(),
+                'id' => array(),
+                'action' => array(),
+                'method' => array(),
             ),
         );
     } 
@@ -544,11 +566,11 @@ abstract class QAPL_Quick_Ajax_Manage_Options_Form extends QAPL_Quick_Ajax_Conte
         echo wp_kses($this->render_quick_ajax_page_heading(), $this->wp_kses_allowed_tags());
         echo '</div>';
         echo '<div class="quick-ajax-form-wrap ' . esc_attr($this->get_quick_ajax_form_class()) . '" id="form-' . esc_attr($this->option_group) . '">';
-        echo '<form method="post" action="options.php">';
-        settings_fields($this->option_group); // Output security fields for the registered settings
+        //echo '<form method="post" action="options.php">';
+        //settings_fields($this->option_group); // Output security fields for the registered settings
         echo wp_kses($this->render_quick_ajax_tabs_navigation(), $this->wp_kses_allowed_tags());
         echo wp_kses($this->render_quick_ajax_tabs_content(), $this->wp_kses_allowed_tags());
-        echo '</form>';
+        //echo '</form>';
         echo '</div>';
     }
 
@@ -557,11 +579,12 @@ abstract class QAPL_Quick_Ajax_Manage_Options_Form extends QAPL_Quick_Ajax_Conte
         if (count($this->tabs) <= 1) {
             return '';
         }
-        $html = '<div class="quick-ajax-tabs">';
+        $html = '<div class="quick-ajax-tabs" role="tablist">';
         $firstTab = true;    
         foreach ($this->tabs as $id => $tab) {
             $class = $firstTab ? ' active' : '';
-            $html .= '<button type="button" class="quick-ajax-tab-button' . $class . '" data-tab="quick-ajax-tab-' . esc_attr($id) . '">' . esc_html($tab['title']) . '</button>';
+            $aria_class = $firstTab ? 'true' : 'false';
+            $html .= '<button type="button" class="quick-ajax-tab-button' . $class . '" role="tab" aria-selected="'.$aria_class.'" aria-controls="quick-ajax-tab-' . esc_attr($id) . '" data-tab="quick-ajax-tab-' . esc_attr($id) . '">' . esc_html($tab['title']) . '</button>';
             $firstTab = false;
         }    
         $html .= '</div>';
@@ -572,8 +595,9 @@ abstract class QAPL_Quick_Ajax_Manage_Options_Form extends QAPL_Quick_Ajax_Conte
         $firstTab = true;
         foreach ($this->tabs as $id => $tab) {
             $class = $firstTab ? 'quick-ajax-tab-content active' : 'quick-ajax-tab-content';
-            $html .= '<div id="quick-ajax-tab-' . esc_attr($id) . '" class="' . $class . '">';
-            $html .= $tab['content'];
+            $aria_class = $firstTab ? '' : 'hidden';
+            $html .= '<div id="quick-ajax-tab-' . esc_attr($id) . '" class="' . $class . '" role="tabpanel" tabindex="0" '.$aria_class.'>';
+            $html .= $tab['content'];            
             $html .= '</div>';
             $firstTab = false;
         }

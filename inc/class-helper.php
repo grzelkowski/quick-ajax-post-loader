@@ -12,14 +12,13 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.3.2',
+            'version' => '1.3.3',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
-            'repository_url' => 'https://wordpress.org/plugins/quick-ajax-post-loader',
             'minimum_php_version' => '7.4',
             'minimum_wp_version' => '5.6',
-            'tested_wp_version' => '6.7'
+            'tested_wp_version' => '6.7.1'
         ];
     }
     public static function get_instance() {
@@ -42,7 +41,7 @@ class QAPL_Quick_Ajax_Helper{
             $this->pages_helper->plugin_ajax_class(),
             $this->pages_helper->plugin_ajax_actions(),
             $this->pages_helper->plugin_functions(),
-            $this->pages_helper->plugin_update(),
+            $this->pages_helper->plugin_updater(),
             $this->pages_helper->plugin_shortcode_class()
         ];        
         foreach ($initialize_list as $initialize) {
@@ -53,19 +52,21 @@ class QAPL_Quick_Ajax_Helper{
     }
     public function enqueue_frontend_styles_and_scripts() {
         if (!is_admin()) {
-            wp_enqueue_style('qapl-quick-ajax-style', $this->file_helper->get_plugin_css_directory() . 'style.css', [], self::get_plugin_info()['version']);
-            wp_enqueue_script('qapl-quick-ajax-script', $this->file_helper->get_plugin_js_directory() . 'script.js', ['jquery'], self::get_plugin_info()['version'], true);
+            $suffix = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';
+            wp_enqueue_style('qapl-quick-ajax-style', $this->file_helper->get_plugin_css_directory() . 'style' . $suffix . '.css', [], self::get_plugin_info()['version']);
+            wp_enqueue_script('qapl-quick-ajax-script', $this->file_helper->get_plugin_js_directory() . 'script' . $suffix . '.js', ['jquery'], self::get_plugin_info()['version'], true);
             
             wp_localize_script('qapl-quick-ajax-script', 'qapl_quick_ajax_helper', $this->get_localized_data());
         }
     }
     public function enqueue_admin_styles_and_scripts() {
         if (is_admin()) {
-            wp_enqueue_style('qapl-quick-ajax-admin-style', $this->file_helper->get_plugin_css_directory() . 'admin-style.css', [], self::get_plugin_info()['version']);
+            $suffix = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';
+            wp_enqueue_style('qapl-quick-ajax-admin-style', $this->file_helper->get_plugin_css_directory() . 'admin-style' . $suffix . '.css', [], self::get_plugin_info()['version']);
             
             $values = [self::cpt_shortcode_slug(), self::settings_page_slug()];
             if (qapl_quick_ajax_check_page_type($values)) {
-                wp_register_script('qapl-quick-ajax-admin-script', $this->file_helper->get_plugin_js_directory() . 'admin-script.js', ['jquery'], self::get_plugin_info()['version'], true);
+                wp_register_script('qapl-quick-ajax-admin-script', $this->file_helper->get_plugin_js_directory() . 'admin-script' . $suffix . '.js', ['jquery'], self::get_plugin_info()['version'], true);
                 wp_localize_script('qapl-quick-ajax-admin-script', 'qapl_quick_ajax_helper', $this->get_admin_localized_data());
                 wp_enqueue_script('qapl-quick-ajax-admin-script');
             }
@@ -209,10 +210,18 @@ class QAPL_Quick_Ajax_Helper{
 
     /* quick-ajax-creator shortcode field names */
     public static function quick_ajax_shortcode_settings() {
-        return 'qapl_quick_ajax_shortcode_settings';
+        return '_qapl_quick_ajax_shortcode_settings';
     }
+    /* old value, not in use from 1.3.3
     public static function quick_ajax_shortcode_code() {
         return 'qapl_quick_ajax_shortcode_code';
+    }
+    */
+    public static function quick_ajax_plugin_version() {
+        return 'qapl_quick_ajax_plugin_version';
+    }
+    public static function quick_ajax_plugin_cleanup_flags() {
+        return 'qapl_quick_ajax_cleanup_flags';
     }
     public static function settings_wrapper_id() {
         return 'qapl_settings_wrapper';
@@ -346,15 +355,15 @@ class QAPL_Quick_Ajax_Helper{
     }
     /* Quick AJAX Settings */
     public static function admin_page_settings_field_option_group(){
-        return 'qapl-settings-group';
+        return 'qapl_settings_group';
     }
     public static function admin_page_global_options_name(){
-        return 'qapl-global-options';
+        return 'qapl_quick_ajax_global_options';
     }
     /* Quick AJAX Global Options */
     public static function global_options_field_select_loader_icon(){
         return self::admin_page_global_options_name().'[loader_icon]';
-    }    
+    }
 }
 
 class QAPL_File_Helper {
@@ -524,8 +533,8 @@ class QAPL_Pages_Helper{
     public function plugin_functions() {
         return $this->file_helper->file_exists('inc/functions.php');
     }
-    public function plugin_update() {
-        return $this->file_helper->file_exists('inc/update.php');
+    public function plugin_updater() {
+        return $this->file_helper->file_exists('inc/class-updater.php');
     }
 }
 
@@ -878,8 +887,20 @@ class QAPL_Form_Fields_Helper{
         );
         return $field_properties;
     }
+
+    public static function get_global_field_remove_old_data(){
+        return array(
+            'name' => 'qapl_remove_old_meta',
+            'label' => __('Enable Purge of Old Data', 'quick-ajax-post-loader'),
+            'type' => 'checkbox',
+            'options' => '',
+            'default' => 0,
+            'description' => __('Choose this option to remove old, unused data from the database. This will help keep your site clean and efficient. Be aware that if you switch back to an older version of the plugin, it might not work as expected.', 'quick-ajax-post-loader'),
+        );
+    }
 }
 
+/*
 class QAPL_Meta_Migrator {
     // method to check for data and migrate it if needed
     public static function get_migrated_meta($post_id, $new_key, $old_key) {
@@ -898,4 +919,4 @@ class QAPL_Meta_Migrator {
         return $data;
     }
 }
-
+*/

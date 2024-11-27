@@ -8,47 +8,28 @@ add_action('edit_form_after_title', 'qapl_quick_ajax_display_shortcode_on_single
 function qapl_quick_ajax_display_shortcode_on_single_page($post) {
     //check the post type
     if ($post && $post->post_type === QAPL_Quick_Ajax_Helper::cpt_shortcode_slug()) {
-        $input_value = get_post_meta($post->ID, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_code(), true);
-        if (!empty($input_value)) {
-            echo '<div id="shortcode-box-wrap" class="click-and-select-all">';
-            echo '<span>' . esc_html__('Copy and paste this shortcode on the page to display the posts list', 'quick-ajax-post-loader') . '</span>';
-            echo '<div>';
-            echo '<pre><code id="' . QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_code() . '">' . esc_html($input_value) . '</code></pre>';
-            echo '</div></div>';
+           
+        $excluded_post_ids = '';
+        $serialized_data = get_post_meta($post->ID, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings(), true);
+        if ($serialized_data) {
+            $form_data = maybe_unserialize($serialized_data);
+            if (is_array($form_data)) { // ensure data is valid
+                foreach ($form_data as $field_name => $field_value) {
+                    if ($field_name === QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in() && !empty($field_value)) { 
+                        $excluded_post_ids = ' excluded_post_ids="'.$field_value.'"';
+                    }
+                }
+            }
         }
+        $shortcode = '[qapl-quick-ajax id="' . intval($post->ID) . '" title="' . esc_attr($post->post_title) . '"'.$excluded_post_ids.']';
+        echo '<div id="shortcode-box-wrap" class="click-and-select-all">';
+        echo '<span>' . esc_html__('Copy and paste this shortcode on the page to display the posts list', 'quick-ajax-post-loader') . '</span>';
+        echo '<div>';
+        echo '<pre><code>' . esc_html($shortcode) . '</code></pre>';
+        echo '</div></div>';
     }
 }
-add_action( 'save_post_'.QAPL_Quick_Ajax_Helper::cpt_shortcode_slug(), 'qapl_save_quick_ajax_meta_box_shortcode' );
-function qapl_save_quick_ajax_meta_box_shortcode( $post_id ) {
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return;
-    }
-    if (!isset($_POST[QAPL_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field()]) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST[QAPL_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_field()])), QAPL_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_action())) {
-        return;
-    } 
 
-    if (!current_user_can('edit_post', $post_id)) {
-        return;
-    }    
-    $title = isset($_POST['post_title']) && !empty($_POST['post_title']) ? sanitize_text_field(wp_unslash($_POST['post_title'])) : 'Untitled';
-    
-    $excluded_post_ids = '';
-    /*
-    if (isset($_POST[QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in()]) && !empty($_POST[QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in()])) {
-        $excluded_post_ids = ' excluded_post_ids="' . esc_attr(sanitize_text_field($_POST[QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in()])) . '"';
-    }
-    */
-    if (isset($_POST[QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in()]) && !empty($_POST[QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in()])) {
-        $post_not_in_ids = sanitize_text_field(wp_unslash($_POST[QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in()]));
-        $excluded_ids_array = array_filter(array_map('absint', explode(',', $post_not_in_ids)));
-        if (!empty($excluded_ids_array)) {
-            $excluded_post_ids = ' excluded_post_ids="' . esc_attr(implode(', ', $excluded_ids_array)) . '"';
-        }
-    }
-    
-    $input_value = '[qapl-quick-ajax id="'. $post_id.'" title="'.esc_attr($title).'"'.$excluded_post_ids.']';
-    update_post_meta($post_id, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_code(), $input_value);
-}
 if (!class_exists('QAPL_Quick_Ajax_Form_Creator')) {
     class QAPL_Quick_Ajax_Form_Creator extends QAPL_Quick_Ajax_Post_Type_Form {
     

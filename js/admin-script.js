@@ -57,21 +57,39 @@
             });
         },
         quick_ajax_tabs: function() {
+            // check if there are tabs on the page
             if ($(".quick-ajax-tabs").length) {
                 const tabButtons = $(".quick-ajax-tab-button");
                 const tabContents = $(".quick-ajax-tab-content");
+                // handle click events on tab buttons
                 tabButtons.on("click", function (e) {
-                e.preventDefault();
-                const tabId = $(this).data("tab");
-                // Deactivate all tabs and buttons
-                tabButtons.removeClass("active");
-                tabContents.removeClass("active");    
-                // Activate the clicked tab and button
-                $(this).addClass("active");
-                $("#" + tabId).addClass("active");
+                    e.preventDefault();
+                    const tabId = $(this).data("tab");
+        
+                    // deactivate all tabs and buttons
+                    tabButtons.removeClass("active").attr("aria-selected", "false").attr("tabindex", "-1");
+                    tabContents.removeClass("active").attr("hidden", true);
+        
+                    // activate the clicked tab button and its content
+                    $(this).addClass("active").attr("aria-selected", "true").attr("tabindex", "0");
+                    $("#" + tabId).addClass("active").attr("hidden", false);
+                });
+                // handle keyboard navigation (arrow keys) for tabs
+                tabButtons.on("keydown", function (e) {
+                    const currentIndex = tabButtons.index(this);
+                    let newIndex;
+                    if (e.key === "ArrowRight") {
+                        newIndex = (currentIndex + 1) % tabButtons.length; // go to next tab
+                    } else if (e.key === "ArrowLeft") {
+                        newIndex = (currentIndex - 1 + tabButtons.length) % tabButtons.length; // go to prev tab
+                    } else {
+                        return; // ignore other keys
+                    }        
+                    tabButtons.eq(newIndex).focus().click(); // focus and activate the new tab
                 });
             }
         },
+        
         copy_code: function() {
             $('.copy-button').on('click', function() {
                 var codeToCopy = $('#' + $(this).data('copy'));

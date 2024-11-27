@@ -62,8 +62,7 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
         }
 
         private function unserialize_shortcode_data($id){
-            //$serialized_data = get_post_meta($id, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings(), true);
-            $serialized_data = QAPL_Meta_Migrator::get_migrated_meta($id, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings(), 'qapl_settings_wrapper');
+            $serialized_data = get_post_meta($id, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings(), true);
             if ($serialized_data) {
                 $form_data = maybe_unserialize($serialized_data);
                 if (is_array($form_data)) { // ensure data is valid

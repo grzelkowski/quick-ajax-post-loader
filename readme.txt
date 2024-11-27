@@ -2,8 +2,8 @@
 Contributors: grzelkowski
 Tags: ajax, load-more, ajax-posts, dynamic, category-filter
 Requires at least: 5.6
-Tested up to: 6.7
-Stable tag: 1.3.2
+Tested up to: 6.7.1
+Stable tag: 1.3.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -14,28 +14,23 @@ Load and display WordPress posts dynamically using AJAX for faster, interactive 
 
 **Quick Ajax Post Loader** is designed for users who need an easy way to display posts using AJAX on WordPress without coding. Customize layouts, filter posts by taxonomy, and create personalized post templates with ease. This plugin allows you to dynamically load posts without refreshing the page, ensuring a smooth and engaging user experience. Whether you're showcasing blog posts, portfolios, or custom post types, Quick Ajax Post Loader simplifies the process of implementing AJAX functionality.
 
+== Why use Quick Ajax Post Loader? ==
 
-**Why use Quick Ajax Post Loader?**
 - **Show Posts Without Page Reloads**: Perfect for displaying posts with AJAX to improve user navigation and site interactivity.
 - **Easy to Use**: Generate and use shortcodes to display posts dynamically, even if you don't have coding skills.
 - **Flexible Customization**: Adapt the display with options like grid columns, sorting, and custom templates.
 - **Enhanced User Engagement**: Keep visitors on your site longer with seamless content loading.
 - **Optimized for Speed**: Load only what’s needed, making your site faster and more efficient.
 
-**Main features**:
-- Generate shortcodes for AJAX post loading with custom configurations.
-- Filter posts by taxonomy, such as categories or tags, with clickable buttons.
-- Customize templates for post display, category buttons, load more buttons, and loading icons.
-- Configure the display grid with up to 12 columns and add custom CSS classes for advanced styling.
-- Built-in AJAX Function Generator for easy PHP integration.
-
 == Features ==
 
-- **Dynamic Shortcodes**: Easily create shortcodes to display posts using AJAX.
-- **Custom Templates**: Personalize post items, buttons, and loading icons.
-- **Flexible Taxonomy Filtering**: Display taxonomies as buttons to filter posts, such as categories for custom post types (e.g., articles, projects).
-- **Customizable Grid Layouts**: Set the number of columns from 1 to 12 and apply custom CSS classes for containers.
-- **Advanced Sorting Options**: Adjust query parameters such as sorting by name, date, and more.
+- **Dynamic Shortcodes**: Generate and use shortcodes to display posts using AJAX without page reloads. Ideal for enhancing user navigation and interactivity.
+- **Customizable Templates**: Modify the layout and appearance of post items, buttons, and loading icons to fit your website's design seamlessly.
+- **Taxonomy Filtering**: Display categories, tags, or custom taxonomies as clickable buttons to filter posts dynamically.
+- **Flexible Grid Layouts**: Configure the display grid with up to 12 columns and add custom CSS classes for precise styling and responsive design.
+- **Advanced Sorting and Filtering Options**: Control how posts are sorted (by name, date, etc.) and filtered for better user experiences.
+- **AJAX Function Generator**: Built-in support for generating AJAX functions for advanced PHP integration without manual coding.
+- **Performance Optimizations**: Load only necessary assets and data to ensure faster page performance.
 
 == Installation ==
 
@@ -61,9 +56,14 @@ No, you can use the built-in shortcode generator for easy implementation without
 Yes, it includes a default grid style (up to 12 columns) that can be disabled if full customization is desired.
 
 == Changelog ==
+= 1.3.3 - 2024-11-27 =
+- Improved ARIA compliance and accessibility for tab navigation in the settings page.
+- Improved the update process for smoother upgrades to newer versions of the plugin.
+- Added a new option to remove old data used by previous versions, keeping your site clean and optimised.
+- Fixed an issue where the loader icon was not displaying correctly in some configurations.
 
-= 1.3.2 - 2024-11-13 = 
-- Improved `post_meta`  handling for better shortcode management.
+= 1.3.2 - 2024-11-13 =
+- Improved `post_meta` handling for better shortcode management.
 - Fixed an issue where shortcodes were not visible on the shortcode management page.
 - Enhanced data migration for better backward compatibility.
 
