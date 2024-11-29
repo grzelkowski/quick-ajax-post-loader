@@ -12,7 +12,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.3.3',
+            'version' => '1.3.4',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
@@ -151,6 +151,28 @@ class QAPL_Quick_Ajax_Helper{
 
     }
     */
+    
+    public static function add_or_update_option_autoload($option_name, $default_value='', $autoload='auto') {
+        global $wpdb;
+        $option_exists = $wpdb->get_var($wpdb->prepare(
+            "SELECT option_name FROM {$wpdb->options} WHERE option_name = %s",
+            $option_name
+        ));
+        if ($option_exists) {
+            //set off if exists
+            $wpdb->update(
+                $wpdb->options,
+                ['autoload' => $autoload],
+                ['option_name' => $option_name],
+                ['%s'],
+                ['%s']
+            );
+        } else {
+            //create option if not exists
+            add_option($option_name, $default_value, '', 'off');
+        }
+    }        
+
     public static function element_exists($type, $name) {
         $exists = false;
         $type_formatted = '';
@@ -899,24 +921,3 @@ class QAPL_Form_Fields_Helper{
         );
     }
 }
-
-/*
-class QAPL_Meta_Migrator {
-    // method to check for data and migrate it if needed
-    public static function get_migrated_meta($post_id, $new_key, $old_key) {
-        // check for data using the new key
-        $data = get_post_meta($post_id, $new_key, true);
-        // if no data is found under the new key, check the old key
-        if (!$data) {
-            $data = get_post_meta($post_id, $old_key, true);
-            if ($data) {
-                // save the data under the new key and remove the old key
-                update_post_meta($post_id, $new_key, $data);
-                delete_post_meta($post_id, $old_key);
-            }
-        }
-
-        return $data;
-    }
-}
-*/

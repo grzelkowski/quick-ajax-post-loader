@@ -3,7 +3,7 @@ Contributors: grzelkowski
 Tags: ajax, load-more, ajax-posts, dynamic, category-filter
 Requires at least: 5.6
 Tested up to: 6.7.1
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -56,6 +56,11 @@ No, you can use the built-in shortcode generator for easy implementation without
 Yes, it includes a default grid style (up to 12 columns) that can be disabled if full customization is desired.
 
 == Changelog ==
+= 1.3.4 - 2024-11-29 =
+- Improved the activation process to ensure default options are correctly set.
+- Fixed an issue where some default settings were not applied during activation.
+- Introduced enhancements to improve the plugin's stability and reliability.
+
 = 1.3.3 - 2024-11-27 =
 - Improved ARIA compliance and accessibility for tab navigation in the settings page.
 - Improved the update process for smoother upgrades to newer versions of the plugin.

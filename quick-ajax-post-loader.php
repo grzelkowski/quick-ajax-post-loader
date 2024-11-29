@@ -1,13 +1,10 @@
 <?php
-if (!defined('ABSPATH')) {
-    exit;
-}
 /*
 * Plugin Name: Quick Ajax Post Loader
 * Plugin URI: https://github.com/grzelkowski/quick-ajax-post-loader/releases
 * Text Domain: quick-ajax-post-loader
 * Domain Path: /languages
-* Version: 1.3.3
+* Version: 1.3.4
 * Description: Supercharge post loading with Quick Ajax Post Loader. Enhance user experience and optimize site performance using AJAX technology.
 * Author: Pawel Grzelkowski
 * Author URI: https://grzelkowski.com
@@ -16,6 +13,11 @@ if (!defined('ABSPATH')) {
 * Requires at least: 5.6
 * Tested up to: 6.7.1
 */
+if (!defined('ABSPATH')) {
+    exit;
+}
+require_once plugin_dir_path(__FILE__) . 'inc/class-activator.php';
+register_activation_hook(__FILE__, ['QAPL_Quick_Ajax_Activator', 'activate']);
 
 function qapl_quick_ajax_load_textdomain() {
     load_plugin_textdomain('quick-ajax-post-loader', false, dirname(plugin_basename(__FILE__)) . '/languages/');    
@@ -29,7 +31,7 @@ function qapl_initialize_plugin() {
         }
         add_action('admin_notices', 'qapl_quick_ajax_admin_notice');
     }else{
-        require_once(plugin_dir_path( __FILE__ ).'inc/class-helper.php');    
+        require_once(plugin_dir_path( __FILE__ ).'inc/class-helper.php');
         $qapl_helper = QAPL_Quick_Ajax_Helper::get_instance();
         // Register frontend styles and scripts
         add_action('wp_enqueue_scripts', [$qapl_helper, 'enqueue_frontend_styles_and_scripts']);    

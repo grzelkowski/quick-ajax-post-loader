@@ -36,7 +36,7 @@ function qapl_quick_ajax_term_filter($args, $attributes, $taxonomy = null, $quic
     }
 }
 
-function qapl_get_quick_ajax_id(){
+function qapl_quick_ajax_get_quick_ajax_id(){
     if (!class_exists('QAPL_Quick_Ajax_Handler') || !method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
         error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
         return '';

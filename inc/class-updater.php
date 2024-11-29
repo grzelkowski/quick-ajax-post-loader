@@ -47,7 +47,7 @@ if (!class_exists('QAPL_Quick_Ajax_Updater')) {
         private function check_and_downgrade_version(): bool {
             $stored_version = get_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_version());
             if ($stored_version === false) {
-                update_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_version(), $this->new_version);
+                add_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_version(), $this->new_version, '', 'off');
                 //error_log('QAPL Updater: Version record created.');
                 return true;
             }
@@ -68,7 +68,8 @@ if (!class_exists('QAPL_Quick_Ajax_Updater')) {
             // register update strategies and send them to the constructor
             $update_strategies = array(
                 '1.3.2' => new QAPL_Update_Version_1_3_2(),
-                '1.3.3' => new QAPL_Update_Version_1_3_3()
+                '1.3.3' => new QAPL_Update_Version_1_3_3(),
+                '1.3.4' => new QAPL_Update_Version_1_3_4()
             );
             $updater = new QAPL_Quick_Ajax_Updater($update_strategies);
             $updater->run_all_updates();
@@ -96,13 +97,22 @@ class QAPL_Update_Version_1_3_3 implements QAPL_Update_Interface {
         $results[] = QAPL_Data_Migrator::migrate_meta_for_all_posts(QAPL_Quick_Ajax_Helper::cpt_shortcode_slug(), 'qapl_quick_ajax_shortcode_settings', QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings());
         $return = QAPL_Update_Validator::check_migration_results($results, '1.3.3');
         return $return;
+    }    
+}
+class QAPL_Update_Version_1_3_4 implements QAPL_Update_Interface {
+    public function run_update(): bool {
+        $results = array();
+        $results[] = QAPL_Data_Migrator::update_autoload_for_option(QAPL_Quick_Ajax_Helper::admin_page_global_options_name(),'off');
+        $results[] = QAPL_Data_Migrator::update_autoload_for_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_version(),'off');
+        $return = QAPL_Update_Validator::check_migration_results($results, '1.3.4');
+        return $return;
     }
     
 }
 
 
 class QAPL_Data_Migrator {
-    public static function migrate_option($old_key, $new_key) {
+    public static function migrate_option($old_key, $new_key, $autoload = 'auto') {
         // get the old option value
         $old_value = get_option($old_key);
         $return = 1; // no changes
@@ -114,8 +124,8 @@ class QAPL_Data_Migrator {
             $new_value = get_option($new_key);
             if ($new_value === false || empty($new_value)) {
                 // new option does not exist, migrate the value
-                $update = update_option($new_key, $old_value);
-                if ($update === false) {
+                $added = add_option($new_key, $old_value, '', $autoload);
+                if (!$added) {
                     // log the failure and return 0
                     //error_log('QAPL_Data_Migrator: Failed to migrate option from ' . $old_key . ' to ' . $new_key);
                     $return = 0; // migration failed
@@ -181,9 +191,26 @@ class QAPL_Data_Migrator {
             }
         }
         // 0 failed
-        // 1 no changes
+        // 1 success, no changes, no records to remove
         // 2 migrated, old record exists
         // 3 no changes, old record exists
+        return $return;
+    }
+    public static function update_autoload_for_option( $option_name, $autoload = 'auto') {
+        global $wpdb;
+        $return = 1;
+        $updated = $wpdb->update(
+            $wpdb->options,
+            array( 'autoload' => $autoload ), // set autoload to 'off'
+            array( 'option_name' => $option_name ),
+            array( '%s' ),
+            array( '%s' )
+        );
+        if ( $updated === false ) {
+            $return = 0; 
+        }
+        // 0 failed
+        // 1 success, no records to remove
         return $return;
     }
 }
@@ -202,7 +229,7 @@ class QAPL_Update_Validator {
 
     public static function check_migration_results(array $results, string $version_flag): bool {
         // 0 failed
-        // 1 no changes
+        // 1 success, no changes, no records to remove
         // 2 migrated, old record exists
         // 3 no changes, old record exists
         //error_log('migration ' . json_encode($version_flag)); 
@@ -246,7 +273,11 @@ class QAPL_Update_Validator {
         if (empty(self::$cleanup_flags)) {
             delete_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_cleanup_flags());
         } else {
-            update_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_cleanup_flags(), self::$cleanup_flags);
+            if (get_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_cleanup_flags()) === false) {
+                add_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_cleanup_flags(), self::$cleanup_flags, '', 'off');
+            } else {
+                update_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_cleanup_flags(), self::$cleanup_flags);
+            }
         }
     }
 
