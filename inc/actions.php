@@ -88,6 +88,10 @@ function qapl_quick_ajax_get_taxonomies_by_post_type() {
             </option>
             <?php
         }
+    }else{
+        ?>
+        <option value="0"><?php echo esc_html__('No taxonomy found', 'quick-ajax-post-loader'); ?></option>
+        <?php
     }
     $output = ob_get_clean();
     wp_send_json_success($output);

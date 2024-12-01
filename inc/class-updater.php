@@ -106,8 +106,7 @@ class QAPL_Update_Version_1_3_4 implements QAPL_Update_Interface {
         $results[] = QAPL_Data_Migrator::update_autoload_for_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_version(),'off');
         $return = QAPL_Update_Validator::check_migration_results($results, '1.3.4');
         return $return;
-    }
-    
+    }    
 }
 
 

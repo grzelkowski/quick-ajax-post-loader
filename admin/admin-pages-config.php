@@ -459,9 +459,11 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
 
 abstract class QAPL_Quick_Ajax_Post_Type_Form extends QAPL_Quick_Ajax_Content_Builder {
     protected $form_id;
+    protected $meta_key;
     protected $post_type;
-    public function __construct($form_id, $post_type) {
+    public function __construct($form_id, $meta_key, $post_type) {
         $this->form_id = $form_id;
+        $this->meta_key = $meta_key;
         $this->post_type = $post_type;
         if($this->post_type){
             add_action('wp_loaded', array($this, 'init_quick_ajax_creator_fields'), 10);
@@ -473,7 +475,7 @@ abstract class QAPL_Quick_Ajax_Post_Type_Form extends QAPL_Quick_Ajax_Content_Bu
     abstract public function render_quick_ajax_form();
     
     private function unserialize_data($post_id) {
-        $serialized_data = get_post_meta($post_id, $this->form_id, true);
+        $serialized_data = get_post_meta($post_id, $this->meta_key, true);
         if ($serialized_data) {
             $form_data = maybe_unserialize($serialized_data);            
             if (is_array($form_data)) { // Check if the data was successfully unserialized
@@ -522,7 +524,7 @@ abstract class QAPL_Quick_Ajax_Post_Type_Form extends QAPL_Quick_Ajax_Content_Bu
             }
         }        
         $serialized_data = serialize($form_data);
-        update_post_meta($post_id, $this->form_id, $serialized_data);
+        update_post_meta($post_id, $this->meta_key, $serialized_data);
     }
 }
 

@@ -1,4 +1,9 @@
 ## Changelog
+### 1.3.5 - 2024-12-01
+- Fixed an issue with taxonomy handling for post types.
+- Added support for cases where no taxonomy is assigned, ensuring the plugin works smoothly.
+- Performed additional testing and applied minor fixes to improve stability and user experience.
+
 ### 1.3.4 - 2024-11-29
 - Improved the activation process to ensure default options are correctly set.
 - Fixed an issue where some default settings were not applied during activation.
@@ -50,6 +55,12 @@
 - Initial release.
 
 ## Upgrade Notice
+
+### 1.3.5
+Fixes taxonomy handling issues and adds support for cases where no taxonomy is assigned. Includes minor fixes and stability improvements. Recommended for better functionality.
+
+### 1.3.3
+Enhances accessibility, adds options for managing old data, and fixes loader icon display issues. Recommended for improved user experience and site management.
 
 ### 1.3.0
 This update includes new features like automatic plugin updates and important security enhancements. Update recommended.

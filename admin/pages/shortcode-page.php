@@ -117,6 +117,11 @@ if (!class_exists('QAPL_Quick_Ajax_Form_Creator')) {
                         );
                         endif;
                 endforeach;
+            }else{
+                $taxonomy_options[] = array(
+                    'label' => esc_html__('No taxonomy found', 'quick-ajax-post-loader'),
+                    'value' => 0
+                );
             }
             $this->fields[QAPL_Quick_Ajax_Helper::shortcode_page_select_taxonomy()]['options'] = $taxonomy_options;
             $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_taxonomy(), QAPL_Quick_Ajax_Helper::shortcode_page_show_taxonomy_filter());
@@ -160,6 +165,6 @@ if (!class_exists('QAPL_Quick_Ajax_Form_Creator')) {
         }
     }
     if ($post_type === QAPL_Quick_Ajax_Helper::cpt_shortcode_slug()) {
-        $form = new QAPL_Quick_Ajax_Form_Creator(QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings(), $post_type);
+        $form = new QAPL_Quick_Ajax_Form_Creator(QAPL_Quick_Ajax_Helper::settings_wrapper_id(), QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings(), $post_type);
     }
 }
