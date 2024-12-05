@@ -130,18 +130,7 @@ if (!class_exists('QAPL_Quick_Ajax_Post_Type')) {
             //add Shortcode Column Content
             if ($column_name === 'quick_ajax_shortcode_column') {                
                 $excluded_post_ids = '';
-                $serialized_data = get_post_meta($post_id, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings(), true);
-                if ($serialized_data) {
-                    $form_data = maybe_unserialize($serialized_data);
-                    if (is_array($form_data)) { // ensure data is valid
-                        foreach ($form_data as $field_name => $field_value) {
-                            if ($field_name === QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in() && !empty($field_value)) { 
-                                $excluded_post_ids = ' excluded_post_ids="'.$field_value.'"';
-                            }
-                        }
-                    }
-                }
-                $shortcode = '[qapl-quick-ajax id="' . intval($post_id) . '" title="' . esc_attr(get_the_title($post_id)) . '"'.$excluded_post_ids.']';
+                $shortcode = QAPL_Quick_Ajax_Helper::generate_shortcode($post_id);
                 echo '<div class="quick-ajax-shortcode">' . esc_html($shortcode)  . '</div>';
             }
         }

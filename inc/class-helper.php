@@ -12,7 +12,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.3.5',
+            'version' => '1.3.6',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
@@ -220,6 +220,39 @@ class QAPL_Quick_Ajax_Helper{
     public function plugin_templates_load_more_button() {
         return $this->file_helper->get_templates_dir_path('/load-more-button.php');
     }
+
+    public static function generate_shortcode($post_id) {
+        // guard clause to check if $post_id is valid
+        $post_id = intval($post_id);
+        if ($post_id <= 0) {
+            return '';
+        }
+        // get the title of the post
+        $post_title = get_the_title($post_id);
+        // initialise variables
+        $excluded_post_ids = '';
+        // get serialized meta data from the post
+        $serialized_data = get_post_meta($post_id, self::quick_ajax_shortcode_settings(), true);
+        // check if serialized data exists and process it
+        if ($serialized_data) {
+            $form_data = maybe_unserialize($serialized_data);
+            // ensure that the unserialized data is a valid array
+            if (is_array($form_data)) {
+                foreach ($form_data as $field_name => $field_value) {
+                    // check for specific field and set excluded post ids
+                    if ($field_name === self::shortcode_page_set_post_not_in() && !empty($field_value)) {
+                        $excluded_post_ids = ' excluded_post_ids="' . esc_attr($field_value) . '"';
+                    }
+                }
+            }
+        }
+        // generate the shortcode with post ID and title, include excluded post ids if available
+        $shortcode = '[qapl-quick-ajax id="' . $post_id . '" title="' . esc_attr($post_title) . '"' . $excluded_post_ids . ']';
+        //apply filters for extendability
+        //$shortcode = apply_filters('generate_shortcode', $shortcode, $post_id)
+        return $shortcode;
+    }
+
     public static function menu_slug() {
         return 'qapl-menu';
     }

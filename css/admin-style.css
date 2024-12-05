@@ -97,11 +97,25 @@ input:checked + .switch {
 }
 
 /* shortcode box */
-.shortcode-box-wrap{
+#shortcode-box-wrap{
     display:flex;
     flex-direction:column;
-    margin-top:20px;
+    margin-top:10px;
 }
+#shortcode-box-wrap .shortcode-description{
+    padding: 0px 14px;
+}
+#shortcode-box-wrap code{
+    line-height: 2;
+    padding: 10px 10px 11px;
+    border:1px solid #8c8f94;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, .5);
+    cursor:pointer;
+    -webkit-transition: .3s;
+    transition: .3s;
+}
+
 /* switch button */
 .switch-checkbox{
     display: inline-block;

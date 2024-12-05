@@ -8,25 +8,13 @@ add_action('edit_form_after_title', 'qapl_quick_ajax_display_shortcode_on_single
 function qapl_quick_ajax_display_shortcode_on_single_page($post) {
     //check the post type
     if ($post && $post->post_type === QAPL_Quick_Ajax_Helper::cpt_shortcode_slug()) {
-           
-        $excluded_post_ids = '';
-        $serialized_data = get_post_meta($post->ID, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings(), true);
-        if ($serialized_data) {
-            $form_data = maybe_unserialize($serialized_data);
-            if (is_array($form_data)) { // ensure data is valid
-                foreach ($form_data as $field_name => $field_value) {
-                    if ($field_name === QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in() && !empty($field_value)) { 
-                        $excluded_post_ids = ' excluded_post_ids="'.$field_value.'"';
-                    }
-                }
-            }
-        }
-        $shortcode = '[qapl-quick-ajax id="' . intval($post->ID) . '" title="' . esc_attr($post->post_title) . '"'.$excluded_post_ids.']';
-        echo '<div id="shortcode-box-wrap" class="click-and-select-all">';
-        echo '<span>' . esc_html__('Copy and paste this shortcode on the page to display the posts list', 'quick-ajax-post-loader') . '</span>';
-        echo '<div>';
+        $shortcode = QAPL_Quick_Ajax_Helper::generate_shortcode($post->ID);
+        echo '<div id="shortcode-box-wrap">';
+        echo '<span class="shortcode-description">' . esc_html__('Copy and paste this shortcode on the page to display the posts list', 'quick-ajax-post-loader') . '</span>';
+        echo '<div class="click-and-select-all">';
         echo '<pre><code>' . esc_html($shortcode) . '</code></pre>';
-        echo '</div></div>';
+        echo '</div>';
+        echo '</div>';
     }
 }
 

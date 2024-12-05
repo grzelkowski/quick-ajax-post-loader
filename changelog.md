@@ -1,4 +1,8 @@
 ## Changelog
+### 1.3.6 - 2024-12-05
+- Improved the appearance of the shortcode box in the post editor to make it more user-friendly.
+- Enhanced the plugin's performance and stability for a smoother experience.
+
 ### 1.3.5 - 2024-12-01
 - Fixed an issue with taxonomy handling for post types.
 - Added support for cases where no taxonomy is assigned, ensuring the plugin works smoothly.

@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 $accordion_block_title = 'Tworzenie i używanie własnych ikon ładowania';
 $accordion_block_content = '<p><strong>Opis:</strong> Plugin <strong>Quick Ajax Post Loader</strong> oferuje możliwość personalizacji ikon ładowania za pomocą własnych szablonów. Możesz stworzyć dowolną liczbę niestandardowych ikon ładowania, które następnie będą dostępne w konfiguracji pluginu.</p>';
 $accordion_block_content .= '<h4>Jak tworzyć własne ikony ładowania</h4>';
-$accordion_block_content .= '<p>Stwórz plik o dowolnej nazwie, np. <code class="code-tag">loader-icon-custom-loader.php</code>, i umieść go w katalogu <code class="code-tag">/quick-ajax-post-loader/templates/loader-icon/</code> w Twoim motywie lub child theme. Plugin automatycznie wykryje wszystkie pliki w tym katalogu jako dostępne ikony ładowania.</p>';
+$accordion_block_content .= '<p>Stwórz plik o dowolnej nazwie, np. <code class="code-tag">loader-icon-custom-loader.php</code>, i umieść go w katalogu <code class="code-tag">wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/loader-icon/</code> w Twoim motywie lub child theme. Plugin automatycznie wykryje wszystkie pliki w tym katalogu jako dostępne ikony ładowania.</p>';
 $accordion_block_content .= '<h4>Przykład ikony ładowania</h4>';
 $accordion_block_content .= '<p>Poniżej znajduje się przykładowy kod niestandardowej ikony ładowania:</p>';
 $accordion_block_content .= '<pre><code class="no-background">';
