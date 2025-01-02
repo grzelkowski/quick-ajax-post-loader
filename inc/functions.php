@@ -6,7 +6,9 @@ if (!defined('ABSPATH')) {
 //add get qapl_quick_ajax_term_filter
 function qapl_quick_ajax_post_grid($args, $attributes = null, $taxonomy = null, $meta_query = null) {
     if (!class_exists('QAPL_Quick_Ajax_Handler') || !method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
-        error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            //error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
+        }
         return;
     }
     $ajax_class = QAPL_Quick_Ajax_Handler::get_instance();
@@ -24,7 +26,9 @@ function qapl_quick_ajax_post_grid($args, $attributes = null, $taxonomy = null, 
 
 function qapl_quick_ajax_term_filter($args, $attributes, $taxonomy = null, $quick_ajax_id = null){
     if (!class_exists('QAPL_Quick_Ajax_Handler') || !method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
-        error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            //error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
+        }
         return;
     }
     $ajax_class = QAPL_Quick_Ajax_Handler::get_instance();
@@ -38,7 +42,9 @@ function qapl_quick_ajax_term_filter($args, $attributes, $taxonomy = null, $quic
 
 function qapl_quick_ajax_get_quick_ajax_id(){
     if (!class_exists('QAPL_Quick_Ajax_Handler') || !method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
-        error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            //error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
+        }
         return '';
     }
     $instance = QAPL_Quick_Ajax_Handler::get_instance();
@@ -46,25 +52,29 @@ function qapl_quick_ajax_get_quick_ajax_id(){
 }
 
 function qapl_quick_ajax_check_page_type($values){
-    $screen = null;
     if (function_exists('get_current_screen')) {
         $screen = get_current_screen();
+    }else{
+        $screen = null;
     }
+    $page_type = null;
 
-    $page_type = false;
-    $page = sanitize_text_field(filter_input(INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-    $post_type = sanitize_text_field(filter_input(INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-
-    if ($page) {
-        $page_type = $page;
-    } elseif ($post_type) {
-        $page_type = $post_type;
-    } elseif (isset($screen->post_type)) {
+    // check if the 'page' parameter exists in the URL and sanitize it
+    if ($page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS)) {
+        $page_type = sanitize_text_field($page);
+    }
+    // check if the 'post_type' parameter exists in the URL and sanitize it
+    elseif ($post_type = filter_input(INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS)) {
+        $page_type = sanitize_text_field($post_type);
+    }
+    // if neither 'page' nor 'post_type' is set, try to get the post type from the current screen
+    elseif (isset($screen->post_type)) {
         $page_type = sanitize_text_field($screen->post_type);
     }
+
     if ($page_type) {
         if (is_array($values)) {
-            return in_array($page_type, $values);
+            return in_array($page_type, $values, true); // use strict comparison
         } else {
             return $page_type === $values;
         }

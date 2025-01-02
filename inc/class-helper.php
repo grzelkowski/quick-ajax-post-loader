@@ -12,7 +12,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.3.6',
+            'version' => '1.3.7',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
@@ -51,27 +51,57 @@ class QAPL_Quick_Ajax_Helper{
         }
     }
     public function enqueue_frontend_styles_and_scripts() {
-        if (!is_admin()) {
-            $suffix = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';
-            wp_enqueue_style('qapl-quick-ajax-style', $this->file_helper->get_plugin_css_directory() . 'style' . $suffix . '.css', [], self::get_plugin_info()['version']);
-            wp_enqueue_script('qapl-quick-ajax-script', $this->file_helper->get_plugin_js_directory() . 'script' . $suffix . '.js', ['jquery'], self::get_plugin_info()['version'], true);
-            
+        if (!is_admin()) {           
+            $style_suffix = $this->get_file_suffix('/css/', 'style.css');
+            $script_suffix = $this->get_file_suffix('/js/', 'script.js');
+            $version = $this->is_dev_mode() ? time() : self::get_plugin_info()['version'];
+            wp_enqueue_style('qapl-quick-ajax-style', $this->file_helper->get_plugin_css_directory() . 'style' . $style_suffix . '.css', [], $version);
+            wp_enqueue_script('qapl-quick-ajax-script', $this->file_helper->get_plugin_js_directory() . 'script' . $script_suffix . '.js', ['jquery'], $version, true);
             wp_localize_script('qapl-quick-ajax-script', 'qapl_quick_ajax_helper', $this->get_localized_data());
         }
     }
     public function enqueue_admin_styles_and_scripts() {
         if (is_admin()) {
-            $suffix = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';
-            wp_enqueue_style('qapl-quick-ajax-admin-style', $this->file_helper->get_plugin_css_directory() . 'admin-style' . $suffix . '.css', [], self::get_plugin_info()['version']);
-            
-            $values = [self::cpt_shortcode_slug(), self::settings_page_slug()];
-            if (qapl_quick_ajax_check_page_type($values)) {
-                wp_register_script('qapl-quick-ajax-admin-script', $this->file_helper->get_plugin_js_directory() . 'admin-script' . $suffix . '.js', ['jquery'], self::get_plugin_info()['version'], true);
+            // Check if the current page matches the plugin-related pages
+            $plugin_pages = [self::cpt_shortcode_slug(), self::settings_page_slug()];
+            if (qapl_quick_ajax_check_page_type($plugin_pages)) {
+                $style_suffix = $this->get_file_suffix('/css/', 'admin-style.css');
+                $script_suffix = $this->get_file_suffix('/js/', 'admin-script.js');
+                $version = $this->is_dev_mode() ? time() : self::get_plugin_info()['version'];
+                wp_enqueue_style('qapl-quick-ajax-admin-style', $this->file_helper->get_plugin_css_directory() . 'admin-style' . $style_suffix . '.css', [], $version);
+                wp_register_script('qapl-quick-ajax-admin-script', $this->file_helper->get_plugin_js_directory() . 'admin-script' . $script_suffix . '.js', ['jquery'], $version, true);
                 wp_localize_script('qapl-quick-ajax-admin-script', 'qapl_quick_ajax_helper', $this->get_admin_localized_data());
                 wp_enqueue_script('qapl-quick-ajax-admin-script');
             }
         }
     }
+    private function is_dev_mode() {
+        // Check for the 'dev' parameter in the URL
+        $dev_param = isset($_GET['dev']) ? sanitize_text_field(wp_unslash($_GET['dev'])) : null;
+        if ($dev_param === 'true' || $dev_param === '1') {
+            return true;
+        }
+        return false;
+    }
+    private function get_file_suffix($base_path, $file_name) {
+        // Set the default suffix to '.min' if WP_DEBUG is disabled
+        $default_suffix = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';
+    
+        // Check if develop_mode is enabled and the -dev file exists
+        if ($this->is_dev_mode()){
+            $file_parts = pathinfo($file_name);
+            $base_name = $file_parts['filename'];
+            $extension = isset($file_parts['extension']) ? '.' . $file_parts['extension'] : '';
+            $dev_file = $base_path . $base_name . '-dev' . $extension;
+            // Return the -dev suffix if the file exists
+            if ($this->file_helper->file_exists($dev_file)) {
+                return '-dev';
+            }
+        }
+        // Return the default suffix if no -dev file exists
+        return $default_suffix;
+    }
+    
     private function get_localized_data() {
         $nonce = wp_create_nonce(self::wp_nonce_form_quick_ajax_action());
         if (!$nonce) {
@@ -152,26 +182,33 @@ class QAPL_Quick_Ajax_Helper{
     }
     */
     
-    public static function add_or_update_option_autoload($option_name, $default_value='', $autoload='auto') {
-        global $wpdb;
-        $option_exists = $wpdb->get_var($wpdb->prepare(
-            "SELECT option_name FROM {$wpdb->options} WHERE option_name = %s",
-            $option_name
-        ));
-        if ($option_exists) {
-            //set off if exists
-            $wpdb->update(
+    public static function add_or_update_option_autoload($option_name, $default_value = '', $autoload = 'auto') {
+        // Check if the option exists
+        $existing_option = get_option($option_name, false);
+    
+        if ($existing_option !== false) {
+            // Update autoload value if the option exists
+            global $wpdb;
+            $updated = $wpdb->update(
                 $wpdb->options,
-                ['autoload' => $autoload],
+                ['autoload' => $autoload], // Update autoload field
                 ['option_name' => $option_name],
                 ['%s'],
                 ['%s']
             );
+    
+            //clear cache after updating
+            if ($updated !== false) {
+                wp_cache_delete($option_name, 'options');
+            }
         } else {
-            //create option if not exists
-            add_option($option_name, $default_value, '', 'off');
+            // Add the option with specified autoload value
+            add_option($option_name, $default_value, '', $autoload);
+    
+            //clear cache after adding
+            wp_cache_delete($option_name, 'options');
         }
-    }        
+    }         
 
     public static function element_exists($type, $name) {
         $exists = false;

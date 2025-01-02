@@ -195,12 +195,16 @@ class QAPL_Data_Migrator {
         // 3 no changes, old record exists
         return $return;
     }
-    public static function update_autoload_for_option( $option_name, $autoload = 'auto') {
-        global $wpdb;
+    public static function update_autoload_for_option($option_name, $autoload = 'auto') {
+        $existing_option = get_option($option_name, false);
+        if ($existing_option === false) {
+            return 1;
+        }
         $return = 1;
+        global $wpdb;
         $updated = $wpdb->update(
             $wpdb->options,
-            array( 'autoload' => $autoload ), // set autoload to 'off'
+            array( 'autoload' => $autoload ), // set autoload to the new value
             array( 'option_name' => $option_name ),
             array( '%s' ),
             array( '%s' )
@@ -208,6 +212,7 @@ class QAPL_Data_Migrator {
         if ( $updated === false ) {
             $return = 0; 
         }
+        wp_cache_delete($option_name, 'options');
         // 0 failed
         // 1 success, no records to remove
         return $return;
@@ -300,7 +305,7 @@ if (!class_exists('QAPL_Quick_Ajax_Cleaner')) {
 
         public function purge_unused_data() {
             if (!current_user_can('manage_options')) {
-                wp_die(__('You do not have sufficient permissions to access this page.'));
+                wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'quick-ajax-post-loader'));
             }
 
             foreach ($this->cleanup_flags as $version => $status) {
@@ -329,23 +334,23 @@ if (!class_exists('QAPL_Quick_Ajax_Cleaner')) {
         
         // check for required capabilities
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have sufficient permissions to access this page.', 'quick-ajax-post-loader'));
-        }    
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'quick-ajax-post-loader'));
+        }
         // verify nonce for security
-        if (!isset($_POST['qapl_purge_nonce']) || !wp_verify_nonce($_POST['qapl_purge_nonce'], 'qapl_purge_unused_data')) {
+        if (!isset($_POST['qapl_purge_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['qapl_purge_nonce'])), 'qapl_purge_unused_data')) {
             wp_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=invalid_nonce'));
             exit;
-        }    
+        }
         // check the hidden input value
-        if (!isset($_POST['qapl_purge_unused_data']) || $_POST['qapl_purge_unused_data'] !== '1') {
+        if (!isset($_POST['qapl_purge_unused_data']) || sanitize_text_field(wp_unslash($_POST['qapl_purge_unused_data'])) !== '1') {
             wp_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=invalid_request'));
             exit;
-        }    
+        }
         // initialize cleanup strategies
         $cleanup_strategies = array(
             '1.3.2' => new QAPL_Cleanup_Version_1_3_2(),
             '1.3.3' => new QAPL_Cleanup_Version_1_3_3()
-        );    
+        );
         // create cleaner instance and perform cleanup
         $cleaner = new QAPL_Quick_Ajax_Cleaner($cleanup_strategies);
         $cleaner->purge_unused_data();

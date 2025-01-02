@@ -147,6 +147,19 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             ];
         }
         public function sanitize_json_to_array($data) {
+            // Check if input is a JSON string
+            if (is_string($data)) {
+                $data = json_decode($data, true);
+                // Check if JSON decoding was successful
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    return []; //Return an empty array if JSON decoding failed
+                }
+            }
+            // Ensure input is an array
+            if (!is_array($data)) {
+                return [];
+            }
+            // Sanitize array values
             foreach ($data as $key => $value) {
                 if (is_array($value)) {
                     $data[$key] = $this->sanitize_json_to_array($value);

@@ -14,8 +14,7 @@
 .quick-ajax-filter-wrapper.quick-ajax-style .quick-ajax-button:focus{
     outline: none;
     text-decoration: none;
-    -webkit-text-decoration-skip-ink: none;
-            text-decoration-skip-ink: none;
+    text-decoration-skip-ink: none;
 }
 .quick-ajax-filter-wrapper.quick-ajax-style .quick-ajax-button:hover,
 .quick-ajax-filter-wrapper.quick-ajax-style .quick-ajax-button.active{
@@ -84,8 +83,7 @@
 .quick-ajax-posts-wrapper.quick-ajax-style .quick-ajax-post-item a:focus{
     outline: none;
     text-decoration: none;
-    -webkit-text-decoration-skip-ink: none;
-            text-decoration-skip-ink: none;
+    text-decoration-skip-ink: none;
 }
 .quick-ajax-posts-wrapper.quick-ajax-style .quick-ajax-post-item a:focus img{
     outline: none;
@@ -119,8 +117,7 @@
 .quick-ajax-posts-wrapper.quick-ajax-style .quick-ajax-post-item .post-image img{
     width: 100%;
     max-width: 100%;
-    -o-object-fit: contain;
-       object-fit: contain;
+    object-fit: contain;
     border-top-right-radius: 6px;
     border-top-left-radius: 6px;
 }

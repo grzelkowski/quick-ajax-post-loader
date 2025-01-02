@@ -103,7 +103,11 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $output = '<input type="hidden" name="option_page" value="' . esc_attr($option_group) . '" />';
             $output .= '<input type="hidden" name="action" value="update" />';
             $output .= wp_nonce_field("update-options", "_wpnonce", true, false);
-            $output .= '<input type="hidden" name="_wp_http_referer" value="' . esc_attr(wp_unslash($_SERVER['REQUEST_URI'])) . '" />';
+        
+            //check if $_SERVER['REQUEST_URI'] is set
+            $request_uri = isset($_SERVER['REQUEST_URI']) ? sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])) : '';
+        
+            $output .= '<input type="hidden" name="_wp_http_referer" value="' . esc_attr($request_uri) . '" />';
             return $output;
         }
 

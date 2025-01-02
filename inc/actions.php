@@ -12,16 +12,31 @@ function qapl_quick_ajax_load_posts() {
     // nonce verification
     if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), QAPL_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_action())) {
         wp_send_json_error(['message' => 'Quick Ajax Post Loader: Unauthorized request']);
-    } 
+    }
+    // validate and sanitize input
     if (empty($_POST['args'])) {
         wp_send_json_error(['message' => 'Quick Ajax Post Loader: Invalid request, Missing arguments.']);
     } else {
         $qapl_helper = QAPL_Quick_Ajax_Helper::get_instance();
         $ajax_class = new QAPL_Quick_Ajax_Handler;
 
-        $args = isset($_POST['args']) ? $ajax_class->sanitize_json_to_array(wp_unslash($_POST['args'])) : array();
-        $attributes = isset($_POST['attributes']) ? $ajax_class->sanitize_json_to_array(wp_unslash($_POST['attributes'])) : array();
-        $button_type = isset($_POST['button_type']) ? sanitize_text_field(wp_unslash($_POST['button_type'])) : '';
+        // Sanitize 'args'
+        $args = [];
+        if (isset($_POST['args'])) {
+            $args = $ajax_class->sanitize_json_to_array(wp_unslash($_POST['args'])); // Sanitize JSON to array
+        }
+
+        // Sanitize 'attributes'
+        $attributes = [];
+        if (isset($_POST['attributes'])) {
+            $attributes = $ajax_class->sanitize_json_to_array(wp_unslash($_POST['attributes'])); // Sanitize JSON to array
+        }
+
+        // Sanitize 'button_type'
+        $button_type = '';
+        if (isset($_POST['button_type'])) {
+            $button_type = sanitize_text_field(wp_unslash($_POST['button_type'])); // Sanitize string input
+        }
 
         if ($button_type === 'ajax-load-more' && isset($attributes['load_more_posts'])) {
             $args['posts_per_page'] = intval($attributes['load_more_posts']);

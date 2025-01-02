@@ -1,4 +1,12 @@
 ## Changelog
+### 1.3.7 - 2025-01-02
+- Improved JavaScript minification and optimized the code for better performance.
+- Enhanced CSS compatibility across different browsers by adding automatic prefixes.
+- Improved CSS minification for smaller file sizes and faster loading times.
+- Added support for loading -dev versions of CSS and JS files when the URL includes ?dev=true or ?dev=1 (available only in the GitHub version with -dev files, as the public release on WordPress.org excludes these files to maintain a streamlined production package).
+- Improved error handling and overall plugin reliability.
+- Enhanced security measures for safer handling of content.
+
 ### 1.3.6 - 2024-12-05
 - Improved the appearance of the shortcode box in the post editor to make it more user-friendly.
 - Enhanced the plugin's performance and stability for a smoother experience.
