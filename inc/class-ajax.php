@@ -12,11 +12,15 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
         public $layout = array();
         private $quick_ajax_id;
         private $quick_ajax_block_id;
+        private $global_options;
+        private $placeholder_replacer;
         
         public function __construct(){
             $this->helper = QAPL_Quick_Ajax_Helper::get_instance();
             $this->quick_ajax_id = 0;
             $this->quick_ajax_block_id = '';
+            $this->global_options = get_option($this->helper->admin_page_global_options_name(), []);
+            $this->placeholder_replacer = new QAPL_Placeholder_Replacer();
             // Filter hooks for filter wrapper
             /*
             add_action('qapl_filter_wrapper_pre', array($this, 'action_filter_wrapper_pre'));         
@@ -230,7 +234,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                     'term_id' => 'none',
                     'taxonomy' => $taxonomy,
                     'template' => $button_base['template'],
-                    'button_label' => __('Show All', 'quick-ajax-post-loader'),
+                    'button_label' => '[[QAPL::SHOW_ALL_LABEL]]',
                     'data-button' => $button_base['data-button'],
                     'data-action' => $this->args,
                     'data-attributes' => $button_base['data-attributes'],
@@ -265,6 +269,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             do_action('qapl_filter_wrapper_complete');
 
             $output = ob_get_clean(); // Get the buffered content into a variable
+            $output = $this->replace_placeholders($output);
             return $output; // Return the content
         }
 
@@ -356,11 +361,6 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             );
         }
 
-        private function get_global_options(){
-            $global_options = get_option($this->helper->admin_page_global_options_name());
-            return $global_options;
-        }
-
         private function extract_classes_from_string($string){
             // Split the input string into an array using whitespace or comma as separators
             $class_container_array = preg_split('/[\s,]+/', $string);
@@ -401,12 +401,11 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 $this->attributes[$this->helper->layout_load_more_posts()] = intval($attributes[$this->helper->layout_load_more_posts()]);
             }
             //Select Loader Icon
-            $global_options = $this->get_global_options();
             if (isset($attributes[$this->helper->layout_select_loader_icon()]) && !empty($attributes[$this->helper->layout_select_loader_icon()])) {
                 $loader_icon = $attributes[$this->helper->layout_select_loader_icon()];
-            } elseif (isset($global_options['loader_icon']) && !empty($global_options['loader_icon'])) {
+            } elseif (isset($this->global_options['loader_icon']) && !empty($this->global_options['loader_icon'])) {
                 // fallback to global option if attributes value is invalid
-                $loader_icon = $global_options['loader_icon'];
+                $loader_icon = $this->global_options['loader_icon'];
             } else {
                 // final fallback to default value
                 $loader_icon = $this->helper->shortcode_page_select_loader_icon_default_value();
@@ -463,9 +462,9 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             wp_reset_postdata();
             // Get the buffered content into a variable
             $output = ob_get_clean(); 
+            $output = $this->replace_placeholders($output);
             return $output; // Return the content
         }
-
         public function load_more_button($paged, $max_num_pages, $found_posts) {
             if(!$this->args){
                 return false;
@@ -503,6 +502,12 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             $button_data['data-attributes'] = $this->attributes;
             echo wp_kses_post($this->update_button_template($button_data));
             do_action('qapl_load_more_button_complete');
+        }
+        public function replace_placeholders($content) {
+            if (!$this->placeholder_replacer) {
+                return $content; // fallback if placeholder replacer is not initialized
+            }
+            return $this->placeholder_replacer->replace_placeholders($content);
         }
         /*       
         public function print_results(){

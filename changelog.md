@@ -1,4 +1,13 @@
 ## Changelog
+
+### 1.3.8 - 2025-01-09
+- Added new global options for customizing button labels:
+  Read More: Customize the "Read More" button text for your templates.
+  Show All: Customize the label for the "Show All" button, which displays all posts without taxonomy filtering.
+  Load More: Customize the label for the "Load More" button, used to load additional posts.
+- Updated the default template to enhance design and usability.
+- Improved code maintainability by reducing redundancy and optimizing helper methods.
+
 ### 1.3.7 - 2025-01-02
 - Improved JavaScript minification and optimized the code for better performance.
 - Enhanced CSS compatibility across different browsers by adding automatic prefixes.

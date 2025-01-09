@@ -12,7 +12,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.3.7',
+            'version' => '1.3.8',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
@@ -236,6 +236,10 @@ class QAPL_Quick_Ajax_Helper{
         $default_name = self::shortcode_page_layout_post_item_template_default_value();
         return $this->file_helper->get_templates_file_path($template_name, $default_name, '/post-items/');
     }
+    public function plugin_templates_post_item_template_with_placeholders($template_name = false) {
+        $default_name = self::shortcode_page_layout_post_item_template_default_value();
+        return $this->file_helper->get_template_with_replaced_placeholders($template_name, $default_name, '/post-items/');
+    }
     //template loader icon
     public function plugin_templates_loader_icon_template($template_name = false) {
         $default_name = self::shortcode_page_select_loader_icon_default_value();
@@ -456,6 +460,44 @@ class QAPL_Quick_Ajax_Helper{
     public static function global_options_field_select_loader_icon(){
         return self::admin_page_global_options_name().'[loader_icon]';
     }
+    public static function global_options_field_set_read_more_label(){
+        return self::admin_page_global_options_name().'[read_more_label]';
+    }
+    public static function global_options_field_set_show_all_label(){
+        return self::admin_page_global_options_name().'[show_all_label]';
+    }
+    public static function global_options_field_set_load_more_label(){
+        return self::admin_page_global_options_name().'[load_more_label]';
+    }
+    /* Quick AJAX placeholders */
+    public static function placeholder_read_more_label() {
+        return [
+            'placeholder' => '[[QAPL::READ_MORE_LABEL]]',
+            'option_key' => 'read_more_label',
+            'default' => __('Read More', 'quick-ajax-post-loader'),
+        ];
+    }
+    public static function placeholder_show_all_label() {
+        return [
+            'placeholder' => '[[QAPL::SHOW_ALL_LABEL]]',
+            'option_key' => 'show_all_label',
+            'default' => __('Show All', 'quick-ajax-post-loader'),
+        ];
+    }
+    public static function placeholder_load_more_label() {
+        return [
+            'placeholder' => '[[QAPL::LOAD_MORE_LABEL]]',
+            'option_key' => 'load_more_label',
+            'default' => __('Load More', 'quick-ajax-post-loader'),
+        ];
+    }
+    public static function get_all_placeholders() {
+        return [
+            self::placeholder_read_more_label(),
+            self::placeholder_load_more_label(),
+            self::placeholder_show_all_label(),
+        ];
+    }
 }
 
 class QAPL_File_Helper {
@@ -597,6 +639,15 @@ class QAPL_File_Helper {
         }
         return $file_names;
     }
+    //get template with replaced placeholders
+    public function get_template_with_replaced_placeholders($template_name, $default_name, $base_path, QAPL_Placeholder_Replacer $placeholder_replacer) {
+        $file_path = $this->get_templates_file_path($template_name, $default_name, $base_path);
+        if (!$file_path || !file_exists($file_path)) {
+            return false;
+        }
+        $content = file_get_contents($file_path);
+        return $placeholder_replacer->replace_placeholders($content);
+    }    
 }
 class QAPL_Pages_Helper{
     private $file_helper;    
@@ -979,7 +1030,42 @@ class QAPL_Form_Fields_Helper{
         );
         return $field_properties;
     }
-
+    public static function get_global_options_field_set_read_more_label(){
+        $field_properties = array(
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_read_more_label(),
+            'label' => __('Set Read More Label', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'options' => '', // Not required for text field
+            'default' => __('Read More', 'quick-ajax-post-loader'),
+            'placeholder' => __('Enter custom label for Read More', 'quick-ajax-post-loader'),
+            'description' => __('Customize the "Read More" text for your templates. This text will replace the [[QAPL::READ_MORE_LABEL]] placeholder. For example: "View", "Czytaj więcej", "Ver", or "Ansehen".', 'quick-ajax-post-loader')
+        );
+        return $field_properties;
+    }
+    public static function get_global_options_field_set_show_all_label(){
+        $field_properties = array(
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_show_all_label(),
+            'label' => __('Set Show All Label', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'options' => '', // Not required for text field
+            'default' => __('Show All', 'quick-ajax-post-loader'),
+            'placeholder' => __('Enter custom label for Show All', 'quick-ajax-post-loader'),
+            'description' => __('Customize the "Show All" text label for the filter. This text will replace the [[QAPL::SHOW_ALL_LABEL]] placeholder. It is used to display all posts without filtering by taxonomy. For example: "Wyświetl wszystko", "All Posts", or "Ver todo".', 'quick-ajax-post-loader')
+        );
+        return $field_properties;
+    }
+    public static function get_global_options_field_set_load_more_label() {
+        $field_properties = array(
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_load_more_label(),
+            'label' => __('Set Load More Label', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'options' => '', // Not required for text field
+            'default' => __('Load More', 'quick-ajax-post-loader'),
+            'placeholder' => __('Enter custom label for Load More', 'quick-ajax-post-loader'),
+            'description' => __('Customize the "Load More" text label for the button. This text will replace the [[QAPL::LOAD_MORE_LABEL]] placeholder. It is used to load additional posts when clicked. For example: "Pokaż więcej", "Load More", or "Cargar más".', 'quick-ajax-post-loader')
+        );
+        return $field_properties;
+    }
     public static function get_global_field_remove_old_data(){
         return array(
             'name' => 'qapl_remove_old_meta',
@@ -989,5 +1075,50 @@ class QAPL_Form_Fields_Helper{
             'default' => 0,
             'description' => __('Choose this option to remove old, unused data from the database. This will help keep your site clean and efficient. Be aware that if you switch back to an older version of the plugin, it might not work as expected.', 'quick-ajax-post-loader'),
         );
+    }
+}
+
+class QAPL_Placeholder_Replacer{
+    private static $instance = null;
+    private $placeholders = [];
+    private $helper;
+    private $global_options;
+
+    public function __construct() {
+        // Initialize helper instance
+        $this->helper = QAPL_Quick_Ajax_Helper::get_instance();
+        // Fetch global options once and store them
+        $this->global_options = get_option($this->helper->admin_page_global_options_name(), []);
+        // Initialize placeholders
+        $this->initialize_placeholders();
+    }
+    public static function get_instance() {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    // Initialize placeholders from global options.
+    private function initialize_placeholders() {
+        $all_placeholders = QAPL_Quick_Ajax_Helper::get_all_placeholders();
+        foreach ($all_placeholders as $placeholder_config) {
+            $option_key = $placeholder_config['option_key'];
+            $default_value = $placeholder_config['default'];
+            $placeholder = $placeholder_config['placeholder'];
+            // Use global option value or fallback to default
+            $this->placeholders[$placeholder] = $this->global_options[$option_key] ?? $default_value;
+        }
+    }
+    public function replace_placeholders($content) {
+        // replace placeholders in content
+        foreach ($this->placeholders as $placeholder => $value) {
+            $content = str_replace($placeholder, $value, $content);
+        }
+        return $content;
+    }
+    public function get_placeholders() {
+        // return all placeholders
+        return $this->placeholders;
     }
 }

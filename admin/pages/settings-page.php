@@ -19,6 +19,12 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             //select loader icon
             $field_properties = QAPL_Form_Fields_Helper::get_global_field_select_loader_icon();
             $this->create_field($field_properties);
+            $field_properties = QAPL_Form_Fields_Helper::get_global_options_field_set_read_more_label();
+            $this->create_field($field_properties);
+            $field_properties = QAPL_Form_Fields_Helper::get_global_options_field_set_show_all_label();
+            $this->create_field($field_properties);
+            $field_properties = QAPL_Form_Fields_Helper::get_global_options_field_set_load_more_label();
+            $this->create_field($field_properties);
         }
         //initialize function generator fields
         private function init_function_generator_fields() {
@@ -119,6 +125,9 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $content .= '<form method="post" action="options.php">';            
             $content .= '<h3>'.__('Global Options', 'quick-ajax-post-loader').'</h3>';
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_select_loader_icon());
+            $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_read_more_label());
+            $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_show_all_label());
+            $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_load_more_label());
             $content .= $settings_fields_html;
             $content .= get_submit_button(esc_html__('Save Settings', 'quick-ajax-post-loader'), 'primary', 'save_settings_button', false);
             $content .= '</form>';
