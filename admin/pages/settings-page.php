@@ -55,6 +55,9 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             //set ignore sticky
             $field_properties = QAPL_Form_Fields_Helper::get_field_set_ignore_sticky_posts();
             $this->create_field($field_properties);
+            //load posts via AJAX on initial load
+            $field_properties = QAPL_Form_Fields_Helper::get_field_set_ajax_on_initial_load();
+            $this->create_field($field_properties);
             //apply quick ajax css style
             $field_properties = QAPL_Form_Fields_Helper::get_field_layout_quick_ajax_css_style();
             $field_properties['default'] = 0;
@@ -86,7 +89,7 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
         }
 
         private function init_content_clear_old_data_fields() {
-            //select loader icon
+            //remove old data
             $field_properties = QAPL_Form_Fields_Helper::get_global_field_remove_old_data();
             $this->create_field($field_properties);
         }
@@ -177,6 +180,7 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_orderby());
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in());
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ignore_sticky_posts());
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ajax_on_initial_load());
             $form_tab_function_generator .= '</div>';
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
             $form_tab_function_generator .= '<h4>'.__('Layout Settings', 'quick-ajax-post-loader').'</h4>';

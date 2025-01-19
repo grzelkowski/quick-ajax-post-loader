@@ -16,6 +16,7 @@ $accordion_block_content .= '<li><code class="no-background"><strong>taxonomy_fi
 $accordion_block_content .= '<li><code class="no-background"><strong>container_class</strong></code> (string): Adds custom CSS classes to the post grid container.</li>';
 $accordion_block_content .= '<li><code class="no-background"><strong>load_more_posts</strong></code> (int): Specifies the number of posts to load upon clicking the "Load More" button.</li>';
 $accordion_block_content .= '<li><code class="no-background"><strong>loader_icon</strong></code> (int): Allows for the selection of a loading icon.</li>';
+$accordion_block_content .= '<li><code class="no-background"><strong>ajax_initial_load</strong></code> (int): Enables loading the initial set of posts via AJAX when the page loads. This helps to ensure that post data is always up-to-date, especially in cases where caching might display outdated content.</li>';
 $accordion_block_content .= '</ul>';
 $accordion_block_content .= '<h4>Best Practices</h4>';
 $accordion_block_content .= '<ul>';

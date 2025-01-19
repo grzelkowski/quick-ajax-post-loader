@@ -30,6 +30,7 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                 'quick_ajax_id' => '',
                 'quick_ajax_taxonomy' => '',
                 'ignore_sticky_posts' => '',
+                'ajax_initial_load' => '',
             );
             //retain only the keys that match the defaults
             $args = array_intersect_key($args, $defaults);
@@ -39,6 +40,7 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
             //sanitize and cast numeric and boolean attributes
             $args['id'] = is_numeric($args['id']) ? intval($args['id']) : '';
             $args['ignore_sticky_posts'] = isset($args['ignore_sticky_posts']) ? filter_var($args['ignore_sticky_posts'], FILTER_VALIDATE_BOOLEAN) : false;
+            $args['ajax_initial_load'] = isset($args['ajax_initial_load']) ? filter_var($args['ajax_initial_load'], FILTER_VALIDATE_BOOLEAN) : false;
             $args['excluded_post_ids'] = is_string($args['excluded_post_ids'])  ? array_filter(array_map('intval', explode(',', $args['excluded_post_ids'])))  : '';
             $args['posts_per_page'] = is_numeric($args['posts_per_page']) ? intval($args['posts_per_page']) : '';
             $args['quick_ajax_css_style'] = is_numeric($args['quick_ajax_css_style']) ? intval($args['quick_ajax_css_style']) : '';
@@ -56,7 +58,7 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
             $args['container_class'] = !empty($args['container_class']) ? sanitize_html_class($args['container_class']) : '';
             $args['loader_icon'] = !empty($args['loader_icon']) ? sanitize_text_field($args['loader_icon']) : '';
             $args['quick_ajax_taxonomy'] = !empty($args['quick_ajax_taxonomy']) ? sanitize_text_field($args['quick_ajax_taxonomy']) : '';
-
+        
             //return sanitized data
             return $args;
         }
@@ -143,7 +145,6 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
         // updated version if attributes are added to the shortcode
         private function create_shortcode_attributes() {
             $attributes = array();
-        
             if (!empty($this->shortcode_args['id'])) {
                 $attributes['shortcode'] = true;
                 $attributes[QAPL_Quick_Ajax_Helper::layout_quick_ajax_id()] = absint($this->shortcode_args['id']);
@@ -192,6 +193,12 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                     intval($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_override_global_loader_icon()]) !== 0 && 
                     isset($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_select_loader_icon()]) ? 
                     sanitize_text_field($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_select_loader_icon()]) : '');
+                
+                $attributes[QAPL_Quick_Ajax_Helper::query_settings_ajax_on_initial_load()] = 
+                    !empty($this->shortcode_args['ajax_initial_load']) ? 
+                    intval($this->shortcode_args['ajax_initial_load']) : 
+                    (isset($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_ajax_on_initial_load()]) ? 
+                    intval($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_ajax_on_initial_load()]) : '');
             } else {
                 $attributes[QAPL_Quick_Ajax_Helper::layout_quick_ajax_id()] = 
                     !empty($this->shortcode_args['quick_ajax_id']) ? 
@@ -224,8 +231,11 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                 $attributes[QAPL_Quick_Ajax_Helper::layout_select_loader_icon()] = 
                     !empty($this->shortcode_args['loader_icon']) ? 
                     sanitize_text_field($this->shortcode_args['loader_icon']) : '';
+
+                $attributes[QAPL_Quick_Ajax_Helper::query_settings_ajax_on_initial_load()] = 
+                    !empty($this->shortcode_args['ajax_initial_load']) ? 
+                    intval($this->shortcode_args['ajax_initial_load']) : 0;
             }
-        
             if (!empty($attributes)) {
                 return $attributes;
             }

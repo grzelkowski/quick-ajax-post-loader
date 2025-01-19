@@ -12,7 +12,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.3.8',
+            'version' => '1.3.9',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
@@ -42,7 +42,8 @@ class QAPL_Quick_Ajax_Helper{
             $this->pages_helper->plugin_ajax_actions(),
             $this->pages_helper->plugin_functions(),
             $this->pages_helper->plugin_updater(),
-            $this->pages_helper->plugin_shortcode_class()
+            $this->pages_helper->plugin_shortcode_class(),
+            $this->pages_helper->plugin_template_actions(),
         ];        
         foreach ($initialize_list as $initialize) {
             if (($initialize !== false)) {
@@ -136,6 +137,7 @@ class QAPL_Quick_Ajax_Helper{
             'load_more_posts' => self::layout_load_more_posts(),
             'loader_icon' => self::layout_select_loader_icon(),
             'loader_icon_default' => self::shortcode_page_select_loader_icon_default_value(),
+            'ajax_initial_load' => self::query_settings_ajax_on_initial_load(),
             'quick_ajax_id' => self::layout_quick_ajax_id(),
         ];
     }
@@ -236,10 +238,6 @@ class QAPL_Quick_Ajax_Helper{
         $default_name = self::shortcode_page_layout_post_item_template_default_value();
         return $this->file_helper->get_templates_file_path($template_name, $default_name, '/post-items/');
     }
-    public function plugin_templates_post_item_template_with_placeholders($template_name = false) {
-        $default_name = self::shortcode_page_layout_post_item_template_default_value();
-        return $this->file_helper->get_template_with_replaced_placeholders($template_name, $default_name, '/post-items/');
-    }
     //template loader icon
     public function plugin_templates_loader_icon_template($template_name = false) {
         $default_name = self::shortcode_page_select_loader_icon_default_value();
@@ -248,7 +246,6 @@ class QAPL_Quick_Ajax_Helper{
     public function plugin_templates_no_posts() {
         return $this->file_helper->get_templates_dir_path('/post-items/no-posts.php');
     }
-
     public static function term_filter_button_data_button(){
         return 'quick-ajax-filter-button';
     }
@@ -260,6 +257,21 @@ class QAPL_Quick_Ajax_Helper{
     }
     public function plugin_templates_load_more_button() {
         return $this->file_helper->get_templates_dir_path('/load-more-button.php');
+    }
+
+    public function plugin_templates_extract_actions($template_path) {
+        if (!file_exists($template_path)) {
+            return [];
+        }
+
+        // Read template content
+        $template_content = file_get_contents($template_path);
+
+        // Use regex to find all `do_action` calls
+        preg_match_all('/do_action\(\s*[\'"](.+?)[\'"]\s*\)/', $template_content, $matches);
+
+        // Return unique list of actions
+        return array_unique($matches[1]);
     }
 
     public static function generate_shortcode($post_id) {
@@ -373,6 +385,12 @@ class QAPL_Quick_Ajax_Helper{
     public static function shortcode_page_ignore_sticky_posts_default_value() {
         return false;
     }
+    public static function shortcode_page_ajax_on_initial_load(){
+        return 'qapl_ajax_on_initial_load';
+    }    
+    public static function shortcode_page_ajax_on_initial_load_default_value(){
+        return false;
+    }
     public static function shortcode_page_set_post_not_in(){
         return 'qapl_select_post_not_in';
     }
@@ -424,6 +442,11 @@ class QAPL_Quick_Ajax_Helper{
     public static function shortcode_page_select_loader_icon_default_value(){
         return 'loader-icon';
     }
+    // query settings attributes names
+    public static function query_settings_ajax_on_initial_load(){
+        return 'ajax_initial_load';
+    }    
+
     // attributes query names
     public static function layout_quick_ajax_id(){
         return 'quick_ajax_id';
@@ -469,7 +492,11 @@ class QAPL_Quick_Ajax_Helper{
     public static function global_options_field_set_load_more_label(){
         return self::admin_page_global_options_name().'[load_more_label]';
     }
+    public static function global_options_field_set_post_date_format(){
+        return self::admin_page_global_options_name().'[post_date_format]';
+    }
     /* Quick AJAX placeholders */
+    /* not in use after removing placeholders
     public static function placeholder_read_more_label() {
         return [
             'placeholder' => '[[QAPL::READ_MORE_LABEL]]',
@@ -498,6 +525,7 @@ class QAPL_Quick_Ajax_Helper{
             self::placeholder_show_all_label(),
         ];
     }
+        */
 }
 
 class QAPL_File_Helper {
@@ -524,10 +552,12 @@ class QAPL_File_Helper {
         $full_path = $this->plugin_dir_path . ltrim($file_path, '/');
         return file_exists($full_path) ? $full_path : false;
     }
+    public function get_plugin_directory() {
+        return $this->plugin_dir_url;
+    }
     public function get_plugin_js_directory() {
         return $this->plugin_dir_url . 'js/';
     }
-
     public function get_plugin_css_directory() {
         return $this->plugin_dir_url . 'css/';
     }
@@ -638,17 +668,9 @@ class QAPL_File_Helper {
             }
         }
         return $file_names;
-    }
-    //get template with replaced placeholders
-    public function get_template_with_replaced_placeholders($template_name, $default_name, $base_path, QAPL_Placeholder_Replacer $placeholder_replacer) {
-        $file_path = $this->get_templates_file_path($template_name, $default_name, $base_path);
-        if (!$file_path || !file_exists($file_path)) {
-            return false;
-        }
-        $content = file_get_contents($file_path);
-        return $placeholder_replacer->replace_placeholders($content);
-    }    
+    }  
 }
+
 class QAPL_Pages_Helper{
     private $file_helper;    
      //construct expects instance of QAPL_File_Helper
@@ -678,6 +700,9 @@ class QAPL_Pages_Helper{
     }
     public function plugin_updater() {
         return $this->file_helper->file_exists('inc/class-updater.php');
+    }
+    public function plugin_template_actions() {
+        return $this->file_helper->file_exists('inc/class-template-actions.php');
     }
 }
 
@@ -889,6 +914,17 @@ class QAPL_Form_Fields_Helper{
             'description' => __('Specify to ignore sticky posts, treating them as regular posts in the query.', 'quick-ajax-post-loader')
         );
     }
+    //add Load Posts via AJAX on Initial Load
+    public static function get_field_set_ajax_on_initial_load(){
+        return array(
+            'name' => QAPL_Quick_Ajax_Helper::shortcode_page_ajax_on_initial_load(),
+            'label' => __('Load Initial Posts via AJAX', 'quick-ajax-post-loader'),
+            'type' => 'checkbox',
+            'options' => '',
+            'default' => QAPL_Quick_Ajax_Helper::shortcode_page_ajax_on_initial_load_default_value(),
+            'description' => __('Enable this option to load the initial set of posts via AJAX on page load. This can help in cases where caching might cause outdated content to be displayed.', 'quick-ajax-post-loader')
+        );
+    }
     //apply quick ajax css style
     public static function get_field_layout_quick_ajax_css_style(){
         $field_properties = array(
@@ -1033,43 +1069,55 @@ class QAPL_Form_Fields_Helper{
     public static function get_global_options_field_set_read_more_label(){
         $field_properties = array(
             'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_read_more_label(),
-            'label' => __('Set Read More Label', 'quick-ajax-post-loader'),
+            'label' => __('Set "Read More" Label', 'quick-ajax-post-loader'),
             'type' => 'text',
             'options' => '', // Not required for text field
             'default' => __('Read More', 'quick-ajax-post-loader'),
             'placeholder' => __('Enter custom label for Read More', 'quick-ajax-post-loader'),
-            'description' => __('Customize the "Read More" text for your templates. This text will replace the [[QAPL::READ_MORE_LABEL]] placeholder. For example: "View", "Czytaj więcej", "Ver", or "Ansehen".', 'quick-ajax-post-loader')
+            'description' => __('Customize the "Read More" text for your templates. This label will appear as a link or button for each post item. Examples: "Read More", "Continue Reading", or "Learn More".', 'quick-ajax-post-loader')
         );
         return $field_properties;
     }
     public static function get_global_options_field_set_show_all_label(){
         $field_properties = array(
             'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_show_all_label(),
-            'label' => __('Set Show All Label', 'quick-ajax-post-loader'),
+            'label' => __('Set "Show All" Label', 'quick-ajax-post-loader'),
             'type' => 'text',
             'options' => '', // Not required for text field
             'default' => __('Show All', 'quick-ajax-post-loader'),
             'placeholder' => __('Enter custom label for Show All', 'quick-ajax-post-loader'),
-            'description' => __('Customize the "Show All" text label for the filter. This text will replace the [[QAPL::SHOW_ALL_LABEL]] placeholder. It is used to display all posts without filtering by taxonomy. For example: "Wyświetl wszystko", "All Posts", or "Ver todo".', 'quick-ajax-post-loader')
+            'description' => __('Customize the "Show All" text label for the filter. This label will appear as an option to display all posts without filtering. Examples: "Show All", "View All", or "Display All".', 'quick-ajax-post-loader')
         );
         return $field_properties;
     }
     public static function get_global_options_field_set_load_more_label() {
         $field_properties = array(
             'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_load_more_label(),
-            'label' => __('Set Load More Label', 'quick-ajax-post-loader'),
+            'label' => __('Set "Load More" Label', 'quick-ajax-post-loader'),
             'type' => 'text',
             'options' => '', // Not required for text field
             'default' => __('Load More', 'quick-ajax-post-loader'),
             'placeholder' => __('Enter custom label for Load More', 'quick-ajax-post-loader'),
-            'description' => __('Customize the "Load More" text label for the button. This text will replace the [[QAPL::LOAD_MORE_LABEL]] placeholder. It is used to load additional posts when clicked. For example: "Pokaż więcej", "Load More", or "Cargar más".', 'quick-ajax-post-loader')
+            'description' => __('Customize the "Load More" button text. This label will appear on the button used to load additional posts dynamically. Examples: "Load More", "Show More", or "View More".', 'quick-ajax-post-loader')
+        );
+        return $field_properties;
+    }
+    public static function get_global_options_field_set_post_date_format() {
+        $field_properties = array(
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_post_date_format(),
+            'label' => __('Set Date Format', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'options' => '', // Not required for text field
+            'default' => 'F j, Y',
+            'placeholder' => __('Enter date format (e.g., F j, Y)', 'quick-ajax-post-loader'),
+        'description' => __('Customize the format for displaying post dates. This text will replace the default date format. For example: "F j, Y" (January 1, 2023) or "Y-m-d" (2023-01-01). Refer to the PHP date format documentation for more options.', 'quick-ajax-post-loader'),
         );
         return $field_properties;
     }
     public static function get_global_field_remove_old_data(){
         return array(
             'name' => 'qapl_remove_old_meta',
-            'label' => __('Enable Purge of Old Data', 'quick-ajax-post-loader'),
+            'label' => __('Confirm Purge of Old Data', 'quick-ajax-post-loader'),
             'type' => 'checkbox',
             'options' => '',
             'default' => 0,
@@ -1078,6 +1126,35 @@ class QAPL_Form_Fields_Helper{
     }
 }
 
+class QAPL_Logger {
+    private static $instance = null;
+    private $file_helper;
+    private $logs = [];
+
+    private function __construct() {
+        $this->file_helper = QAPL_File_Helper::get_instance();
+    }
+    public static function getInstance() {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+    public function addLog($message, $level = 'info') {
+        $this->logs[] = '[' . strtoupper($level) . '] ' . $message;
+    }
+    public function getLogs() {
+        return $this->logs;
+    }
+
+    public function saveLogs() {
+        $log_file = $this->file_helper->get_plugin_directory() . '/app.log';
+        file_put_contents($log_file, implode(PHP_EOL, $this->logs) . PHP_EOL, FILE_APPEND);
+        $this->logs = [];
+    }
+}
+
+/* not in use after removing placeholders
 class QAPL_Placeholder_Replacer{
     private static $instance = null;
     private $placeholders = [];
@@ -1122,3 +1199,4 @@ class QAPL_Placeholder_Replacer{
         return $this->placeholders;
     }
 }
+    */

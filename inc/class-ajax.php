@@ -10,17 +10,18 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
         public $args = array();
         public $attributes = array();
         public $layout = array();
+        private $ajax_initial_load;
         private $quick_ajax_id;
         private $quick_ajax_block_id;
         private $global_options;
-        private $placeholder_replacer;
+        //private $placeholder_replacer;
         
         public function __construct(){
             $this->helper = QAPL_Quick_Ajax_Helper::get_instance();
             $this->quick_ajax_id = 0;
             $this->quick_ajax_block_id = '';
             $this->global_options = get_option($this->helper->admin_page_global_options_name(), []);
-            $this->placeholder_replacer = new QAPL_Placeholder_Replacer();
+            //$this->placeholder_replacer = new QAPL_Placeholder_Replacer(); // not in use after removing placeholders
             // Filter hooks for filter wrapper
             /*
             add_action('qapl_filter_wrapper_pre', array($this, 'action_filter_wrapper_pre'));         
@@ -138,7 +139,8 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             }
         }
         private function initialize_query_args($args) {
-            return [
+            // Set default query arguments
+            $query_args = [
                 'post_type' => isset($args['post_type']) ? sanitize_text_field($args['post_type']) : null,
                 'posts_per_page' => isset($args['posts_per_page']) ? intval($args['posts_per_page']) : $this->helper->shortcode_page_select_posts_per_page_default_value(),
                 'post_status' => isset($args['post_status']) ? sanitize_text_field($args['post_status']) : $this->helper->shortcode_page_select_post_status_default_value(),
@@ -146,9 +148,16 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 'order' => isset($args['order']) ? sanitize_text_field($args['order']) : $this->helper->shortcode_page_select_order_default_value(),
                 'post__not_in' => isset($args['post__not_in']) ? array_map('absint', $this->create_post_not_in($args['post__not_in'])) : '',
                 'ignore_sticky_posts' => isset($args['ignore_sticky_posts']) ? intval($args['ignore_sticky_posts']) : $this->helper->shortcode_page_ignore_sticky_posts_default_value(),
-                'paged' => isset($args['paged']) ? intval($args['paged']) : 1,
-                'offset' => isset($args['offset']) ? intval($args['offset']) : null,
+                'paged' => isset($args['paged']) ? intval($args['paged']) : 1
             ];
+            // Check if 'offset' is provided and use it instead of 'paged'
+            if (isset($args['offset']) && !is_null($args['offset'])) {
+                // Set the offset value and remove 'paged' from the query
+                $query_args['offset'] = intval($args['offset']);
+                unset($query_args['paged']);
+            }
+
+            return $query_args;    
         }
         public function sanitize_json_to_array($data) {
             // Check if input is a JSON string
@@ -230,11 +239,12 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                     'template' => $this->helper->plugin_templates_term_filter_button(),
                     'data-attributes' => $this->attributes,
                 ];
+                $show_all_label = $this->global_options['show_all_label'] ?? __('Show All', 'quick-ajax-post-loader');    
                 $show_all_button = [                    
                     'term_id' => 'none',
                     'taxonomy' => $taxonomy,
                     'template' => $button_base['template'],
-                    'button_label' => '[[QAPL::SHOW_ALL_LABEL]]',
+                    'button_label' => $show_all_label,
                     'data-button' => $button_base['data-button'],
                     'data-action' => $this->args,
                     'data-attributes' => $button_base['data-attributes'],
@@ -269,7 +279,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             do_action('qapl_filter_wrapper_complete');
 
             $output = ob_get_clean(); // Get the buffered content into a variable
-            $output = $this->replace_placeholders($output);
+            //$output = $this->replace_placeholders($output); // not in use after removing placeholders
             return $output; // Return the content
         }
 
@@ -396,10 +406,10 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             $post_item_template = isset($attributes[$this->helper->layout_post_item_template()]) ? $attributes[$this->helper->layout_post_item_template()] : false;
             $this->layout[$this->helper->layout_post_item_template()] = $this->helper->plugin_templates_post_item_template($post_item_template);
             $this->attributes[$this->helper->layout_post_item_template()] = $post_item_template;
-            //Custom Load More Post Quantity
+            //Custom Load More Post Quantity            
             if(isset($attributes[$this->helper->layout_load_more_posts()])){
                 $this->attributes[$this->helper->layout_load_more_posts()] = intval($attributes[$this->helper->layout_load_more_posts()]);
-            }
+            }            
             //Select Loader Icon
             if (isset($attributes[$this->helper->layout_select_loader_icon()]) && !empty($attributes[$this->helper->layout_select_loader_icon()])) {
                 $loader_icon = $attributes[$this->helper->layout_select_loader_icon()];
@@ -412,6 +422,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             }
             $this->layout[$this->helper->layout_select_loader_icon()] = $this->helper->plugin_templates_loader_icon_template($loader_icon);
             $this->attributes[$this->helper->layout_select_loader_icon()] = $loader_icon;
+            $this->ajax_initial_load = isset($attributes[$this->helper->query_settings_ajax_on_initial_load()]) ? intval($attributes[$this->helper->query_settings_ajax_on_initial_load()]) : $this->helper->shortcode_page_ajax_on_initial_load_default_value();
         }
 
         public function wp_query(){
@@ -441,9 +452,13 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             do_action('qapl_posts_wrapper_open');
             echo '<div class="quick-ajax-posts-inner-wrapper '.esc_attr($container_inner_class).'">';
             if ($query->have_posts()) {
-                while ($query->have_posts()) {
-                    $query->the_post();
-                    include($this->layout[$this->helper->layout_post_item_template()]);
+                if ($this->ajax_initial_load) {
+                    echo '<div class="quick-ajax-initial-loader" data-button="quick-ajax-filter-button" style="display:none;" data-action="' . esc_attr(json_encode($this->args)) . '" data-attributes="' . esc_attr(json_encode($this->attributes)) . '"></div>';
+                } else {
+                    while ($query->have_posts()) {
+                        $query->the_post();
+                        include($this->layout[$this->helper->layout_post_item_template()]);
+                    }
                 }
             } else {
                 include($this->helper->plugin_templates_no_posts());
@@ -462,7 +477,8 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             wp_reset_postdata();
             // Get the buffered content into a variable
             $output = ob_get_clean(); 
-            $output = $this->replace_placeholders($output);
+            
+            //$output = $this->replace_placeholders($output); // not in use after removing placeholders
             return $output; // Return the content
         }
         public function load_more_button($paged, $max_num_pages, $found_posts) {
@@ -484,7 +500,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 }
                  // Update offset
                 $this->args['offset'] = isset($this->args['offset']) ? intval($this->args['offset']) + $load_more_posts : intval($this->args['posts_per_page']);
-                
+                $this->args['posts_per_page'] = $load_more_posts;
             } else {
                 // Check if there are no more pages to load
                 if ($max_num_pages <= $paged) {
@@ -492,8 +508,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 }                
                 $this->args['paged'] += 1;
             }
-        
-
+            
             do_action('qapl_load_more_button_pre');
             $button_data['template'] = $this->helper->plugin_templates_load_more_button();
             $button_data['button_label'] = __('Load More', 'quick-ajax-post-loader');
@@ -503,12 +518,13 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             echo wp_kses_post($this->update_button_template($button_data));
             do_action('qapl_load_more_button_complete');
         }
+        /* not in use after removing placeholders
         public function replace_placeholders($content) {
             if (!$this->placeholder_replacer) {
                 return $content; // fallback if placeholder replacer is not initialized
             }
             return $this->placeholder_replacer->replace_placeholders($content);
-        }
+        }*/
         /*       
         public function print_results(){
             print_r($this->args);

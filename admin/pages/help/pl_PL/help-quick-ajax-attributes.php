@@ -16,6 +16,7 @@ $accordion_block_content .= '<li><code class="no-background"><strong>taxonomy_fi
 $accordion_block_content .= '<li><code class="no-background"><strong>container_class</strong></code> (string): Dodaje niestandardowe klasy CSS do kontenera siatki postów.</li>';
 $accordion_block_content .= '<li><code class="no-background"><strong>load_more_posts</strong></code> (int): Określa liczbę postów do załadowania po kliknięciu przycisku "Załaduj więcej".</li>';
 $accordion_block_content .= '<li><code class="no-background"><strong>loader_icon</strong></code> (int): Pozwala na wybór ikony ładowania.</li>';
+$accordion_block_content .= '<li><code class="no-background"><strong>ajax_initial_load</strong></code> (int): Umożliwia załadowanie początkowego zestawu postów za pomocą AJAX podczas ładowania strony. Pomaga to zapewnić, że dane postów są zawsze aktualne, szczególnie w przypadkach, gdy cache może wyświetlać nieaktualne treści.</li>';
 $accordion_block_content .= '</ul>';
 $accordion_block_content .= '<h4>Najlepsze Praktyki</h4>';
 $accordion_block_content .= '<ul>';

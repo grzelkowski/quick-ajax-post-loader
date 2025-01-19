@@ -1,5 +1,12 @@
 ## Changelog
 
+### 1.3.9 - 2025-01-19
+- Added support for loading the initial set of posts via AJAX on page load, improving compatibility with caching systems and ensuring fresh content display.
+- Enhanced the "Load More" button functionality, allowing it to load a different number of posts than specified for the initial page load.
+- Updated CSS transitions for smoother and more visually appealing effects.
+- Improved translation support and ensured compatibility with WordPress translation standards.
+- General performance improvements and minor bug fixes.
+
 ### 1.3.8 - 2025-01-09
 - Added new global options for customizing button labels:
   Read More: Customize the "Read More" button text for your templates.
@@ -76,6 +83,9 @@
 - Initial release.
 
 ## Upgrade Notice
+
+### 1.3.9
+Adds support for loading the initial set of posts via AJAX, improving caching compatibility and ensuring fresh content. Enhances "Load More" button functionality for greater flexibility.
 
 ### 1.3.5
 Fixes taxonomy handling issues and adds support for cases where no taxonomy is assigned. Includes minor fixes and stability improvements. Recommended for better functionality.

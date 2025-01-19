@@ -53,7 +53,6 @@ function qapl_quick_ajax_load_posts() {
             while ($query->have_posts()) {
                 $query->the_post();
                 $template_path = $qapl_helper->plugin_templates_post_item_template(esc_attr($ajax_class->attributes[QAPL_Quick_Ajax_Helper::layout_post_item_template()]));
-                //echo $template_path = $qapl_helper->plugin_templates_post_item_template_with_placeholders(esc_attr($ajax_class->attributes[QAPL_Quick_Ajax_Helper::layout_post_item_template()]));
                 if ($template_path && file_exists($template_path)) {
                     include $template_path;
                 } else {
@@ -72,7 +71,7 @@ function qapl_quick_ajax_load_posts() {
         }
         wp_reset_postdata();
         $output = ob_get_clean();
-        $output = $ajax_class->replace_placeholders($output);
+        //$output = $ajax_class->replace_placeholders($output);
         wp_send_json_success([
             'output' => $output,
             'args' => $args,

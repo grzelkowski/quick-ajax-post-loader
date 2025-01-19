@@ -217,6 +217,9 @@
                     if (inputData.qapl_override_global_loader_icon === 1) {
                         quickAjaxAttributes[qapl_quick_ajax_helper.loader_icon] = inputData.qapl_loader_icon;
                     }
+                    if (inputData.qapl_ajax_on_initial_load === 1) {
+                        quickAjaxAttributes[qapl_quick_ajax_helper.ajax_initial_load] = inputData.qapl_ajax_on_initial_load;
+                    }
                 }
                 //quickAjaxAttributes code
                 var quickAjaxAttributesText = "";

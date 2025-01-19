@@ -2,6 +2,7 @@
     var qapl_quick_ajax_post_loader_scripts = {
         init: function() {
             this.qapl_quick_ajax_handlers();
+            this.qapl_quick_ajax_initial_load();
         },
         qapl_quick_ajax_handlers: function() {
             if (typeof qapl_quick_ajax_helper !== 'undefined' && qapl_quick_ajax_helper) {
@@ -16,6 +17,14 @@
                         self.qapl_quick_ajax_handle_ajax($(this));
                     });
                 }
+            }
+        },
+        qapl_quick_ajax_initial_load: function() {
+            var self = this;
+            var initialLoader = $('.quick-ajax-initial-loader');    
+            if (initialLoader.length > 0) {
+                //auto load ajax posts on page load
+                self.qapl_quick_ajax_handle_ajax(initialLoader);
             }
         },
         qapl_quick_ajax_handle_ajax: function(button) {

@@ -1,6 +1,6 @@
 {
   "name": "quick-ajax-post-loader",
-  "version": "1.3.8",
+  "version": "1.3.9",
   "type": "module",
   "minimum_php_version": "7.4",
   "minimum_wp_version": "5.6",
