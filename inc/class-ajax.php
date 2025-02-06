@@ -288,10 +288,19 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             if (empty($button_label)){
                 return '';
             }
+            if($button_data['data-button'] == $this->helper->load_more_button_data_button()){
+                $load_more_settings = [
+                    'quick_ajax_id' => $button_data['data-attributes']['quick_ajax_id'],
+                    'template_name' => 'load-more-button',
+                ];
+                $qapl_load_more_template = QAPL_Post_Template_Factory::get_template($load_more_settings);
+                QAPL_Post_Template_Context::set_template($qapl_load_more_template);
+            }
             ob_start();
             include($button_data['template']);
             $content = ob_get_clean();
             $modified_content = $this->add_button_data($content, $button_data);
+            QAPL_Post_Template_Context::clear_template();
             return $modified_content;
         }
 
@@ -432,6 +441,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             $args = $this->args;
             $query = new WP_Query($args);
             $this->attributes[$this->helper->layout_quick_ajax_id()] = $this->quick_ajax_block_id;
+            $layout_quick_ajax_id = esc_attr($this->attributes[$this->helper->layout_quick_ajax_id()]);
             $class_container = $class_inner_container = '';
             if (isset($this->layout[$this->helper->layout_quick_ajax_css_style()]) && $this->layout[$this->helper->layout_quick_ajax_css_style()] != 0) {
                 $class_container .= 'quick-ajax-style';
@@ -444,26 +454,32 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             }
             $container_class = $this->extract_classes_from_string($class_container);
             $container_inner_class = $this->extract_classes_from_string($class_inner_container);
-            
             ob_start();
             // Start output buffering
             do_action('qapl_posts_wrapper_pre');
-            echo '<div id="'.esc_attr($this->attributes[$this->helper->layout_quick_ajax_id()]).'" class="quick-ajax-posts-wrapper '.esc_attr($container_class).'">';
+            echo '<div id="'.esc_attr($layout_quick_ajax_id).'" class="quick-ajax-posts-wrapper '.esc_attr($container_class).'">';
             do_action('qapl_posts_wrapper_open');
             echo '<div class="quick-ajax-posts-inner-wrapper '.esc_attr($container_inner_class).'">';
+            
+            $container_settings = [
+                'quick_ajax_id' => $layout_quick_ajax_id,
+                'template_name' => $this->attributes['post_item_template'],
+            ];
+            $qapl_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
+            QAPL_Post_Template_Context::set_template($qapl_post_template);
             if ($query->have_posts()) {
                 if ($this->ajax_initial_load) {
-                    echo '<div class="quick-ajax-initial-loader" data-button="quick-ajax-filter-button" style="display:none;" data-action="' . esc_attr(json_encode($this->args)) . '" data-attributes="' . esc_attr(json_encode($this->attributes)) . '"></div>';
+                    echo '<div class="quick-ajax-initial-loader" data-button="quick-ajax-filter-button" style="display:none;" data-action="' . esc_attr(wp_json_encode($this->args)) . '" data-attributes="' . esc_attr(wp_json_encode($this->attributes)) . '"></div>';
                 } else {
                     while ($query->have_posts()) {
-                        $query->the_post();
+                        $query->the_post();                        
                         include($this->layout[$this->helper->layout_post_item_template()]);
                     }
                 }
             } else {
                 include($this->helper->plugin_templates_no_posts());
             }
-            
+            QAPL_Post_Template_Context::clear_template();
             $this->load_more_button($query->get('paged'), $query->max_num_pages, $query->found_posts);
             echo '</div>';
             do_action('qapl_loader_icon_pre');

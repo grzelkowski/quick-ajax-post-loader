@@ -46,9 +46,15 @@ function qapl_quick_ajax_load_posts() {
         $ajax_class->attributes = $attributes;
         $args = $ajax_class->args;
 
+        $container_settings = [
+            'quick_ajax_id' => $ajax_class->attributes['quick_ajax_id'],
+            'template_name' => $ajax_class->attributes['post_item_template'],
+        ];
+        $qapl_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
+        QAPL_Post_Template_Context::set_template($qapl_post_template);
         $query = new WP_Query($args);
-        ob_start();
-        
+
+        ob_start();        
         if ($query->have_posts()) {
             while ($query->have_posts()) {
                 $query->the_post();
@@ -71,6 +77,7 @@ function qapl_quick_ajax_load_posts() {
         }
         wp_reset_postdata();
         $output = ob_get_clean();
+        QAPL_Post_Template_Context::clear_template();
         //$output = $ajax_class->replace_placeholders($output);
         wp_send_json_success([
             'output' => $output,

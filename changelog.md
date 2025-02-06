@@ -1,5 +1,12 @@
 ## Changelog
 
+### 1.3.10 - 2025-02-06
+- Added a new template: "Full Background Image Post Template" for enhanced post display.
+- Improved CSS compatibility by adding missing vendor prefixes (-webkit-box-pack, -ms-flex-pack, justify-content, etc.).
+- Refined CSS handling in the AJAX container, ensuring styles apply correctly when the "Apply Quick AJAX CSS Style" option is enabled. This improves theme compatibility and layout consistency.
+- Optimized and cleaned up CSS styles for better responsiveness across different themes.
+- General code improvements and performance optimizations for smoother execution.
+
 ### 1.3.9 - 2025-01-19
 - Added support for loading the initial set of posts via AJAX on page load, improving compatibility with caching systems and ensuring fresh content display.
 - Enhanced the "Load More" button functionality, allowing it to load a different number of posts than specified for the initial page load.

@@ -56,7 +56,12 @@ export const minifyJs = gulp.task('minify-js', function () {
 // Task to optimize CSS files
 export const optimizeCss = gulp.task('optimize-css', function () {
     return gulp.src(['css/style-dev.css', 'css/admin-style-dev.css']) // source files ending with "-dev.css"
-        .pipe(postcss([autoprefixer()])) // add vendor prefixes
+        .pipe(postcss([
+            autoprefixer({
+                overrideBrowserslist: ['> 0.5%', 'last 3 versions'],
+                grid: true
+            })
+        ])) // add vendor prefixes
         .pipe(rename(function (path) {
             path.basename = path.basename.replace('-dev', ''); // remove "-dev" from the file name
         }))

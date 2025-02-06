@@ -3,7 +3,7 @@ Contributors: grzelkowski
 Tags: ajax, load-more, ajax-posts, dynamic, category-filter
 Requires at least: 5.6
 Tested up to: 6.7.1
-Stable tag: 1.3.9
+Stable tag: 1.3.10
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -192,6 +192,13 @@ You can create a custom loading icon by adding a file (e.g., `loader-icon-custom
 `wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/loader-icon/`. Use your own HTML, CSS, or animations to design a unique loading indicator.
 
 == Changelog ==
+
+= 1.3.10 - 2025-02-06 =
+- Added a new template: "Full Background Image Post Template" for enhanced post display.
+- Improved CSS compatibility by adding missing vendor prefixes (-webkit-box-pack, -ms-flex-pack, justify-content, etc.).
+- Refined CSS handling in the AJAX container, ensuring styles apply correctly when the "Apply Quick AJAX CSS Style" option is enabled. This improves theme compatibility and layout consistency.
+- Optimized and cleaned up CSS styles for better responsiveness across different themes.
+- General code improvements and performance optimizations for smoother execution.
 
 = 1.3.9 - 2025-01-19 =
 - Added support for loading the initial set of posts via AJAX on page load, improving compatibility with caching systems and ensuring fresh content display.

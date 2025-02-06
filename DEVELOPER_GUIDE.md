@@ -396,6 +396,7 @@ The `$quick_ajax_attributes` parameter is crucial when using functions such as `
 - **`container_class` (string)**: Adds custom CSS classes to the post grid container.  
 - **`load_more_posts` (int)**: Specifies the number of posts to load upon clicking the "Load More" button.  
 - **`loader_icon` (int)**: Allows for the selection of a loading icon.
+- **`ajax_initial_load` (int)**: Enables loading the initial set of posts via AJAX when the page loads. This helps to ensure that post data is always up-to-date, especially in cases where caching might display outdated content.
 
 ---
 

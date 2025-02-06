@@ -2,6 +2,8 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+//require_once(plugin_dir_path( __FILE__ ).'/class-helper_new.php');
+
 class QAPL_Quick_Ajax_Helper{
     private static $instance = null;
     private $file_helper;
@@ -12,7 +14,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.3.9',
+            'version' => '1.3.10',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
@@ -43,7 +45,8 @@ class QAPL_Quick_Ajax_Helper{
             $this->pages_helper->plugin_functions(),
             $this->pages_helper->plugin_updater(),
             $this->pages_helper->plugin_shortcode_class(),
-            $this->pages_helper->plugin_template_actions(),
+            //$this->pages_helper->plugin_template_actions(),
+            $this->pages_helper->plugin_template_filters(),
         ];        
         foreach ($initialize_list as $initialize) {
             if (($initialize !== false)) {
@@ -257,21 +260,6 @@ class QAPL_Quick_Ajax_Helper{
     }
     public function plugin_templates_load_more_button() {
         return $this->file_helper->get_templates_dir_path('/load-more-button.php');
-    }
-
-    public function plugin_templates_extract_actions($template_path) {
-        if (!file_exists($template_path)) {
-            return [];
-        }
-
-        // Read template content
-        $template_content = file_get_contents($template_path);
-
-        // Use regex to find all `do_action` calls
-        preg_match_all('/do_action\(\s*[\'"](.+?)[\'"]\s*\)/', $template_content, $matches);
-
-        // Return unique list of actions
-        return array_unique($matches[1]);
     }
 
     public static function generate_shortcode($post_id) {
@@ -704,6 +692,9 @@ class QAPL_Pages_Helper{
     public function plugin_template_actions() {
         return $this->file_helper->file_exists('inc/class-template-actions.php');
     }
+    public function plugin_template_filters() {
+        return $this->file_helper->file_exists('inc/class-template-filters.php');
+    }
 }
 
 class QAPL_Form_Fields_Helper{
@@ -1125,7 +1116,7 @@ class QAPL_Form_Fields_Helper{
         );
     }
 }
-
+/*
 class QAPL_Logger {
     private static $instance = null;
     private $file_helper;
@@ -1153,7 +1144,7 @@ class QAPL_Logger {
         $this->logs = [];
     }
 }
-
+*/
 /* not in use after removing placeholders
 class QAPL_Placeholder_Replacer{
     private static $instance = null;
