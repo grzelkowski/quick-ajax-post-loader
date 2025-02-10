@@ -8,12 +8,12 @@
             if (typeof qapl_quick_ajax_helper !== 'undefined' && qapl_quick_ajax_helper) {
                 var self = this;
                 if (qapl_quick_ajax_helper.helper.load_more_data_button) {
-                    $('.quick-ajax-posts-wrapper').on('click', `[data-button="${qapl_quick_ajax_helper.helper.load_more_data_button}"]`, function() {
+                    $('.quick-ajax-posts-container').on('click', `[data-button="${qapl_quick_ajax_helper.helper.load_more_data_button}"]`, function() {
                         self.qapl_quick_ajax_handle_ajax($(this));
                     });
                 }
                 if (qapl_quick_ajax_helper.helper.filter_data_button) {
-                    $('.quick-ajax-filter-wrapper').on('click', `[data-button="${qapl_quick_ajax_helper.helper.filter_data_button}"]`, function() {
+                    $('.quick-ajax-filter-container').on('click', `[data-button="${qapl_quick_ajax_helper.helper.filter_data_button}"]`, function() {
                         self.qapl_quick_ajax_handle_ajax($(this));
                     });
                 }
@@ -21,7 +21,7 @@
         },
         qapl_quick_ajax_initial_load: function() {
             var self = this;
-            var initialLoader = $('.quick-ajax-initial-loader');    
+            var initialLoader = $('.qapl-initial-loader');    
             if (initialLoader.length > 0) {
                 //auto load ajax posts on page load
                 self.qapl_quick_ajax_handle_ajax(initialLoader);
@@ -43,7 +43,7 @@
             var button_type = button.attr('data-button');
             var containerId = attributes[qapl_quick_ajax_helper.helper.block_id] || '';
             var container = $('#' + containerId);
-            var container_inner = $('#' + containerId + ' .quick-ajax-posts-inner-wrapper');
+            var container_inner = $('#' + containerId + ' .quick-ajax-posts-wrapper');
             if (!container.length || !container_inner.length) {
                 console.error('Quick Ajax Post Loader: Container or inner container not found:', containerId);
                 return;
@@ -70,7 +70,7 @@
                         if(button_type === qapl_quick_ajax_helper.helper.load_more_data_button){
                             self.qapl_quick_ajax_load_more_add_posts(container_inner, button, response.data.output);
                         } else if(button_type === qapl_quick_ajax_helper.helper.filter_data_button){
-                            self.qapl_quick_ajax_term_filter_show_posts(container_inner, button, response.data.output);
+                            self.qapl_quick_ajax_taxonomy_filter_show_posts(container_inner, button, response.data.output);
                         }
                     } else {
                         console.error('Quick Ajax Post Loader: Error:', response.data.output);
@@ -91,7 +91,7 @@
                 $(this).removeAttr("style");
             });
         },
-        qapl_quick_ajax_term_filter_show_posts: function(container, button, response) {
+        qapl_quick_ajax_taxonomy_filter_show_posts: function(container, button, response) {
             $(`[data-button="${qapl_quick_ajax_helper.helper.filter_data_button}"]`).removeClass('active');
             button.addClass('active');
             var new_posts = $(response).css('opacity', '0');

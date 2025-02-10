@@ -69,7 +69,7 @@ With this plugin, you can create interactive and visually appealing taxonomy fil
 - Enhance user experience with intuitive and interactive navigation.
 - Enable seamless content filtering without page reloads.
 
-To customize, place a `term-filter-button.php` file in your theme's `/quick-ajax-post-loader/templates/term-filter/` directory. This file lets you modify button labels, classes, or behavior. More details can be found in the [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md).
+To customize, place a `taxonomy-filter-button.php` file in your theme's `/quick-ajax-post-loader/templates/taxonomy-filter/` directory. This file lets you modify button labels, classes, or behavior. More details can be found in the [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md).
 
 ### Custom Loading Icons
 
@@ -105,13 +105,13 @@ For developers, **Quick Ajax Post Loader** offers extensive support for hooks an
 - Seamlessly integrate AJAX-based features into your custom themes or plugins.
 
 **Examples of Available Hooks:**
-- `qapl_filter_wrapper_pre`: Add custom content before rendering taxonomy filters.
-- `qapl_posts_wrapper_close`: Insert additional HTML at the end of the posts section.
-- `qapl_loader_icon_complete`: Customize the rendering of loading icons.
+- `qapl_filter_container_before`: Add custom content before rendering taxonomy filters.
+- `qapl_posts_container_end`: Insert additional HTML at the end of the posts section.
+- `qapl_loader_after`: Customize the rendering of loading icons.
 
 **Examples of Filters:**
-- `qapl_modify_query`: Adjust the WP_Query arguments for AJAX content loading.
-- `qapl_modify_term_buttons`: Change the labels or behavior of taxonomy filter buttons.
+- `qapl_modify_posts_query_args`: Adjust the WP_Query arguments for AJAX content loading.
+- `qapl_modify_taxonomy_filter_buttons`: Change the labels or behavior of taxonomy filter buttons.
 
 For a complete list of hooks and filters, along with examples, refer to the [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md).
 

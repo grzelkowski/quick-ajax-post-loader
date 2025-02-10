@@ -4,4 +4,4 @@ if (!defined('ABSPATH')) {
 }
 /* Loader Icon Name: Default Icon */
 ?>
-<div class="quick-ajax-loader-default"></div>
+<div class="qapl-loader-default"></div>

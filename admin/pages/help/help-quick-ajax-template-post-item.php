@@ -19,7 +19,7 @@ $accordion_block_content .= '<pre><code class="no-background">';
 $accordion_block_content .= htmlentities('<'.'?php ') . "\n";
 $accordion_block_content .= htmlentities('/* Post Item Name: My Custom Template Name */') . "\n";
 $accordion_block_content .= htmlentities('?'.'>') . "\n";
-$accordion_block_content .= htmlentities('<div class="quick-ajax-post-item">') . "\n";
+$accordion_block_content .= htmlentities('<div class="qapl-post-item">') . "\n";
 $accordion_block_content .= htmlentities('    <a href="<?php echo get_permalink(); ?>">') . "\n";
 $accordion_block_content .= htmlentities('        <!-- Here, add code to display the post, e.g., thumbnail, title -->') . "\n";
 $accordion_block_content .= htmlentities('    </a>') . "\n";

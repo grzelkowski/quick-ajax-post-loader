@@ -250,35 +250,35 @@
                 if (inputData.qapl_show_select_taxonomy === 1) {
                     var quickAjaxTaxonomy = inputData.qapl_select_taxonomy;
                 }
+                var quickAjaxTaxonomyFilterValue = "";
                 var quickAjaxTaxonomyFilterText = "";
-                var quickAjaxTermFilterText = "";
                 if (quickAjaxTaxonomy !== null) {
+                    quickAjaxTaxonomyFilterValue = "";
+                    quickAjaxTaxonomyFilterValue += `$quick_ajax_taxonomy = '${quickAjaxTaxonomy}';`;
+                    //qapl_render_taxonomy_filter
                     quickAjaxTaxonomyFilterText = "";
-                    quickAjaxTaxonomyFilterText += `$quick_ajax_taxonomy = '${quickAjaxTaxonomy}';`;
-                    //qapl_quick_ajax_term_filter
-                    quickAjaxTermFilterText = "";
-                    quickAjaxTermFilterText += "if(function_exists('qapl_quick_ajax_term_filter')):\n";
-                    quickAjaxTermFilterText += "    qapl_quick_ajax_term_filter(\n";
-                    quickAjaxTermFilterText += "        $quick_ajax_args,\n";
-                    quickAjaxTermFilterText += "        $quick_ajax_attributes,\n";
-                    quickAjaxTermFilterText += "        $quick_ajax_taxonomy,\n";
+                    quickAjaxTaxonomyFilterText += "if(function_exists('qapl_render_taxonomy_filter')):\n";
+                    quickAjaxTaxonomyFilterText += "    qapl_render_taxonomy_filter(\n";
+                    quickAjaxTaxonomyFilterText += "        $quick_ajax_args,\n";
+                    quickAjaxTaxonomyFilterText += "        $quick_ajax_attributes,\n";
+                    quickAjaxTaxonomyFilterText += "        $quick_ajax_taxonomy,\n";
                     //remove last comma
-                    quickAjaxTermFilterText = quickAjaxTermFilterText.slice(0, -2) + "\n";
-                    quickAjaxTermFilterText += "    );\n";
-                    quickAjaxTermFilterText += "endif;";
+                    quickAjaxTaxonomyFilterText = quickAjaxTaxonomyFilterText.slice(0, -2) + "\n";
+                    quickAjaxTaxonomyFilterText += "    );\n";
+                    quickAjaxTaxonomyFilterText += "endif;";
                 }
-                //qapl_quick_ajax_post_grid
-                var quick_ajax_post_gridText = "";
-                quick_ajax_post_gridText += "if(function_exists('qapl_quick_ajax_post_grid')):\n";
-                quick_ajax_post_gridText += "   qapl_quick_ajax_post_grid(\n";
-                quick_ajax_post_gridText += "       $quick_ajax_args,\n";
+                //qapl_render_post_container
+                var quick_ajax_post_containerText = "";
+                quick_ajax_post_containerText += "if(function_exists('qapl_render_post_container')):\n";
+                quick_ajax_post_containerText += "   qapl_render_post_container(\n";
+                quick_ajax_post_containerText += "       $quick_ajax_args,\n";
                 if (quickAjaxAttributesText !== "") {
-                    quick_ajax_post_gridText += "       $quick_ajax_attributes,\n";
+                    quick_ajax_post_containerText += "       $quick_ajax_attributes,\n";
                 }
                 //remove last comma
-                quick_ajax_post_gridText = quick_ajax_post_gridText.slice(0, -2) + "\n";
-                quick_ajax_post_gridText += "   );\n";
-                quick_ajax_post_gridText += "endif;";
+                quick_ajax_post_containerText = quick_ajax_post_containerText.slice(0, -2) + "\n";
+                quick_ajax_post_containerText += "   );\n";
+                quick_ajax_post_containerText += "endif;";
 
                 var formattedText = "";
                 if (quickAjaxArgsText.trim() !== "") {
@@ -289,17 +289,17 @@
                     formattedText += "\n// Define attributes for AJAX.\n";
                     formattedText += quickAjaxAttributesText.trim() + "\n";
                 }
-                if (quickAjaxTaxonomyFilterText.trim() !== "") {
+                if (quickAjaxTaxonomyFilterValue.trim() !== "") {
                     formattedText += "\n// Set the taxonomy for filtering posts.\n";
+                    formattedText += quickAjaxTaxonomyFilterValue.trim() + "\n";
+                }
+                if (quickAjaxTaxonomyFilterText.trim() !== "") {
+                    formattedText += "\n// Render the navigation for '" + inputData.qapl_select_taxonomy + "' taxonomy.\n";
                     formattedText += quickAjaxTaxonomyFilterText.trim() + "\n";
                 }
-                if (quickAjaxTermFilterText.trim() !== "") {
-                    formattedText += "\n// Render the navigation for '" + inputData.qapl_select_taxonomy + "' terms.\n";
-                    formattedText += quickAjaxTermFilterText.trim() + "\n";
-                }
-                if (quick_ajax_post_gridText.trim() !== "") {
+                if (quick_ajax_post_containerText.trim() !== "") {
                     formattedText += "\n// Render the grid for '" + inputData.qapl_select_post_type + "' type posts.\n";
-                    formattedText += quick_ajax_post_gridText.trim() + "\n";
+                    formattedText += quick_ajax_post_containerText.trim() + "\n";
                 }
                 var targetDiv = $("#" + outputDiv);
                 targetDiv.empty();

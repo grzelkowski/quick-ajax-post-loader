@@ -2,8 +2,8 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-$accordion_block_title = 'Funkcja `qapl_quick_ajax_post_grid`';
-$accordion_block_content = '<p><strong>Opis:</strong> Funkcja <code class="code-tag">qapl_quick_ajax_post_grid</code> jest przeznaczona do renderowania dynamicznej siatki postów (grid) w WordPressie z wykorzystaniem technologii AJAX. Funkcja umożliwia wyświetlanie postów określonego typu bez konieczności przeładowywania strony, co znacząco poprawia doświadczenie użytkownika oraz wydajność strony.</p>';
+$accordion_block_title = 'Funkcja `qapl_render_post_container`';
+$accordion_block_content = '<p><strong>Opis:</strong> Funkcja <code class="code-tag">qapl_render_post_container</code> jest przeznaczona do renderowania dynamicznej siatki postów (grid) w WordPressie z wykorzystaniem technologii AJAX. Funkcja umożliwia wyświetlanie postów określonego typu bez konieczności przeładowywania strony, co znacząco poprawia doświadczenie użytkownika oraz wydajność strony.</p>';
 $accordion_block_content .= '<h4>Parametry</h4>';
 $accordion_block_content .= '<ul>';
 $accordion_block_content .= '<li><code class="no-background"><strong>$quick_ajax_args</strong></code> (array): Tablica parametrów zapytania AJAX dla postów, umożliwiająca konfigurację wyświetlanych treści.</li>';
@@ -31,8 +31,8 @@ $accordion_block_content .= htmlentities("    'load_more_posts' => 4,") . "\n";
 $accordion_block_content .= htmlentities("    'loader_icon' => 'loader-icon-quick-ajax-dot'") . "\n";
 $accordion_block_content .= htmlentities(');') . "\n";
 $accordion_block_content .= "\n";
-$accordion_block_content .= htmlentities("if(function_exists('qapl_quick_ajax_post_grid')):") . "\n";
-$accordion_block_content .= htmlentities('    qapl_quick_ajax_post_grid(') . "\n";
+$accordion_block_content .= htmlentities("if(function_exists('qapl_render_post_container')):") . "\n";
+$accordion_block_content .= htmlentities('    qapl_render_post_container(') . "\n";
 $accordion_block_content .= htmlentities('        $quick_ajax_args,') . "\n";
 $accordion_block_content .= htmlentities('        $quick_ajax_attributes') . "\n";
 $accordion_block_content .= htmlentities('    );') . "\n";

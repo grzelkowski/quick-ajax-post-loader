@@ -60,8 +60,8 @@ if (!class_exists('QAPL_Quick_Ajax_Updater')) {
         }
     }
     // Register the update strategies and execute updates
-    add_action('init', 'qapl_quick_ajax_check_version_and_run_updates');
-    function qapl_quick_ajax_check_version_and_run_updates() {
+    add_action('init', 'qapl_action_quick_ajax_check_version_and_run_updates');
+    function qapl_action_quick_ajax_check_version_and_run_updates() {
         $current_version = get_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_version());
         $plugin_version = QAPL_Quick_Ajax_Helper::get_plugin_info()['version'];
         if ($current_version !== $plugin_version) {
@@ -329,8 +329,8 @@ if (!class_exists('QAPL_Quick_Ajax_Cleaner')) {
             exit;
         }
     }
-    add_action('admin_post_qapl_purge_unused_data', 'qapl_quick_ajax_handle_purge_unused_data_request');
-    function qapl_quick_ajax_handle_purge_unused_data_request() {
+    add_action('admin_post_qapl_purge_unused_data', 'qapl_action_quick_ajax_handle_purge_unused_data_request');
+    function qapl_action_quick_ajax_handle_purge_unused_data_request() {
         
         // check for required capabilities
         if (!current_user_can('manage_options')) {

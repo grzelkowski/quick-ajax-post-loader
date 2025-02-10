@@ -2,10 +2,10 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-$accordion_block_title = '`$quick_ajax_attributes` Parameter for `qapl_quick_ajax_post_grid` and `qapl_quick_ajax_term_filter` Functions';
+$accordion_block_title = '`$quick_ajax_attributes` Parameter for `qapl_render_post_container` and `qapl_render_taxonomy_filter` Functions';
 $accordion_block_content = '<p><strong>Description:</strong> The <code class="code-tag">quick_ajax_attributes</code> parameter is used to configure the appearance and behavior options of post grids and taxonomic filters in the <strong>Quick Ajax Post Loader</strong> plugin for WordPress. It allows for the customization of styles, number of columns, container classes, and other attributes that affect how dynamically loaded content is displayed and functions.</p>';
 $accordion_block_content .= '<h4>Application</h4>';
-$accordion_block_content .= '<p>The <code class="code-tag">$quick_ajax_attributes</code> parameter is crucial when using functions such as <code class="code-tag">qapl_quick_ajax_post_grid</code> and <code class="code-tag">qapl_quick_ajax_term_filter</code>, enabling detailed personalization of AJAX loaded content.</p>';
+$accordion_block_content .= '<p>The <code class="code-tag">$quick_ajax_attributes</code> parameter is crucial when using functions such as <code class="code-tag">qapl_render_post_container</code> and <code class="code-tag">qapl_render_taxonomy_filter</code>, enabling detailed personalization of AJAX loaded content.</p>';
 $accordion_block_content .= '<h4>Parameters</h4>';
 $accordion_block_content .= '<ul>';
 $accordion_block_content .= '<li><code class="no-background"><strong>quick_ajax_id</strong></code> (int): A unique identifier for the AJAX instance, allowing multiple independent grids on the same page.</li>';

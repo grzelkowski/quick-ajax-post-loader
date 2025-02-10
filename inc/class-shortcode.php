@@ -119,7 +119,7 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                     $attributes[QAPL_Quick_Ajax_Helper::layout_quick_ajax_css_style()] = $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_layout_quick_ajax_css_style()];         
                 }
                 if(isset($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_layout_quick_ajax_css_style()]) && ($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_layout_quick_ajax_css_style()] != 0) && isset($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_layout_select_columns_qty()])){
-                    $attributes[QAPL_Quick_Ajax_Helper::layout_grid_num_columns()] = $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_layout_select_columns_qty()];         
+                    $attributes[QAPL_Quick_Ajax_Helper::layout_container_num_columns()] = $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_layout_select_columns_qty()];         
                 }
                 if(isset($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_layout_post_item_template()])){
                     $attributes[QAPL_Quick_Ajax_Helper::layout_post_item_template()] = $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_layout_post_item_template()]; 
@@ -155,7 +155,7 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                     (isset($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_layout_quick_ajax_css_style()]) ? 
                     sanitize_text_field($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_layout_quick_ajax_css_style()]) : '');
         
-                $attributes[QAPL_Quick_Ajax_Helper::layout_grid_num_columns()] = 
+                $attributes[QAPL_Quick_Ajax_Helper::layout_container_num_columns()] = 
                     !empty($this->shortcode_args['grid_num_columns']) ? 
                     intval($this->shortcode_args['grid_num_columns']) : 
                     (isset($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_layout_select_columns_qty()]) ? 
@@ -208,7 +208,7 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                     !empty($this->shortcode_args['quick_ajax_css_style']) ? 
                     sanitize_text_field($this->shortcode_args['quick_ajax_css_style']) : '';
         
-                $attributes[QAPL_Quick_Ajax_Helper::layout_grid_num_columns()] = 
+                $attributes[QAPL_Quick_Ajax_Helper::layout_container_num_columns()] = 
                     !empty($this->shortcode_args['grid_num_columns']) ? 
                     intval($this->shortcode_args['grid_num_columns']) : 0;
         
@@ -269,8 +269,8 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
             $attributes = $this->create_shortcode_attributes();
             $taxonomy = $this->create_shortcode_taxonomy();
             ob_start();
-            if (!empty($args) && function_exists('qapl_quick_ajax_post_grid')) {
-                qapl_quick_ajax_post_grid($args, $attributes, $taxonomy);
+            if (!empty($args) && function_exists('qapl_render_post_container')) {
+                qapl_render_post_container($args, $attributes, $taxonomy);
             }
             $output = ob_get_clean();
             return $output;

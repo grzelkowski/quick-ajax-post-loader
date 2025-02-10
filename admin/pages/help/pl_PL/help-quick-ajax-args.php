@@ -2,10 +2,10 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-$accordion_block_title = 'Parametr `$quick_ajax_args` dla funkcji `qapl_quick_ajax_post_grid` oraz `qapl_quick_ajax_term_filter`';
+$accordion_block_title = 'Parametr `$quick_ajax_args` dla funkcji `qapl_render_post_container` oraz `qapl_render_taxonomy_filter`';
 $accordion_block_content = '<p><strong>Opis:</strong> Parametr <code class="code-tag">$quick_ajax_args</code> jest kluczowy do konfigurowania zapytań AJAX w pluginie <strong>Quick Ajax Post Loader</strong>. Pozwala on na szczegółowe określenie, jakie posty mają być ładowane i wyświetlane w ramach siatki postów (grid) lub przy użyciu filtrów taksonomicznych, zapewniając dynamiczne i interaktywne doświadczenie użytkownika na stronie.</p>';
 $accordion_block_content .= '<h4>Zastosowanie</h4>';
-$accordion_block_content .= '<p><code class="code-tag">$quick_ajax_args</code> jest wykorzystywany w funkcjach takich jak <code class="code-tag">qapl_quick_ajax_post_grid</code> oraz <code class="code-tag">qapl_quick_ajax_term_filter</code>, umożliwiając elastyczne i zaawansowane zarządzanie treścią bez potrzeby przeładowywania strony.</p>';
+$accordion_block_content .= '<p><code class="code-tag">$quick_ajax_args</code> jest wykorzystywany w funkcjach takich jak <code class="code-tag">qapl_render_post_container</code> oraz <code class="code-tag">qapl_render_taxonomy_filter</code>, umożliwiając elastyczne i zaawansowane zarządzanie treścią bez potrzeby przeładowywania strony.</p>';
 $accordion_block_content .= '<h4>Parametry</h4>';
 $accordion_block_content .= '<ul>';
 $accordion_block_content .= '<li><code class="no-background"><strong>post_type</strong></code> (string): Typ postów do załadowania, np. \'post\', \'page\', niestandardowe typy postów.</li>';

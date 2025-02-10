@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 /* Loader Icon Name: Wave Icon */
 ?>
-<div class="quick-ajax-loader-wave">
+<div class="qapl-loader-wave">
   <div class="wave"></div>
   <div class="wave"></div>
   <div class="wave"></div>

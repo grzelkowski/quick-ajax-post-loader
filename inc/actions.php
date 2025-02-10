@@ -38,8 +38,9 @@ function qapl_quick_ajax_load_posts() {
             $button_type = sanitize_text_field(wp_unslash($_POST['button_type'])); // Sanitize string input
         }
 
-        if ($button_type === 'ajax-load-more' && isset($attributes['load_more_posts'])) {
-            $args['posts_per_page'] = intval($attributes['load_more_posts']);
+        if ($button_type === 'quick-ajax-load-more-button' && isset($attributes['load_more_posts']) && $attributes['load_more_posts'] > 0) {
+            //investigate, load more works good without this parameter
+         //   $args['posts_per_page'] = intval($attributes['load_more_posts']);
         }
         
         $ajax_class->wp_query_args($args);
@@ -81,7 +82,7 @@ function qapl_quick_ajax_load_posts() {
         //$output = $ajax_class->replace_placeholders($output);
         wp_send_json_success([
             'output' => $output,
-            'args' => $args,
+            'args' => $args
         ]);
     }
     wp_die();

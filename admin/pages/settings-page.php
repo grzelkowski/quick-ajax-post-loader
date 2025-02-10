@@ -223,17 +223,18 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             // Paths to files
             $help_files = [
                 'help-quick-ajax-intro.php',
-                'help-quick-ajax-templates-post-item.php',
-                'help-quick-ajax-templates-loader-icon.php',
-                'help-quick-ajax-templates-term-filter-button.php',
+                'help-quick-ajax-template-post-item.php',
+                'help-quick-ajax-template-loader-icon.php',
+                'help-quick-ajax-template-taxonomy-filter-button.php',
+                'help-quick-ajax-template-hooks.php',
                 'help-quick-ajax-function-generator.php',
                 'help-quick-ajax-post-grid.php',
-                'help-quick-ajax-term-filter.php',                
+                'help-quick-ajax-taxonomy-filter.php',                
                 'help-quick-ajax-args.php',
                 'help-quick-ajax-attributes.php',
-                'help-quick-ajax-add-action.php',
-                'help-quick-ajax-add-filters-quick-ajax-modify-query.php',
-                'help-quick-ajax-add-filters-quick-ajax-modify-term-buttons.php',
+                'help-quick-ajax-available-actions.php',
+                'help-quick-ajax-filter-qapl-modify-posts-query-args.php',
+                'help-quick-ajax-filter-qapl-modify-taxonomy-filter-buttons.php',
             ];
             // Loop the files and create accordion blocks
             foreach ($help_files as $file) {

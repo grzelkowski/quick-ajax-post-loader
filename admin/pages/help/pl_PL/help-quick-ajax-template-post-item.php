@@ -19,7 +19,7 @@ $accordion_block_content .= '<pre><code class="no-background">';
 $accordion_block_content .= htmlentities('<?php 
 /* Post Item Name: Moja Niestandardowa Nazwa Szablonu */
 ?>') . "\n";
-$accordion_block_content .= htmlentities('<div class="quick-ajax-post-item">') . "\n";
+$accordion_block_content .= htmlentities('<div class="qapl-post-item">') . "\n";
 $accordion_block_content .= htmlentities('    <a href="<?php echo get_permalink() ?>">') . "\n";
 $accordion_block_content .= htmlentities('        <!-- Tu dodaj kod wyświetlający post, np. miniaturę, tytuł -->') . "\n";
 $accordion_block_content .= htmlentities('    </a>') . "\n";

@@ -3,7 +3,7 @@ Contributors: grzelkowski
 Tags: ajax, load-more, ajax-posts, dynamic, category-filter
 Requires at least: 5.6
 Tested up to: 6.7.1
-Stable tag: 1.3.10
+Stable tag: 1.4.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -77,7 +77,7 @@ With this plugin, you can create interactive and visually appealing taxonomy fil
 - Enhance user experience with intuitive and interactive navigation.
 - Enable seamless content filtering without page reloads.
 
-To customize, place a `term-filter-button.php` file in your theme's `/quick-ajax-post-loader/templates/term-filter/` directory. This file lets you modify button labels, classes, or behavior. More details can be found in the [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md).
+To customize, place a `taxonomy-filter-button.php` file in your theme's `/quick-ajax-post-loader/templates/taxonomy-filter/` directory. This file lets you modify button labels, classes, or behavior. More details can be found in the [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md).
 
 = Custom Loading Icons =
 
@@ -113,13 +113,13 @@ For developers, **Quick Ajax Post Loader** offers extensive support for hooks an
 - Seamlessly integrate AJAX-based features into your custom themes or plugins.
 
 **Examples of Available Hooks:**
-- `qapl_filter_wrapper_pre`: Add custom content before rendering taxonomy filters.
-- `qapl_posts_wrapper_close`: Insert additional HTML at the end of the posts section.
-- `qapl_loader_icon_complete`: Customize the rendering of loading icons.
+- `qapl_filter_container_before`: Add custom content before rendering taxonomy filters.
+- `qapl_posts_container_end`: Insert additional HTML at the end of the posts section.
+- `qapl_loader_after`: Customize the rendering of loading icons.
 
 **Examples of Filters:**
-- `qapl_modify_query`: Adjust the WP_Query arguments for AJAX content loading.
-- `qapl_modify_term_buttons`: Change the labels or behavior of taxonomy filter buttons.
+- `qapl_modify_posts_query_args`: Adjust the WP_Query arguments for AJAX content loading.
+- `qapl_modify_taxonomy_filter_buttons`: Change the labels or behavior of taxonomy filter buttons.
 
 For a complete list of hooks and filters, along with examples, refer to the [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md).
 
@@ -192,6 +192,15 @@ You can create a custom loading icon by adding a file (e.g., `loader-icon-custom
 `wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/loader-icon/`. Use your own HTML, CSS, or animations to design a unique loading indicator.
 
 == Changelog ==
+= 1.4.0 - 2025-02-10 =
+- Added new template filters for customizing post elements. Developers can now modify the post date, image, title, excerpt, read more button, and load more button via filters, allowing greater flexibility in template customization.  
+- Standardized action and filter names for better consistency and readability.  
+- Introduced a backward compatibility layer for deprecated hooks to ensure smooth transition.  
+  **Note:** Old hooks remain functional, but updating your customizations to use the new hook names is highly recommended for long-term stability.  
+- Standardized function naming conventions and introduced alias functions to maintain backward compatibility while improving code clarity.  
+- Improved CSS structure for better compatibility with different WordPress themes.  
+- Simplified class names in the template system, making customization and integration easier.  
+- General code refactoring to improve maintainability, readability, and performance.  
 
 = 1.3.10 - 2025-02-06 =
 - Added a new template: "Full Background Image Post Template" for enhanced post display.
@@ -283,6 +292,12 @@ You can create a custom loading icon by adding a file (e.g., `loader-icon-custom
 - Initial release.
 
 == Upgrade Notice ==
+
+= 1.4.0 =
+This update introduces new template filters, allowing developers to modify post elements (date, title, image, excerpt, and buttons) using filters.  
+
+Additionally, action and filter names have been standardized, and a backward compatibility layer has been implemented for deprecated hooks.  
+**Important:** If you rely on existing hooks, review your customizations and update them to use the new standardized names for long-term stability.  
 
 = 1.3.9 =
 Adds support for loading the initial set of posts via AJAX, improving caching compatibility and ensuring fresh content. Enhances "Load More" button functionality for greater flexibility.

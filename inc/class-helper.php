@@ -14,7 +14,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.3.10',
+            'version' => '1.4.0',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
@@ -45,8 +45,8 @@ class QAPL_Quick_Ajax_Helper{
             $this->pages_helper->plugin_functions(),
             $this->pages_helper->plugin_updater(),
             $this->pages_helper->plugin_shortcode_class(),
-            //$this->pages_helper->plugin_template_actions(),
-            $this->pages_helper->plugin_template_filters(),
+            $this->pages_helper->plugin_template_hooks(),
+            $this->pages_helper->plugin_deprecated_hooks_handler(),
         ];        
         foreach ($initialize_list as $initialize) {
             if (($initialize !== false)) {
@@ -119,7 +119,7 @@ class QAPL_Quick_Ajax_Helper{
             'nonce' =>  $nonce,
             'helper' => [
                 'block_id' => self::layout_quick_ajax_id(),
-                'filter_data_button' => self::term_filter_button_data_button(),
+                'filter_data_button' => self::taxonomy_filter_button_data_button(),
                 'load_more_data_button' => self::load_more_button_data_button(),
             ]
         ];
@@ -132,7 +132,7 @@ class QAPL_Quick_Ajax_Helper{
             'quick_ajax_post_type' => self::shortcode_page_select_post_type(),
             'quick_ajax_taxonomy' => self::shortcode_page_select_taxonomy(),
             'quick_ajax_css_style' => self::layout_quick_ajax_css_style(),
-            'grid_num_columns' => self::layout_grid_num_columns(),
+            'grid_num_columns' => self::layout_container_num_columns(),
             'post_item_template' => self::layout_post_item_template(),
             'post_item_template_default' => self::shortcode_page_layout_post_item_template_default_value(),
             'taxonomy_filter_class' => self::layout_taxonomy_filter_class(),
@@ -249,14 +249,14 @@ class QAPL_Quick_Ajax_Helper{
     public function plugin_templates_no_posts() {
         return $this->file_helper->get_templates_dir_path('/post-items/no-posts.php');
     }
-    public static function term_filter_button_data_button(){
+    public static function taxonomy_filter_button_data_button(){
         return 'quick-ajax-filter-button';
     }
-    public function plugin_templates_term_filter_button() {
-        return $this->file_helper->get_templates_dir_path('/term-filter/term-filter-button.php');
+    public function plugin_templates_taxonomy_filter_button() {
+        return $this->file_helper->get_templates_dir_path('/taxonomy-filter/taxonomy-filter-button.php');
     }
     public static function load_more_button_data_button(){
-        return 'quick-ajax-load-more';
+        return 'quick-ajax-load-more-button';
     }
     public function plugin_templates_load_more_button() {
         return $this->file_helper->get_templates_dir_path('/load-more-button.php');
@@ -442,7 +442,7 @@ class QAPL_Quick_Ajax_Helper{
     public static function layout_quick_ajax_css_style(){
         return 'quick_ajax_css_style';
     }
-    public static function layout_grid_num_columns(){
+    public static function layout_container_num_columns(){
         return 'grid_num_columns';
     }
     public static function layout_post_item_template(){
@@ -689,11 +689,11 @@ class QAPL_Pages_Helper{
     public function plugin_updater() {
         return $this->file_helper->file_exists('inc/class-updater.php');
     }
-    public function plugin_template_actions() {
-        return $this->file_helper->file_exists('inc/class-template-actions.php');
+    public function plugin_template_hooks() {
+        return $this->file_helper->file_exists('inc/class-template-hooks.php');
     }
-    public function plugin_template_filters() {
-        return $this->file_helper->file_exists('inc/class-template-filters.php');
+    public function plugin_deprecated_hooks_handler() {
+        return $this->file_helper->file_exists('inc/class-deprecated-hooks-handler.php');
     }
 }
 
@@ -1116,6 +1116,46 @@ class QAPL_Form_Fields_Helper{
         );
     }
 }
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+class QAPL_Hooks {
+    // Filter Container Hooks
+    const HOOK_FILTER_CONTAINER_BEFORE = 'qapl_filter_container_before';
+    const HOOK_FILTER_CONTAINER_START = 'qapl_filter_container_start';
+    const HOOK_FILTER_CONTAINER_END = 'qapl_filter_container_end';
+    const HOOK_FILTER_CONTAINER_AFTER = 'qapl_filter_container_after';
+
+    // Posts Container Hooks
+    const HOOK_POSTS_CONTAINER_BEFORE = 'qapl_posts_container_before';
+    const HOOK_POSTS_CONTAINER_START = 'qapl_posts_container_start';
+    const HOOK_POSTS_CONTAINER_END = 'qapl_posts_container_end';
+    const HOOK_POSTS_CONTAINER_AFTER = 'qapl_posts_container_after';
+
+    // Load More Button Hooks
+    //const HOOK_LOAD_MORE_BEFORE = 'qapl_load_more_before';
+    //const HOOK_LOAD_MORE_AFTER = 'qapl_load_more_after';
+
+    // Loader Hooks
+    const HOOK_LOADER_BEFORE = 'qapl_loader_before';
+    const HOOK_LOADER_AFTER = 'qapl_loader_after';
+
+    // Filters
+    const HOOK_MODIFY_POSTS_QUERY_ARGS = 'qapl_modify_posts_query_args';
+    const HOOK_MODIFY_TAXONOMY_FILTER_BUTTONS = 'qapl_modify_taxonomy_filter_buttons';
+
+    // Template Hooks
+    const HOOK_TEMPLATE_POST_ITEM_DATE = 'qapl_template_post_item_date';
+    const HOOK_TEMPLATE_POST_ITEM_IMAGE = 'qapl_template_post_item_image';
+    const HOOK_TEMPLATE_POST_ITEM_TITLE = 'qapl_template_post_item_title';
+    const HOOK_TEMPLATE_POST_ITEM_EXCERPT = 'qapl_template_post_item_excerpt';
+    const HOOK_TEMPLATE_POST_ITEM_READ_MORE = 'qapl_template_post_item_read_more';
+    const HOOK_TEMPLATE_LOAD_MORE_BUTTON = 'qapl_template_load_more_button';
+}
+
+
 /*
 class QAPL_Logger {
     private static $instance = null;

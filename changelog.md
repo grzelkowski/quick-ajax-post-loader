@@ -1,4 +1,13 @@
 ## Changelog
+### 1.4.0 - 2025-02-10
+- Added new template filters for customizing post elements. Developers can now modify the post date, image, title, excerpt, read more button, and load more button via filters, allowing greater flexibility in template customization.  
+- Standardized action and filter names for better consistency and readability.  
+- Introduced a backward compatibility layer for deprecated hooks to ensure smooth transition.  
+  **Note:** Old hooks remain functional, but updating your customizations to use the new hook names is highly recommended for long-term stability.  
+- Standardized function naming conventions and introduced alias functions to maintain backward compatibility while improving code clarity.  
+- Improved CSS structure for better compatibility with different WordPress themes.  
+- Simplified class names in the template system, making customization and integration easier.  
+- General code refactoring to improve maintainability, readability, and performance.  
 
 ### 1.3.10 - 2025-02-06
 - Added a new template: "Full Background Image Post Template" for enhanced post display.
@@ -90,6 +99,12 @@
 - Initial release.
 
 ## Upgrade Notice
+
+### 1.4.0
+This update introduces new template filters, allowing developers to modify post elements (date, title, image, excerpt, and buttons) using filters.  
+
+Additionally, action and filter names have been standardized, and a backward compatibility layer has been implemented for deprecated hooks.  
+**Important:** If you rely on existing hooks, review your customizations and update them to use the new standardized names for long-term stability.  
 
 ### 1.3.9
 Adds support for loading the initial set of posts via AJAX, improving caching compatibility and ensuring fresh content. Enhances "Load More" button functionality for greater flexibility.

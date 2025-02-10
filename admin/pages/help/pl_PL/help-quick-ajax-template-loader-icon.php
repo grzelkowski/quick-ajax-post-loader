@@ -12,7 +12,7 @@ $accordion_block_content .= '<pre><code class="no-background">';
 $accordion_block_content .= htmlentities('<?php 
 /* Loader Icon Name: Custom Loader */ 
 ?>') . "\n";
-$accordion_block_content .= htmlentities('<div class="quick-ajax-loader-custom">') . "\n";
+$accordion_block_content .= htmlentities('<div class="qapl-loader-custom">') . "\n";
 $accordion_block_content .= htmlentities('    <!-- Tu dodaj swój kod HTML, obrazek GIF lub animację CSS dla ikony ładowania, np.: -->') . "\n";
 $accordion_block_content .= htmlentities('    <img src="images/loader_image.gif" alt="Ładowanie..." />') . "\n";
 $accordion_block_content .= htmlentities('    <!-- Lub stwórz prostą animację CSS -->') . "\n";

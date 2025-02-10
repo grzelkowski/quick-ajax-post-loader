@@ -2,15 +2,15 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-$accordion_block_title = '`qapl_quick_ajax_term_filter` Function';
-$accordion_block_content = '<p><strong>Description:</strong> The <code class="code-tag">qapl_quick_ajax_term_filter</code> function enables dynamic loading and updating of posts based on selected taxonomy without reloading the entire page. It is a key tool for creating interactive, filterable post lists in WordPress, utilizing AJAX.</p>';
-$accordion_block_content .= '<h4>Parameters</h4>';
+$accordion_block_title = 'Funkcja `qapl_render_taxonomy_filter`';
+$accordion_block_content = '<p><strong>Opis:</strong> Funkcja <code class="code-tag">qapl_render_taxonomy_filter</code> umożliwia dynamiczne ładowanie i aktualizację postów na podstawie wybranej taksonomii, bez przeładowywania całej strony. Jest to kluczowe narzędzie do tworzenia interaktywnych, filtrowanych list postów w WordPressie, wykorzystujące AJAX.</p>';
+$accordion_block_content .= '<h4>Parametry</h4>';
 $accordion_block_content .= '<ul>';
-$accordion_block_content .= '<li><code class="no-background"><strong>$quick_ajax_args</strong></code> (array): An array of AJAX query parameters for posts, allowing for detailed configuration of the content displayed.</li>';
-$accordion_block_content .= '<li><code class="no-background"><strong>$quick_ajax_attributes</strong></code> (array): An array of AJAX attributes, including CSS styles and other configuration options, enabling customization of the appearance and behavior of the post grid and filters.</li>';
-$accordion_block_content .= '<li><code class="no-background"><strong>$quick_ajax_taxonomy</strong></code> (string): The name of the taxonomy used to filter posts, e.g., \'category\' or \'tag\'.</li>';
+$accordion_block_content .= '<li><code class="no-background"><strong>$quick_ajax_args</strong></code> (array): Tablica parametrów zapytania AJAX dla postów, pozwalająca na szczegółową konfigurację wyświetlanych treści.</li>';
+$accordion_block_content .= '<li><code class="no-background"><strong>$quick_ajax_attributes</strong></code> (array): Tablica atrybutów AJAX, zawierająca style CSS i inne opcje konfiguracji, umożliwiająca dostosowanie wyglądu i zachowania siatki postów oraz filtrów.</li>';
+$accordion_block_content .= '<li><code class="no-background"><strong>$quick_ajax_taxonomy</strong></code> (string): Nazwa taksonomii używana do filtrowania postów, np. \'category\' lub \'tag\'.</li>';
 $accordion_block_content .= '</ul>';
-$accordion_block_content .= '<h4>Example Usage</h4>';
+$accordion_block_content .= '<h4>Przykład Użycia</h4>';
 $accordion_block_content .= '<pre><code class="no-background">';
 $accordion_block_content .= htmlentities('$quick_ajax_args = array(') . "\n";
 $accordion_block_content .= htmlentities("    'post_type' => 'post',") . "\n";
@@ -30,9 +30,10 @@ $accordion_block_content .= htmlentities("    'container_class' => 'class-one cl
 $accordion_block_content .= htmlentities("    'load_more_posts' => 4,") . "\n";
 $accordion_block_content .= htmlentities("    'loader_icon' => 'loader-icon-quick-ajax-dot'") . "\n";
 $accordion_block_content .= htmlentities(');') . "\n";
-$accordion_block_content .= htmlentities('$quick_ajax_taxonomy = \'category\';') . "\n\n";
-$accordion_block_content .= htmlentities('if (function_exists(\'qapl_quick_ajax_term_filter\')):') . "\n";
-$accordion_block_content .= htmlentities('    qapl_quick_ajax_term_filter(') . "\n";
+$accordion_block_content .= htmlentities('$quick_ajax_taxonomy = \'category\';') . "\n";
+$accordion_block_content .= "\n";
+$accordion_block_content .= htmlentities('if (function_exists(\'qapl_render_taxonomy_filter\')):') . "\n";
+$accordion_block_content .= htmlentities('    qapl_render_taxonomy_filter(') . "\n";
 $accordion_block_content .= htmlentities('        $quick_ajax_args,') . "\n";
 $accordion_block_content .= htmlentities('        $quick_ajax_attributes,') . "\n";
 $accordion_block_content .= htmlentities('        $quick_ajax_taxonomy') . "\n";

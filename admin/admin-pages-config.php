@@ -45,7 +45,7 @@ if (!class_exists('QAPL_Quick_Ajax_Admin_Pages')) {
             if (!current_user_can('manage_options')) {
                 wp_die(esc_html(__('You do not have sufficient permissions to access this page.', 'quick-ajax-post-loader')));
             }
-            if (class_exists('QAPL_Quick_Ajax_Creator_Settings_Page') && method_exists('QAPL_Quick_Ajax_Creator_Settings_Page', 'init_quick_ajax_creator_fields')) {
+            if (class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
                 $form = new QAPL_Quick_Ajax_Creator_Settings_Page(QAPL_Quick_Ajax_Helper::admin_page_settings_field_option_group(), QAPL_Quick_Ajax_Helper::admin_page_global_options_name());
                 $form->render_quick_ajax_page();
             }
