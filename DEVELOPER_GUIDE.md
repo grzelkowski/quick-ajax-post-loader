@@ -1,35 +1,39 @@
 # Quick Ajax Post Loader Developer Guide
 
-Welcome to the **Quick Ajax Post Loader** developer guide. This guide is designed for developers who want to take full advantage of the plugin's advanced features, hooks, filters, and customization options.
+Welcome to the **Quick Ajax Post Loader** developer guide.  
+This guide is designed for developers who want to take full advantage of the plugin's advanced features, hooks, filters, and customization options.
+
+---
 
 ## Why Use Quick Ajax Post Loader?
 
-The **Quick Ajax Post Loader** plugin provides an efficient way to dynamically load content on WordPress websites using AJAX. This approach eliminates the need for page reloads, improving user experience and site performance. Below are some of the key benefits of using this plugin:
+The **Quick Ajax Post Loader** plugin provides an efficient way to dynamically load content on WordPress websites using AJAX. This approach eliminates the need for page reloads, improving user experience and site performance.
+Below are some of the key benefits of using this plugin:
 
-- **Improved User Experience**: Content is loaded seamlessly without page reloads, providing a smooth browsing experience.  
-- **Customizability**: Easily customize post grids, taxonomy filters, loading icons, and more using hooks, filters, and templates.  
-- **Flexibility**: Supports multiple post types, taxonomies, and custom templates, making it suitable for various use cases.  
-- **Performance Optimization**: AJAX-based loading reduces server load by only fetching the required data.  
+- **Improved User Experience**: Content is loaded seamlessly without page reloads, providing a smooth browsing experience.
+- **Customizability**: Easily customize post grids, taxonomy filters, loading icons, and more using hooks, filters, and templates.
+- **Flexibility**: Supports multiple post types, taxonomies, and custom templates, making it suitable for various use cases.
+- **Performance Optimization**: AJAX-based loading reduces server load by only fetching the required data.
 - **Developer-Friendly**: Includes tools like the AJAX Function Generator and a variety of hooks and filters for deep integration.
 
 ---
 
 ## Table of Contents
 
-1. [Introduction to Shortcodes](#1-introduction-to-shortcodes)  
-2. [Custom Post Templates](#2-custom-post-templates)  
-3. [Customizing Taxonomy Filter Buttons](#3-customizing-taxonomy-filter-buttons)  
-4. [Custom Loading Icons](#4-custom-loading-icons)  
-5. [Available Template Filters in Quick Ajax Post Loader](#5-available-template-filters-in-quick-ajax-post-loader)  
-6. [Using AJAX Function Generator](#5-using-ajax-function-generator)  
-7. [Key Functions](#6-key-functions)  
-   - [qapl_render_post_container Function](#qapl_render_post_container-function)  
-   - [qapl_render_taxonomy_filter Function](#qapl_render_taxonomy_filter-function)  
-8. [Detailed Parameter Descriptions](#7-detailed-parameter-descriptions)  
-   - [quick_ajax_args Parameter](#quick_ajax_args-parameter)  
-   - [quick_ajax_attributes Parameter](#quick_ajax_attributes-parameter)  
-9. [Available Actions](#8-available-actions)  
-10. [Available Filters](#9-available-filters)  
+1. [Introduction to Shortcodes](#1-introduction-to-shortcodes)
+2. [Custom Post Templates](#2-custom-post-templates)
+3. [Customizing Taxonomy Filter Buttons](#3-customizing-taxonomy-filter-buttons)
+4. [Custom Loading Icons](#4-custom-loading-icons)
+5. [Available Template Filters in Quick Ajax Post Loader](#5-available-template-filters-in-quick-ajax-post-loader)
+6. [Using AJAX Function Generator](#6-using-ajax-function-generator)
+7. [Key Functions](#7-key-functions)
+   - [qapl_render_post_container Function](#qapl_render_post_container-function)
+   - [qapl_render_taxonomy_filter Function](#qapl_render_taxonomy_filter-function)
+8. [Detailed Parameter Descriptions](#8-detailed-parameter-descriptions)
+   - [$quick_ajax_args Parameter](#$quick_ajax_args-parameter)
+   - [$quick_ajax_attributes Parameter](#$quick_ajax_attributes-parameter)
+9. [Available Actions](#9-available-actions)
+10. [Available Filters](#10-available-filters)
 
 ---
 
@@ -41,23 +45,24 @@ The **Quick Ajax Post Loader** plugin enables the creation of shortcodes that al
 
 ### Why Use Shortcodes?
 
-Shortcodes are a powerful way to dynamically load posts on your WordPress site. They allow you to integrate AJAX-based functionality into pages or posts with minimal effort.
+Shortcodes are a powerful way to dynamically load posts on your WordPress site.  
+They allow you to integrate AJAX-based functionality into pages or posts with minimal effort.
 
-### Steps to Create a Shortcode  
+### Steps to Create a Shortcode
 
-1. Navigate to **Quick Ajax > Shortcodes** or click **Add New** in the WordPress admin panel.  
+1. Navigate to **Quick Ajax > Shortcodes** or click **Add New** in the WordPress admin panel.
 2. Configure the settings:
-    - Choose the **post type** to display (e.g., posts, pages, or custom post types).
-    - Add **taxonomy filters** to allow users to filter content dynamically.
-    - Customize **display options**, such as layout, grid structure, and loading icons.
-3. Save the configuration.  
+   - Choose the **post type** to display (e.g., posts, pages, or custom post types).
+   - Add **taxonomy filters** to allow users to filter content dynamically.
+   - Customize **display options**, such as layout, grid structure, and loading icons.
+3. Save the configuration.
 4. Copy the generated shortcode (e.g., `[qapl-quick-ajax id="1" title="My Ajax"]`).
-5. Paste the shortcode into any page or post to enable AJAX-based content loading.  
+5. Paste the shortcode into any page or post to enable AJAX-based content loading.
 
-### Important Notes  
+### Important Notes
 
-- The actual shortcode will depend on the settings you configure in the plugin interface.  
-- Always verify the functionality of the shortcode on your site to ensure it matches the desired behavior.  
+- The actual shortcode will depend on the settings you configure in the plugin interface.
+- Always verify the functionality of the shortcode on your site to ensure it matches the desired behavior.
 
 ---
 
@@ -68,29 +73,29 @@ The **Quick Ajax Post Loader** plugin allows you to override the default post te
 ### Steps to Create a Custom Template  
 
 1. Navigate to the directory:  
-   `wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/post-items/`.  
+	wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/post-items/  
 2. To override the default template:  
-   - Create a file named `post-item.php` in the directory above. This file will replace the default template provided by the plugin.  
+	- Create a file named `post-item.php` in the directory above. This file will replace the default template provided by the plugin.  
 3. To create additional custom templates:  
-   - Use the naming convention `post-item-*.php` (e.g., `post-item-custom-name.php`). 
-   - Add a comment at the top of the file to specify the template name, e.g.:  
-     
-        /* Post Item Name: My Custom Template */
-     
-   - If the comment is missing, the file name (without the `.php` extension) will be displayed as the template name in the admin panel.  
+	- Use the naming convention `post-item-*.php` (e.g., `post-item-custom-name.php`).  
+	- Add a comment at the top of the file to specify the template name, e.g.:  
+	  
+		/* Post Item Name: My Custom Template */
+	  
+	- If the comment is missing, the file name (without the `.php` extension) will be displayed as the template name in the admin panel.  
 4. Save the file in the specified directory. The plugin will automatically detect it and make it available for selection in the shortcode configuration.
 
 ### Example Template Code  
 
-    <?php  
-    /* Post Item Name: My Custom Template */  
-    ?>  
-    <div class="qapl-post-item">  
-        <a href="<?php echo get_permalink(); ?>">  
-            <h2><?php the_title(); ?></h2>  
-            <!-- Add custom post elements, e.g., thumbnail or excerpt -->
-        </a>  
-    </div>
+	<?php  
+	/* Post Item Name: My Custom Template */  
+	?>  
+	<div class="qapl-post-item">  
+		<a href="<?php echo get_permalink(); ?>">  
+			<h2><?php the_title(); ?></h2>  
+			<!-- Add custom post elements, e.g., thumbnail or excerpt -->
+		</a>  
+	</div>
 
 ### Template Selection  
 
@@ -100,12 +105,12 @@ The **Quick Ajax Post Loader** plugin allows you to override the default post te
 ### Template File Naming Rules  
 
 - **Default Template**:  
-    - File name: `post-item.php`.  
-    - Location: `wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/post-items/`.  
+	- File name: `post-item.php`.  
+	- Location: `wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/post-items/`.  
 
 - **Custom Templates**:  
-    - File names must start with `post-item`, e.g., `post-item-custom-name.php`.  
-    - The naming convention ensures that the plugin recognizes the files as additional templates.
+	- File names must start with `post-item`, e.g., `post-item-custom-name.php`.  
+	- The naming convention ensures that the plugin recognizes the files as additional templates.
 
 ### Customizing the "No Posts" Message  
 
@@ -113,7 +118,7 @@ To customize the message displayed when there are no posts to show:
 
 1. Create a file named `no-posts.php`.  
 2. Place it in the directory:  
-   `wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/post-items/`.  
+	wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/post-items/  
 3. Add your custom HTML or message to this file.  
 
 ### Template Loading Order  
@@ -133,17 +138,17 @@ The **Quick Ajax Post Loader** plugin allows you to customize the appearance and
 ### Steps to Customise  
 
 1. Navigate to the directory:  
-   `wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/taxonomy-filter/`.  
+	wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/taxonomy-filter/  
 2. Create a file named `taxonomy-filter-button.php`.  
 3. Edit the file to modify the button's HTML structure, CSS classes, or attributes.
 
 ### Example Filter Button Code  
 
-    <button type="button" class="qapl-filter-button custom-class" data-button="quick-ajax-filter-button">QUICK_AJAX_LABEL</button>
+	<button type="button" class="qapl-filter-button custom-class" data-button="quick-ajax-filter-button">QUICK_AJAX_LABEL</button>
 
-In this example:
+In this example:  
 - **`QUICK_AJAX_LABEL`**: A dynamic label that changes based on the taxonomy being filtered.  
-- **`data-button="quick-ajax-filter-button"`**: This attribute is essential for integration with the plugin's AJAX filtering logic, ensuring dynamic content updates without page reloads.  
+- **`data-button="quick-ajax-filter-button"`**: This attribute is essential for integration with the plugin's AJAX filtering logic, ensuring dynamic content updates without page reloads.
 
 ---
 
@@ -154,33 +159,33 @@ The **Quick Ajax Post Loader** plugin allows you to customize loading icons by c
 ### Steps to Create a Custom Loading Icon  
 
 1. Navigate to the directory:  
-   `wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/loader-icon/`.  
+	wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/loader-icon/  
 2. Create a file with a descriptive name, e.g., `loader-icon-custom-loader.php`.  
 3. Add your custom HTML, CSS, or JavaScript code for the loading icon.  
 
 ### Example Loading Icon Code  
 
-    <?php  
-    /* Loader Icon Name: Custom Loader */  
-    ?>  
-    <div class="qapl-loader-custom">  
-        <!-- Add your custom HTML, CSS, or animations here -->
-        <img src="images/loader_image.gif" alt="Loading..." />  
-        <!-- Example CSS animation -->
-        <div class="loader-dot"></div>  
-        <div class="loader-dot"></div>  
-        <div class="loader-dot"></div>  
-    </div>
+	<?php  
+	/* Loader Icon Name: Custom Loader */  
+	?>  
+	<div class="qapl-loader-custom">  
+		<!-- Add your custom HTML, CSS, or animations here -->
+		<img src="images/loader_image.gif" alt="Loading..." />  
+		<!-- Example CSS animation -->
+		<div class="loader-dot"></div>  
+		<div class="loader-dot"></div>  
+		<div class="loader-dot"></div>  
+	</div>
 
 ### Rules for Overriding and Loading Icons  
 
 1. **Directory Placement**: Place the custom loading icon file in the child theme or theme directory:  
-   `wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/loader-icon/`.  
+	wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/loader-icon/  
 2. **Template Detection**: The plugin will automatically detect all files in this directory as available loading icons.  
 3. **Loading Order**: The plugin follows this hierarchy to load templates:  
-    - **Child Theme**  
-    - **Parent Theme**  
-    - **Plugin Defaults**  
+	- **Child Theme**  
+	- **Parent Theme**  
+	- **Plugin Defaults**  
 
 This ensures that custom loading icons in the child theme take priority and are not overwritten during theme or plugin updates.
 
@@ -194,38 +199,38 @@ The template filters available through `apply_filters` in **Quick Ajax Post Load
 
 ### Available Template Filters
 
-    qapl_template_post_item_date: Filter the HTML output for the post date element.
-    qapl_template_post_item_image: Filter the HTML output for the post image element.
-    qapl_template_post_item_title: Filter the HTML output for the post title element.
-    qapl_template_post_item_excerpt: Filter the HTML output for the post excerpt element.
-    qapl_template_post_item_read_more: Filter the HTML output for the "read more" element.
-    qapl_template_load_more_button: Filter the HTML output for the load more button element.
+	qapl_template_post_item_date: Filter the HTML output for the post date element.  
+	qapl_template_post_item_image: Filter the HTML output for the post image element.  
+	qapl_template_post_item_title: Filter the HTML output for the post title element.  
+	qapl_template_post_item_excerpt: Filter the HTML output for the post excerpt element.  
+	qapl_template_post_item_read_more: Filter the HTML output for the "read more" element.  
+	qapl_template_load_more_button: Filter the HTML output for the load more button element.  
 
-### How to Use
+### How to Use  
 
 You can modify the template output by hooking into these filters using the `add_filter()` function.  
 For example, to change the post title markup, add the following code:
 
 ### Example: Customizing the Post Date Format  
 
-    function custom_qapl_date($output, $template, $quick_ajax_id) {
-        if ($template === 'post-item') { // Apply only to the default 'post-item' template
-            $new_date = get_the_date('d-m-Y'); // Change the date format to 'd-m-Y'
-            $output = '<div class="qapl-post-date"><span> Date: ' . esc_html($new_date) . '</span></div>';
-        }
-        return $output;
-    }
-    add_filter('qapl_template_post_item_date', 'custom_qapl_date', 10, 3);
+	function custom_qapl_date($output, $template, $quick_ajax_id) {
+		if ($template === 'post-item') { // Apply only to the default 'post-item' template
+			$new_date = get_the_date('d-m-Y'); // Change the date format to 'd-m-Y'
+			$output = '<div class="qapl-post-date"><span> Date: ' . esc_html($new_date) . '</span></div>';
+		}
+		return $output;
+	}
+	add_filter('qapl_template_post_item_date', 'custom_qapl_date', 10, 3);
 
 ### Example: Customizing the Post Title for a Specific Container  
 
-    function custom_qapl_title($output, $template, $quick_ajax_id) {
-        if ($quick_ajax_id === 'quick-ajax-p100') { // Apply only to the container with ID 'quick-ajax-p100'
-            $output = '<div class="qapl-post-title"><h5> Title: ' . esc_html(get_the_title()) . '</h5></div>';
-        }
-        return $output;
-    }
-    add_filter('qapl_template_post_item_title', 'custom_qapl_title', 10, 3);
+	function custom_qapl_title($output, $template, $quick_ajax_id) {
+		if ($quick_ajax_id === 'quick-ajax-p963') { // Apply only to the container with ID 'quick-ajax-p963'
+			$output = '<div class="qapl-post-title"><h5> Title: ' . esc_html(get_the_title()) . '</h5></div>';
+		}
+		return $output;
+	}
+	add_filter('qapl_template_post_item_title', 'custom_qapl_title', 10, 3);
 
 Using the appropriate filters makes it easy to customize different aspects of the plugin's template rendering process.
 
@@ -248,55 +253,55 @@ The **Quick Ajax Post Loader** plugin includes an **AJAX Function Generator** to
 
 Below is an example of the code generated by the AJAX Function Generator, demonstrating the integration of a post grid and taxonomy filter:
 
-    <?php  
-    // Define AJAX query parameters for 'post' type posts.
-    $quick_ajax_args = array(
-        'post_type' => 'post',
-        'post_status' => 'publish',
-        'posts_per_page' => 6,
-        'orderby' => 'date',
-        'order' => 'DESC',
-        'post__not_in' => array(3, 66),
-        'ignore_sticky_posts' => 1,
-    );
+	<?php  
+	// Define AJAX query parameters for 'post' type posts.
+	$quick_ajax_args = array(
+		'post_type' => 'post',
+		'post_status' => 'publish',
+		'posts_per_page' => 6,
+		'orderby' => 'date',
+		'order' => 'DESC',
+		'post__not_in' => array(3, 66),
+		'ignore_sticky_posts' => 1,
+	);
 
-    // Define attributes for AJAX.
-    $quick_ajax_attributes = array(
-        'quick_ajax_id' => 8250,
-        'quick_ajax_css_style' => 1,
-        'grid_num_columns' => 3,
-        'post_item_template' => 'post-item',
-        'taxonomy_filter_class' => 'class-taxonomy filter-class',
-        'container_class' => 'container-class',
-        'loader_icon' => 'loader-icon'
-    );
+	// Define attributes for AJAX.
+	$quick_ajax_attributes = array(
+		'quick_ajax_id' => 8250,
+		'quick_ajax_css_style' => 1,
+		'grid_num_columns' => 3,
+		'post_item_template' => 'post-item',
+		'taxonomy_filter_class' => 'class-taxonomy filter-class',
+		'container_class' => 'container-class',
+		'loader_icon' => 'loader-icon'
+	);
 
-    // Set the taxonomy for filtering posts.
-    $quick_ajax_taxonomy = 'category';
+	// Set the taxonomy for filtering posts.
+	$quick_ajax_taxonomy = 'category';
 
-    // Render the navigation for 'category' taxonomy.
-    if(function_exists('qapl_render_taxonomy_filter')):
-        qapl_render_taxonomy_filter(
-            $quick_ajax_args,
-            $quick_ajax_attributes,
-            $quick_ajax_taxonomy
-        );
-    endif;
+	// Render the navigation for 'category' taxonomy.
+	if(function_exists('qapl_render_taxonomy_filter')):
+		qapl_render_taxonomy_filter(
+			$quick_ajax_args,
+			$quick_ajax_attributes,
+			$quick_ajax_taxonomy
+		);
+	endif;
 
-    // Render the grid for 'post' type posts.
-    if(function_exists('qapl_render_post_container')):
-       qapl_render_post_container(
-           $quick_ajax_args,
-           $quick_ajax_attributes
-       );
-    endif;
-    ?>
+	// Render the grid for 'post' type posts.
+	if(function_exists('qapl_render_post_container')):
+		qapl_render_post_container(
+			$quick_ajax_args,
+			$quick_ajax_attributes
+		);
+	endif;
 
 ---
 
 ## 7. Key Functions
 
 ### `qapl_render_post_container` Function
+
 
 #### Description  
 The `qapl_render_post_container` function is designed to render a dynamic post grid in WordPress using AJAX technology. It allows for the display of posts of a specific type without needing to reload the page, significantly improving user experience and performance.
@@ -308,46 +313,44 @@ The `qapl_render_post_container` function is designed to render a dynamic post g
 
 #### Example Usage  
 
-    <?php  
-    // Define AJAX query parameters for posts
-    $quick_ajax_args = array(
-        'post_type' => 'post',
-        'post_status' => 'publish',
-        'posts_per_page' => 6,
-        'orderby' => 'date',
-        'order' => 'DESC',
-        'post__not_in' => array(3, 66, 100),
-    );
+	<?php  
+	// Define AJAX query parameters for posts
+	$quick_ajax_args = array(
+		'post_type' => 'post',
+		'post_status' => 'publish',
+		'posts_per_page' => 6,
+		'orderby' => 'date',
+		'order' => 'DESC',
+		'post__not_in' => array(3, 66, 100),
+	);
 
-    // Define attributes for the AJAX post grid
-    $quick_ajax_attributes = array(
-        'quick_ajax_id' => 12056,
-        'quick_ajax_css_style' => 1,
-        'grid_num_columns' => 3,
-        'post_item_template' => 'post-item-custom-name',
-        'taxonomy_filter_class' => 'class-one class-two',
-        'container_class' => 'class-one class-two',
-        'load_more_posts' => 4,
-        'loader_icon' => 'loader-icon-quick-ajax-dot'
-    );
+	// Define attributes for the AJAX post grid
+	$quick_ajax_attributes = array(
+		'quick_ajax_id' => 12056,
+		'quick_ajax_css_style' => 1,
+		'grid_num_columns' => 3,
+		'post_item_template' => 'post-item-custom-name',
+		'taxonomy_filter_class' => 'class-one class-two',
+		'container_class' => 'class-one class-two',
+		'load_more_posts' => 4,
+		'loader_icon' => 'loader-icon-quick-ajax-dot'
+	);
 
-    // Render the AJAX post grid
-    if(function_exists('qapl_render_post_container')):
-        qapl_render_post_container(
-            $quick_ajax_args,
-            $quick_ajax_attributes
-        );
-    endif;
-    ```
+	// Render the AJAX post grid
+	if(function_exists('qapl_render_post_container')):
+		qapl_render_post_container(
+			$quick_ajax_args,
+			$quick_ajax_attributes
+		);
+	endif;
 
 #### Notes  
 - Ensure that the `$quick_ajax_args` array is configured according to the posts you want to display.  
 - Customize `$quick_ajax_attributes` to match the appearance and functionality requirements of your site.  
-- This function relies on the **Quick Ajax Post Loader** plugin being active and properly configured.  
-
----
+- This function relies on the **Quick Ajax Post Loader** plugin being active and properly configured.
 
 ### `qapl_render_taxonomy_filter` Function
+
 
 #### Description  
 The `qapl_render_taxonomy_filter` function enables dynamic loading and updating of posts based on selected taxonomy, such as categories or tags, without reloading the entire page. It is an essential tool for creating interactive, filterable post lists in WordPress using AJAX.
@@ -360,41 +363,40 @@ The `qapl_render_taxonomy_filter` function enables dynamic loading and updating 
 
 #### Example Usage  
 
-    <?php  
-    // Define AJAX query parameters for posts
-    $quick_ajax_args = array(
-        'post_type' => 'post',
-        'post_status' => 'publish',
-        'posts_per_page' => 6,
-        'orderby' => 'date',
-        'order' => 'DESC',
-        'post__not_in' => array(3, 66, 100),
-    );
+	<?php  
+	// Define AJAX query parameters for posts
+	$quick_ajax_args = array(
+		'post_type' => 'post',
+		'post_status' => 'publish',
+		'posts_per_page' => 6,
+		'orderby' => 'date',
+		'order' => 'DESC',
+		'post__not_in' => array(3, 66, 100),
+	);
 
-    // Define attributes for the AJAX taxonomy filter
-    $quick_ajax_attributes = array(
-        'quick_ajax_id' => 12056,
-        'quick_ajax_css_style' => 1,
-        'grid_num_columns' => 3,
-        'post_item_template' => 'post-item-custom-name',
-        'taxonomy_filter_class' => 'class-one class-two',
-        'container_class' => 'class-one class-two',
-        'load_more_posts' => 4,
-        'loader_icon' => 'loader-icon-quick-ajax-dot',
-    );
+	// Define attributes for the AJAX taxonomy filter
+	$quick_ajax_attributes = array(
+		'quick_ajax_id' => 12056,
+		'quick_ajax_css_style' => 1,
+		'grid_num_columns' => 3,
+		'post_item_template' => 'post-item-custom-name',
+		'taxonomy_filter_class' => 'class-one class-two',
+		'container_class' => 'class-one class-two',
+		'load_more_posts' => 4,
+		'loader_icon' => 'loader-icon-quick-ajax-dot',
+	);
 
-    // Specify the taxonomy to filter by
-    $quick_ajax_taxonomy = 'category';
+	// Specify the taxonomy to filter by
+	$quick_ajax_taxonomy = 'category';
 
-    // Render the AJAX taxonomy filter
-    if (function_exists('qapl_render_taxonomy_filter')):
-        qapl_render_taxonomy_filter(
-            $quick_ajax_args,
-            $quick_ajax_attributes,
-            $quick_ajax_taxonomy
-        );
-    endif;
-    ```
+	// Render the AJAX taxonomy filter
+	if (function_exists('qapl_render_taxonomy_filter')):
+		qapl_render_taxonomy_filter(
+			$quick_ajax_args,
+			$quick_ajax_attributes,
+			$quick_ajax_taxonomy
+		);
+	endif;
 
 #### Notes  
 - Ensure that the `$quick_ajax_args` array is configured to select the desired posts for filtering.  
@@ -403,15 +405,17 @@ The `qapl_render_taxonomy_filter` function enables dynamic loading and updating 
 
 ---
 
-## 8. Detailed Parameter Descriptions  
+## 8. Detailed Parameter Descriptions
 
-### `$quick_ajax_args` Parameter  
+### `$quick_ajax_args` Parameter
+
 
 #### Description  
 The `$quick_ajax_args` parameter is crucial for configuring AJAX queries in the **Quick Ajax Post Loader** plugin. It allows for detailed specification of which posts to load and display in a post grid or using taxonomic filters, providing a dynamic and interactive user experience.
 
 #### Application  
-The `$quick_ajax_args` parameter is utilized in functions such as `qapl_render_post_container` and `qapl_render_taxonomy_filter`. It enables flexible and advanced content management without the need for page reloads.
+The `$quick_ajax_args` parameter is utilized in functions such as `qapl_render_post_container` and `qapl_render_taxonomy_filter`.  
+It enables flexible and advanced content management without the need for page reloads.
 
 #### Parameters  
 - **`post_type` (string)**: Type of posts to load, e.g., `'post'`, `'page'`, or custom post types.  
@@ -419,11 +423,10 @@ The `$quick_ajax_args` parameter is utilized in functions such as `qapl_render_p
 - **`posts_per_page` (int)**: Number of posts to display per page.  
 - **`orderby` (string)**: Criterion for sorting posts, e.g., `'date'`, `'title'`.  
 - **`order` (string)**: Order of post sorting, e.g., `'ASC'`, `'DESC'`.  
-- **`post__not_in` (array)**: An array of post IDs to exclude from the query.
+- **`post__not_in` (array)**: An array of post IDs to exclude from the query.  
 
----
+### `$quick_ajax_attributes` Parameter
 
-### `$quick_ajax_attributes` Parameter  
 
 #### Description  
 The `$quick_ajax_attributes` parameter is used to configure the appearance and behavior options of post grids and taxonomy filters in the **Quick Ajax Post Loader** plugin for WordPress. It enables the customization of styles, number of columns, container classes, and other attributes that affect how dynamically loaded content is displayed and functions.
@@ -434,15 +437,16 @@ The `$quick_ajax_attributes` parameter is crucial when using functions such as `
 #### Parameters  
 - **`quick_ajax_id` (int)**: A unique identifier for the AJAX instance, allowing multiple independent grids on the same page.  
 - **`quick_ajax_css_style` (int)**: Enables or disables built-in Quick Ajax CSS styles.  
-    - `0`: Disable default styles.
-    - `1`: Enable default styles.
+    - `0`: Disable default styles.  
+    - `1`: Enable default styles.  
 - **`grid_num_columns` (int)**: Specifies the number of columns in the post grid.  
 - **`post_item_template` (string)**: Allows for the selection of a post template, e.g., `'post-item-custom-name'` for a custom template (file name without the `.php` extension).  
 - **`taxonomy_filter_class` (string)**: Adds custom CSS classes to the taxonomy filter.  
 - **`container_class` (string)**: Adds custom CSS classes to the post grid container.  
 - **`load_more_posts` (int)**: Specifies the number of posts to load upon clicking the "Load More" button.  
-- **`loader_icon` (int)**: Allows for the selection of a loading icon.
-- **`ajax_initial_load` (int)**: Enables loading the initial set of posts via AJAX when the page loads. This helps to ensure that post data is always up-to-date, especially in cases where caching might display outdated content.
+- **`loader_icon` (int)**: Allows for the selection of a loading icon.  
+- **`ajax_initial_load` (int)**: Enables loading the initial set of posts via AJAX when the page loads.  
+  This helps to ensure that post data is always up-to-date, especially in cases where caching might display outdated content.  
 
 ---
 
@@ -472,29 +476,27 @@ The **Quick Ajax Post Loader** plugin provides several action hooks that allow d
 
 You can add your own actions using the `add_action()` function. Below is an example of how to add custom content before the AJAX filter wrapper:
 
-    add_action('qapl_filter_container_before', function() {
-        echo '<div class="custom-filter-wrapper">';
-    });
+	add_action('qapl_filter_container_before', function() {
+	    echo '<div class="custom-filter-wrapper">';
+	});
 
 ### Example Usage  
 
 Add the following code to your theme or plugin to customize a specific part of the plugin's operation:
 
-    <?php
-    add_action('qapl_filter_container_before', function() {
-        echo 'Custom text before the filter navigation';
-    });
+	<?php
+	add_action('qapl_filter_container_before', function() {
+	    echo 'Custom text before the filter navigation';
+	});
 
-    add_action('qapl_posts_container_end', function() {
-        echo '<p>Additional content at the end of the posts section</p>';
-    });
-    ```
+	add_action('qapl_posts_container_end', function() {
+	    echo '<p>Additional content at the end of the posts section</p>';
+	});
 
 ### Notes  
 - These hooks are designed to provide maximum flexibility for developers.  
 - Test your custom actions to ensure they do not conflict with other plugins or themes.  
 - Use these hooks responsibly to maintain the performance and usability of your site.
-
 
 ---
 
@@ -507,57 +509,60 @@ The **Quick Ajax Post Loader** plugin provides several filters to customize the 
 ### `qapl_modify_posts_query_args` Filter  
 
 #### Description  
-The `qapl_modify_posts_query_args` filter allows for the customization of `WP_Query` arguments used in the Quick Ajax Post Loader plugin. This enables precise control over AJAX query results, tailoring them to meet the specific needs of your site.
+The `qapl_modify_posts_query_args` filter allows for the customization of `WP_Query` arguments used in the Quick Ajax Post Loader plugin.  
+This enables precise control over AJAX query results, tailoring them to meet the specific needs of your site.
 
 #### Example Usage  
 
-    add_filter('qapl_modify_posts_query_args', function($args, $quick_ajax_id) {
-        // Use the AJAX identifier to modify query arguments
-        if ($quick_ajax_id === 'some_specific_id') {
-            $args['posts_per_page'] = 5; // Limit to 5 posts per page
-        }
-        return $args;
-    }, 10, 2);
+	add_filter('qapl_modify_posts_query_args', function($args, $quick_ajax_id) {
+	    // Use the AJAX identifier to modify query arguments
+	    if ($quick_ajax_id === 'some_specific_id') {
+	        $args['posts_per_page'] = 5; // Limit to 5 posts per page
+	    }
+	    return $args;
+	}, 10, 2);
 
 #### Finding the `quick_ajax_id`  
 - The `quick_ajax_id` is derived from the `id` attribute of the outer `<div>` containing the AJAX buttons.  
 - Example:
 
-      <div id="quick-ajax-p9" class="quick-ajax-posts-container">
+		<div id="quick-ajax-p963" class="quick-ajax-posts-container">
 
-  In this case, the `quick_ajax_id` is `"p9"`.  
-- For debugging, you can use `print_r($quick_ajax_id)` inside your modifying function to inspect the identifier during development. Avoid exposing this information in a production environment.
+  In this case, the `quick_ajax_id` is `"p963"`.  
+- For debugging, you can use `print_r($quick_ajax_id)` inside your modifying function to inspect the identifier during development.  
+  Avoid exposing this information in a production environment.
 
 ---
 
 ### `qapl_modify_taxonomy_filter_buttons` Filter  
 
 #### Description  
-The `qapl_modify_taxonomy_filter_buttons` filter allows customization of taxonomy filter buttons used to filter content dynamically. Developers can modify properties such as button labels and styles, providing tailored user experiences.
+The `qapl_modify_taxonomy_filter_buttons` filter allows customization of taxonomy filter buttons used to filter content dynamically.  
+Developers can modify properties such as button labels and styles, providing tailored user experiences.
 
 #### Example Usage  
 
-    add_filter('qapl_modify_taxonomy_filter_buttons', function($buttons, $quick_ajax_id) {
-        foreach ($buttons as &$button) {
-            if ($quick_ajax_id === 'some_specific_id') {
-                // Customize "Show All" button label
-                if ($button['term_id'] === 'none') {
-                    $button['button_label'] = 'View All'; // Change to "View All"
-                } else {
-                    // Convert labels of other buttons to uppercase
-                    $button['button_label'] = strtoupper($button['button_label']);
-                }
-            }
-        }
-        return $buttons;
-    }, 10, 2);
+	add_filter('qapl_modify_taxonomy_filter_buttons', function($buttons, $quick_ajax_id) {
+	    foreach ($buttons as &$button) {
+	        if ($quick_ajax_id === 'some_specific_id') {
+	            // Customize "Show All" button label
+	            if ($button['term_id'] === 'none') {
+	                $button['button_label'] = 'View All'; // Change to "View All"
+	            } else {
+	                // Convert labels of other buttons to uppercase
+	                $button['button_label'] = strtoupper($button['button_label']);
+	            }
+	        }
+	    }
+	    return $buttons;
+	}, 10, 2);
 
 #### Finding the `quick_ajax_id`  
 - The `quick_ajax_id` can be found in the `id` attribute of the outer `<div>` containing the taxonomy filter buttons.  
 - Example:
 
-      <div id="quick-ajax-filter-p9" class="quick-ajax-filter-container">
+		<div id="quick-ajax-filter-p963" class="quick-ajax-filter-container">
 
-  In this case, the `quick_ajax_id` is `"p9"`.  
-- For debugging purposes, you can use `print_r($quick_ajax_id)` to inspect the identifier while working on modifications. Avoid exposing this information to end users in a production environment.
-
+  In this case, the `quick_ajax_id` is `"p963"`.  
+- For debugging purposes, you can use `print_r($quick_ajax_id)` to inspect the identifier while working on modifications.  
+  Avoid exposing this information to end users in a production environment.

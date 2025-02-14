@@ -1,4 +1,7 @@
 ## Changelog
+### 1.4.1 - 2025-02-14
+- Tested and confirmed full compatibility with WordPress 6.7.2.
+
 ### 1.4.0 - 2025-02-10
 - Added new template filters for customizing post elements. Developers can now modify the post date, image, title, excerpt, read more button, and load more button via filters, allowing greater flexibility in template customization.  
 - Standardized action and filter names for better consistency and readability.  

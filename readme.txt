@@ -2,8 +2,8 @@
 Contributors: grzelkowski
 Tags: ajax, load-more, ajax-posts, dynamic, category-filter
 Requires at least: 5.6
-Tested up to: 6.7.1
-Stable tag: 1.4.0
+Tested up to: 6.7.2
+Stable tag: 1.4.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -192,6 +192,9 @@ You can create a custom loading icon by adding a file (e.g., `loader-icon-custom
 `wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/loader-icon/`. Use your own HTML, CSS, or animations to design a unique loading indicator.
 
 == Changelog ==
+= 1.4.1 - 2025-02-14 =
+- Tested and confirmed full compatibility with WordPress 6.7.2.
+
 = 1.4.0 - 2025-02-10 =
 - Added new template filters for customizing post elements. Developers can now modify the post date, image, title, excerpt, read more button, and load more button via filters, allowing greater flexibility in template customization.  
 - Standardized action and filter names for better consistency and readability.  
