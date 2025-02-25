@@ -25,6 +25,20 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $this->create_field($field_properties);
             $field_properties = QAPL_Form_Fields_Helper::get_global_options_field_set_load_more_label();
             $this->create_field($field_properties);
+
+            //Sorting Options
+            $field_properties = QAPL_Form_Fields_Helper::get_global_options_field_set_sort_option_date_desc_label();
+            $this->create_field($field_properties);
+            $field_properties = QAPL_Form_Fields_Helper::get_global_options_field_set_sort_option_date_asc_label();
+            $this->create_field($field_properties);
+            $field_properties = QAPL_Form_Fields_Helper::get_global_options_field_set_sort_option_comment_count_desc_label();
+            $this->create_field($field_properties);
+            $field_properties = QAPL_Form_Fields_Helper::get_global_options_field_set_sort_option_title_desc_label();
+            $this->create_field($field_properties);
+            $field_properties = QAPL_Form_Fields_Helper::get_global_options_field_set_sort_option_title_asc_label();
+            $this->create_field($field_properties);
+            $field_properties = QAPL_Form_Fields_Helper::get_global_options_field_set_sort_option_rand_label();
+            $this->create_field($field_properties);
         }
         //initialize function generator fields
         private function init_function_generator_fields() {
@@ -38,8 +52,8 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $field_properties = QAPL_Form_Fields_Helper::get_field_select_taxonomy();
             $this->create_field($field_properties);
             //select post status
-            $field_properties = QAPL_Form_Fields_Helper::get_field_select_post_status();
-            $this->create_field($field_properties);
+            //$field_properties = QAPL_Form_Fields_Helper::get_field_select_post_status();
+            //$this->create_field($field_properties);
             //post per page number
             $field_properties = QAPL_Form_Fields_Helper::get_field_select_posts_per_page();
             $this->create_field($field_properties);
@@ -49,6 +63,15 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             //select post orderby
             $field_properties = QAPL_Form_Fields_Helper::get_field_select_orderby();    
             $this->create_field($field_properties);
+            
+            //Sorting Settings
+            $field_properties = QAPL_Form_Fields_Helper::get_field_show_sort_button();        
+            $this->create_field($field_properties);
+            //select sort options
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_sort_button_options();    
+            $this->create_field($field_properties);
+            //Additional Settings
+
             //add Excluded Post IDs
             $field_properties = QAPL_Form_Fields_Helper::get_field_set_post_not_in();
             $this->create_field($field_properties);
@@ -58,6 +81,8 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             //load posts via AJAX on initial load
             $field_properties = QAPL_Form_Fields_Helper::get_field_set_ajax_on_initial_load();
             $this->create_field($field_properties);
+
+            //Additional Settings
             //apply quick ajax css style
             $field_properties = QAPL_Form_Fields_Helper::get_field_layout_quick_ajax_css_style();
             $field_properties['default'] = 0;
@@ -131,6 +156,13 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_read_more_label());
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_show_all_label());
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_load_more_label());
+            $content .= '<h4>'.__('Sorting Option Labels', 'quick-ajax-post-loader').'</h4>';
+            $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_date_desc_label());
+            $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_date_asc_label());
+            $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_comment_count_desc_label());
+            $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_title_desc_label());
+            $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_title_asc_label());
+            $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_rand_label());
             $content .= $settings_fields_html;
             $content .= get_submit_button(esc_html__('Save Settings', 'quick-ajax-post-loader'), 'primary', 'save_settings_button', false);
             $content .= '</form>';
@@ -143,6 +175,7 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             <div class="function-generator-wrap">
                 <div class="function-generator-options" id="'.QAPL_Quick_Ajax_Helper::settings_wrapper_id().'">';
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings">';
+            $form_tab_function_generator .= '<h4>'.__('General Settings', 'quick-ajax-post-loader').'</h4>';
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_post_type());
             //show taxonomy checkbox
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_show_taxonomy_filter(), true);
@@ -170,14 +203,19 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             }            
             $this->fields[QAPL_Quick_Ajax_Helper::shortcode_page_select_taxonomy()]['options'] = $taxonomy_options;
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_taxonomy(), QAPL_Quick_Ajax_Helper::shortcode_page_show_taxonomy_filter());
+            //$form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_post_status());
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_posts_per_page());
             $form_tab_function_generator .= '</div>';
             //post settings
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
-            $form_tab_function_generator .= '<h4>'.__('Query Settings', 'quick-ajax-post-loader').'</h4>';            
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_post_status());
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_posts_per_page());
+            $form_tab_function_generator .= '<h4>'.__('Sorting Settings', 'quick-ajax-post-loader').'</h4>';
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_order());
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_orderby());
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button(), true);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_sort_button_options(), QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button());
+            $form_tab_function_generator .= '</div>';
+            $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
+            $form_tab_function_generator .= '<h4>'.esc_html__('Additional Settings', 'quick-ajax-post-loader').'</h4>';
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in());
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ignore_sticky_posts());
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ajax_on_initial_load());
@@ -250,6 +288,43 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             }
             return $content;
         }
+        private function quick_ajax_content_help_new() {
+            $sections_to_display = [
+                'shortcodes',
+                'custom_templates',
+                'custom_taxonomy_filters',
+                'template_filters',
+                'ajax_function_generator',
+                'key_functions',
+                'taxonomy',
+                'parameter_descriptions',
+                'quick_ajax_attributes',
+                'available_actions',
+                'available_filters'
+            ];
+            $content = '<h3>' . __('Help', 'quick-ajax-post-loader') . '</h3>';
+            $json_file_path = plugin_dir_path(__FILE__) . 'help/help-html.json';
+            if (!file_exists($json_file_path)) {
+                return $content . '<p>' . __('Help file not found.', 'quick-ajax-post-loader') . '</p>';
+            }
+            $json_data = file_get_contents($json_file_path);
+            $help_data = json_decode($json_data, true);
+            if (!is_array($help_data)) {
+                return $content . '<p>' . __('Invalid help file format.', 'quick-ajax-post-loader') . '</p>';
+            }
+            foreach ($sections_to_display as $section_key) {
+                if (!isset($help_data[$section_key]['title']) || !isset($help_data[$section_key]['content'])) {
+                    continue;
+                }        
+                $accordion_title = esc_html(strip_tags($help_data[$section_key]['title']));
+                $accordion_content = wp_kses_post($help_data[$section_key]['content']);
+        
+                $accordion_block = $this->create_accordion_block($accordion_title, $accordion_content);
+                $content .= $accordion_block;
+            }     
+            return $content;
+        }
+        
 
         private function quick_ajax_content_clear_old_data() {
             $action_url = esc_url(admin_url('admin-post.php')); // use admin-post.php for admin actions

@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 //add get qapl_render_post_container - echo qapl_render_post_container()
 //add get qapl_render_taxonomy_filter
-function qapl_render_post_container($args, $attributes = null, $taxonomy = null, $meta_query = null) {
+function qapl_render_post_container($args, $attributes = null, $params = null, $meta_query = null) {
     if (!class_exists('QAPL_Quick_Ajax_Handler') || !method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             //error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
@@ -16,19 +16,29 @@ function qapl_render_post_container($args, $attributes = null, $taxonomy = null,
     $ajax_class->wp_query_args($args, $attributes);
     $ajax_class->layout_customization($attributes);
     $output = '';
-    if (!empty($taxonomy) && is_string($taxonomy)) {
-        $output .= $ajax_class->render_taxonomy_terms_filter($taxonomy);
+    $filter_wrapper_start = $filter_wrapper_end = '';
+    if(isset($params['controls_container']) && $params['controls_container'] == 1){
+        $filter_wrapper_start = '<div class="quick-ajax-controls-container">';
+         $filter_wrapper_end = '</div>';
     }
+    $output .= $filter_wrapper_start;
+    if (isset($params['sort_options']) && !empty($params['sort_options']) && is_array($params['sort_options'])) {
+        $output .= $ajax_class->render_sort_options($params['sort_options']);
+    }
+    if (isset($params['taxonomy']) && !empty($params['taxonomy']) && is_string($params['taxonomy'])) {
+        $output .= $ajax_class->render_taxonomy_terms_filter($params['taxonomy']);
+    }
+    $output .= $filter_wrapper_end;
     $output .= $ajax_class->wp_query();
-    echo wp_kses_post($output);
+    echo $output;
    
 }
 //alias for backward compatibility
-function qapl_quick_ajax_post_grid($args, $attributes = null, $taxonomy = null, $meta_query = null) {
-    return qapl_render_post_container($args, $attributes, $taxonomy, $meta_query);
+function qapl_quick_ajax_post_grid($args, $attributes) {
+    return qapl_render_post_container($args, $attributes);
 }
 
-function qapl_render_taxonomy_filter($args, $attributes, $taxonomy = null, $quick_ajax_id = null){
+function qapl_render_taxonomy_filter($args, $attributes, $taxonomy = null){
     if (!class_exists('QAPL_Quick_Ajax_Handler') || !method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             //error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
@@ -40,12 +50,28 @@ function qapl_render_taxonomy_filter($args, $attributes, $taxonomy = null, $quic
     $ajax_class->wp_query_args($args, $attributes);
     $ajax_class->layout_customization($attributes);
     if(!empty($taxonomy) && is_string($taxonomy)) {
-        echo wp_kses_post($ajax_class->render_taxonomy_terms_filter($taxonomy, $quick_ajax_id));
+        echo $ajax_class->render_taxonomy_terms_filter($taxonomy);
     }
 }
 //alias for backward compatibility
-function qapl_quick_ajax_term_filter($args, $attributes, $taxonomy = null, $quick_ajax_id = null) {
-    return qapl_render_taxonomy_filter($args, $attributes, $taxonomy, $quick_ajax_id);
+function qapl_quick_ajax_term_filter($args, $attributes, $taxonomy) {
+    return qapl_render_taxonomy_filter($args, $attributes, $taxonomy);
+}
+
+function qapl_render_sort_controls($args, $attributes, $sort_options){
+    if (!class_exists('QAPL_Quick_Ajax_Handler') || !method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            //error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
+        }
+        return;
+    }
+    $ajax_class = QAPL_Quick_Ajax_Handler::get_instance();
+    $attributes = $attributes ?? [];
+    $ajax_class->wp_query_args($args, $attributes);
+    $ajax_class->layout_customization($attributes);
+    if(!empty($sort_options) && is_array($sort_options)) {
+        echo $ajax_class->render_sort_options($sort_options);
+    }
 }
 
 function qapl_quick_ajax_get_quick_ajax_id(){

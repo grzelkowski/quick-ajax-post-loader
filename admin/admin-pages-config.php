@@ -174,6 +174,9 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
         elseif($this->fields[$field_name]['type'] == 'select'){
             return $this->add_select_field($field_name, $show_hide_element_id);
         }
+        elseif($this->fields[$field_name]['type'] == 'multiselect'){
+            return $this->add_multiselect_field($field_name, $show_hide_element_id);
+        }
         elseif($this->fields[$field_name]['type'] == 'number'){
             return $this->add_number_field($field_name, $show_hide_element_id);
         }
@@ -188,7 +191,8 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
     protected function get_the_value_if_exist($field_name){
         if(isset($this->existing_values[$field_name]['value'])){
             return $this->existing_values[$field_name]['value'];
-        }elseif(isset($this->fields[$field_name]['default'])){
+        }
+        elseif(isset($this->fields[$field_name]['default'])){
             return $this->fields[$field_name]['default'];
         }else{
             return false;
@@ -199,14 +203,18 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
         $scheme = get_user_option('admin_color', $current_user->ID);
         return $scheme . '-style';
     }
-    private function add_checkbox_field($field_name, $show_hide_element = false, $required = false){
+    private function add_checkbox_field($field_name, $show_hide_element_id = false, $required = false){
         $checked = $this->get_the_value_if_exist($field_name);
-        $field_container_class = '';
-        if(!empty($show_hide_element)){
+        $field_container_class = $field_container_data_item = '';
+        if(!empty($show_hide_element_id) && !is_string($show_hide_element_id) && $show_hide_element_id === true){
             $field_container_class =' show-hide-element';
+        }elseif(!empty($show_hide_element_id) && is_string($show_hide_element_id)){
+            $show_hide_element = $this->show_hide_element($show_hide_element_id);
+            $field_container_data_item = $show_hide_element['field_container_data_item'];
+            $field_container_class = $show_hide_element['field_container_class'];   
         }
         $is_required = $required ? 'required' : '';
-        $field = '<div class="quick-ajax-field-container quick-ajax-select-field qa-inline-block' . $field_container_class . '">';
+        $field = '<div class="quick-ajax-field-container quick-ajax-select-field qa-inline-block' . $field_container_class . '"' . $field_container_data_item . '>';
         $field .= '<label for="' . $this->fields[$field_name]['name'] . '">' . $this->fields[$field_name]['label'] . '</label>';
         $field .= '<div class="quick-ajax-field">';
         $field .= '<div class="switch-checkbox">';
@@ -247,6 +255,36 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
 
         return $field;
     }
+    private function add_multiselect_field($field_name, $show_hide_element_id = false) {
+        $current_values = $this->get_the_value_if_exist($field_name);
+        $show_hide_element = $this->show_hide_element($show_hide_element_id);
+        $field_container_data_item = $show_hide_element['field_container_data_item'];
+        $field_container_class = $show_hide_element['field_container_class'];
+        $field = '<div class="quick-ajax-field-container quick-ajax-multiselect-field' . $field_container_class . '"' . $field_container_data_item . '>';
+        $field .= '<label>' . esc_html($this->fields[$field_name]['label']) . '</label>';
+        $field .= '<div class="quick-ajax-field">';
+    
+        foreach ($this->fields[$field_name]['options'] as $option) {
+            if(is_array($current_values)){
+                $checked = in_array($option['value'], $current_values) ? 'checked' : '';
+            }else{
+                $checked = $option['value'] ? 'checked' : '';
+            }
+            $field .= '<div class="quick-ajax-multiselect-option">';         
+            $field .= '<label class="quick-ajax-checkbox">';
+            $field .= '<input type="checkbox" name="' . esc_attr($this->fields[$field_name]['name']) . '[]" value="' . esc_attr($option['value']) . '" ' . $checked . '>';
+            $field .= esc_html($option['label']);
+            $field .= '</label>';
+            $field .= '</div>';
+        }
+    
+        $field .= $this->add_field_description($this->fields[$field_name]['description']);
+        $field .= '</div>';
+        $field .= '</div>';
+    
+        return $field;
+    }
+    
     private function add_number_field($field_name, $show_hide_element_id = false){
         $current_value = $this->get_the_value_if_exist($field_name);
         $show_hide_element = $this->show_hide_element($show_hide_element_id);
@@ -508,8 +546,13 @@ abstract class QAPL_Quick_Ajax_Post_Type_Form extends QAPL_Quick_Ajax_Content_Bu
             if (($field['type'] == 'checkbox') && !isset($_POST[$field['name']])) {
                 $form_data[$field['name']] = 0;
             } elseif (isset($_POST[$field['name']])) {
-                $field_value = $field_value = sanitize_text_field(wp_unslash($_POST[$field['name']]));
-                $form_data[$field['name']] = $field_value;
+                if (is_array($_POST[$field['name']])) {
+                    $field_value = array_map('sanitize_text_field', wp_unslash($_POST[$field['name']]));
+                    $form_data[$field['name']] = $field_value;
+                }else{
+                    $field_value = sanitize_text_field(wp_unslash($_POST[$field['name']]));
+                    $form_data[$field['name']] = $field_value;
+                }
             }
         }        
         $serialized_data = serialize($form_data);

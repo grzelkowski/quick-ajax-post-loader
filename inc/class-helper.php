@@ -14,7 +14,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.4.1',
+            'version' => '1.5.0',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
@@ -120,6 +120,7 @@ class QAPL_Quick_Ajax_Helper{
             'helper' => [
                 'block_id' => self::layout_quick_ajax_id(),
                 'filter_data_button' => self::taxonomy_filter_button_data_button(),
+                'sort_button' => self::sort_option_button_data_button(),
                 'load_more_data_button' => self::load_more_button_data_button(),
             ]
         ];
@@ -252,6 +253,9 @@ class QAPL_Quick_Ajax_Helper{
     public static function taxonomy_filter_button_data_button(){
         return 'quick-ajax-filter-button';
     }
+    public static function sort_option_button_data_button(){
+        return 'quick-ajax-sort-option-button';
+    }
     public function plugin_templates_taxonomy_filter_button() {
         return $this->file_helper->get_templates_dir_path('/taxonomy-filter/taxonomy-filter-button.php');
     }
@@ -361,9 +365,73 @@ class QAPL_Quick_Ajax_Helper{
     public static function shortcode_page_select_orderby_default_value() {
         return 'date';
     }
-    public static function shortcode_page_select_post_status(){
-        return 'qapl_select_post_status';
+
+    
+    public static function shortcode_page_show_sort_button(){
+        return 'qapl_show_order_button';
     }
+    public static function shortcode_page_show_sort_button_default_value(){
+        return 0;
+    }
+    public static function shortcode_page_select_sort_button_options(){
+        return 'qapl_select_orderby_button_options';
+    }
+    public static function shortcode_page_select_sort_button_options_values() {
+        $global_sort_labels = get_option(self::admin_page_global_options_name(), []);
+        // Define sort options array with dynamic labels from global settings
+        $sort_options = [
+            [
+                'value' => 'date-desc',
+                'label' => isset($global_sort_labels['sort_option_date_desc_label'])
+                    ? $global_sort_labels['sort_option_date_desc_label']
+                    : __('Newest', 'quick-ajax-post-loader')
+            ],
+            [
+                'value' => 'date-asc',
+                'label' => isset($global_sort_labels['sort_option_date_asc_label'])
+                    ? $global_sort_labels['sort_option_date_asc_label']
+                    : __('Oldest', 'quick-ajax-post-loader')
+            ],
+            [
+                'value' => 'comment_count-desc',
+                'label' => isset($global_sort_labels['sort_option_comment_count_desc_label'])
+                    ? $global_sort_labels['sort_option_comment_count_desc_label']
+                    : __('Popular', 'quick-ajax-post-loader')
+            ],
+            [
+                'value' => 'title-asc',
+                'label' => isset($global_sort_labels['sort_option_title_desc_label'])
+                    ? $global_sort_labels['sort_option_title_desc_label']
+                    : __('A → Z', 'quick-ajax-post-loader')
+            ],
+            [
+                'value' => 'title-desc',
+                'label' => isset($global_sort_labels['sort_option_title_asc_label'])
+                    ? $global_sort_labels['sort_option_title_asc_label']
+                    : __('Z → A', 'quick-ajax-post-loader')
+            ],
+            [
+                'value' => 'rand',
+                'label' => isset($global_sort_labels['sort_option_rand_label'])
+                    ? $global_sort_labels['sort_option_rand_label']
+                    : __('Random', 'quick-ajax-post-loader')
+            ],
+        ];
+    
+        return $sort_options;
+    }
+    public static function shortcode_page_select_sort_button_options_default_value(){
+        return 1;
+    }
+    public static function shortcode_page_show_inline_filter_sorting(){
+        return 'qapl_show_inline_filter_sorting';
+    }
+    public static function shortcode_page_show_inline_filter_sorting_default_value(){
+        return 1;
+    }
+    //public static function shortcode_page_select_post_status(){
+    //    return 'qapl_select_post_status';
+    //}
     public static function shortcode_page_select_post_status_default_value(){
         return 'publish';
     }
@@ -482,6 +550,25 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function global_options_field_set_post_date_format(){
         return self::admin_page_global_options_name().'[post_date_format]';
+    }
+    //Sorting Options Labels
+    public static function global_options_field_set_sort_option_date_desc_label(){
+        return self::admin_page_global_options_name().'[sort_option_date_desc_label]';
+    }
+    public static function global_options_field_set_sort_option_date_asc_label(){
+        return self::admin_page_global_options_name().'[sort_option_date_asc_label]';
+    }
+    public static function global_options_field_set_sort_option_comment_count_desc_label(){
+        return self::admin_page_global_options_name().'[sort_option_comment_count_desc_label]';
+    }
+    public static function global_options_field_set_sort_option_title_desc_label(){
+        return self::admin_page_global_options_name().'[sort_option_title_desc_label]';
+    }
+    public static function global_options_field_set_sort_option_title_asc_label(){
+        return self::admin_page_global_options_name().'[sort_option_title_asc_label]';
+    }
+    public static function global_options_field_set_sort_option_rand_label(){
+        return self::admin_page_global_options_name().'[sort_option_rand_label]';
     }
     /* Quick AJAX placeholders */
     /* not in use after removing placeholders
@@ -773,7 +860,7 @@ class QAPL_Form_Fields_Helper{
         );
         $field_properties = array(
             'name' => QAPL_Quick_Ajax_Helper::shortcode_page_select_order(),
-            'label' => __('Posts Order', 'quick-ajax-post-loader'),
+            'label' => __('Default Sort Order', 'quick-ajax-post-loader'),
             'type' => 'select',
             'options' => $order_options,
             'default' => QAPL_Quick_Ajax_Helper::shortcode_page_select_order_default_value(),
@@ -781,57 +868,19 @@ class QAPL_Form_Fields_Helper{
         );
         return $field_properties;
     }
+
     //select post orderby
     public static function get_field_select_orderby(){
-        $orderby_options = array(
-            array(
-                'label' => __('None: No specific sorting criteria', 'quick-ajax-post-loader'),
-                'value' => 'none'
-            ),
-            array(
-                'label' => __('ID: Sort by post ID', 'quick-ajax-post-loader'),
-                'value' => 'ID'
-            ),
-            array(
-                'label' => __('Author: Sort by author ID', 'quick-ajax-post-loader'),
-                'value' => 'author'
-            ),
-            array(
-                'label' => __('Title: Sort by post title', 'quick-ajax-post-loader'),
-                'value' => 'title'
-            ),
-            array(
-                'label' => __('Name: Sort by post slug', 'quick-ajax-post-loader'),
-                'value' => 'name'
-            ),
-            array(
-                'label' => __('Date: Sort by publication date', 'quick-ajax-post-loader'),
-                'value' => 'date'
-            ),
-            array(
-                'label' => __('Modified: Sort by last modified date', 'quick-ajax-post-loader'),
-                'value' => 'modified'
-            ),
-            array(
-                'label' => __('Parent: Sort by parent post ID', 'quick-ajax-post-loader'),
-                'value' => 'parent'
-            ),
-            array(
-                'label' => __('Random: Random order', 'quick-ajax-post-loader'),
-                'value' => 'rand'
-            ),
-            array(
-                'label' => __('Comments: Sort by comment count', 'quick-ajax-post-loader'),
-                'value' => 'comment_count'
-            ),
-            array(
-                'label' => __('Menu Order: Sort by custom menu order', 'quick-ajax-post-loader'),
-                'value' => 'menu_order'
-            )
-        );
+        $orderby_options = [
+            ['value' => 'date', 'label' => __('Date: Sort by publication date', 'quick-ajax-post-loader')],
+            ['value' => 'title', 'label' => __('Title: Sort by post title', 'quick-ajax-post-loader')],
+            ['value' => 'comment_count', 'label' => __('Comments: Sort by comment count', 'quick-ajax-post-loader')],
+            ['value' => 'rand', 'label' => __('Random: Random order', 'quick-ajax-post-loader')],
+            //['value' => 'menu_order', 'label' => __('Menu Order: Sort by custom menu order', 'quick-ajax-post-loader')],
+        ];
         $field_properties = array(
             'name' => QAPL_Quick_Ajax_Helper::shortcode_page_select_orderby(),
-            'label' => __('Posts Order by', 'quick-ajax-post-loader'),
+            'label' => __('Default Sort By', 'quick-ajax-post-loader'),
             'type' => 'select',
             'options' => $orderby_options,
             'default' => QAPL_Quick_Ajax_Helper::shortcode_page_select_orderby_default_value(),
@@ -839,8 +888,41 @@ class QAPL_Form_Fields_Helper{
         );
         return $field_properties;
     }
+
+    //show sort button
+    public static function get_field_show_sort_button(){
+        return array(
+            'name' => QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button(),
+            'label' => __('Show Sorting Button', 'quick-ajax-post-loader'),
+            'type' => 'checkbox',
+            'default' => QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button_default_value(),
+            'description' => __('Enable a button that allows users to switch between ascending and descending order.', 'quick-ajax-post-loader')
+        );
+    }
+
+    //select sort button
+    public static function get_field_select_sort_button_options(){
+        return array(
+            'name' => QAPL_Quick_Ajax_Helper::shortcode_page_select_sort_button_options(),
+            'label' => __('Available Sorting Options', 'quick-ajax-post-loader'),
+            'type' => 'multiselect',
+            'options' => QAPL_Quick_Ajax_Helper::shortcode_page_select_sort_button_options_values(),
+            'default' => QAPL_Quick_Ajax_Helper::shortcode_page_select_sort_button_options_default_value(),
+            'description' => __('Select which sorting options will be available to users.', 'quick-ajax-post-loader')
+        );
+    }
+    public static function get_field_show_inline_filter_sorting(){
+        return array(
+            'name' => QAPL_Quick_Ajax_Helper::shortcode_page_show_inline_filter_sorting(),
+            'label' => __('Inline Filter & Sorting', 'quick-ajax-post-loader'),
+            'type' => 'checkbox',
+            'default' => QAPL_Quick_Ajax_Helper::shortcode_page_show_inline_filter_sorting_default_value(),
+            'description' => __('Display taxonomy filter and sorting options in a single row to save space and improve layout', 'quick-ajax-post-loader')
+        );
+    }
+
     //select post status
-    public static function get_field_select_post_status(){
+    /*public static function get_field_select_post_status(){
         $post_status_options = array(
             array(
                 'label' => __('Publish: Published posts', 'quick-ajax-post-loader'),
@@ -880,7 +962,7 @@ class QAPL_Form_Fields_Helper{
             'description' => __('Select the post status to be used by AJAX.', 'quick-ajax-post-loader')
         );
         return $field_properties;
-    }
+    }*/
     //add Excluded Post IDs
     public static function get_field_set_post_not_in(){
         $field_properties = array(
@@ -1105,6 +1187,78 @@ class QAPL_Form_Fields_Helper{
         );
         return $field_properties;
     }
+    public static function get_global_options_field_set_sort_option_date_desc_label() {
+        $field_properties = array(
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_date_desc_label(),
+            'label' => __('Set "Newest" Label', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'options' => '', // Not required for text field
+            'default' => __('Newest', 'quick-ajax-post-loader'),
+            'placeholder' => __('Newest', 'quick-ajax-post-loader'),
+            'description' => __('Set the label for sorting posts from newest to oldest (based on publication date). Examples: "Newest", "Latest", "Recent".', 'quick-ajax-post-loader')
+        );
+        return $field_properties;
+    }
+    public static function get_global_options_field_set_sort_option_date_asc_label() {
+        $field_properties = array(
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_date_asc_label(),
+            'label' => __('Set "Oldest" Label', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'options' => '', // Not required for text field
+            'default' => __('Oldest', 'quick-ajax-post-loader'),
+            'placeholder' => __('Oldest', 'quick-ajax-post-loader'),
+            'description' => __('Set the label for sorting posts from oldest to newest (based on publication date). Examples: "Oldest", "First", "Earliest".', 'quick-ajax-post-loader')
+        );
+        return $field_properties;
+    }
+    public static function get_global_options_field_set_sort_option_comment_count_desc_label() {
+        $field_properties = array(
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_comment_count_desc_label(),
+            'label' => __('Set "Popular" Label', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'options' => '', // Not required for text field
+            'default' => __('Popular', 'quick-ajax-post-loader'),
+            'placeholder' => __('Popular', 'quick-ajax-post-loader'),
+            'description' => __('Set the label for sorting posts by the highest number of comments. Examples: "Popular", "Trending", "Most Discussed".', 'quick-ajax-post-loader')
+        );
+        return $field_properties;
+    }
+    public static function get_global_options_field_set_sort_option_title_desc_label() {
+        $field_properties = array(
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_title_desc_label(),
+            'label' => __('Set "A → Z" Label', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'options' => '', // Not required for text field
+            'default' => __('A → Z', 'quick-ajax-post-loader'),
+            'placeholder' => __('A → Z', 'quick-ajax-post-loader'),
+            'description' => __('Set the label for sorting posts alphabetically (A to Z) based on the post title. Examples: "Alphabetical", "A → Z", "Sort by Name".', 'quick-ajax-post-loader')
+        );
+        return $field_properties;
+    }
+    public static function get_global_options_field_set_sort_option_title_asc_label() {
+        $field_properties = array(
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_title_asc_label(),
+            'label' => __('Set "Z → A" Label', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'options' => '', // Not required for text field
+            'default' => __('Z → A', 'quick-ajax-post-loader'),
+            'placeholder' => __('Z → A', 'quick-ajax-post-loader'),
+            'description' => __('Set the label for sorting posts alphabetically (Z to A) based on the post title. Examples: "Reverse Alphabetical", "Z → A", "Sort by Name Descending".', 'quick-ajax-post-loader')
+        );
+        return $field_properties;
+    }
+    public static function get_global_options_field_set_sort_option_rand_label() {
+        $field_properties = array(
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_rand_label(),
+            'label' => __('Set "Random" Label', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'options' => '', // Not required for text field
+            'default' => __('Random', 'quick-ajax-post-loader'),
+            'placeholder' => __('Random', 'quick-ajax-post-loader'),
+            'description' => __('Set the label for sorting posts in a random order. Examples: "Shuffle", "Random", "Surprise Me".', 'quick-ajax-post-loader')
+        );
+        return $field_properties;
+    }
     public static function get_global_field_remove_old_data(){
         return array(
             'name' => 'qapl_remove_old_meta',
@@ -1145,6 +1299,7 @@ class QAPL_Hooks {
     // Filters
     const HOOK_MODIFY_POSTS_QUERY_ARGS = 'qapl_modify_posts_query_args';
     const HOOK_MODIFY_TAXONOMY_FILTER_BUTTONS = 'qapl_modify_taxonomy_filter_buttons';
+    const HOOK_MODIFY_SORTING_OPTIONS_VARIANTS = 'qapl_modify_sorting_options_variants';
 
     // Template Hooks
     const HOOK_TEMPLATE_POST_ITEM_DATE = 'qapl_template_post_item_date';

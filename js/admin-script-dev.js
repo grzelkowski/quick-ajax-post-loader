@@ -162,12 +162,28 @@
                 var copyButton = $('.copy-button[data-copy="' + outputDiv+ '"]');
                 copyButton.prop('disabled', true);
                 var inputData = {};
-                var inputs = $('.function-generator-wrap input, .function-generator-wrap select, .function-generator-wrap checkbox');
+                var inputs = $('.function-generator-wrap input, .function-generator-wrap select');
                 inputs.each(function(index, input) {
+                    var $input = $(input);
+                    var inputName = $input.attr('name');
+                    var inputId = $input.attr('id');
                     if (input.type === 'checkbox') {
-                        inputData[input.id] = input.checked ? 1 : 0;
+                        if (inputName && inputName.endsWith('[]')) {
+                            // multi-select checkbox field - format name without "[]"
+                            let cleanName = inputName.replace(/\[\]$/, ''); 
+                            if (!inputData[cleanName]) {
+                                inputData[cleanName] = [];
+                            }
+                            if ($input.prop('checked')) {
+                                inputData[cleanName].push($input.val());
+                            }
+                        } else {
+                            // single checkbox field
+                            inputData[inputId] = $input.prop('checked') ? 1 : 0;
+                        }
                     } else {
-                        inputData[input.id] = $(input).val();
+                        // standard input/select field
+                        inputData[inputId] = $input.val();
                     }
                 });
                 let inputDataString = Object.values(inputData).join('');
@@ -175,7 +191,7 @@
                 var quickAjaxArgsText = "";
                 quickAjaxArgsText += "$quick_ajax_args = array(\n";
                 quickAjaxArgsText += "    'post_type' => '" + inputData.qapl_select_post_type + "',\n";
-                quickAjaxArgsText += "    'post_status' => '" + inputData.qapl_select_post_status + "',\n";
+                //quickAjaxArgsText += "    'post_status' => '" + inputData.qapl_select_post_status + "',\n";
                 quickAjaxArgsText += "    'posts_per_page' => " + inputData.qapl_select_posts_per_page + ",\n";
                 if (inputData.qapl_select_orderby !== 'none') {
                     quickAjaxArgsText += "    'orderby' => '" + inputData.qapl_select_orderby + "',\n";
@@ -242,6 +258,36 @@
                     quickAjaxAttributesText = quickAjaxAttributesText.slice(0, -2) + "\n";
                     quickAjaxAttributesText += ");";
                 }
+/////////
+                //quickAjaxSortControl code
+                var quickAjaxSortControl = null;
+                var quickAjaxSortControlValueOptions = null;
+                if (inputData.qapl_show_order_button === 1) {
+                    var quickAjaxSortControl = inputData.qapl_select_orderby_button_options;
+                    if (quickAjaxSortControl && quickAjaxSortControl.length > 0) {
+                        var quickAjaxSortControlValueOptions = "$quick_ajax_sort_options = array(";
+                        quickAjaxSortControlValueOptions += quickAjaxSortControl.map(option => `'${option}'`).join(', ');
+                        quickAjaxSortControlValueOptions += ");";
+                    }
+                }
+                var quickAjaxSortControlValue = "";
+                var quickAjaxSortControlText = "";
+                if (quickAjaxSortControl !== null) {
+                    quickAjaxSortControlValue = "";
+                    quickAjaxSortControlValue += quickAjaxSortControlValueOptions;
+                    //qapl_render_taxonomy_filter     
+                    quickAjaxSortControlText = "";
+                    quickAjaxSortControlText += "if(function_exists('qapl_render_sort_controls')):\n";
+                    quickAjaxSortControlText += "    qapl_render_sort_controls(\n";
+                    quickAjaxSortControlText += "        $quick_ajax_args,\n";
+                    quickAjaxSortControlText += "        $quick_ajax_attributes,\n";
+                    quickAjaxSortControlText += "        $quick_ajax_sort_options,\n";
+                    //remove last comma
+                    quickAjaxSortControlText = quickAjaxSortControlText.slice(0, -2) + "\n";
+                    quickAjaxSortControlText += "    );\n";
+                    quickAjaxSortControlText += "endif;";
+                }
+//////
                 //quickAjaxTaxonomy code
                 var quickAjaxTaxonomy = null;
                 if (inputData.qapl_show_select_taxonomy === 1) {
@@ -286,10 +332,18 @@
                     formattedText += "\n// Define attributes for AJAX.\n";
                     formattedText += quickAjaxAttributesText.trim() + "\n";
                 }
+                if (quickAjaxSortControlValue.trim() !== "") {
+                    formattedText += "\n// Set the sort options for the button.\n";
+                    formattedText += quickAjaxSortControlValue.trim() + "\n";
+                }
+                if (quickAjaxSortControlText.trim() !== "") {
+                    formattedText += "\n// Render the sorting control button.\n";
+                    formattedText += quickAjaxSortControlText.trim() + "\n";
+                }
                 if (quickAjaxTaxonomyFilterValue.trim() !== "") {
                     formattedText += "\n// Set the taxonomy for filtering posts.\n";
                     formattedText += quickAjaxTaxonomyFilterValue.trim() + "\n";
-                }          
+                }
                 if (quickAjaxTaxonomyFilterText.trim() !== "") {
                     formattedText += "\n// Render the navigation for '"+inputData.qapl_select_taxonomy+"' taxonomy.\n";
                     formattedText += quickAjaxTaxonomyFilterText.trim() + "\n";

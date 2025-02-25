@@ -17,6 +17,15 @@
                         self.qapl_quick_ajax_handle_ajax($(this));
                     });
                 }
+                if (qapl_quick_ajax_helper.helper.sort_button) {
+                    $('.quick-ajax-sort-options-container').on('click', `[data-button="${qapl_quick_ajax_helper.helper.sort_button}"]`, function() {
+                        self.qapl_quick_ajax_handle_ajax($(this));
+                    });
+                }
+                // event listener for sorting
+                $('body').on('change', 'select[name="quick_ajax_sort_option"]', function() {
+                    self.qapl_quick_ajax_handle_sort($(this));
+                });
             }
         },
         qapl_quick_ajax_initial_load: function() {
@@ -42,15 +51,16 @@
 
             var button_type = button.attr('data-button');
             var containerId = attributes[qapl_quick_ajax_helper.helper.block_id] || '';
-            var container = $('#' + containerId);
-            var container_inner = $('#' + containerId + ' .quick-ajax-posts-wrapper');
+            var container = $('#quick-ajax-' + containerId);
+            var container_inner = $('#quick-ajax-' + containerId + ' .quick-ajax-posts-wrapper');
             if (!container.length || !container_inner.length) {
                 console.error('Quick Ajax Post Loader: Container or inner container not found:', containerId);
                 return;
             }            
 
             container.addClass('loading');
-            if(button.attr('data-button') === qapl_quick_ajax_helper.helper.filter_data_button){
+            if((button.attr('data-button') === qapl_quick_ajax_helper.helper.filter_data_button) ||
+               (button.attr('data-button') === qapl_quick_ajax_helper.helper.sort_button)){
                 container_inner.fadeOut(100, function() {
                     $(this).empty().fadeIn(100);
                 });
@@ -69,7 +79,7 @@
                     if (response && response.data) {
                         if(button_type === qapl_quick_ajax_helper.helper.load_more_data_button){
                             self.qapl_quick_ajax_load_more_add_posts(container_inner, button, response.data.output);
-                        } else if(button_type === qapl_quick_ajax_helper.helper.filter_data_button){
+                        } else if((button.attr('data-button') === qapl_quick_ajax_helper.helper.filter_data_button) || (button.attr('data-button') === qapl_quick_ajax_helper.helper.sort_button)){
                             self.qapl_quick_ajax_taxonomy_filter_show_posts(container_inner, button, response.data.output);
                         }
                     } else {
@@ -102,6 +112,65 @@
                     $(this).removeAttr('style');
                 }
             });
+        },
+        qapl_quick_ajax_handle_sort: function(selectButton) {
+            let $sortContainer = selectButton.closest('.quick-ajax-sort-options-container');
+            let $QuerySettings = $sortContainer.find('.quick-ajax-settings');
+            let settingsData = $QuerySettings.data('attributes');
+
+            // check if quick_ajax_id exists
+            if (!settingsData || !settingsData.quick_ajax_id) {
+                return; // stop if quick_ajax_id is missing
+            }
+
+            let quickAjaxId = settingsData.quick_ajax_id;
+            let $filterContainer = $('#quick-ajax-filter-' + quickAjaxId);
+            // get selected value
+            let selectedValue = selectButton.val();
+            let [orderby, order] = selectedValue.split('-');
+            // update quick-ajax-settings in the same sort container
+            let actionData = $QuerySettings.data('action');
+            // convert to object if needed
+            if (typeof actionData === 'string') {
+                actionData = JSON.parse(actionData);
+            }
+            // change orderby and order
+            actionData.orderby = orderby;
+            actionData.order = order;
+            //update data-action
+            $QuerySettings.attr('data-action', JSON.stringify(actionData));
+            // if filter container does not exist, trigger only settings span click
+            if (!$filterContainer.length) {
+                if ($QuerySettings.is('[data-action]')) {
+                    $QuerySettings.trigger('click');
+                }
+                return;
+            }
+            // update all filter buttons in the matching filter container
+            $filterContainer.find('.qapl-filter-button').each(function () {
+                let $button = $(this);
+                let actionData = $button.data('action');
+                // get action data
+                if (typeof actionData === 'string') {
+                    actionData = JSON.parse(actionData);
+                }
+                // convert to object if needed
+                actionData.orderby = orderby;
+                actionData.order = order;
+                $button.attr('data-action', JSON.stringify(actionData));
+            });
+            // find the active button
+            let $activeButton = $filterContainer.find('.qapl-filter-button.active');
+
+            if ($activeButton.length) {
+                // click active button if exists
+                $activeButton.trigger('click');
+            } else {
+                 //click settings span
+                if ($QuerySettings.is('[data-action]')) {
+                    $QuerySettings.trigger('click');
+                }
+            }
         }
     };
 
@@ -109,4 +178,3 @@
         qapl_quick_ajax_post_loader_scripts.init();
     });
 })(jQuery);
-  

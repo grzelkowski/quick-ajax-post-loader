@@ -13,7 +13,6 @@ $accordion_block_content .= '<h4>Example Usage</h4>';
 $accordion_block_content .= '<pre><code class="no-background">';
 $accordion_block_content .= htmlentities('$quick_ajax_args = array(') . "\n";
 $accordion_block_content .= htmlentities("    'post_type' => 'post',") . "\n";
-$accordion_block_content .= htmlentities("    'post_status' => 'publish',") . "\n";
 $accordion_block_content .= htmlentities("    'posts_per_page' => 6,") . "\n";
 $accordion_block_content .= htmlentities("    'orderby' => 'date',") . "\n";
 $accordion_block_content .= htmlentities("    'order' => 'DESC',") . "\n";

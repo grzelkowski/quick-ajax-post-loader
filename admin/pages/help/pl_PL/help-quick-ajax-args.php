@@ -9,7 +9,6 @@ $accordion_block_content .= '<p><code class="code-tag">$quick_ajax_args</code> j
 $accordion_block_content .= '<h4>Parametry</h4>';
 $accordion_block_content .= '<ul>';
 $accordion_block_content .= '<li><code class="no-background"><strong>post_type</strong></code> (string): Typ postów do załadowania, np. \'post\', \'page\', niestandardowe typy postów.</li>';
-$accordion_block_content .= '<li><code class="no-background"><strong>post_status</strong></code> (string): Status postów do wyświetlenia, np. \'publish\'.</li>';
 $accordion_block_content .= '<li><code class="no-background"><strong>posts_per_page</strong></code> (int): Liczba wyświetlanych postów na stronę.</li>';
 $accordion_block_content .= '<li><code class="no-background"><strong>orderby</strong></code> (string): Kryterium sortowania postów, np. \'date\', \'title\'.</li>';
 $accordion_block_content .= '<li><code class="no-background"><strong>order</strong></code> (string): Kolejność sortowania postów, np. \'ASC\', \'DESC\'.</li>';

@@ -40,9 +40,19 @@ if (!class_exists('QAPL_Quick_Ajax_Form_Creator')) {
             //select post orderby
             $field_properties = QAPL_Form_Fields_Helper::get_field_select_orderby();    
             $this->create_field($field_properties);
-            //select post status
-            $field_properties = QAPL_Form_Fields_Helper::get_field_select_post_status();
+
+            //show sort button
+            $field_properties = QAPL_Form_Fields_Helper::get_field_show_sort_button();        
             $this->create_field($field_properties);
+            //select sort options
+            $field_properties = QAPL_Form_Fields_Helper::get_field_select_sort_button_options();    
+            $this->create_field($field_properties);
+            $field_properties = QAPL_Form_Fields_Helper::get_field_show_inline_filter_sorting();    
+            $this->create_field($field_properties);
+
+            //select post status
+            //$field_properties = QAPL_Form_Fields_Helper::get_field_select_post_status();
+            //$this->create_field($field_properties);
             //add Excluded Post IDs
             $field_properties = QAPL_Form_Fields_Helper::get_field_set_post_not_in();
             $this->create_field($field_properties);
@@ -82,7 +92,8 @@ if (!class_exists('QAPL_Quick_Ajax_Form_Creator')) {
         }
         
         public function render_quick_ajax_form() {
-            $shortcode_page = '';
+            $shortcode_page = '<div class="quick-ajax-layout-settings">';
+            $shortcode_page .= '<h4>'.esc_html__('General Settings', 'quick-ajax-post-loader').'</h4>';
             //select post type
             $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_post_type());
             //show taxonomy checkbox
@@ -116,14 +127,19 @@ if (!class_exists('QAPL_Quick_Ajax_Form_Creator')) {
             }
             $this->fields[QAPL_Quick_Ajax_Helper::shortcode_page_select_taxonomy()]['options'] = $taxonomy_options;
             $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_taxonomy(), QAPL_Quick_Ajax_Helper::shortcode_page_show_taxonomy_filter());
-
-            //post settings
-            $shortcode_page .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
-            $shortcode_page .= '<h4>'.esc_html__('Query Settings', 'quick-ajax-post-loader').'</h4>';
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_post_status());
+            //$shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_post_status());
             $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_posts_per_page());
+            $shortcode_page .= '</div>';
+            $shortcode_page .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
+            $shortcode_page .= '<h4>'.esc_html__('Sorting Settings', 'quick-ajax-post-loader').'</h4>';
             $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_order());
             $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_orderby());
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button(), true);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_select_sort_button_options(), QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button());
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_show_inline_filter_sorting(), QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button());
+            $shortcode_page .= '</div>';
+            $shortcode_page .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
+            $shortcode_page .= '<h4>'.esc_html__('Additional Settings', 'quick-ajax-post-loader').'</h4>';
             $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in());
             $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ignore_sticky_posts());
             $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ajax_on_initial_load());

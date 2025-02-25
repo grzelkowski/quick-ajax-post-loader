@@ -19,7 +19,7 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                 'posts_per_page' => '',
                 'order' => '',
                 'orderby' => '',
-                'post_status' => '',
+                //'sort_options' => '',
                 'quick_ajax_css_style' => '',
                 'grid_num_columns' => '',
                 'post_item_template' => '',
@@ -52,7 +52,8 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
             $args['post_type'] = !empty($args['post_type']) ? sanitize_text_field($args['post_type']) : '';
             $args['order'] = !empty($args['order']) ? sanitize_text_field($args['order']) : '';
             $args['orderby'] = !empty($args['orderby']) ? sanitize_text_field($args['orderby']) : '';
-            $args['post_status'] = !empty($args['post_status']) ? sanitize_text_field($args['post_status']) : '';
+            $args['sort_options'] = !empty($args['sort_options']) ? sanitize_text_field($args['sort_options']) : '';
+            //$args['post_status'] = !empty($args['post_status']) ? sanitize_text_field($args['post_status']) : '';
             $args['post_item_template'] = !empty($args['post_item_template']) ? sanitize_text_field($args['post_item_template']) : '';
             $args['taxonomy_filter_class'] = !empty($args['taxonomy_filter_class']) ? sanitize_html_class($args['taxonomy_filter_class']) : '';
             $args['container_class'] = !empty($args['container_class']) ? sanitize_html_class($args['container_class']) : '';
@@ -82,7 +83,7 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                 $post_per_page = !empty($this->shortcode_args['posts_per_page']) ? $this->shortcode_args['posts_per_page'] : $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_select_posts_per_page()];
                 $post_order = !empty($this->shortcode_args['order']) ? $this->shortcode_args['order'] : $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_select_order()];
                 $post_orderby = !empty($this->shortcode_args['orderby']) ? $this->shortcode_args['orderby'] : $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_select_orderby()];
-                $post_post_status = !empty($this->shortcode_args['post_status']) ? $this->shortcode_args['post_status'] : $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_select_post_status()];
+                //$post_post_status = !empty($this->shortcode_args['post_status']) ? $this->shortcode_args['post_status'] : $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_select_post_status()];
                 $post_not_in = ($this->shortcode_args['excluded_post_ids']) ? $this->shortcode_args['excluded_post_ids'] : $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in()];     
                 $ignore_sticky_posts = ($this->shortcode_args['ignore_sticky_posts']) ? $this->shortcode_args['ignore_sticky_posts'] : $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_ignore_sticky_posts()];     
             }else{
@@ -90,14 +91,14 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                 $post_per_page = !empty($this->shortcode_args['posts_per_page']) ? $this->shortcode_args['posts_per_page'] : '';
                 $post_order = !empty($this->shortcode_args['order']) ? $this->shortcode_args['order'] : '';
                 $post_orderby = !empty($this->shortcode_args['orderby']) ? $this->shortcode_args['orderby'] : '';
-                $post_post_status = !empty($this->shortcode_args['post_status']) ? $this->shortcode_args['post_status'] : '';
+                //$post_post_status = !empty($this->shortcode_args['post_status']) ? $this->shortcode_args['post_status'] : '';
                 $post_not_in = !empty($this->shortcode_args['excluded_post_ids']) ? $this->shortcode_args['excluded_post_ids'] : '';
                 $ignore_sticky_posts = !empty($this->shortcode_args['ignore_sticky_posts']) ? $this->shortcode_args['ignore_sticky_posts'] : '';
             }
             if(!empty($selected_post_type)){
                 $args = array(
                     'post_type' => $selected_post_type,
-                    'post_status' => $post_post_status,
+                    //'post_status' => $post_post_status,
                     'orderby' => $post_orderby, 
                     'order' => $post_order,                     
                     'posts_per_page' => $post_per_page,
@@ -259,6 +260,31 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
             }
             return null;
         }
+        private function create_shortcode_controls_container(){
+            if(!empty($this->shortcode_args['id'])){
+                $show_sort_orderby_button = isset($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button()]) ? $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button()] : null;
+                if($show_sort_orderby_button==1){
+                    $add_wrapper = isset($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_show_inline_filter_sorting()]) ? $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_show_inline_filter_sorting()] : null;
+                    return $add_wrapper;
+                }
+            }
+            return null;
+        }
+        private function create_shortcode_sort_button(){
+            if(!empty($this->shortcode_args['id'])){
+                $show_sort_orderby_button = isset($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button()]) ? $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button()] : null;
+                if($show_sort_orderby_button==1){
+                    $sort_orderby = isset($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_select_sort_button_options()]) ? $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_select_sort_button_options()] : null;
+                    if (is_array($sort_orderby)) {
+                        $sort_orderby = array_map('esc_attr', $sort_orderby);
+                    }else{
+                        $sort_orderby = esc_attr($sort_orderby);
+                    }
+                    return $sort_orderby;
+                }
+            }
+            return null;
+        }
 
         public function render_quick_ajax_shortcode($atts) {
             $this->get_shortcode_args($atts);
@@ -267,10 +293,12 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
             }
             $args = $this->create_shortcode_args();
             $attributes = $this->create_shortcode_attributes();
-            $taxonomy = $this->create_shortcode_taxonomy();
+            $params['taxonomy'] = $this->create_shortcode_taxonomy();
+            $params['sort_options'] = $this->create_shortcode_sort_button();
+            $params['controls_container'] = $this->create_shortcode_controls_container();
             ob_start();
             if (!empty($args) && function_exists('qapl_render_post_container')) {
-                qapl_render_post_container($args, $attributes, $taxonomy);
+                qapl_render_post_container($args, $attributes, $params);
             }
             $output = ob_get_clean();
             return $output;

@@ -1,16 +1,30 @@
 ## Changelog
+
+### 1.5.0 - 2025-02-25
+- Added a new sorting button option, allowing users to change the post order based on predefined sorting options.
+- Added global options to define labels for each sorting method, providing better customization.
+- Removed the ability to change `post_status` in shortcode settings.
+  - WordPress by default displays only published (`publish`) posts to users, making this option unnecessary.
+  - The plugin now supports only `publish` posts, removing redundant settings.
+  - **Developers can still modify `post_status` using the `qapl_modify_posts_query_args` hook.**
+- Optimized the `orderby` options list, removing rarely used sorting values: `none`, `ID`, `author`, `name`, `modified`, `parent`, `menu_order`.
+  - These can still be implemented using the `qapl_modify_posts_query_args` hook.
+- Applied CSS improvements to enhance compatibility with different WordPress themes.
+- Fixed minor bugs to improve overall stability and performance.
+- Additional optimizations and security enhancements to ensure better reliability and safety.
+
 ### 1.4.1 - 2025-02-14
 - Tested and confirmed full compatibility with WordPress 6.7.2.
 
 ### 1.4.0 - 2025-02-10
-- Added new template filters for customizing post elements. Developers can now modify the post date, image, title, excerpt, read more button, and load more button via filters, allowing greater flexibility in template customization.  
-- Standardized action and filter names for better consistency and readability.  
-- Introduced a backward compatibility layer for deprecated hooks to ensure smooth transition.  
-  **Note:** Old hooks remain functional, but updating your customizations to use the new hook names is highly recommended for long-term stability.  
-- Standardized function naming conventions and introduced alias functions to maintain backward compatibility while improving code clarity.  
-- Improved CSS structure for better compatibility with different WordPress themes.  
-- Simplified class names in the template system, making customization and integration easier.  
-- General code refactoring to improve maintainability, readability, and performance.  
+- Added new template filters for customizing post elements. Developers can now modify the post date, image, title, excerpt, read more button, and load more button via filters, allowing greater flexibility in template customization.
+- Standardized action and filter names for better consistency and readability.
+- Introduced a backward compatibility layer for deprecated hooks to ensure smooth transition.
+  **Note:** Old hooks remain functional, but updating your customizations to use the new hook names is highly recommended for long-term stability.
+- Standardized function naming conventions and introduced alias functions to maintain backward compatibility while improving code clarity.
+- Improved CSS structure for better compatibility with different WordPress themes.
+- Simplified class names in the template system, making customization and integration easier.
+- General code refactoring to improve maintainability, readability, and performance.
 
 ### 1.3.10 - 2025-02-06
 - Added a new template: "Full Background Image Post Template" for enhanced post display.
@@ -103,11 +117,20 @@
 
 ## Upgrade Notice
 
-### 1.4.0
-This update introduces new template filters, allowing developers to modify post elements (date, title, image, excerpt, and buttons) using filters.  
+### 1.5.0
+Introduces a new sorting button feature and global sorting label options.
 
-Additionally, action and filter names have been standardized, and a backward compatibility layer has been implemented for deprecated hooks.  
-**Important:** If you rely on existing hooks, review your customizations and update them to use the new standardized names for long-term stability.  
+**Important:**
+- The plugin now only supports posts with `publish` status, removing unnecessary settings.
+- Unused `orderby` options have been removed but can still be re-added using the `qapl_modify_posts_query_args` hook.
+
+Recommended update for improved sorting control and better plugin stability.
+
+### 1.4.0
+This update introduces new template filters, allowing developers to modify post elements (date, title, image, excerpt, and buttons) using filters.
+
+Additionally, action and filter names have been standardized, and a backward compatibility layer has been implemented for deprecated hooks.
+**Important:** If you rely on existing hooks, review your customizations and update them to use the new standardized names for long-term stability.
 
 ### 1.3.9
 Adds support for loading the initial set of posts via AJAX, improving caching compatibility and ensuring fresh content. Enhances "Load More" button functionality for greater flexibility.

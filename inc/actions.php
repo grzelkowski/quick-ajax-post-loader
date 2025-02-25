@@ -47,6 +47,7 @@ function qapl_quick_ajax_load_posts() {
         $ajax_class->attributes = $attributes;
         $args = $ajax_class->args;
 
+
         $container_settings = [
             'quick_ajax_id' => $ajax_class->attributes['quick_ajax_id'],
             'template_name' => $ajax_class->attributes['post_item_template'],
@@ -82,7 +83,8 @@ function qapl_quick_ajax_load_posts() {
         //$output = $ajax_class->replace_placeholders($output);
         wp_send_json_success([
             'output' => $output,
-            'args' => $args
+            'args' => $args,
+            //'attributes' => $attributes,
         ]);
     }
     wp_die();
