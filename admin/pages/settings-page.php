@@ -81,6 +81,9 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             //load posts via AJAX on initial load
             $field_properties = QAPL_Form_Fields_Helper::get_field_set_ajax_on_initial_load();
             $this->create_field($field_properties);
+            //Infinite Scroll
+            $field_properties = QAPL_Form_Fields_Helper::get_field_set_ajax_infinite_scroll();
+            $this->create_field($field_properties);
 
             //Additional Settings
             //apply quick ajax css style
@@ -219,6 +222,7 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in());
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ignore_sticky_posts());
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ajax_on_initial_load());
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ajax_infinite_scroll());
             $form_tab_function_generator .= '</div>';
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
             $form_tab_function_generator .= '<h4>'.__('Layout Settings', 'quick-ajax-post-loader').'</h4>';
@@ -245,85 +249,47 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $form_tab_function_generator .= '</div>';
             return $form_tab_function_generator;
         }
-
+        
         private function quick_ajax_content_help() {
-            $content = '<h3>'.__('Help', 'quick-ajax-post-loader').'</h3>';
+            $content = '<h3>' . __('Help Content', 'quick-ajax-post-loader') . '</h3>';
             $base_help_dir = plugin_dir_path(__FILE__) . 'help/';
             $locale = get_locale();
             switch ($locale) {
                 case 'pl_PL':
-                    $help_dir = $base_help_dir . 'pl_PL/';
+                    $help_json_file_name = 'help_en_US.json';
                     break;
                 default:
-                    $help_dir = $base_help_dir;
+                    $help_json_file_name = 'help_en_US.json';
                     break;
             }
-            // Paths to files
-            $help_files = [
-                'help-quick-ajax-intro.php',
-                'help-quick-ajax-template-post-item.php',
-                'help-quick-ajax-template-loader-icon.php',
-                'help-quick-ajax-template-taxonomy-filter-button.php',
-                'help-quick-ajax-template-hooks.php',
-                'help-quick-ajax-function-generator.php',
-                'help-quick-ajax-post-grid.php',
-                'help-quick-ajax-taxonomy-filter.php',                
-                'help-quick-ajax-args.php',
-                'help-quick-ajax-attributes.php',
-                'help-quick-ajax-available-actions.php',
-                'help-quick-ajax-filter-qapl-modify-posts-query-args.php',
-                'help-quick-ajax-filter-qapl-modify-taxonomy-filter-buttons.php',
-            ];
-            // Loop the files and create accordion blocks
-            foreach ($help_files as $file) {
-                $file_path = realpath($help_dir . $file);
-                if ($file_path && strpos($file_path, realpath($base_help_dir)) === 0 && file_exists($file_path)) {
-                    $accordion_content = include_once $file_path; // Include returns array with 'title' and 'content'
-                    // Check if array exists
-                    if (is_array($accordion_content) && isset($accordion_content['title'], $accordion_content['content'])) {
-                        $accordion_block = $this->create_accordion_block(esc_html($accordion_content['title']), wp_kses_post($accordion_content['content']));
-                        $content .= $accordion_block; 
-                    }
-                }
-            }
-            return $content;
-        }
-        private function quick_ajax_content_help_new() {
-            $sections_to_display = [
-                'shortcodes',
-                'custom_templates',
-                'custom_taxonomy_filters',
-                'template_filters',
-                'ajax_function_generator',
-                'key_functions',
-                'taxonomy',
-                'parameter_descriptions',
-                'quick_ajax_attributes',
-                'available_actions',
-                'available_filters'
-            ];
-            $content = '<h3>' . __('Help', 'quick-ajax-post-loader') . '</h3>';
-            $json_file_path = plugin_dir_path(__FILE__) . 'help/help-html.json';
-            if (!file_exists($json_file_path)) {
+            $help_json_file_path = $base_help_dir.$help_json_file_name;
+            if (!file_exists($help_json_file_path)) {
                 return $content . '<p>' . __('Help file not found.', 'quick-ajax-post-loader') . '</p>';
-            }
-            $json_data = file_get_contents($json_file_path);
-            $help_data = json_decode($json_data, true);
+            }        
+            $json_data = file_get_contents($help_json_file_path);
+            $help_data = json_decode($json_data, true);        
             if (!is_array($help_data)) {
                 return $content . '<p>' . __('Invalid help file format.', 'quick-ajax-post-loader') . '</p>';
-            }
-            foreach ($sections_to_display as $section_key) {
-                if (!isset($help_data[$section_key]['title']) || !isset($help_data[$section_key]['content'])) {
+            }        
+            foreach ($help_data as $section_key => $section) {
+                $accordion_content ='';
+                if (!isset($section['title']) || !isset($section['content'])) {
                     continue;
                 }        
-                $accordion_title = esc_html(strip_tags($help_data[$section_key]['title']));
-                $accordion_content = wp_kses_post($help_data[$section_key]['content']);
+                $section_title = esc_html(strip_tags($section['title']));
+                $section_content = wp_kses_post($section['content']);        
+                $accordion_content .= '<div class="quick-ajax-section">';
+                $accordion_content .= '<h3>' . esc_html($section_title) . '</h3>';
+                $accordion_content .= '<div class="quick-ajax-section-content">' . $section_content . '</div>';
+                $accordion_content .= '</div>';
+                if (!empty($accordion_content)) {
+                    $content .= $this->create_accordion_block($section_title, $accordion_content);
+                }
+            }
         
-                $accordion_block = $this->create_accordion_block($accordion_title, $accordion_content);
-                $content .= $accordion_block;
-            }     
             return $content;
         }
+        
         
 
         private function quick_ajax_content_clear_old_data() {

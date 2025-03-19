@@ -31,6 +31,7 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                 'quick_ajax_taxonomy' => '',
                 'ignore_sticky_posts' => '',
                 'ajax_initial_load' => '',
+                'infinite_scroll' => '',
             );
             //retain only the keys that match the defaults
             $args = array_intersect_key($args, $defaults);
@@ -41,6 +42,7 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
             $args['id'] = is_numeric($args['id']) ? intval($args['id']) : '';
             $args['ignore_sticky_posts'] = isset($args['ignore_sticky_posts']) ? filter_var($args['ignore_sticky_posts'], FILTER_VALIDATE_BOOLEAN) : false;
             $args['ajax_initial_load'] = isset($args['ajax_initial_load']) ? filter_var($args['ajax_initial_load'], FILTER_VALIDATE_BOOLEAN) : false;
+            $args['infinite_scroll'] = isset($args['infinite_scroll']) ? filter_var($args['infinite_scroll'], FILTER_VALIDATE_BOOLEAN) : false;
             $args['excluded_post_ids'] = is_string($args['excluded_post_ids'])  ? array_filter(array_map('intval', explode(',', $args['excluded_post_ids'])))  : '';
             $args['posts_per_page'] = is_numeric($args['posts_per_page']) ? intval($args['posts_per_page']) : '';
             $args['quick_ajax_css_style'] = is_numeric($args['quick_ajax_css_style']) ? intval($args['quick_ajax_css_style']) : '';
@@ -59,7 +61,7 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
             $args['container_class'] = !empty($args['container_class']) ? sanitize_html_class($args['container_class']) : '';
             $args['loader_icon'] = !empty($args['loader_icon']) ? sanitize_text_field($args['loader_icon']) : '';
             $args['quick_ajax_taxonomy'] = !empty($args['quick_ajax_taxonomy']) ? sanitize_text_field($args['quick_ajax_taxonomy']) : '';
-        
+       
             //return sanitized data
             return $args;
         }
@@ -200,6 +202,12 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                     intval($this->shortcode_args['ajax_initial_load']) : 
                     (isset($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_ajax_on_initial_load()]) ? 
                     intval($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_ajax_on_initial_load()]) : '');
+
+                $attributes[QAPL_Quick_Ajax_Helper::layout_ajax_infinite_scroll()] = 
+                    !empty($this->shortcode_args['infinite_scroll']) ? 
+                    intval($this->shortcode_args['infinite_scroll']) : 
+                    (isset($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_ajax_infinite_scroll()]) ? 
+                    intval($this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_ajax_infinite_scroll()]) : '');
             } else {
                 $attributes[QAPL_Quick_Ajax_Helper::layout_quick_ajax_id()] = 
                     !empty($this->shortcode_args['quick_ajax_id']) ? 
@@ -236,6 +244,10 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                 $attributes[QAPL_Quick_Ajax_Helper::query_settings_ajax_on_initial_load()] = 
                     !empty($this->shortcode_args['ajax_initial_load']) ? 
                     intval($this->shortcode_args['ajax_initial_load']) : 0;
+                    
+                $attributes[QAPL_Quick_Ajax_Helper::layout_ajax_infinite_scroll()] = 
+                    !empty($this->shortcode_args['infinite_scroll']) ? 
+                    intval($this->shortcode_args['infinite_scroll']) : 0;
             }
             if (!empty($attributes)) {
                 return $attributes;

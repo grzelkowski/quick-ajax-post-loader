@@ -1,6 +1,6 @@
 {
   "name": "quick-ajax-post-loader",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "type": "module",
   "minimum_php_version": "7.4",
   "minimum_wp_version": "5.6",
@@ -8,10 +8,10 @@
   "description": "Supercharge post loading with Quick Ajax Post Loader. Enhance user experience and optimize site performance using AJAX technology.",
   "keywords": [
     "ajax",
-    "load-more",
-    "infinite scroll",
+    "ajax-load-more",
+    "infinite-scroll",
     "ajax-posts",
-    "taxonomy-filter"
+    "category-filter"
   ],
   "author": "Pawel Grzelkowski",
   "license": "GPL-2.0-or-later",

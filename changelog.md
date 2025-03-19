@@ -1,12 +1,20 @@
 ## Changelog
 
+### 1.6.0 - 2025-03-19
+- Introduced a new Infinite Scroll feature, allowing posts to load automatically as users scroll down, improving user experience and engagement.
+- Added a fully updated and more user-friendly Help section within the plugin settings for easier navigation and guidance.
+- Released a new, improved Development Guide to assist developers in customizing and extending the plugin more efficiently.
+- Refined grid containers and elements, resulting in better structure and layout consistency across different themes.
+- Applied multiple CSS improvements to enhance responsiveness and compatibility with a wider range of WordPress themes.
+- General code enhancements and minor bug fixes to improve plugin stability and performance.
+
 ### 1.5.0 - 2025-02-25
 - Added a new sorting button option, allowing users to change the post order based on predefined sorting options.
 - Added global options to define labels for each sorting method, providing better customization.
 - Removed the ability to change `post_status` in shortcode settings.
   - WordPress by default displays only published (`publish`) posts to users, making this option unnecessary.
   - The plugin now supports only `publish` posts, removing redundant settings.
-  - **Developers can still modify `post_status` using the `qapl_modify_posts_query_args` hook.**
+  - Developers can still modify `post_status` using the `qapl_modify_posts_query_args` hook.
 - Optimized the `orderby` options list, removing rarely used sorting values: `none`, `ID`, `author`, `name`, `modified`, `parent`, `menu_order`.
   - These can still be implemented using the `qapl_modify_posts_query_args` hook.
 - Applied CSS improvements to enhance compatibility with different WordPress themes.
@@ -116,6 +124,13 @@
 - Initial release.
 
 ## Upgrade Notice
+
+### 1.6.0
+This update introduces an Infinite Scroll feature and an improved Help section within the plugin settings.
+
+**Important:**
+- A new Development Guide has been added to assist developers with customization and integration.
+- The grid structure has been refined, and additional CSS improvements have been made for better responsiveness and theme compatibility.
 
 ### 1.5.0
 Introduces a new sorting button feature and global sorting label options.

@@ -192,7 +192,7 @@
                 let inputDataString = Object.values(inputData).join("");
                 //quickAjaxArgs code
                 var quickAjaxArgsText = "";
-                quickAjaxArgsText += "$quick_ajax_args = array(\n";
+                quickAjaxArgsText += "$quick_ajax_args = [\n";
                 quickAjaxArgsText += "    'post_type' => '" + inputData.qapl_select_post_type + "',\n";
                 //quickAjaxArgsText += "    'post_status' => '" + inputData.qapl_select_post_status + "',\n";
                 quickAjaxArgsText += "    'posts_per_page' => " + inputData.qapl_select_posts_per_page + ",\n";
@@ -202,12 +202,12 @@
                 quickAjaxArgsText += "    'order' => '" + inputData.qapl_select_order + "',\n";
                 if (inputData.qapl_select_post_not_in !== "") {
                     var excludedPostIds = self.getExcludedPostIds(inputData.qapl_select_post_not_in);
-                    quickAjaxArgsText += "    'post__not_in' => array(" + excludedPostIds + "),\n";
+                    quickAjaxArgsText += "    'post__not_in' => [" + excludedPostIds + "],\n";
                 }
                 if (inputData.qapl_ignore_sticky_posts === 1) {
                     quickAjaxArgsText += "    'ignore_sticky_posts' => " + inputData.qapl_ignore_sticky_posts + ",\n";
                 }
-                quickAjaxArgsText += ");";
+                quickAjaxArgsText += "];";
                 if (typeof qapl_quick_ajax_helper !== "undefined" && qapl_quick_ajax_helper) {
                     var quickAjaxAttributes = {};
                     quickAjaxAttributes[qapl_quick_ajax_helper.quick_ajax_id] = self.generateId(inputDataString);
@@ -236,12 +236,15 @@
                     if (inputData.qapl_ajax_on_initial_load === 1) {
                         quickAjaxAttributes[qapl_quick_ajax_helper.ajax_initial_load] = inputData.qapl_ajax_on_initial_load;
                     }
+                    if (inputData.qapl_ajax_infinite_scroll === 1) {
+                        quickAjaxAttributes[qapl_quick_ajax_helper.infinite_scroll] = inputData.qapl_ajax_infinite_scroll;
+                    }
                 }
                 //quickAjaxAttributes code
                 var quickAjaxAttributesText = "";
                 if (Object.keys(quickAjaxAttributes).length > 0) {
                     quickAjaxAttributesText = "";
-                    quickAjaxAttributesText += "$quick_ajax_attributes = array(\n";
+                    quickAjaxAttributesText += "$quick_ajax_attributes = [\n";
                     Object.entries(quickAjaxAttributes).forEach(([key, value]) => {
                         let AttributesValue;
                         // Check if the resulting value is a finite number
@@ -259,7 +262,7 @@
                     });
                     //remove last comma
                     quickAjaxAttributesText = quickAjaxAttributesText.slice(0, -2) + "\n";
-                    quickAjaxAttributesText += ");";
+                    quickAjaxAttributesText += "];";
                 }
                 /////////
                 //quickAjaxSortControl code
@@ -268,9 +271,9 @@
                 if (inputData.qapl_show_order_button === 1) {
                     var quickAjaxSortControl = inputData.qapl_select_orderby_button_options;
                     if (quickAjaxSortControl && quickAjaxSortControl.length > 0) {
-                        var quickAjaxSortControlValueOptions = "$quick_ajax_sort_options = array(";
+                        var quickAjaxSortControlValueOptions = "$quick_ajax_sort_options = [";
                         quickAjaxSortControlValueOptions += quickAjaxSortControl.map((option) => `'${option}'`).join(", ");
-                        quickAjaxSortControlValueOptions += ");";
+                        quickAjaxSortControlValueOptions += "];";
                     }
                 }
                 var quickAjaxSortControlValue = "";

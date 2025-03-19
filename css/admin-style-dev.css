@@ -201,7 +201,7 @@ input:checked + .switch:before {
     margin-top: 6px;
 }
 .quick-ajax-form-wrap .quick-ajax-field-container > .quick-ajax-field{
-    max-width: 100%;
+    max-width: 580px;
     width: calc(100% - 210px);
 }
 .quick-ajax-form-wrap .quick-ajax-field-container .quick-ajax-field > div,
@@ -323,7 +323,7 @@ input:checked + .switch:before {
 .function-generator-result{
     width: auto;
     flex: 1;
-    /* max-width: 420px; */
+    max-width: 480px;
 }
 .function-generator-result > pre{
     /* max-width: 420px; */
@@ -341,19 +341,26 @@ input:checked + .switch:before {
     }
 }
 
-code.no-background{
+.quick-ajax-form-wrap code.no-background{
     background: transparent;
     padding: 3px 0px 2px;
     font-size: 14px;
 }
-code.code-tag{
+.quick-ajax-form-wrap code.code-tag{
     padding: 2px 4px 3px;
     margin: 0 1px;
     background: rgba(0, 0, 0, .07);
 }
-pre{
+.quick-ajax-form-wrap pre{
     white-space: pre-wrap;
     word-wrap: break-word;
+}
+.quick-ajax-form-wrap ul.ul-numbered{
+    list-style-type: decimal;
+    padding-left: 13px;
+}
+.quick-ajax-form-wrap li ul{
+    margin-top: 6px;
 }
 
 /* accordion block */

@@ -67,7 +67,7 @@ function qapl_quick_ajax_load_posts() {
                     wp_send_json_error(['message' => 'Quick Ajax Post Loader: Template file not found']);
                 }
             }          
-            $ajax_class->load_more_button(esc_attr($query->get('paged')), esc_attr($query->max_num_pages), esc_attr($query->found_posts));
+            
         } else {
             // No posts found
             $no_posts_template = $qapl_helper->plugin_templates_no_posts();
@@ -78,12 +78,15 @@ function qapl_quick_ajax_load_posts() {
             }
         }
         wp_reset_postdata();
+       
         $output = ob_get_clean();
+        $load_more = $ajax_class->load_more_button(esc_attr($query->get('paged')), esc_attr($query->max_num_pages), esc_attr($query->found_posts), esc_attr($ajax_class->attributes['infinite_scroll']));
         QAPL_Post_Template_Context::clear_template();
         //$output = $ajax_class->replace_placeholders($output);
         wp_send_json_success([
             'output' => $output,
             'args' => $args,
+            'load_more' => $load_more
             //'attributes' => $attributes,
         ]);
     }

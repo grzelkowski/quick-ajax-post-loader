@@ -1,9 +1,9 @@
 === Quick Ajax Post Loader ===
 Contributors: grzelkowski
-Tags: ajax, load-more, ajax-posts, dynamic, category-filter
+Tags: ajax, ajax-load-more, load-more, infinite-scroll, category-filter
 Requires at least: 5.6
 Tested up to: 6.7.2
-Stable tag: 1.5.0
+Stable tag: 1.6.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,186 +12,105 @@ Load and display WordPress posts dynamically using AJAX for faster, interactive 
 
 == Description ==
 
-**Quick Ajax Post Loader** is designed for users who need an easy way to display posts using AJAX on WordPress without coding. Customize layouts, filter posts by taxonomy, and create personalized post templates with ease. This plugin allows you to dynamically load posts without refreshing the page, ensuring a smooth and engaging user experience. Whether you're showcasing blog posts, portfolios, or custom post types, Quick Ajax Post Loader simplifies the process of implementing AJAX functionality.
+**Quick Ajax Post Loader** is a powerful yet lightweight plugin for WordPress that helps you create dynamic, interactive post grids using AJAX – no page reloads required!
 
-Additionally, for developers, the plugin offers advanced features such as:
-- Overriding and creating custom templates
-- Customizing taxonomy filter buttons
-- Using advanced hooks and filters for greater flexibility
-- Generating AJAX PHP functions for direct integration into theme templates
+Display posts, pages, or custom post types (CPT) with full AJAX filtering, sorting, and pagination. Whether you're building a blog, a product catalog, a portfolio, or a directory – this plugin will give your users a seamless browsing experience.
+
+Includes both a "Load More" button and infinite scroll option for maximum flexibility.
+
+Boost your site's UX and performance with AJAX!
 
 **[View the full developer guide on GitHub](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md)**.
 
-== Why use Quick Ajax Post Loader? ==
+== Why choose Quick Ajax Post Loader? ==
 
-Quick Ajax Post Loader is the ultimate solution for anyone looking to enhance their WordPress site's functionality and user experience. Here’s why it stands out:
+Unlike other plugins that focus on one feature (e.g., just infinite scroll), Quick Ajax Post Loader offers a complete solution:
 
-- **Streamlined User Experience**: Instantly load posts without page refreshes, offering visitors a smooth and uninterrupted browsing experience. Ideal for blogs, portfolios, and product showcases.
-- **Time-Saving Simplicity**: Even if you're not a developer, you can easily use the plugin to dynamically display content with just a few clicks in the admin panel.
-- **Customizable for Any Design**: Tailor the appearance of your posts, filters, and loading animations to fit perfectly with your site's unique branding.
-- **Versatile Content Filtering**: Enable users to interactively filter posts by categories, tags, or custom taxonomies, ensuring they find what they're looking for quickly and effortlessly.
-- **Engage Visitors Longer**: By delivering dynamic content without delays, keep your visitors engaged and reduce bounce rates.
-- **Built for Speed**: The plugin optimizes data loading to ensure fast performance, even for high-traffic websites.
-- **Empowering Developers**: Advanced users can leverage hooks, filters, and reusable AJAX functions for deep integration and endless possibilities.
+* AJAX-based loading for posts, pages, or CPT (no page reloads)
+* Powerful taxonomy filtering (categories, tags, or custom taxonomies)
+* Customizable "Load More" button OR smooth infinite scroll
+* Sort posts by date, title, comment count, or random
+* Fully responsive post grids with column control
+* Built-in shortcode generator and PHP function generator
+* Compatible with any theme (customizable templates included)
+* Developer-friendly with actions, filters, and overridable templates
+* Optimized for performance and SEO
 
-Whether you’re a blogger, a web designer, or a developer, Quick Ajax Post Loader adapts to your needs, making it a must-have tool for dynamic content loading.
+= Designed for: =
+- Blogs & News websites
+- Portfolios & creative showcases
+- WooCommerce product grids (custom post types)
+- Directories, listings, and content catalogs
 
-== Features ==
+== Features in detail ==
 
-- **Dynamic Shortcodes**: Easily create and configure AJAX-powered shortcodes in the admin panel. Insert them into any page or post to display content dynamically.
-- **Interactive Taxonomy Filtering**: Enable users to filter posts by categories, tags, or custom taxonomies using clickable, visually engaging buttons.
-- **Customizable Templates**: Gain full control over the appearance of post items, buttons, and loading animations by creating custom templates in your theme directory.
-- **Flexible Grid Layouts**: Set up responsive grids with up to 12 columns, and style them with custom CSS classes to fit your design.
-- **Personalized Loading Icons**: Replace default loading spinners with your own animated GIFs, CSS-based designs, or custom HTML elements.
-- **Advanced Sorting Options**: Sort posts dynamically by title, date, or custom fields for enhanced user navigation.
-- **AJAX Function Generator**: Simplify advanced integrations by generating reusable PHP snippets for AJAX content loading directly in your theme files.
-- **Performance Optimizations**: Speed up your site by loading only the necessary data and assets, reducing server load and improving user experience.
-- **Hierarchical Template Loading**: Preserve customizations by prioritizing child theme templates over plugin defaults.
-- **Multi-Taxonomy Support**: Offer users the ability to filter posts using multiple taxonomies, perfect for complex websites or eCommerce platforms.
-- **Developer Tools**: Extend functionality and integrate seamlessly with your theme or plugin using hooks, filters, and other developer-friendly features.
+* Load posts dynamically with AJAX (without reloading the page)
+* Supports multiple post types: posts, pages, and CPT
+* AJAX taxonomy filter (categories, tags, or custom taxonomies)
+* AJAX sort dropdown (by date, title, comments, random)
+* Load More button with customizable label
+* Infinite Scroll option for automatic loading
+* Customize post grids: number of columns, item templates, CSS classes
+* Override templates directly from your theme or child theme
+* Control which posts to exclude from results (by post ID)
+* Compatible with sticky posts (optionally ignore them)
+* Built-in Function Generator (for theme integration)
+* Built-in Shortcode Generator (for easy use in pages or posts)
+* Lightweight codebase optimized for speed
+* Follows WordPress coding standards and best practices
 
-== Advanced Features and Usage ==
+== How it works ==
 
-= Custom Post Templates =
-
-The **Quick Ajax Post Loader** plugin provides the flexibility to create and use custom post templates. These templates allow you to completely control the appearance and behavior of dynamically loaded posts, ensuring they match your website's design and functionality.
-
-**Why Use Custom Templates?**
-- Fully customize the layout of your posts to match your site’s branding.
-- Create templates for specific use cases, such as portfolios, product listings, or blogs.
-- Preserve your changes during theme updates by storing templates in a child theme.
-
-**Highlights:**
-- Override the default template by placing a file named `post-item.php` in your theme's `/quick-ajax-post-loader/templates/post-items/` directory.
-- Add additional templates with custom names (e.g., `post-item-custom-name.php`) for advanced use cases.
-- Templates can include custom HTML, CSS, or PHP elements to enhance your design.
-
-For detailed instructions and code examples, visit the [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md).
-
-= Customizing Taxonomy Filter Buttons =
-
-With this plugin, you can create interactive and visually appealing taxonomy filter buttons for your users. These buttons allow dynamic filtering of posts by categories, tags, or custom taxonomies.
-
-**Benefits of Custom Filter Buttons:**
-- Match the buttons’ style to your website’s design.
-- Enhance user experience with intuitive and interactive navigation.
-- Enable seamless content filtering without page reloads.
-
-To customize, place a `taxonomy-filter-button.php` file in your theme's `/quick-ajax-post-loader/templates/taxonomy-filter/` directory. This file lets you modify button labels, classes, or behavior. More details can be found in the [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md).
-
-= Custom Loading Icons =
-
-Personalize your site’s loading experience with custom loading icons. These icons can include animated GIFs, CSS effects, or custom HTML designs to match your branding.
-
-**Key Features:**
-- Create unique animations or designs to signal content loading.
-- Add a professional touch to your website by replacing generic loading spinners with custom designs.
-- Seamlessly integrate custom icons by placing files in the `/quick-ajax-post-loader/templates/loader-icon/` directory of your theme.
-
-Visit the [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md) for examples and setup instructions.
-
-= AJAX Function Generator =
-
-For developers looking for advanced integration, the **AJAX Function Generator** simplifies the creation of PHP-based AJAX functions. This tool allows you to integrate dynamic post grids and taxonomy filters directly into your theme files.
-
-**Why Use the AJAX Function Generator?**
-- Easily generate reusable PHP snippets for AJAX functionality.
-- Integrate dynamic content loading seamlessly into custom themes or plugins.
-- Save development time with a guided setup process.
-
-Navigate to **Quick Ajax > Settings & Features** and use the "Function Generator" tab to configure and generate code snippets tailored to your requirements.
-
-**Pro Tip:** Use the generated code in theme files like `page.php` or `single.php` to enhance content interactivity.
-
-= Hook and Filter Support =
-
-For developers, **Quick Ajax Post Loader** offers extensive support for hooks and filters, enabling full customization of the plugin's functionality.
-
-**Why Use Hooks and Filters?**
-- Modify default behaviors without editing core plugin files.
-- Extend or override plugin functionality to meet specific requirements.
-- Seamlessly integrate AJAX-based features into your custom themes or plugins.
-
-**Examples of Available Hooks:**
-- `qapl_filter_container_before`: Add custom content before rendering taxonomy filters.
-- `qapl_posts_container_end`: Insert additional HTML at the end of the posts section.
-- `qapl_loader_after`: Customize the rendering of loading icons.
-
-**Examples of Filters:**
-- `qapl_modify_posts_query_args`: Adjust the WP_Query arguments for AJAX content loading.
-- `qapl_modify_taxonomy_filter_buttons`: Change the labels or behavior of taxonomy filter buttons.
-
-For a complete list of hooks and filters, along with examples, refer to the [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md).
-
-= Why Use These Features? =
-
-- Customize the plugin’s functionality to meet the specific needs of your project.
-- Improve user engagement with personalized designs and seamless interactivity.
-- Simplify integration with developer-friendly tools and clear documentation.
-- Ensure consistent updates without losing customizations by leveraging child themes.
-
-For further details, examples, and setup guides, refer to the [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md).
+1. Install and activate Quick Ajax Post Loader.
+2. Go to **Quick AJAX > Shortcodes > Add New** in the WordPress admin.
+3. Configure your post grid (select post type, filters, sort options, layout).
+4. Copy the generated shortcode and paste it into any page or post.
+5. Enjoy AJAX-powered filtering, sorting, and infinite scroll!
 
 == Installation ==
 
-1. **Upload the Plugin**  
-   - Upload the `quick-ajax-post-loader` folder to the `/wp-content/plugins/` directory.  
-   - Alternatively, install the plugin directly from the WordPress Plugins screen by searching for "Quick Ajax Post Loader."
+= Downloading the Plugin =
+To install **Quick Ajax Post Loader**, download the latest version of the plugin from the WordPress repository and install it using one of the following methods:
 
-2. **Activate the Plugin**  
-   - Go to the **Plugins** screen in your WordPress admin panel and activate the **Quick Ajax Post Loader** plugin.
+= Installing via the WordPress Admin Panel =
+1. Log in to your WordPress dashboard and go to **Plugins > Add New**.
+2. Search for **Quick Ajax Post Loader** or upload the ZIP file downloaded from the repository.
+3. Click **Install Now**, then **Activate**.
 
-3. **Basic Configuration**  
-   - Navigate to **Quick Ajax** in the WordPress admin menu to configure the plugin’s basic settings.  
-   - Set options like post types, taxonomy filters, grid layouts, and default loading icons.
+#### Manual Installation via FTP =
+1. Extract the downloaded ZIP file.
+2. Upload the entire **quick-ajax-post-loader** folder to the `wp-content/plugins/` directory on your server.
+3. In the WordPress admin panel, go to **Plugins > Installed Plugins** and click **Activate** next to **Quick Ajax Post Loader**.
 
-4. **Generate Shortcodes**  
-   - Use the **Shortcodes** tab to create customized shortcodes for dynamic content.  
-   - Copy and paste the shortcode into your page or post editor to enable AJAX functionality.
-
-5. **Optional Advanced Customization**  
-   - Developers can leverage custom templates, hooks, and filters for advanced integrations. Visit the [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md) for step-by-step instructions.
-
-6. **Preview and Test**  
-   - Test your configuration by previewing the page or post.  
-   - Adjust settings if needed to ensure smooth content loading.
+= Activation and First Steps =
+After activating the plugin, a new **Quick Ajax** menu item will appear in the WordPress admin panel, where you can configure settings and shortcodes.
 
 == Frequently Asked Questions ==
 
-= How do I generate shortcodes? =
-Go to the WordPress admin panel, navigate to **Quick Ajax > Shortcodes**, or click **Add New**. Configure your settings, such as post type, taxonomy filters, and grid layout. Once done, copy the generated shortcode (e.g., `[qapl-quick-ajax id="1" title="My Ajax"]`) and paste it into any page or post to enable dynamic post loading.
+= Does it work with custom post types? =
+Yes, you can display posts, pages, and custom post types (CPT).
 
-= Can I filter posts by categories or tags? =
-Yes, the plugin supports taxonomy filtering. You can enable clickable buttons to allow users to filter posts dynamically by categories, tags, or custom taxonomies.
+= Can I enable infinite scroll instead of "Load More"? =
+Yes, infinite scroll is available and can be toggled per shortcode.
 
-= How can I display WordPress posts using AJAX? =
-Simply generate a shortcode using the plugin's interface and insert it into a page or post. The plugin handles the AJAX functionality, dynamically loading posts without refreshing the page.
+= Can I customize post templates? =
+Yes, you can override templates directly from your theme's `/quick-ajax-post-loader/templates/` folder.
 
-= Can I create my own post templates? =
-Yes, you can create custom templates for post items, loading icons, and taxonomy filter buttons. This allows full control over the design and functionality of dynamically loaded content.
+= Does it support multiple shortcodes on one page? =
+Yes, you can create multiple AJAX grids with different configurations.
 
-= How can I create custom post templates? =
-To create custom post templates:
-1. Add a file named `post-item.php` to the directory:  
-   `wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/post-items/`.
-2. Use the naming convention `post-item-custom-name.php` to create multiple templates.
-3. Select your custom templates in the shortcode configuration panel.  
-For more details, refer to the [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md).
-
-= Is coding required to use this plugin? =
-No, the plugin is beginner-friendly and includes a shortcode generator for easy implementation without coding. Advanced users can take advantage of hooks, filters, and the AJAX Function Generator for deeper customization.
-
-= Does the plugin include default styles? =
-Yes, it includes a default grid layout with up to 12 columns. These styles can be disabled if you prefer to apply custom CSS.
-
-= Does the plugin support custom filters or hooks? =
-Yes, Quick Ajax Post Loader is developer-friendly and includes a variety of actions and filters. These allow advanced users to modify functionality, customize templates, and integrate the plugin seamlessly into their themes or plugins.
-
-= How can I customize the loading icon? =
-You can create a custom loading icon by adding a file (e.g., `loader-icon-custom.php`) to the directory:  
-`wp-content/themes/your-active-theme/quick-ajax-post-loader/templates/loader-icon/`. Use your own HTML, CSS, or animations to design a unique loading indicator.
+= Can I extend the plugin via hooks and filters? =
+Yes, developers can use available WordPress hooks and filters to fully customize functionality.
 
 == Changelog ==
+
+= 1.6.0 - 2025-03-19 =
+- Introduced a new Infinite Scroll feature, allowing posts to load automatically as users scroll down, improving user experience and engagement.
+- Added a fully updated and more user-friendly Help section within the plugin settings for easier navigation and guidance.
+- Released a new, improved Development Guide to assist developers in customizing and extending the plugin more efficiently.
+- Refined grid containers and elements, resulting in better structure and layout consistency across different themes.
+- Applied multiple CSS improvements to enhance responsiveness and compatibility with a wider range of WordPress themes.
+- General code enhancements and minor bug fixes to improve plugin stability and performance.
 
 = 1.5.0 - 2025-02-25 =
 - Added a new sorting button option, allowing users to change the post order based on predefined sorting options.
@@ -199,7 +118,7 @@ You can create a custom loading icon by adding a file (e.g., `loader-icon-custom
 - Removed the ability to change `post_status` in shortcode settings.
   - WordPress by default displays only published (`publish`) posts to users, making this option unnecessary.
   - The plugin now supports only `publish` posts, removing redundant settings.
-  - **Developers can still modify `post_status` using the `qapl_modify_posts_query_args` hook.**
+  - Developers can still modify `post_status` using the `qapl_modify_posts_query_args` hook.
 - Optimized the `orderby` options list, removing rarely used sorting values: `none`, `ID`, `author`, `name`, `modified`, `parent`, `menu_order`.
   - These can still be implemented using the `qapl_modify_posts_query_args` hook.
 - Applied CSS improvements to enhance compatibility with different WordPress themes.
@@ -310,6 +229,13 @@ You can create a custom loading icon by adding a file (e.g., `loader-icon-custom
 
 == Upgrade Notice ==
 
+= 1.6.0 =
+This update introduces an Infinite Scroll feature and an improved Help section within the plugin settings.
+
+**Important:**
+- A new Development Guide has been added to assist developers with customization and integration.
+- The grid structure has been refined, and additional CSS improvements have been made for better responsiveness and theme compatibility.
+
 = 1.5.0 =
 Introduces a new sorting button feature and global sorting label options.
 
@@ -351,11 +277,14 @@ Initial release. Enjoy the full set of features and improvements.
 
 == Additional Links ==
 
+- [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md)  
+  A comprehensive guide for developers to leverage hooks, filters, and custom templates.
+
 - [GitHub Repository](https://github.com/grzelkowski/quick-ajax-post-loader/)  
   Access the plugin's source code, contribute to its development, or report issues.
 
-- [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md)  
-  A comprehensive guide for developers to leverage hooks, filters, and custom templates.
+- [Support Forum](https://wordpress.org/support/plugin/quick-ajax-post-loader)  
+  Get help, ask questions, or report bugs related to the plugin.
 
 == Privacy Policy ==
 

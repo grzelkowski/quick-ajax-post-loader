@@ -14,7 +14,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.5.0',
+            'version' => '1.6.0',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
@@ -142,6 +142,7 @@ class QAPL_Quick_Ajax_Helper{
             'loader_icon' => self::layout_select_loader_icon(),
             'loader_icon_default' => self::shortcode_page_select_loader_icon_default_value(),
             'ajax_initial_load' => self::query_settings_ajax_on_initial_load(),
+            'infinite_scroll' => self::layout_ajax_infinite_scroll(),
             'quick_ajax_id' => self::layout_quick_ajax_id(),
         ];
     }
@@ -443,8 +444,14 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function shortcode_page_ajax_on_initial_load(){
         return 'qapl_ajax_on_initial_load';
-    }    
+    }
     public static function shortcode_page_ajax_on_initial_load_default_value(){
+        return false;
+    }
+    public static function shortcode_page_ajax_infinite_scroll(){
+        return 'qapl_ajax_infinite_scroll';
+    }
+    public static function shortcode_page_ajax_infinite_scroll_default_value(){
         return false;
     }
     public static function shortcode_page_set_post_not_in(){
@@ -498,12 +505,10 @@ class QAPL_Quick_Ajax_Helper{
     public static function shortcode_page_select_loader_icon_default_value(){
         return 'loader-icon';
     }
-    // query settings attributes names
-    public static function query_settings_ajax_on_initial_load(){
-        return 'ajax_initial_load';
-    }    
-
     // attributes query names
+    public static function query_settings_ajax_on_initial_load(){
+       return 'ajax_initial_load';
+    }
     public static function layout_quick_ajax_id(){
         return 'quick_ajax_id';
     }
@@ -527,6 +532,9 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function layout_select_loader_icon(){
         return 'loader_icon';
+    }
+    public static function layout_ajax_infinite_scroll(){
+        return 'infinite_scroll';
     }
     /* Quick AJAX Settings */
     public static function admin_page_settings_field_option_group(){
@@ -998,6 +1006,17 @@ class QAPL_Form_Fields_Helper{
             'description' => __('Enable this option to load the initial set of posts via AJAX on page load. This can help in cases where caching might cause outdated content to be displayed.', 'quick-ajax-post-loader')
         );
     }
+    // add Infinite Scroll via AJAX
+    public static function get_field_set_ajax_infinite_scroll(){
+        return array(
+            'name' => QAPL_Quick_Ajax_Helper::shortcode_page_ajax_infinite_scroll(),
+            'label' => __('Enable Infinite Scroll', 'quick-ajax-post-loader'),
+            'type' => 'checkbox',
+            'options' => '',
+            'default' => QAPL_Quick_Ajax_Helper::shortcode_page_ajax_infinite_scroll_default_value(),
+            'description' => __('Enable this option to automatically load more posts via AJAX as the user scrolls down the page.', 'quick-ajax-post-loader')
+        );
+    }
     //apply quick ajax css style
     public static function get_field_layout_quick_ajax_css_style(){
         $field_properties = array(
@@ -1021,7 +1040,7 @@ class QAPL_Form_Fields_Helper{
         }
         $field_properties = array(
             'name' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_select_columns_qty(),
-            'label' => __('Number of columns', 'quick-ajax-post-loader'),
+            'label' => __('Number of Columns', 'quick-ajax-post-loader'),
             'type' => 'select',
             'options' => $columns_qty_options,
             'default' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_select_columns_qty_default_value(),
