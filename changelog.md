@@ -1,5 +1,10 @@
 ## Changelog
 
+### 1.6.1 - 2025-03-30
+- Improved CSS styles for better appearance and theme compatibility.
+- Fixed display issues to ensure everything looks as expected.
+- Applied minor code tweaks to improve stability and performance.
+
 ### 1.6.0 - 2025-03-19
 - Introduced a new Infinite Scroll feature, allowing posts to load automatically as users scroll down, improving user experience and engagement.
 - Added a fully updated and more user-friendly Help section within the plugin settings for easier navigation and guidance.
@@ -81,7 +86,7 @@
 ### 1.3.3 - 2024-11-27
 - Improved ARIA compliance and accessibility for tab navigation in the settings page.
 - Improved the update process for smoother upgrades to newer versions of the plugin.
-- Added a new option to remove old data used by previous versions, keeping your site clean and optimised.
+- Added a new option to remove old data used by previous versions, keeping your site clean and optimized.
 - Fixed an issue where the loader icon was not displaying correctly in some configurations.
 
 ### 1.3.2 - 2024-11-13

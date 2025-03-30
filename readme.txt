@@ -1,20 +1,21 @@
 === Quick Ajax Post Loader ===
+
 Contributors: grzelkowski
-Tags: ajax, ajax-load-more, load-more, infinite-scroll, category-filter
+Tags: ajax-load-more, infinite-scroll, category-filter, load-more, ajax
 Requires at least: 5.6
 Tested up to: 6.7.2
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Load and display WordPress posts dynamically using AJAX for faster, interactive browsing – no page reloads.
+Load and display WordPress posts dynamically using AJAX for faster, interactive browsing - no page reloads.
 
 == Description ==
 
-**Quick Ajax Post Loader** is a powerful yet lightweight plugin for WordPress that helps you create dynamic, interactive post grids using AJAX – no page reloads required!
+**Quick Ajax Post Loader** is a powerful yet lightweight plugin for WordPress that helps you create dynamic, interactive post grids using AJAX - no page reloads required!
 
-Display posts, pages, or custom post types (CPT) with full AJAX filtering, sorting, and pagination. Whether you're building a blog, a product catalog, a portfolio, or a directory – this plugin will give your users a seamless browsing experience.
+Display posts, pages, or custom post types (CPT) with full AJAX filtering, sorting, and pagination. Whether you're building a blog, a product catalog, a portfolio, or a directory - this plugin will give your users a seamless browsing experience.
 
 Includes both a "Load More" button and infinite scroll option for maximum flexibility.
 
@@ -77,7 +78,7 @@ To install **Quick Ajax Post Loader**, download the latest version of the plugin
 2. Search for **Quick Ajax Post Loader** or upload the ZIP file downloaded from the repository.
 3. Click **Install Now**, then **Activate**.
 
-#### Manual Installation via FTP =
+#### Manual Installation via FTP
 1. Extract the downloaded ZIP file.
 2. Upload the entire **quick-ajax-post-loader** folder to the `wp-content/plugins/` directory on your server.
 3. In the WordPress admin panel, go to **Plugins > Installed Plugins** and click **Activate** next to **Quick Ajax Post Loader**.
@@ -103,6 +104,11 @@ Yes, you can create multiple AJAX grids with different configurations.
 Yes, developers can use available WordPress hooks and filters to fully customize functionality.
 
 == Changelog ==
+
+= 1.6.1 - 2025-03-30 =
+- Improved CSS styles for better appearance and theme compatibility.
+- Fixed display issues to ensure everything looks as expected.
+- Applied minor code tweaks to improve stability and performance.
 
 = 1.6.0 - 2025-03-19 =
 - Introduced a new Infinite Scroll feature, allowing posts to load automatically as users scroll down, improving user experience and engagement.
@@ -185,7 +191,7 @@ Yes, developers can use available WordPress hooks and filters to fully customize
 = 1.3.3 - 2024-11-27 =
 - Improved ARIA compliance and accessibility for tab navigation in the settings page.
 - Improved the update process for smoother upgrades to newer versions of the plugin.
-- Added a new option to remove old data used by previous versions, keeping your site clean and optimised.
+- Added a new option to remove old data used by previous versions, keeping your site clean and optimized.
 - Fixed an issue where the loader icon was not displaying correctly in some configurations.
 
 = 1.3.2 - 2024-11-13 =

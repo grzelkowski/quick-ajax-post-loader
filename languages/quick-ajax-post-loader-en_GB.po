@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Quick Ajax Post Loader\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-18 17:23+0000\n"
-"PO-Revision-Date: 2025-02-25 18:09+0000\n"
+"PO-Revision-Date: 2025-03-28 19:25+0000\n"
 "Last-Translator: \n"
 "Language-Team: English (UK)\n"
 "Language: en_GB\n"
@@ -15,30 +15,34 @@ msgstr ""
 "X-Domain: quick-ajax-post-loader\n"
 "Plural-Forms: nplurals=2; plural=n != 1;"
 
-#: inc/class-helper.php:385 build/github/inc/class-helper.php:385
-#: build/wordpress-org/trunk/inc/class-helper.php:385
+#: inc/class-helper.php:407 inc/class-helper.php:1255 inc/class-helper.php:1256
+#: build/github/inc/class-helper.php:407 build/github/inc/class-helper.php:1255
+#: build/github/inc/class-helper.php:1256
+#: build/wordpress-org/trunk/inc/class-helper.php:407
+#: build/wordpress-org/trunk/inc/class-helper.php:1255
+#: build/wordpress-org/trunk/inc/class-helper.php:1256
 msgid "A → Z"
-msgstr ""
+msgstr "A → Z"
 
-#: inc/class-helper.php:1020 build/github/inc/class-helper.php:1020
-#: build/wordpress-org/trunk/inc/class-helper.php:1020
+#: inc/class-helper.php:1093 build/github/inc/class-helper.php:1093
+#: build/wordpress-org/trunk/inc/class-helper.php:1093
 msgid "Add class to post container"
-msgstr ""
+msgstr "Add class to post container"
 
-#: inc/class-helper.php:1007 build/github/inc/class-helper.php:1007
-#: build/wordpress-org/trunk/inc/class-helper.php:1007
+#: inc/class-helper.php:1080 build/github/inc/class-helper.php:1080
+#: build/wordpress-org/trunk/inc/class-helper.php:1080
 msgid "Add class to taxonomy filter"
-msgstr ""
+msgstr "Add class to taxonomy filter"
 
-#: inc/class-helper.php:1012 build/github/inc/class-helper.php:1012
-#: build/wordpress-org/trunk/inc/class-helper.php:1012
+#: inc/class-helper.php:1085 build/github/inc/class-helper.php:1085
+#: build/wordpress-org/trunk/inc/class-helper.php:1085
 msgid "Add classes to the filter: class-one, class-two, class-three"
-msgstr ""
+msgstr "Add classes to the filter: class-one, class-two, class-three"
 
-#: inc/class-helper.php:1025 build/github/inc/class-helper.php:1025
-#: build/wordpress-org/trunk/inc/class-helper.php:1025
+#: inc/class-helper.php:1098 build/github/inc/class-helper.php:1098
+#: build/wordpress-org/trunk/inc/class-helper.php:1098
 msgid "Add classes to the post container: class-one, class-two, class-three"
-msgstr ""
+msgstr "Add classes to the post container: class-one, class-two, class-three"
 
 #: admin/admin-pages-config.php:26 admin/admin-pages-config.php:27
 #: admin/admin-pages-config.php:94 build/github/admin/admin-pages-config.php:26
@@ -48,560 +52,703 @@ msgstr ""
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:27
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:94
 msgid "Add New"
-msgstr ""
+msgstr "Add New"
 
 #: admin/admin-pages-config.php:95 build/github/admin/admin-pages-config.php:95
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:95
 msgid "Add New Quick Ajax"
-msgstr ""
+msgstr "Add New Quick Ajax"
 
-#: admin/pages/settings-page.php:197 admin/pages/shortcode-page.php:142
-#: build/github/admin/pages/settings-page.php:197
-#: build/github/admin/pages/shortcode-page.php:142
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:197
-#: build/wordpress-org/trunk/admin/pages/shortcode-page.php:142
+#: admin/pages/settings-page.php:221 admin/pages/shortcode-page.php:145
+#: build/github/admin/pages/settings-page.php:221
+#: build/github/admin/pages/shortcode-page.php:145
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:221
+#: build/wordpress-org/trunk/admin/pages/shortcode-page.php:145
 msgid "Additional Settings"
-msgstr ""
+msgstr "Additional Settings"
 
-#: inc/class-helper.php:955 build/github/inc/class-helper.php:955
-#: build/wordpress-org/trunk/inc/class-helper.php:955
+#: inc/class-helper.php:1028 build/github/inc/class-helper.php:1028
+#: build/wordpress-org/trunk/inc/class-helper.php:1028
 msgid "Apply Quick AJAX CSS Style"
-msgstr ""
+msgstr "Apply Quick AJAX CSS Style"
 
-#: inc/class-helper.php:959 build/github/inc/class-helper.php:959
-#: build/wordpress-org/trunk/inc/class-helper.php:959
+#: inc/class-helper.php:1032 build/github/inc/class-helper.php:1032
+#: build/wordpress-org/trunk/inc/class-helper.php:1032
 msgid "Apply Quick AJAX CSS styles and column layout."
-msgstr ""
+msgstr "Apply Quick AJAX CSS styles and column layout."
 
-#: inc/class-helper.php:807 build/github/inc/class-helper.php:807
-#: build/wordpress-org/trunk/inc/class-helper.php:807
+#: inc/class-helper.php:869 build/github/inc/class-helper.php:869
+#: build/wordpress-org/trunk/inc/class-helper.php:869
 msgid "Ascending - order from lowest to highest"
-msgstr ""
+msgstr "Ascending - order from lowest to highest"
 
 #: admin/admin-pages-config.php:144
 #: build/github/admin/admin-pages-config.php:144
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:144
 msgid "Author"
-msgstr ""
+msgstr "Author"
 
 #: inc/class-helper_new.php:460
 msgid "Auto-Draft: Auto-draft posts"
-msgstr ""
+msgstr "Auto-Draft: Auto-draft posts"
 
-#: inc/class-helper.php:857 build/github/inc/class-helper.php:857
-#: build/wordpress-org/trunk/inc/class-helper.php:857
+#: inc/class-helper.php:919 build/github/inc/class-helper.php:919
+#: build/wordpress-org/trunk/inc/class-helper.php:919
 msgid "Available Sorting Options"
-msgstr ""
+msgstr "Available Sorting Options"
 
-#: inc/class-helper.php:999 build/github/inc/class-helper.php:999
-#: build/wordpress-org/trunk/inc/class-helper.php:999
+#: inc/class-helper.php:1072 build/github/inc/class-helper.php:1072
+#: build/wordpress-org/trunk/inc/class-helper.php:1072
 msgid "Choose a template for displaying post items."
-msgstr ""
+msgstr "Choose a template for displaying post items."
 
-#: inc/class-helper.php:1088 build/github/inc/class-helper.php:1088
-#: build/wordpress-org/trunk/inc/class-helper.php:1088
+#: inc/class-helper.php:1161 build/github/inc/class-helper.php:1161
+#: build/wordpress-org/trunk/inc/class-helper.php:1161
 msgid ""
 "Choose an icon to display as the loading indicator when the \"Load More\" "
 "button is clicked."
 msgstr ""
+"Choose an icon to display as the loading indicator when the \"Load More\" "
+"button is clicked."
 
-#: inc/class-helper.php:763 build/github/inc/class-helper.php:763
-#: build/wordpress-org/trunk/inc/class-helper.php:763
+#: inc/class-helper.php:825 build/github/inc/class-helper.php:825
+#: build/wordpress-org/trunk/inc/class-helper.php:825
 msgid "Choose the post type you want to display using AJAX."
-msgstr ""
+msgstr "Choose the post type you want to display using AJAX."
 
-#: inc/class-helper.php:837 build/github/inc/class-helper.php:837
-#: build/wordpress-org/trunk/inc/class-helper.php:837
+#: inc/class-helper.php:899 build/github/inc/class-helper.php:899
+#: build/wordpress-org/trunk/inc/class-helper.php:899
 msgid "Choose the sorting criteria for posts."
-msgstr ""
+msgstr "Choose the sorting criteria for posts."
 
-#: inc/class-helper.php:1147 build/github/inc/class-helper.php:1147
-#: build/wordpress-org/trunk/inc/class-helper.php:1147
+#: inc/class-helper.php:1292 build/github/inc/class-helper.php:1292
+#: build/wordpress-org/trunk/inc/class-helper.php:1292
 msgid ""
 "Choose this option to remove old, unused data from the database. This will "
 "help keep your site clean and efficient. Be aware that if you switch back to "
 "an older version of the plugin, it might not work as expected."
 msgstr ""
+"Choose this option to remove old, unused data from the database. This will "
+"help keep your site clean and efficient. Be aware that if you switch back to "
+"an older version of the plugin, it might not work as expected."
 
-#: inc/class-helper.php:1011 inc/class-helper.php:1024
-#: build/github/inc/class-helper.php:1011
-#: build/github/inc/class-helper.php:1024
-#: build/wordpress-org/trunk/inc/class-helper.php:1011
-#: build/wordpress-org/trunk/inc/class-helper.php:1024
+#: inc/class-helper.php:1084 inc/class-helper.php:1097
+#: build/github/inc/class-helper.php:1084
+#: build/github/inc/class-helper.php:1097
+#: build/wordpress-org/trunk/inc/class-helper.php:1084
+#: build/wordpress-org/trunk/inc/class-helper.php:1097
 msgid "class-name, another-class-name"
-msgstr ""
+msgstr "class-name, another-class-name"
 
-#: inc/class-helper.php:827 build/github/inc/class-helper.php:827
-#: build/wordpress-org/trunk/inc/class-helper.php:827
+#: inc/class-helper.php:889 build/github/inc/class-helper.php:889
+#: build/wordpress-org/trunk/inc/class-helper.php:889
 msgid "Comments: Sort by comment count"
-msgstr ""
+msgstr "Comments: Sort by comment count"
 
-#: inc/class-helper.php:1143 build/github/inc/class-helper.php:1143
-#: build/wordpress-org/trunk/inc/class-helper.php:1143
+#: inc/class-helper.php:1288 build/github/inc/class-helper.php:1288
+#: build/wordpress-org/trunk/inc/class-helper.php:1288
 msgid "Confirm Purge of Old Data"
-msgstr ""
+msgstr "Confirm Purge of Old Data"
 
 #: admin/pages/shortcode-page.php:13
 #: build/github/admin/pages/shortcode-page.php:13
 #: build/wordpress-org/trunk/admin/pages/shortcode-page.php:13
 msgid "Copy and paste this shortcode on the page to display the posts list"
-msgstr ""
+msgstr "Copy and paste this shortcode on the page to display the posts list"
 
-#: admin/pages/settings-page.php:220
-#: build/github/admin/pages/settings-page.php:220
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:220
+#: admin/pages/settings-page.php:245
+#: build/github/admin/pages/settings-page.php:245
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:245
 msgid "Copy Code"
-msgstr ""
+msgstr "Copy Code"
 
-#: inc/class-helper.php:1033 inc/class-helper.php:1044
-#: build/github/inc/class-helper.php:1033
-#: build/github/inc/class-helper.php:1044
-#: build/wordpress-org/trunk/inc/class-helper.php:1033
-#: build/wordpress-org/trunk/inc/class-helper.php:1044
+#: inc/class-helper.php:1106 inc/class-helper.php:1117
+#: build/github/inc/class-helper.php:1106
+#: build/github/inc/class-helper.php:1117
+#: build/wordpress-org/trunk/inc/class-helper.php:1106
+#: build/wordpress-org/trunk/inc/class-helper.php:1117
 msgid "Custom Load More Post Quantity"
-msgstr ""
+msgstr "Custom Load More Post Quantity"
 
-#: inc/class-helper.php:1124 build/github/inc/class-helper.php:1124
-#: build/wordpress-org/trunk/inc/class-helper.php:1124
+#: inc/class-helper.php:1197 build/github/inc/class-helper.php:1197
+#: build/wordpress-org/trunk/inc/class-helper.php:1197
 msgid ""
 "Customize the \"Load More\" button text. This label will appear on the "
 "button used to load additional posts dynamically. Examples: \"Load More\", "
 "\"Show More\", or \"View More\"."
 msgstr ""
+"Customize the \"Load More\" button text. This label will appear on the "
+"button used to load additional posts dynamically. Examples: \"Load More\", "
+"\"Show More\", or \"View More\"."
 
-#: inc/class-helper.php:1100 build/github/inc/class-helper.php:1100
-#: build/wordpress-org/trunk/inc/class-helper.php:1100
+#: inc/class-helper.php:1173 build/github/inc/class-helper.php:1173
+#: build/wordpress-org/trunk/inc/class-helper.php:1173
 msgid ""
 "Customize the \"Read More\" text for your templates. This label will appear "
 "as a link or button for each post item. Examples: \"Read More\", \"Continue "
 "Reading\", or \"Learn More\"."
 msgstr ""
+"Customize the \"Read More\" text for your templates. This label will appear "
+"as a link or button for each post item. Examples: \"Read More\", \"Continue "
+"Reading\", or \"Learn More\"."
 
-#: inc/class-helper.php:1112 build/github/inc/class-helper.php:1112
-#: build/wordpress-org/trunk/inc/class-helper.php:1112
+#: inc/class-helper.php:1185 build/github/inc/class-helper.php:1185
+#: build/wordpress-org/trunk/inc/class-helper.php:1185
 msgid ""
 "Customize the \"Show All\" text label for the filter. This label will appear "
 "as an option to display all posts without filtering. Examples: \"Show All\", "
 "\"View All\", or \"Display All\"."
 msgstr ""
+"Customize the \"Show All\" text label for the filter. This label will appear "
+"as an option to display all posts without filtering. Examples: \"Show All\", "
+"\"View All\", or \"Display All\"."
 
-#: inc/class-helper.php:1136 build/github/inc/class-helper.php:1136
-#: build/wordpress-org/trunk/inc/class-helper.php:1136
+#: inc/class-helper.php:1209 build/github/inc/class-helper.php:1209
+#: build/wordpress-org/trunk/inc/class-helper.php:1209
 msgid ""
 "Customize the format for displaying post dates. This text will replace the "
 "default date format. For example: \"F j, Y\" (January 1, 2023) or \"Y-m-d\" "
 "(2023-01-01). Refer to the PHP date format documentation for more options."
 msgstr ""
+"Customize the format for displaying post dates. This text will replace the "
+"default date format. For example: \"F j, Y\" (January 1, 2023) or \"Y-m-d\" "
+"(2023-01-01). Refer to the PHP date format documentation for more options."
 
-#: inc/class-helper.php:825 build/github/inc/class-helper.php:825
-#: build/wordpress-org/trunk/inc/class-helper.php:825
+#: inc/class-helper.php:887 build/github/inc/class-helper.php:887
+#: build/wordpress-org/trunk/inc/class-helper.php:887
 msgid "Date: Sort by publication date"
-msgstr ""
+msgstr "Date: Sort by publication date"
 
-#: inc/class-helper.php:833 build/github/inc/class-helper.php:833
-#: build/wordpress-org/trunk/inc/class-helper.php:833
+#: inc/class-helper.php:895 build/github/inc/class-helper.php:895
+#: build/wordpress-org/trunk/inc/class-helper.php:895
 msgid "Default Sort By"
-msgstr ""
+msgstr "Default Sort By"
 
-#: inc/class-helper.php:813 build/github/inc/class-helper.php:813
-#: build/wordpress-org/trunk/inc/class-helper.php:813
+#: inc/class-helper.php:875 build/github/inc/class-helper.php:875
+#: build/wordpress-org/trunk/inc/class-helper.php:875
 msgid "Default Sort Order"
-msgstr ""
+msgstr "Default Sort Order"
 
-#: inc/class-helper.php:803 build/github/inc/class-helper.php:803
-#: build/wordpress-org/trunk/inc/class-helper.php:803
+#: inc/class-helper.php:865 build/github/inc/class-helper.php:865
+#: build/wordpress-org/trunk/inc/class-helper.php:865
 msgid "Descending - order from highest to lowest"
-msgstr ""
+msgstr "Descending - order from highest to lowest"
 
-#: inc/class-helper.php:796 build/github/inc/class-helper.php:796
-#: build/wordpress-org/trunk/inc/class-helper.php:796
+#: inc/class-helper.php:858 build/github/inc/class-helper.php:858
+#: build/wordpress-org/trunk/inc/class-helper.php:858
 msgid "Determine the number of posts to be loaded per AJAX request."
-msgstr ""
+msgstr "Determine the number of posts to be loaded per AJAX request."
 
-#: inc/class-helper.php:870 build/github/inc/class-helper.php:870
-#: build/wordpress-org/trunk/inc/class-helper.php:870
+#: inc/class-helper.php:932 build/github/inc/class-helper.php:932
+#: build/wordpress-org/trunk/inc/class-helper.php:932
 msgid ""
 "Display taxonomy filter and sorting options in a single row to save space "
 "and improve layout"
 msgstr ""
+"Display taxonomy filter and sorting options in a single row to save space "
+"and improve layout"
 
 #: inc/class-helper_new.php:444
 msgid "Draft: Draft posts"
-msgstr ""
+msgstr "Draft: Draft posts"
 
 #: admin/admin-pages-config.php:96 build/github/admin/admin-pages-config.php:96
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:96
 msgid "Edit Quick Ajax"
-msgstr ""
+msgstr "Edit Quick Ajax"
 
-#: inc/class-helper.php:849 build/github/inc/class-helper.php:849
-#: build/wordpress-org/trunk/inc/class-helper.php:849
+#: inc/class-helper.php:911 build/github/inc/class-helper.php:911
+#: build/wordpress-org/trunk/inc/class-helper.php:911
 msgid ""
 "Enable a button that allows users to switch between ascending and descending "
 "order."
 msgstr ""
+"Enable a button that allows users to switch between ascending and descending "
+"order."
 
-#: inc/class-helper.php:774 build/github/inc/class-helper.php:774
-#: build/wordpress-org/trunk/inc/class-helper.php:774
+#: inc/class-helper.php:836 build/github/inc/class-helper.php:836
+#: build/wordpress-org/trunk/inc/class-helper.php:836
 msgid "Enable filtering by taxonomy/category."
-msgstr ""
+msgstr "Enable filtering by taxonomy/category."
 
-#: inc/class-helper.php:948 build/github/inc/class-helper.php:948
-#: build/wordpress-org/trunk/inc/class-helper.php:948
+#: inc/class-helper.php:1017 build/github/inc/class-helper.php:1017
+#: build/wordpress-org/trunk/inc/class-helper.php:1017
+msgid "Enable Infinite Scroll"
+msgstr "Enable Infinite Scroll"
+
+#: inc/class-helper.php:1021 build/github/inc/class-helper.php:1021
+#: build/wordpress-org/trunk/inc/class-helper.php:1021
+msgid ""
+"Enable this option to automatically load more posts via AJAX as the user "
+"scrolls down the page."
+msgstr ""
+"Enable this option to automatically load more posts via AJAX as the user "
+"scrolls down the page."
+
+#: inc/class-helper.php:1010 build/github/inc/class-helper.php:1010
+#: build/wordpress-org/trunk/inc/class-helper.php:1010
 msgid ""
 "Enable this option to load the initial set of posts via AJAX on page load. "
 "This can help in cases where caching might cause outdated content to be "
 "displayed."
 msgstr ""
+"Enable this option to load the initial set of posts via AJAX on page load. "
+"This can help in cases where caching might cause outdated content to be "
+"displayed."
 
-#: inc/class-helper.php:925 inc/class-helper_new.php:485
-#: build/github/inc/class-helper.php:925
-#: build/wordpress-org/trunk/inc/class-helper.php:925
+#: inc/class-helper.php:987 inc/class-helper_new.php:485
+#: build/github/inc/class-helper.php:987
+#: build/wordpress-org/trunk/inc/class-helper.php:987
 msgid "Enter a list of post IDs to exclude from the query."
-msgstr ""
+msgstr "Enter a list of post IDs to exclude from the query."
 
-#: inc/class-helper.php:1123 build/github/inc/class-helper.php:1123
-#: build/wordpress-org/trunk/inc/class-helper.php:1123
+#: inc/class-helper.php:1196 build/github/inc/class-helper.php:1196
+#: build/wordpress-org/trunk/inc/class-helper.php:1196
 msgid "Enter custom label for Load More"
-msgstr ""
+msgstr "Enter custom label for Load More"
 
-#: inc/class-helper.php:1099 build/github/inc/class-helper.php:1099
-#: build/wordpress-org/trunk/inc/class-helper.php:1099
+#: inc/class-helper.php:1172 build/github/inc/class-helper.php:1172
+#: build/wordpress-org/trunk/inc/class-helper.php:1172
 msgid "Enter custom label for Read More"
-msgstr ""
+msgstr "Enter custom label for Read More"
 
-#: inc/class-helper.php:1111 build/github/inc/class-helper.php:1111
-#: build/wordpress-org/trunk/inc/class-helper.php:1111
+#: inc/class-helper.php:1184 build/github/inc/class-helper.php:1184
+#: build/wordpress-org/trunk/inc/class-helper.php:1184
 msgid "Enter custom label for Show All"
-msgstr ""
+msgstr "Enter custom label for Show All"
 
-#: inc/class-helper.php:1135 build/github/inc/class-helper.php:1135
-#: build/wordpress-org/trunk/inc/class-helper.php:1135
+#: inc/class-helper.php:1208 build/github/inc/class-helper.php:1208
+#: build/wordpress-org/trunk/inc/class-helper.php:1208
 msgid "Enter date format (e.g., F j, Y)"
-msgstr ""
+msgstr "Enter date format (e.g., F j, Y)"
 
-#: inc/class-helper.php:920 inc/class-helper_new.php:482
-#: build/github/inc/class-helper.php:920
-#: build/wordpress-org/trunk/inc/class-helper.php:920
+#: inc/class-helper.php:982 inc/class-helper_new.php:482
+#: build/github/inc/class-helper.php:982
+#: build/wordpress-org/trunk/inc/class-helper.php:982
 msgid "Excluded Post IDs"
-msgstr ""
+msgstr "Excluded Post IDs"
 
-#: admin/pages/settings-page.php:110 admin/pages/settings-page.php:153
-#: build/github/admin/pages/settings-page.php:110
-#: build/github/admin/pages/settings-page.php:153
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:110
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:153
+#: admin/pages/settings-page.php:127 admin/pages/settings-page.php:177
+#: build/github/admin/pages/settings-page.php:127
+#: build/github/admin/pages/settings-page.php:177
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:127
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:177
 msgid "Function Generator"
-msgstr ""
+msgstr "Function Generator"
 
-#: admin/pages/settings-page.php:157 admin/pages/shortcode-page.php:96
-#: build/github/admin/pages/settings-page.php:157
-#: build/github/admin/pages/shortcode-page.php:96
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:157
-#: build/wordpress-org/trunk/admin/pages/shortcode-page.php:96
+#: admin/pages/settings-page.php:181 admin/pages/shortcode-page.php:99
+#: build/github/admin/pages/settings-page.php:181
+#: build/github/admin/pages/shortcode-page.php:99
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:181
+#: build/wordpress-org/trunk/admin/pages/shortcode-page.php:99
 msgid "General Settings"
-msgstr ""
+msgstr "General Settings"
 
-#: admin/pages/settings-page.php:219
-#: build/github/admin/pages/settings-page.php:219
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:219
+#: admin/pages/settings-page.php:244
+#: build/github/admin/pages/settings-page.php:244
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:244
 msgid "Generate Function"
-msgstr ""
+msgstr "Generate Function"
 
-#: admin/pages/settings-page.php:108 admin/pages/settings-page.php:140
-#: build/github/admin/pages/settings-page.php:108
-#: build/github/admin/pages/settings-page.php:140
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:108
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:140
+#: admin/pages/settings-page.php:125 admin/pages/settings-page.php:157
+#: build/github/admin/pages/settings-page.php:125
+#: build/github/admin/pages/settings-page.php:157
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:125
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:157
 msgid "Global Options"
-msgstr ""
+msgstr "Global Options"
 
-#: admin/pages/settings-page.php:112 admin/pages/settings-page.php:229
-#: admin/pages/settings-page.php:284
-#: build/github/admin/pages/settings-page.php:112
-#: build/github/admin/pages/settings-page.php:229
-#: build/github/admin/pages/settings-page.php:284
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:112
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:229
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:284
+#: admin/pages/settings-page.php:129
+#: build/github/admin/pages/settings-page.php:129
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:129
 msgid "Help"
-msgstr ""
+msgstr "Help"
 
-#: admin/pages/settings-page.php:287
-#: build/github/admin/pages/settings-page.php:287
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:287
+#: admin/pages/settings-page.php:254
+#: build/github/admin/pages/settings-page.php:254
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:254
+msgid "Help Content"
+msgstr "Help Content"
+
+#: admin/pages/settings-page.php:267
+#: build/github/admin/pages/settings-page.php:267
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:267
 msgid "Help file not found."
-msgstr ""
+msgstr "Help file not found."
 
 #. URI of the plugin
 msgid "https://github.com/grzelkowski/quick-ajax-post-loader/releases"
-msgstr ""
+msgstr "https://github.com/grzelkowski/quick-ajax-post-loader/releases"
 
 #. Author URI of the plugin
 msgid "https://grzelkowski.com"
-msgstr ""
+msgstr "https://grzelkowski.com"
 
-#: inc/class-helper.php:933 inc/class-helper_new.php:493
-#: build/github/inc/class-helper.php:933
-#: build/wordpress-org/trunk/inc/class-helper.php:933
+#: inc/class-helper.php:995 inc/class-helper_new.php:493
+#: build/github/inc/class-helper.php:995
+#: build/wordpress-org/trunk/inc/class-helper.php:995
 msgid "Ignore Sticky Posts"
-msgstr ""
+msgstr "Ignore Sticky Posts"
 
 #: inc/class-helper_new.php:464
 msgid "Inherit: Inherited posts"
-msgstr ""
+msgstr "Inherit: Inherited posts"
 
-#: inc/class-helper.php:867 build/github/inc/class-helper.php:867
-#: build/wordpress-org/trunk/inc/class-helper.php:867
+#: inc/class-helper.php:929 build/github/inc/class-helper.php:929
+#: build/wordpress-org/trunk/inc/class-helper.php:929
 msgid "Inline Filter & Sorting"
-msgstr ""
+msgstr "Inline Filter & Sorting"
 
-#: admin/pages/settings-page.php:292
-#: build/github/admin/pages/settings-page.php:292
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:292
+#: admin/pages/settings-page.php:272
+#: build/github/admin/pages/settings-page.php:272
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:272
 msgid "Invalid help file format."
-msgstr ""
+msgstr "Invalid help file format."
 
-#: admin/pages/settings-page.php:203
-#: build/github/admin/pages/settings-page.php:203
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:203
+#: admin/pages/settings-page.php:228
+#: build/github/admin/pages/settings-page.php:228
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:228
 msgid "Layout Settings"
-msgstr ""
+msgstr "Layout Settings"
 
-#: admin/pages/shortcode-page.php:150
-#: build/github/admin/pages/shortcode-page.php:150
-#: build/wordpress-org/trunk/admin/pages/shortcode-page.php:150
+#: admin/pages/shortcode-page.php:154
+#: build/github/admin/pages/shortcode-page.php:154
+#: build/wordpress-org/trunk/admin/pages/shortcode-page.php:154
 msgid "layout Settings"
-msgstr ""
+msgstr "layout Settings"
 
-#: inc/class-helper.php:1036 build/github/inc/class-helper.php:1036
-#: build/wordpress-org/trunk/inc/class-helper.php:1036
+#: inc/class-helper.php:1109 build/github/inc/class-helper.php:1109
+#: build/wordpress-org/trunk/inc/class-helper.php:1109
 msgid "Load a different number of posts than the default page display."
-msgstr ""
+msgstr "Load a different number of posts than the default page display."
 
-#: inc/class-helper.php:944 build/github/inc/class-helper.php:944
-#: build/wordpress-org/trunk/inc/class-helper.php:944
+#: inc/class-helper.php:1006 build/github/inc/class-helper.php:1006
+#: build/wordpress-org/trunk/inc/class-helper.php:1006
 msgid "Load Initial Posts via AJAX"
-msgstr ""
+msgstr "Load Initial Posts via AJAX"
 
-#: inc/class-ajax.php:609 inc/class-helper.php:1122
-#: inc/class-template-hooks.php:113 build/github/inc/class-ajax.php:609
-#: build/github/inc/class-helper.php:1122
+#: inc/class-ajax.php:613 inc/class-helper.php:1195
+#: inc/class-template-hooks.php:113 build/github/inc/class-ajax.php:613
+#: build/github/inc/class-helper.php:1195
 #: build/github/inc/class-template-hooks.php:113
-#: build/wordpress-org/trunk/inc/class-ajax.php:609
-#: build/wordpress-org/trunk/inc/class-helper.php:1122
+#: build/wordpress-org/trunk/inc/class-ajax.php:613
+#: build/wordpress-org/trunk/inc/class-helper.php:1195
 #: build/wordpress-org/trunk/inc/class-template-hooks.php:113
 msgid "Load More"
-msgstr ""
+msgstr "Load More"
 
 #: admin/admin-pages-config.php:97 build/github/admin/admin-pages-config.php:97
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:97
 msgid "New Quick Ajax"
-msgstr ""
+msgstr "New Quick Ajax"
 
-#: inc/class-helper.php:382 build/github/inc/class-helper.php:382
-#: build/wordpress-org/trunk/inc/class-helper.php:382
+#: inc/class-helper.php:389 inc/class-helper.php:1219 inc/class-helper.php:1220
+#: build/github/inc/class-helper.php:389 build/github/inc/class-helper.php:1219
+#: build/github/inc/class-helper.php:1220
+#: build/wordpress-org/trunk/inc/class-helper.php:389
+#: build/wordpress-org/trunk/inc/class-helper.php:1219
+#: build/wordpress-org/trunk/inc/class-helper.php:1220
 msgid "Newest"
-msgstr ""
+msgstr "Newest"
 
 #: admin/admin-pages-config.php:100
 #: build/github/admin/admin-pages-config.php:100
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:100
 msgid "No Items found"
-msgstr ""
+msgstr "No Items found"
 
 #: admin/admin-pages-config.php:101
 #: build/github/admin/admin-pages-config.php:101
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:101
 msgid "No Items found in trash"
-msgstr ""
+msgstr "No Items found in trash"
 
 #: templates/post-items/no-posts.php:7
 #: build/github/templates/post-items/no-posts.php:7
 #: build/wordpress-org/trunk/templates/post-items/no-posts.php:7
 msgid "No posts found"
-msgstr ""
+msgstr "No posts found"
 
-#: inc/actions.php:119 admin/pages/shortcode-page.php:124
-#: build/github/inc/actions.php:119
-#: build/github/admin/pages/shortcode-page.php:124
-#: build/wordpress-org/trunk/inc/actions.php:119
-#: build/wordpress-org/trunk/admin/pages/shortcode-page.php:124
+#: inc/actions.php:122 admin/pages/shortcode-page.php:127
+#: build/github/inc/actions.php:122
+#: build/github/admin/pages/shortcode-page.php:127
+#: build/wordpress-org/trunk/inc/actions.php:122
+#: build/wordpress-org/trunk/admin/pages/shortcode-page.php:127
 msgid "No taxonomy found"
-msgstr ""
+msgstr "No taxonomy found"
 
-#: inc/class-helper.php:974 build/github/inc/class-helper.php:974
-#: build/wordpress-org/trunk/inc/class-helper.php:974
-msgid "Number of columns"
-msgstr ""
+#: inc/class-helper.php:1047 build/github/inc/class-helper.php:1047
+#: build/wordpress-org/trunk/inc/class-helper.php:1047
+msgid "Number of Columns"
+msgstr "Number of Columns"
 
-#: inc/class-helper.php:383 build/github/inc/class-helper.php:383
-#: build/wordpress-org/trunk/inc/class-helper.php:383
+#: inc/class-helper.php:395 inc/class-helper.php:1231 inc/class-helper.php:1232
+#: build/github/inc/class-helper.php:395 build/github/inc/class-helper.php:1231
+#: build/github/inc/class-helper.php:1232
+#: build/wordpress-org/trunk/inc/class-helper.php:395
+#: build/wordpress-org/trunk/inc/class-helper.php:1231
+#: build/wordpress-org/trunk/inc/class-helper.php:1232
 msgid "Oldest"
-msgstr ""
+msgstr "Oldest"
 
-#: inc/class-helper.php:1055 build/github/inc/class-helper.php:1055
-#: build/wordpress-org/trunk/inc/class-helper.php:1055
+#: inc/class-helper.php:1128 build/github/inc/class-helper.php:1128
+#: build/wordpress-org/trunk/inc/class-helper.php:1128
 msgid "Override Global Loader Icon"
-msgstr ""
+msgstr "Override Global Loader Icon"
 
 #. Author of the plugin
 msgid "Pawel Grzelkowski"
-msgstr ""
+msgstr "Pawel Grzelkowski"
 
 #: inc/class-helper_new.php:448
 msgid "Pending: Pending review posts"
-msgstr ""
+msgstr "Pending: Pending review posts"
 
-#: inc/class-helper.php:384 build/github/inc/class-helper.php:384
-#: build/wordpress-org/trunk/inc/class-helper.php:384
+#: inc/class-helper.php:401 inc/class-helper.php:1243 inc/class-helper.php:1244
+#: build/github/inc/class-helper.php:401 build/github/inc/class-helper.php:1243
+#: build/github/inc/class-helper.php:1244
+#: build/wordpress-org/trunk/inc/class-helper.php:401
+#: build/wordpress-org/trunk/inc/class-helper.php:1243
+#: build/wordpress-org/trunk/inc/class-helper.php:1244
 msgid "Popular"
-msgstr ""
+msgstr "Popular"
 
 #: inc/class-helper_new.php:470
 msgid "Post Status"
-msgstr ""
+msgstr "Post Status"
 
-#: inc/class-helper.php:792 build/github/inc/class-helper.php:792
-#: build/wordpress-org/trunk/inc/class-helper.php:792
+#: inc/class-helper.php:854 build/github/inc/class-helper.php:854
+#: build/wordpress-org/trunk/inc/class-helper.php:854
 msgid "Posts Per Page"
-msgstr ""
+msgstr "Posts Per Page"
 
 #: inc/class-helper_new.php:452
 msgid "Private: Private posts"
-msgstr ""
+msgstr "Private: Private posts"
 
 #: inc/class-helper_new.php:440
 msgid "Publish: Published posts"
-msgstr ""
+msgstr "Publish: Published posts"
 
-#: admin/pages/settings-page.php:116 admin/pages/settings-page.php:311
-#: build/github/admin/pages/settings-page.php:116
-#: build/github/admin/pages/settings-page.php:311
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:116
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:311
+#: admin/pages/settings-page.php:133 admin/pages/settings-page.php:298
+#: build/github/admin/pages/settings-page.php:133
+#: build/github/admin/pages/settings-page.php:298
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:133
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:298
 msgid "Purge Old Data"
-msgstr ""
+msgstr "Purge Old Data"
 
-#: admin/pages/settings-page.php:317
-#: build/github/admin/pages/settings-page.php:317
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:317
+#: admin/pages/settings-page.php:304
+#: build/github/admin/pages/settings-page.php:304
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:304
 msgid "Purge Unused Data"
-msgstr ""
+msgstr "Purge Unused Data"
 
 #. Name of the plugin
 msgid "Quick Ajax Post Loader"
-msgstr ""
+msgstr "Quick Ajax Post Loader"
 
 #: admin/pages/settings-page.php:9 build/github/admin/pages/settings-page.php:9
 #: build/wordpress-org/trunk/admin/pages/settings-page.php:9
 msgid "Quick AJAX settings"
-msgstr ""
+msgstr "Quick AJAX settings"
 
 #: admin/admin-pages-config.php:93 build/github/admin/admin-pages-config.php:93
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:93
 msgid "Quick Ajax Shortcode"
-msgstr ""
+msgstr "Quick Ajax Shortcode"
 
 #: admin/admin-pages-config.php:92 build/github/admin/admin-pages-config.php:92
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:92
 msgid "Quick Ajax Shortcodes"
-msgstr ""
+msgstr "Quick Ajax Shortcodes"
 
-#: inc/class-helper.php:388 build/github/inc/class-helper.php:388
-#: build/wordpress-org/trunk/inc/class-helper.php:388
+#: inc/class-helper.php:419 inc/class-helper.php:1279 inc/class-helper.php:1280
+#: build/github/inc/class-helper.php:419 build/github/inc/class-helper.php:1279
+#: build/github/inc/class-helper.php:1280
+#: build/wordpress-org/trunk/inc/class-helper.php:419
+#: build/wordpress-org/trunk/inc/class-helper.php:1279
+#: build/wordpress-org/trunk/inc/class-helper.php:1280
 msgid "Random"
-msgstr ""
+msgstr "Random"
 
-#: inc/class-helper.php:828 build/github/inc/class-helper.php:828
-#: build/wordpress-org/trunk/inc/class-helper.php:828
+#: inc/class-helper.php:890 build/github/inc/class-helper.php:890
+#: build/wordpress-org/trunk/inc/class-helper.php:890
 msgid "Random: Random order"
-msgstr ""
+msgstr "Random: Random order"
 
-#: inc/class-helper.php:1098 inc/class-template-hooks.php:110
-#: build/github/inc/class-helper.php:1098
+#: inc/class-helper.php:1171 inc/class-template-hooks.php:110
+#: build/github/inc/class-helper.php:1171
 #: build/github/inc/class-template-hooks.php:110
-#: build/wordpress-org/trunk/inc/class-helper.php:1098
+#: build/wordpress-org/trunk/inc/class-helper.php:1171
 #: build/wordpress-org/trunk/inc/class-template-hooks.php:110
 msgid "Read More"
-msgstr ""
+msgstr "Read More"
 
-#: admin/pages/settings-page.php:146
-#: build/github/admin/pages/settings-page.php:146
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:146
+#: admin/pages/settings-page.php:170
+#: build/github/admin/pages/settings-page.php:170
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:170
 msgid "Save Settings"
-msgstr ""
+msgstr "Save Settings"
 
 #: admin/admin-pages-config.php:99 build/github/admin/admin-pages-config.php:99
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:99
 msgid "Search Quick Ajax"
-msgstr ""
+msgstr "Search Quick Ajax"
 
-#: inc/class-helper.php:1084 build/github/inc/class-helper.php:1084
-#: build/wordpress-org/trunk/inc/class-helper.php:1084
+#: inc/class-helper.php:1157 build/github/inc/class-helper.php:1157
+#: build/wordpress-org/trunk/inc/class-helper.php:1157
 msgid "Select Loader Icon"
-msgstr ""
+msgstr "Select Loader Icon"
 
-#: inc/class-helper.php:995 build/github/inc/class-helper.php:995
-#: build/wordpress-org/trunk/inc/class-helper.php:995
+#: inc/class-helper.php:1068 build/github/inc/class-helper.php:1068
+#: build/wordpress-org/trunk/inc/class-helper.php:1068
 msgid "Select Post Item Template"
-msgstr ""
+msgstr "Select Post Item Template"
 
-#: inc/class-helper.php:760 build/github/inc/class-helper.php:760
-#: build/wordpress-org/trunk/inc/class-helper.php:760
+#: inc/class-helper.php:822 build/github/inc/class-helper.php:822
+#: build/wordpress-org/trunk/inc/class-helper.php:822
 msgid "Select Post Type"
-msgstr ""
+msgstr "Select Post Type"
 
-#: inc/class-helper.php:781 build/github/inc/class-helper.php:781
-#: build/wordpress-org/trunk/inc/class-helper.php:781
+#: inc/class-helper.php:843 build/github/inc/class-helper.php:843
+#: build/wordpress-org/trunk/inc/class-helper.php:843
 msgid "Select Taxonomy"
-msgstr ""
+msgstr "Select Taxonomy"
 
-#: inc/class-helper.php:1047 build/github/inc/class-helper.php:1047
-#: build/wordpress-org/trunk/inc/class-helper.php:1047
+#: inc/class-helper.php:1120 build/github/inc/class-helper.php:1120
+#: build/wordpress-org/trunk/inc/class-helper.php:1120
 msgid ""
 "Select the custom number of posts to load when using the \"Load More\" "
 "button."
 msgstr ""
+"Select the custom number of posts to load when using the \"Load More\" "
+"button."
 
 #: inc/class-helper_new.php:474
 msgid "Select the post status to be used by AJAX."
-msgstr ""
+msgstr "Select the post status to be used by AJAX."
 
-#: inc/class-helper.php:785 build/github/inc/class-helper.php:785
-#: build/wordpress-org/trunk/inc/class-helper.php:785
+#: inc/class-helper.php:847 build/github/inc/class-helper.php:847
+#: build/wordpress-org/trunk/inc/class-helper.php:847
 msgid "Select the taxonomy to be used for filtering posts."
-msgstr ""
+msgstr "Select the taxonomy to be used for filtering posts."
 
-#: inc/class-helper.php:861 build/github/inc/class-helper.php:861
-#: build/wordpress-org/trunk/inc/class-helper.php:861
+#: inc/class-helper.php:923 build/github/inc/class-helper.php:923
+#: build/wordpress-org/trunk/inc/class-helper.php:923
 msgid "Select which sorting options will be available to users."
-msgstr ""
+msgstr "Select which sorting options will be available to users."
 
-#: inc/class-helper.php:1119 build/github/inc/class-helper.php:1119
-#: build/wordpress-org/trunk/inc/class-helper.php:1119
+#: inc/class-helper.php:1252 build/github/inc/class-helper.php:1252
+#: build/wordpress-org/trunk/inc/class-helper.php:1252
+msgid "Set \"A → Z\" Label"
+msgstr "Set \"A → Z\" Label"
+
+#: inc/class-helper.php:1192 build/github/inc/class-helper.php:1192
+#: build/wordpress-org/trunk/inc/class-helper.php:1192
 msgid "Set \"Load More\" Label"
-msgstr ""
+msgstr "Set \"Load More\" Label"
 
-#: inc/class-helper.php:1095 build/github/inc/class-helper.php:1095
-#: build/wordpress-org/trunk/inc/class-helper.php:1095
+#: inc/class-helper.php:1216 build/github/inc/class-helper.php:1216
+#: build/wordpress-org/trunk/inc/class-helper.php:1216
+msgid "Set \"Newest\" Label"
+msgstr "Set \"Newest\" Label"
+
+#: inc/class-helper.php:1228 build/github/inc/class-helper.php:1228
+#: build/wordpress-org/trunk/inc/class-helper.php:1228
+msgid "Set \"Oldest\" Label"
+msgstr "Set \"Oldest\" Label"
+
+#: inc/class-helper.php:1240 build/github/inc/class-helper.php:1240
+#: build/wordpress-org/trunk/inc/class-helper.php:1240
+msgid "Set \"Popular\" Label"
+msgstr "Set \"Popular\" Label"
+
+#: inc/class-helper.php:1276 build/github/inc/class-helper.php:1276
+#: build/wordpress-org/trunk/inc/class-helper.php:1276
+msgid "Set \"Random\" Label"
+msgstr "Set \"Random\" Label"
+
+#: inc/class-helper.php:1168 build/github/inc/class-helper.php:1168
+#: build/wordpress-org/trunk/inc/class-helper.php:1168
 msgid "Set \"Read More\" Label"
-msgstr ""
+msgstr "Set \"Read More\" Label"
 
-#: inc/class-helper.php:1107 build/github/inc/class-helper.php:1107
-#: build/wordpress-org/trunk/inc/class-helper.php:1107
+#: inc/class-helper.php:1180 build/github/inc/class-helper.php:1180
+#: build/wordpress-org/trunk/inc/class-helper.php:1180
 msgid "Set \"Show All\" Label"
-msgstr ""
+msgstr "Set \"Show All\" Label"
 
-#: inc/class-helper.php:1058 build/github/inc/class-helper.php:1058
-#: build/wordpress-org/trunk/inc/class-helper.php:1058
-msgid "Set a different loader icon than the one specified in global options."
-msgstr ""
+#: inc/class-helper.php:1264 build/github/inc/class-helper.php:1264
+#: build/wordpress-org/trunk/inc/class-helper.php:1264
+msgid "Set \"Z → A\" Label"
+msgstr "Set \"Z → A\" Label"
 
 #: inc/class-helper.php:1131 build/github/inc/class-helper.php:1131
 #: build/wordpress-org/trunk/inc/class-helper.php:1131
+msgid "Set a different loader icon than the one specified in global options."
+msgstr "Set a different loader icon than the one specified in global options."
+
+#: inc/class-helper.php:1204 build/github/inc/class-helper.php:1204
+#: build/wordpress-org/trunk/inc/class-helper.php:1204
 msgid "Set Date Format"
+msgstr "Set Date Format"
+
+#: inc/class-helper.php:1257 build/github/inc/class-helper.php:1257
+#: build/wordpress-org/trunk/inc/class-helper.php:1257
+msgid ""
+"Set the label for sorting posts alphabetically (A to Z) based on the post "
+"title. Examples: \"Alphabetical\", \"A → Z\", \"Sort by Name\"."
 msgstr ""
+"Set the label for sorting posts alphabetically (A to Z) based on the post "
+"title. Examples: \"Alphabetical\", \"A → Z\", \"Sort by Name\"."
+
+#: inc/class-helper.php:1269 build/github/inc/class-helper.php:1269
+#: build/wordpress-org/trunk/inc/class-helper.php:1269
+msgid ""
+"Set the label for sorting posts alphabetically (Z to A) based on the post "
+"title. Examples: \"Reverse Alphabetical\", \"Z → A\", \"Sort by Name "
+"Descending\"."
+msgstr ""
+"Set the label for sorting posts alphabetically (Z to A) based on the post "
+"title. Examples: \"Reverse Alphabetical\", \"Z → A\", \"Sort by Name "
+"Descending\"."
+
+#: inc/class-helper.php:1245 build/github/inc/class-helper.php:1245
+#: build/wordpress-org/trunk/inc/class-helper.php:1245
+msgid ""
+"Set the label for sorting posts by the highest number of comments. Examples: "
+"\"Popular\", \"Trending\", \"Most Discussed\"."
+msgstr ""
+"Set the label for sorting posts by the highest number of comments. Examples: "
+"\"Popular\", \"Trending\", \"Most Discussed\"."
+
+#: inc/class-helper.php:1221 build/github/inc/class-helper.php:1221
+#: build/wordpress-org/trunk/inc/class-helper.php:1221
+msgid ""
+"Set the label for sorting posts from newest to oldest (based on publication "
+"date). Examples: \"Newest\", \"Latest\", \"Recent\"."
+msgstr ""
+"Set the label for sorting posts from newest to oldest (based on publication "
+"date). Examples: \"Newest\", \"Latest\", \"Recent\"."
+
+#: inc/class-helper.php:1233 build/github/inc/class-helper.php:1233
+#: build/wordpress-org/trunk/inc/class-helper.php:1233
+msgid ""
+"Set the label for sorting posts from oldest to newest (based on publication "
+"date). Examples: \"Oldest\", \"First\", \"Earliest\"."
+msgstr ""
+"Set the label for sorting posts from oldest to newest (based on publication "
+"date). Examples: \"Oldest\", \"First\", \"Earliest\"."
+
+#: inc/class-helper.php:1281 build/github/inc/class-helper.php:1281
+#: build/wordpress-org/trunk/inc/class-helper.php:1281
+msgid ""
+"Set the label for sorting posts in a random order. Examples: \"Shuffle\", "
+"\"Random\", \"Surprise Me\"."
+msgstr ""
+"Set the label for sorting posts in a random order. Examples: \"Shuffle\", "
+"\"Random\", \"Surprise Me\"."
 
 #: admin/admin-pages-config.php:36 admin/admin-pages-config.php:37
 #: build/github/admin/admin-pages-config.php:36
@@ -609,86 +756,95 @@ msgstr ""
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:36
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:37
 msgid "Settings & Features"
-msgstr ""
+msgstr "Settings & Features"
 
 #: admin/admin-pages-config.php:143
 #: build/github/admin/admin-pages-config.php:143
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:143
 msgid "Shortcode"
-msgstr ""
+msgstr "Shortcode"
 
 #: admin/admin-pages-config.php:103
 #: build/github/admin/admin-pages-config.php:103
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:103
 msgid "Shortcodes"
-msgstr ""
+msgstr "Shortcodes"
 
-#: inc/class-ajax.php:242 inc/class-helper.php:1110
-#: build/github/inc/class-ajax.php:242 build/github/inc/class-helper.php:1110
+#: inc/class-ajax.php:242 inc/class-helper.php:1183
+#: build/github/inc/class-ajax.php:242 build/github/inc/class-helper.php:1183
 #: build/wordpress-org/trunk/inc/class-ajax.php:242
-#: build/wordpress-org/trunk/inc/class-helper.php:1110
+#: build/wordpress-org/trunk/inc/class-helper.php:1183
 msgid "Show All"
-msgstr ""
+msgstr "Show All"
 
-#: inc/class-helper.php:846 build/github/inc/class-helper.php:846
-#: build/wordpress-org/trunk/inc/class-helper.php:846
+#: inc/class-helper.php:908 build/github/inc/class-helper.php:908
+#: build/wordpress-org/trunk/inc/class-helper.php:908
 msgid "Show Sorting Button"
-msgstr ""
+msgstr "Show Sorting Button"
 
-#: inc/class-helper.php:771 build/github/inc/class-helper.php:771
-#: build/wordpress-org/trunk/inc/class-helper.php:771
+#: inc/class-helper.php:833 build/github/inc/class-helper.php:833
+#: build/wordpress-org/trunk/inc/class-helper.php:833
 msgid "Show Taxonomy Filter"
-msgstr ""
+msgstr "Show Taxonomy Filter"
 
-#: inc/class-ajax.php:331 build/github/inc/class-ajax.php:331
-#: build/wordpress-org/trunk/inc/class-ajax.php:331
+#: inc/class-ajax.php:326 build/github/inc/class-ajax.php:326
+#: build/wordpress-org/trunk/inc/class-ajax.php:326
 msgid "Sort by"
-msgstr ""
+msgstr "Sort by"
 
-#: admin/pages/settings-page.php:190 admin/pages/shortcode-page.php:134
-#: build/github/admin/pages/settings-page.php:190
-#: build/github/admin/pages/shortcode-page.php:134
-#: build/wordpress-org/trunk/admin/pages/settings-page.php:190
-#: build/wordpress-org/trunk/admin/pages/shortcode-page.php:134
+#: admin/pages/settings-page.php:162
+#: build/github/admin/pages/settings-page.php:162
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:162
+msgid "Sorting Option Labels"
+msgstr "Sorting Option Labels"
+
+#: admin/pages/settings-page.php:214 admin/pages/shortcode-page.php:137
+#: build/github/admin/pages/settings-page.php:214
+#: build/github/admin/pages/shortcode-page.php:137
+#: build/wordpress-org/trunk/admin/pages/settings-page.php:214
+#: build/wordpress-org/trunk/admin/pages/shortcode-page.php:137
 msgid "Sorting Settings"
-msgstr ""
+msgstr "Sorting Settings"
 
-#: inc/class-helper.php:817 build/github/inc/class-helper.php:817
-#: build/wordpress-org/trunk/inc/class-helper.php:817
+#: inc/class-helper.php:879 build/github/inc/class-helper.php:879
+#: build/wordpress-org/trunk/inc/class-helper.php:879
 msgid "Specify the order of posts."
-msgstr ""
+msgstr "Specify the order of posts."
 
-#: inc/class-helper.php:978 build/github/inc/class-helper.php:978
-#: build/wordpress-org/trunk/inc/class-helper.php:978
+#: inc/class-helper.php:1051 build/github/inc/class-helper.php:1051
+#: build/wordpress-org/trunk/inc/class-helper.php:1051
 msgid "Specify the quantity of columns."
-msgstr ""
+msgstr "Specify the quantity of columns."
 
-#: inc/class-helper.php:937 inc/class-helper_new.php:496
-#: build/github/inc/class-helper.php:937
-#: build/wordpress-org/trunk/inc/class-helper.php:937
+#: inc/class-helper.php:999 inc/class-helper_new.php:496
+#: build/github/inc/class-helper.php:999
+#: build/wordpress-org/trunk/inc/class-helper.php:999
 msgid ""
 "Specify to ignore sticky posts, treating them as regular posts in the query."
 msgstr ""
+"Specify to ignore sticky posts, treating them as regular posts in the query."
 
 #. Description of the plugin
 msgid ""
 "Supercharge post loading with Quick Ajax Post Loader. Enhance user "
 "experience and optimize site performance using AJAX technology."
 msgstr ""
+"Supercharge post loading with Quick Ajax Post Loader. Enhance user "
+"experience and optimize site performance using AJAX technology."
 
-#: inc/class-helper.php:826 build/github/inc/class-helper.php:826
-#: build/wordpress-org/trunk/inc/class-helper.php:826
+#: inc/class-helper.php:888 build/github/inc/class-helper.php:888
+#: build/wordpress-org/trunk/inc/class-helper.php:888
 msgid "Title: Sort by post title"
-msgstr ""
+msgstr "Title: Sort by post title"
 
 #: inc/class-helper_new.php:456
 msgid "Trash: Trashed posts"
-msgstr ""
+msgstr "Trash: Trashed posts"
 
 #: admin/admin-pages-config.php:98 build/github/admin/admin-pages-config.php:98
 #: build/wordpress-org/trunk/admin/admin-pages-config.php:98
 msgid "View Quick Ajax"
-msgstr ""
+msgstr "View Quick Ajax"
 
 #: admin/admin-pages-config.php:46 inc/class-updater.php:308
 #: inc/class-updater.php:337 build/github/admin/admin-pages-config.php:46
@@ -698,9 +854,13 @@ msgstr ""
 #: build/wordpress-org/trunk/inc/class-updater.php:308
 #: build/wordpress-org/trunk/inc/class-updater.php:337
 msgid "You do not have sufficient permissions to access this page."
-msgstr ""
+msgstr "You do not have sufficient permissions to access this page."
 
-#: inc/class-helper.php:386 build/github/inc/class-helper.php:386
-#: build/wordpress-org/trunk/inc/class-helper.php:386
+#: inc/class-helper.php:413 inc/class-helper.php:1267 inc/class-helper.php:1268
+#: build/github/inc/class-helper.php:413 build/github/inc/class-helper.php:1267
+#: build/github/inc/class-helper.php:1268
+#: build/wordpress-org/trunk/inc/class-helper.php:413
+#: build/wordpress-org/trunk/inc/class-helper.php:1267
+#: build/wordpress-org/trunk/inc/class-helper.php:1268
 msgid "Z → A"
-msgstr ""
+msgstr "Z → A"

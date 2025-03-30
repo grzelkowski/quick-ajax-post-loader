@@ -1,12 +1,12 @@
 # Quick Ajax Post Loader
 
-Load and display WordPress posts dynamically using AJAX for faster, interactive browsing – no page reloads.
+Load and display WordPress posts dynamically using AJAX for faster, interactive browsing - no page reloads.
 
 ## Description
 
-**Quick Ajax Post Loader** is a powerful yet lightweight plugin for WordPress that helps you create dynamic, interactive post grids using AJAX – no page reloads required!
+**Quick Ajax Post Loader** is a powerful yet lightweight plugin for WordPress that helps you create dynamic, interactive post grids using AJAX - no page reloads required!
 
-Display posts, pages, or custom post types (CPT) with full AJAX filtering, sorting, and pagination. Whether you're building a blog, a product catalog, a portfolio, or a directory – this plugin will give your users a seamless browsing experience.
+Display posts, pages, or custom post types (CPT) with full AJAX filtering, sorting, and pagination. Whether you're building a blog, a product catalog, a portfolio, or a directory - this plugin will give your users a seamless browsing experience.
 
 Includes both a "Load More" button and infinite scroll option for maximum flexibility.
 
@@ -74,7 +74,7 @@ To install **Quick Ajax Post Loader**, download the latest version of the plugin
 2. Search for **Quick Ajax Post Loader** or upload the ZIP file downloaded from the repository.
 3. Click **Install Now**, then **Activate**.
 
-#### Manual Installation via FTP =
+#### Manual Installation via FTP
 1. Extract the downloaded ZIP file.
 2. Upload the entire **quick-ajax-post-loader** folder to the `wp-content/plugins/` directory on your server.
 3. In the WordPress admin panel, go to **Plugins > Installed Plugins** and click **Activate** next to **Quick Ajax Post Loader**.

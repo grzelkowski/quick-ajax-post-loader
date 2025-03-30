@@ -77,26 +77,35 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                 }
             }
         }
-
+        // return shortcode param if set else get value from postmeta
+        private function get_param_value($shortcode_key, $meta_key = null) {
+            // check if param exists in shortcode
+            if (!empty($this->shortcode_args[$shortcode_key])) {
+                return $this->shortcode_args[$shortcode_key];
+            }
+            // fallback to meta key if not provided
+            if (!$meta_key) {
+                $meta_key = $shortcode_key;
+            }
+            // check if param exists in postmeta
+            if (isset($this->shortcode_settings[$meta_key])) {
+                return $this->shortcode_settings[$meta_key];
+            }
+        
+            return '';
+        }
+        
         private function create_shortcode_args(){
             $args = array();
-            if(!empty($this->shortcode_args['id'])){
-                $selected_post_type = !empty($this->shortcode_args['post_type']) ? $this->shortcode_args['post_type'] : $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_select_post_type()];
-                $post_per_page = !empty($this->shortcode_args['posts_per_page']) ? $this->shortcode_args['posts_per_page'] : $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_select_posts_per_page()];
-                $post_order = !empty($this->shortcode_args['order']) ? $this->shortcode_args['order'] : $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_select_order()];
-                $post_orderby = !empty($this->shortcode_args['orderby']) ? $this->shortcode_args['orderby'] : $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_select_orderby()];
-                //$post_post_status = !empty($this->shortcode_args['post_status']) ? $this->shortcode_args['post_status'] : $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_select_post_status()];
-                $post_not_in = ($this->shortcode_args['excluded_post_ids']) ? $this->shortcode_args['excluded_post_ids'] : $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in()];     
-                $ignore_sticky_posts = ($this->shortcode_args['ignore_sticky_posts']) ? $this->shortcode_args['ignore_sticky_posts'] : $this->shortcode_settings[QAPL_Quick_Ajax_Helper::shortcode_page_ignore_sticky_posts()];     
-            }else{
-                $selected_post_type = !empty($this->shortcode_args['post_type']) ? $this->shortcode_args['post_type'] : '';
-                $post_per_page = !empty($this->shortcode_args['posts_per_page']) ? $this->shortcode_args['posts_per_page'] : '';
-                $post_order = !empty($this->shortcode_args['order']) ? $this->shortcode_args['order'] : '';
-                $post_orderby = !empty($this->shortcode_args['orderby']) ? $this->shortcode_args['orderby'] : '';
-                //$post_post_status = !empty($this->shortcode_args['post_status']) ? $this->shortcode_args['post_status'] : '';
-                $post_not_in = !empty($this->shortcode_args['excluded_post_ids']) ? $this->shortcode_args['excluded_post_ids'] : '';
-                $ignore_sticky_posts = !empty($this->shortcode_args['ignore_sticky_posts']) ? $this->shortcode_args['ignore_sticky_posts'] : '';
-            }
+            // get main query params from shortcode or postmeta
+            $selected_post_type = $this->get_param_value('post_type', QAPL_Quick_Ajax_Helper::shortcode_page_select_post_type());
+            $post_per_page = $this->get_param_value('posts_per_page', QAPL_Quick_Ajax_Helper::shortcode_page_select_posts_per_page());
+            $post_order = $this->get_param_value('order', QAPL_Quick_Ajax_Helper::shortcode_page_select_order());
+            $post_orderby = $this->get_param_value('orderby', QAPL_Quick_Ajax_Helper::shortcode_page_select_orderby());
+            $post_not_in = $this->get_param_value('excluded_post_ids', QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in());        
+            $ignore_sticky_posts = $this->get_param_value('ignore_sticky_posts', QAPL_Quick_Ajax_Helper::shortcode_page_ignore_sticky_posts());
+            
+            // return query args if post type is defined
             if(!empty($selected_post_type)){
                 $args = array(
                     'post_type' => $selected_post_type,

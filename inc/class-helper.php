@@ -14,7 +14,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.6.0',
+            'version' => '1.6.1',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
@@ -47,6 +47,7 @@ class QAPL_Quick_Ajax_Helper{
             $this->pages_helper->plugin_shortcode_class(),
             $this->pages_helper->plugin_template_hooks(),
             $this->pages_helper->plugin_deprecated_hooks_handler(),
+            $this->pages_helper->plugin_register_dev_hooks(),
         ];        
         foreach ($initialize_list as $initialize) {
             if (($initialize !== false)) {
@@ -608,7 +609,7 @@ class QAPL_Quick_Ajax_Helper{
             self::placeholder_show_all_label(),
         ];
     }
-        */
+        */     
 }
 
 class QAPL_File_Helper {
@@ -790,6 +791,9 @@ class QAPL_Pages_Helper{
     public function plugin_deprecated_hooks_handler() {
         return $this->file_helper->file_exists('inc/class-deprecated-hooks-handler.php');
     }
+    public function plugin_register_dev_hooks() {
+        return $this->file_helper->file_exists('dev-tools/dev-hooks.php');
+    }  
 }
 
 class QAPL_Form_Fields_Helper{

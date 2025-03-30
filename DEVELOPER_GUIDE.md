@@ -618,7 +618,7 @@ Modify the **title HTML output**.
 
     function customize_post_title( $output, $template, $quick_ajax_id ) {
         if ( $template === 'post-item' ) {
-            $output = '<h2 class="custom-title">' . get_the_title() . '</h2>';
+            $output = '<div class="qapl-post-title"><h2 class="custom-title">' . esc_html(get_the_title()) . '</h2></div>';
         }
         return $output;
     }
@@ -641,7 +641,7 @@ Modify the **excerpt HTML output**.
 
     function customize_post_excerpt( $output, $template, $quick_ajax_id ) {
         if ( $template === 'post-item' ) {
-            $output = '<p class="custom-excerpt">' . wp_trim_words(get_the_excerpt(), 15) . '</p>';
+            $output = '<div class="qapl-post-description"><p class="custom-excerpt">' . wp_trim_words(get_the_excerpt(), 15) . '</p></div>';
         }
         return $output;
     }
@@ -664,7 +664,7 @@ Modify the **featured image (thumbnail)**.
 
     function customize_post_image( $output, $template, $quick_ajax_id ) {
         if ( $template === 'post-item' ) {
-            $output = '<img src="' . esc_url(get_the_post_thumbnail_url(null, "large")) . '" alt="' . esc_attr(get_the_title()) . '" class="qapl-post-image">';
+            $output = '<div class="qapl-post-image"><img src="' . esc_url(get_the_post_thumbnail_url(null, "large")) . '" alt="' . esc_attr(get_the_title()) . '"></div>';
         }
         return $output;
     }
@@ -688,7 +688,7 @@ Modify how the **post date** is displayed.
     function customize_post_date( $output, $template, $quick_ajax_id ) {
         if ( $template === 'post-item' ) {
             $new_date = get_the_date( 'd-m-Y' );
-            $output = '<div class="custom-date">Date: ' . esc_html( $new_date ) . '</div>';
+            $output = '<div class="qapl-post-date"><div class="custom-date">Date: ' . esc_html( $new_date ) . '</div></div>';
         }
         return $output;
     }
@@ -711,7 +711,7 @@ Modify the **"Read More" label inside post content**.
 
     function customize_read_more( $output, $template, $quick_ajax_id ) {
         if ( $template === 'post-item' ) {
-            $output = '<div class="custom-read_more"><p>Read Full Article</p></div>';
+            $output = '<div class="qapl-read-more custom-read_more"><p>Read Full Article</p></div>';
         }
         return $output;
     }
