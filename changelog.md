@@ -1,5 +1,9 @@
 ## Changelog
 
+### 1.6.2 - 2025-03-30
+- This version was released to resolve a problem with the WordPress.org system not generating a ZIP package for version 1.6.1.
+- There are no changes in code or functionality - this version is identical to 1.6.1.
+
 ### 1.6.1 - 2025-03-30
 - Improved CSS styles for better appearance and theme compatibility.
 - Fixed display issues to ensure everything looks as expected.
