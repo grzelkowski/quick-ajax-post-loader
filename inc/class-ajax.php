@@ -42,7 +42,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             // Filter hooks for loader icon
             add_action(QAPL_Hooks::HOOK_LOADER_BEFORE, array($this, 'action_loader_icon_pre'));     
             add_action(QAPL_Hooks::HOOK_LOADER_AFTER, array($this, 'action_loader_icon_complete'));
-*/
+            */
             // Filters with arguments (query and taxonomy buttons)
             //add_filter(QAPL_Hooks::HOOK_MODIFY_POSTS_QUERY_ARGS, array($this, 'filter_modify_query_args'), 10, 2); 
             //add_filter(QAPL_Hooks::HOOK_MODIFY_TAXONOMY_FILTER_BUTTONS, array($this, 'filter_modify_taxonomy_filter_buttons'), 10, 2);
@@ -97,8 +97,6 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 $prefix = (isset($attributes['shortcode']) && $attributes['shortcode'] === true) ? 'p' : 'c';              
                 $this->quick_ajax_id = esc_attr($prefix . $attributes[$this->helper->layout_quick_ajax_id()]);
                 $this->quick_ajax_block_id = 'quick-ajax-' . esc_attr($prefix . $attributes[$this->helper->layout_quick_ajax_id()]);
-                
-
             } else {
                 // Increment qapl_id if 'quick_ajax_id' is not set
                 $this->quick_ajax_id++;
@@ -506,7 +504,11 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             // infinite_scroll
             if(isset($attributes[$this->helper->layout_ajax_infinite_scroll()])){
                 $this->attributes[$this->helper->layout_ajax_infinite_scroll()] = intval($attributes[$this->helper->layout_ajax_infinite_scroll()]);
-            }   
+            }
+            // show_end_message
+            if(isset($attributes[$this->helper->layout_show_end_message()])){
+                $this->attributes[$this->helper->layout_show_end_message()] = intval($attributes[$this->helper->layout_show_end_message()]);
+            }
             $this->ajax_initial_load = isset($attributes[$this->helper->query_settings_ajax_on_initial_load()]) ? intval($attributes[$this->helper->query_settings_ajax_on_initial_load()]) : $this->helper->shortcode_page_ajax_on_initial_load_default_value();
         }
 
@@ -570,6 +572,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             do_action(QAPL_Hooks::HOOK_POSTS_CONTAINER_END, $this->quick_ajax_id);
             echo '</div>';
             do_action(QAPL_Hooks::HOOK_POSTS_CONTAINER_AFTER, $this->quick_ajax_id);
+            
             wp_reset_postdata();
             // Get the buffered content into a variable
             $output = ob_get_clean(); 
@@ -620,6 +623,32 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             return $load_more_button;
             //do_action(QAPL_Hooks::HOOK_LOAD_MORE_AFTER);
         }
+        public function render_end_of_posts_message($show_end_post_message = false, $load_more, $max_num_pages, $quick_ajax_id) {
+            if(!$show_end_post_message){
+                return '';
+            }
+            if ($max_num_pages <= 1) {
+                return ''; // only one page, don't show anything
+            }
+            if ($load_more) {
+                return ''; // load more still available, don't show anything
+            }
+            $end_post_message_settings = [ 
+                'quick_ajax_id' => $quick_ajax_id, //$this->quick_ajax_id returns'c'
+                'template_name' => 'end-post-message',
+            ];
+            $qapl_end_post_message_template = QAPL_Post_Template_Factory::get_template($end_post_message_settings);
+            QAPL_Post_Template_Context::set_template($qapl_end_post_message_template);
+            
+            ob_start();
+            echo '<div class="quick-ajax-end-message-container">';
+            include($this->helper->plugin_templates_end_posts());
+            echo '</div>';
+            $content = ob_get_clean();
+            QAPL_Post_Template_Context::clear_template();
+            return $content;
+        }
+        
         /* not in use after removing placeholders
         public function replace_placeholders($content) {
             if (!$this->placeholder_replacer) {

@@ -1,5 +1,11 @@
 ## Changelog
 
+### 1.6.3 - 2025-04-09
+- Added a new option to display an "End Message" when there are no more posts to load via AJAX.
+  - The message can now be set via a global option in the plugin settings, customized in the template, or controlled using a filter hook for full flexibility.
+- Improved CSS styling to ensure better compatibility with a wider range of WordPress themes.
+- Updated Polish translations for improved clarity and consistency.
+
 ### 1.6.2 - 2025-03-30
 - This version was released to resolve a problem with the WordPress.org system not generating a ZIP package for version 1.6.1.
 - There are no changes in code or functionality - this version is identical to 1.6.1.

@@ -25,6 +25,8 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $this->create_field($field_properties);
             $field_properties = QAPL_Form_Fields_Helper::get_global_options_field_set_load_more_label();
             $this->create_field($field_properties);
+            $field_properties = QAPL_Form_Fields_Helper::get_global_options_field_set_end_post_message();
+            $this->create_field($field_properties);
 
             //Sorting Options
             $field_properties = QAPL_Form_Fields_Helper::get_global_options_field_set_sort_option_date_desc_label();
@@ -83,6 +85,9 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $this->create_field($field_properties);
             //Infinite Scroll
             $field_properties = QAPL_Form_Fields_Helper::get_field_set_ajax_infinite_scroll();
+            $this->create_field($field_properties);
+            //Show end message
+            $field_properties = QAPL_Form_Fields_Helper::get_field_set_show_end_message();
             $this->create_field($field_properties);
 
             //Additional Settings
@@ -159,6 +164,7 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_read_more_label());
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_show_all_label());
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_load_more_label());
+            $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_end_post_message());
             $content .= '<h4>'.__('Sorting Option Labels', 'quick-ajax-post-loader').'</h4>';
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_date_desc_label());
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_date_asc_label());
@@ -223,6 +229,7 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ignore_sticky_posts());
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ajax_on_initial_load());
             $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ajax_infinite_scroll());
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_show_end_message());
             $form_tab_function_generator .= '</div>';
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
             $form_tab_function_generator .= '<h4>'.__('Layout Settings', 'quick-ajax-post-loader').'</h4>';

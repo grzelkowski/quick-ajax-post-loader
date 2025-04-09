@@ -4,7 +4,7 @@ Contributors: grzelkowski
 Tags: ajax-load-more, infinite-scroll, category-filter, load-more, ajax
 Requires at least: 5.6
 Tested up to: 6.7.2
-Stable tag: 1.6.2
+Stable tag: 1.6.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -104,6 +104,12 @@ Yes, you can create multiple AJAX grids with different configurations.
 Yes, developers can use available WordPress hooks and filters to fully customize functionality.
 
 == Changelog ==
+
+= 1.6.3 - 2025-04-09 =
+- Added a new option to display an "End Message" when there are no more posts to load via AJAX.
+  - The message can now be set via a global option in the plugin settings, customized in the template, or controlled using a filter hook for full flexibility.
+- Improved CSS styling to ensure better compatibility with a wider range of WordPress themes.
+- Updated Polish translations for improved clarity and consistency.
 
 = 1.6.2 - 2025-03-30 =
 - This version was released to resolve a problem with the WordPress.org system not generating a ZIP package for version 1.6.1.

@@ -14,7 +14,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.6.2',
+            'version' => '1.6.3',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
@@ -144,6 +144,7 @@ class QAPL_Quick_Ajax_Helper{
             'loader_icon_default' => self::shortcode_page_select_loader_icon_default_value(),
             'ajax_initial_load' => self::query_settings_ajax_on_initial_load(),
             'infinite_scroll' => self::layout_ajax_infinite_scroll(),
+            'show_end_message' => self::layout_show_end_message(),
             'quick_ajax_id' => self::layout_quick_ajax_id(),
         ];
     }
@@ -251,6 +252,9 @@ class QAPL_Quick_Ajax_Helper{
     }
     public function plugin_templates_no_posts() {
         return $this->file_helper->get_templates_dir_path('/post-items/no-posts.php');
+    }
+    public function plugin_templates_end_posts() {
+        return $this->file_helper->get_templates_dir_path('/post-items/end-posts.php');
     }
     public static function taxonomy_filter_button_data_button(){
         return 'quick-ajax-filter-button';
@@ -455,6 +459,12 @@ class QAPL_Quick_Ajax_Helper{
     public static function shortcode_page_ajax_infinite_scroll_default_value(){
         return false;
     }
+    public static function shortcode_page_show_end_message(){
+        return 'qapl_show_end_post_message';
+    }
+    public static function shortcode_page_show_end_message_default_value(){
+        return false;
+    }
     public static function shortcode_page_set_post_not_in(){
         return 'qapl_select_post_not_in';
     }
@@ -537,6 +547,9 @@ class QAPL_Quick_Ajax_Helper{
     public static function layout_ajax_infinite_scroll(){
         return 'infinite_scroll';
     }
+    public static function layout_show_end_message(){
+        return 'show_end_message';
+    }
     /* Quick AJAX Settings */
     public static function admin_page_settings_field_option_group(){
         return 'qapl_settings_group';
@@ -551,15 +564,22 @@ class QAPL_Quick_Ajax_Helper{
     public static function global_options_field_set_read_more_label(){
         return self::admin_page_global_options_name().'[read_more_label]';
     }
+    public static function global_options_field_set_post_date_format(){
+        return self::admin_page_global_options_name().'[post_date_format]';
+    }
     public static function global_options_field_set_show_all_label(){
         return self::admin_page_global_options_name().'[show_all_label]';
     }
     public static function global_options_field_set_load_more_label(){
         return self::admin_page_global_options_name().'[load_more_label]';
     }
-    public static function global_options_field_set_post_date_format(){
-        return self::admin_page_global_options_name().'[post_date_format]';
+    public static function global_options_field_set_end_post_message(){
+        return self::admin_page_global_options_name().'[end_post_message]';
     }
+    public static function global_options_field_set_no_post_message(){
+        return self::admin_page_global_options_name().'[no_post_message]';
+    }
+
     //Sorting Options Labels
     public static function global_options_field_set_sort_option_date_desc_label(){
         return self::admin_page_global_options_name().'[sort_option_date_desc_label]';
@@ -1021,6 +1041,18 @@ class QAPL_Form_Fields_Helper{
             'description' => __('Enable this option to automatically load more posts via AJAX as the user scrolls down the page.', 'quick-ajax-post-loader')
         );
     }
+    // show end message
+    public static function get_field_set_show_end_message() {
+        return array(
+            'name'        => QAPL_Quick_Ajax_Helper::shortcode_page_show_end_message(),
+            'label'       => __('Show End Message', 'quick-ajax-post-loader'),
+            'type'        => 'checkbox',
+            'options'     => '',
+            'default'     => QAPL_Quick_Ajax_Helper::shortcode_page_show_end_message_default_value(),
+            'description' => __('Display a message when there are no more posts to load via AJAX.', 'quick-ajax-post-loader')
+        );
+    }
+    
     //apply quick ajax css style
     public static function get_field_layout_quick_ajax_css_style(){
         $field_properties = array(
@@ -1198,6 +1230,30 @@ class QAPL_Form_Fields_Helper{
         );
         return $field_properties;
     }
+    public static function get_global_options_field_set_end_post_message() {
+        $field_properties = array(
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_end_post_message(),
+            'label' => __('Set "End of Posts" Message', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'options' => '', // Not required for text field
+            'default' => __('No more posts to load.', 'quick-ajax-post-loader'),
+            'placeholder' => __('Enter message for end of posts', 'quick-ajax-post-loader'),
+            'description' => __('Customize the message that appears when there are no more posts to load. Examples: "No more posts", "You have reached the end", or "That\'s all for now".', 'quick-ajax-post-loader')
+        );
+        return $field_properties;
+    }
+    public static function get_global_options_field_set_no_post_message() {
+        $field_properties = array(
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_no_post_message(),
+            'label' => __('Set "No Posts Found" Message', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'options' => '', // Not required for text field
+            'default' => __('No posts found.', 'quick-ajax-post-loader'),
+            'placeholder' => __('Enter message for no posts found', 'quick-ajax-post-loader'),
+            'description' => __('Customize the message shown when no posts match the selected filters. Examples: "No posts found", "Nothing to display", or "Try adjusting your filters".', 'quick-ajax-post-loader')
+        );
+        return $field_properties;
+    }    
     public static function get_global_options_field_set_post_date_format() {
         $field_properties = array(
             'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_post_date_format(),
@@ -1331,6 +1387,7 @@ class QAPL_Hooks {
     const HOOK_TEMPLATE_POST_ITEM_EXCERPT = 'qapl_template_post_item_excerpt';
     const HOOK_TEMPLATE_POST_ITEM_READ_MORE = 'qapl_template_post_item_read_more';
     const HOOK_TEMPLATE_LOAD_MORE_BUTTON = 'qapl_template_load_more_button';
+    const HOOK_TEMPLATE_END_POST_MESSAGE = 'qapl_template_end_post_message';
 }
 
 

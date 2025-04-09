@@ -236,6 +236,9 @@
                     if (inputData.qapl_ajax_infinite_scroll === 1) {
                         quickAjaxAttributes[qapl_quick_ajax_helper.infinite_scroll] = inputData.qapl_ajax_infinite_scroll;
                     }
+                    if (inputData.qapl_show_end_post_message === 1) {
+                        quickAjaxAttributes[qapl_quick_ajax_helper.show_end_message] = inputData.qapl_show_end_post_message;
+                    }
                 }
                 //quickAjaxAttributes code
                 var quickAjaxAttributesText = "";

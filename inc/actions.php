@@ -81,12 +81,15 @@ function qapl_quick_ajax_load_posts() {
        
         $output = ob_get_clean();
         $load_more = $ajax_class->load_more_button(esc_attr($query->get('paged')), esc_attr($query->max_num_pages), esc_attr($query->found_posts), esc_attr($ajax_class->attributes['infinite_scroll']));
+        $show_end_message = $ajax_class->render_end_of_posts_message($ajax_class->attributes['show_end_message'], $load_more, esc_attr($query->max_num_pages), esc_attr($ajax_class->attributes['quick_ajax_id']));
+       
         QAPL_Post_Template_Context::clear_template();
         //$output = $ajax_class->replace_placeholders($output);
         wp_send_json_success([
             'output' => $output,
             'args' => $args,
-            'load_more' => $load_more
+            'load_more' => $load_more,
+            'show_end_message' => $show_end_message
             //'attributes' => $attributes,
         ]);
     }

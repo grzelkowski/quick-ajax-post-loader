@@ -26,10 +26,11 @@ Below are some of the key benefits of using this plugin:
     - 3.1. [Templates: How to Create Custom Post Layouts](#31-templates-how-to-create-custom-post-layouts)
     - 3.2. [Templates: How to Override Default Post Layouts](#32-templates-how-to-override-default-post-layouts)
     - 3.3. [Templates: Customize "No Posts Found" Message](#33-templates-customize-no-posts-found-message)
-    - 3.4. [Templates: Modify Taxonomy Filter Buttons](#34-templates-modify-taxonomy-filter-buttons)
-    - 3.5. [Templates: Customize "Load More" Button Design](#35-templates-customize-load-more-button-design)
-    - 3.6. [Templates: How to Create Custom Loading Icons](#36-templates-how-to-create-custom-loading-icons)
-    - 3.7. [Templates: Best Practices for Working with Post Layouts](#37-templates-best-practices-for-working-with-post-layouts)
+    - 3.4. [Templates: Customize "End of Posts" Message](#34-templates-customize-end-of-posts-message)
+    - 3.5. [Templates: Modify Taxonomy Filter Buttons](#35-templates-modify-taxonomy-filter-buttons)
+    - 3.6. [Templates: Customize "Load More" Button Design](#36-templates-customize-load-more-button-design)
+    - 3.7. [Templates: How to Create Custom Loading Icons](#37-templates-how-to-create-custom-loading-icons)
+    - 3.8. [Templates: Best Practices for Working with Post Layouts](#38-templates-best-practices-for-working-with-post-layouts)
 4. [Customization with Hooks & Filters](#4-customization-with-hooks--filters)
     - 4.1. [Hooks: Filter Container - Modify the Filtering Section](#41-hooks-filter-container---modify-the-filtering-section)
     - 4.2. [Hooks: Post Container - Modify Post List Display](#42-hooks-post-container---modify-post-list-display)
@@ -40,8 +41,9 @@ Below are some of the key benefits of using this plugin:
     - 4.7. [Hooks: Modify Template Elements](#47-hooks-modify-template-elements)
     - 4.8. [Hooks: Modifying Post Content Elements](#48-hooks-modifying-post-content-elements)
     - 4.9. [Hooks: Customize Load More Button HTML & Styling](#49-hooks-customize-load-more-button-html--styling)
-    - 4.10. [Debugging: Find & Log quick_ajax_id for AJAX Hooks](#410-debugging-find--log-quick_ajax_id-for-ajax-hooks)
-    - 4.11. [Best Practices for Hooks and Filters](#411-best-practices-for-hooks-and-filters)
+    - 4.10. [Hooks: Customize End of Posts Message](#410-hooks-customize-end-of-posts-message)
+    - 4.11. [Debugging: Find & Log quick_ajax_id for AJAX Hooks](#411-debugging-find--log-quick_ajax_id-for-ajax-hooks)
+    - 4.12. [Best Practices for Hooks and Filters](#412-best-practices-for-hooks-and-filters)
 5. [Advanced Features](#5-advanced-features)
     - 5.1. [AJAX Function Generator](#51-ajax-function-generator)
     - 5.2. [Key Functions & Parameters](#52-key-functions--parameters)
@@ -260,7 +262,25 @@ Place a file named **no-posts.php** in the following directory:
 
 ---
 
-### 3.4. Templates: Modify Taxonomy Filter Buttons
+### 3.4. Templates: Customize "End of Posts" Message
+
+When all posts have been loaded via AJAX and there are no more available to show, the plugin can display a customizable end message.
+
+#### Template File Location
+
+Place a file named **end-posts.php** in the following directory:
+
+    wp-content/themes/your-theme/quick-ajax-post-loader/templates/post-items/
+
+#### Example File Structure
+
+    <div class="qapl-end-message">
+        <p>No more posts to load.</p>
+    </div>
+
+---
+
+### 3.5. Templates: Modify Taxonomy Filter Buttons
 
 Taxonomy filter buttons allow users to select categories, tags, or other taxonomies.
 
@@ -286,7 +306,7 @@ Create or edit the **taxonomy-filter-button.php** file.
 
 ---
 
-### 3.5. Templates: Customize "Load More" Button Design
+### 3.6. Templates: Customize "Load More" Button Design
 
 The "Load More" button allows users to dynamically load additional posts via AJAX without refreshing the page.  
 The plugin provides a default button template, but you can override it with your custom design.
@@ -301,6 +321,13 @@ To override it, copy it to your theme folder:
 
     wp-content/themes/your-theme/quick-ajax-post-loader/templates/
 
+
+#### Example File Structure
+
+     <button type="button" class="qapl-load-more-button custom-class" data-button="quick-ajax-load-more-button">
+        Load More
+     </button>
+    
 #### Modifying the Template
 
 - Adjust the **HTML structure**, CSS classes, or button text to match your website's design.
@@ -308,7 +335,7 @@ To override it, copy it to your theme folder:
 
 ---
 
-### 3.6. Templates: How to Create Custom Loading Icons
+### 3.7. Templates: How to Create Custom Loading Icons
 
 The **Quick Ajax Post Loader** plugin allows you to customize loading icons by creating your own templates. You can use HTML, CSS animations, or GIFs, and then select the icon in the plugin configuration.
 
@@ -351,7 +378,7 @@ This ensures that custom loading icons in the child theme take priority and are 
 
 ---
 
-### 3.7. Templates: Best Practices for Working with Post Layouts
+### 3.8. Templates: Best Practices for Working with Post Layouts
 
 - **Work with a child theme** - This ensures that your changes won't be lost when updating your theme or the plugin.  
 - **Test all changes on a staging site** before deploying them to your live site.  
@@ -696,7 +723,7 @@ Modify how the **post date** is displayed.
 
 This example changes the **date format** and wraps it in a `<div class="custom-date"></div>` container.
 
-### Modifying the Read More Label"
+### Modifying the Read More Label
 
 #### **qapl_template_post_item_read_more**
 
@@ -736,7 +763,7 @@ Modify the **"Load More" button** HTML output.
 **Example:**
 
     function customize_load_more_button( $output, $quick_ajax_id ) {
-        $output = '<button type="button" class="custom-load-more">Show More Posts</button>';
+        $output = '<button type="button" class="custom-load-more qapl-load-more-button qapl-button" data-button="quick-ajax-load-more-button">Show More Posts</button>';
         return $output;
     }
     add_filter( 'qapl_template_load_more_button', 'customize_load_more_button', 10, 2 );
@@ -745,7 +772,32 @@ This example replaces the **default "Load More" button** with a custom-styled ve
 
 ---
 
-### 4.10. Debugging: Find & Log quick_ajax_id for AJAX Hooks
+### 4.10. Hooks: Customize End of Posts Message
+
+Customize the **"End of Posts" message** displayed when all posts have been loaded and there are no more items to show.
+
+#### **qapl_template_end_post_message**
+
+Modify the HTML output for the final message shown when no more posts are available to load.
+
+**Parameters:**
+- `$output` *(string)* - the default message HTML output.
+- `$template_name` *(string)* - the template type used.
+- `$quick_ajax_id` *(string)* - unique instance identifier.
+
+**Example:**
+
+    function customize_end_post_message( $output, $quick_ajax_id ) {
+        $output = '<div class="custom-end-message"><p>That\'s all we have for now!</p></div>';
+        return $output;
+    }
+    add_filter( 'qapl_template_end_post_message', 'customize_end_post_message', 10, 2 );
+
+This example replaces the **default "End of Posts" message** with a custom-styled HTML block.
+
+---
+
+### 4.11. Debugging: Find & Log quick_ajax_id for AJAX Hooks
 
 Each **quick_ajax_id** is unique to an instance of the **Quick Ajax Post Loader** shortcode. It is needed when using hooks and filters to apply changes to a specific shortcode instance.
 
@@ -807,7 +859,7 @@ If you prefer debugging on the **server side**, log the **quick_ajax_id** into t
 
 ---
 
-### 4.11. Best Practices for Hooks and Filters
+### 4.12. Best Practices for Hooks and Filters
 
 To ensure safe and effective modifications to the **Quick Ajax Post Loader**, follow these best practices:
 

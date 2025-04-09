@@ -65,6 +65,9 @@ if (!class_exists('QAPL_Quick_Ajax_Form_Creator')) {
             //Infinite Scroll
             $field_properties = QAPL_Form_Fields_Helper::get_field_set_ajax_infinite_scroll();
             $this->create_field($field_properties);
+            //Show end message
+            $field_properties = QAPL_Form_Fields_Helper::get_field_set_show_end_message();
+            $this->create_field($field_properties);
             //apply quick ajax css style
             $field_properties = QAPL_Form_Fields_Helper::get_field_layout_quick_ajax_css_style();
             $this->create_field($field_properties);
@@ -147,6 +150,7 @@ if (!class_exists('QAPL_Quick_Ajax_Form_Creator')) {
             $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ignore_sticky_posts());
             $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ajax_on_initial_load());
             $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_ajax_infinite_scroll());
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Helper::shortcode_page_show_end_message());
             $shortcode_page .= '</div>';
 
             //layout Settings

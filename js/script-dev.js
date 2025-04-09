@@ -81,7 +81,8 @@
                 console.error('Quick Ajax Post Loader: Container or inner container not found:', containerId);
                 return;
             }            
-
+            // remove existing end message if any
+            container.find('.quick-ajax-end-message-container').remove();
             container.addClass('loading');
             if((button.attr('data-button') === qapl_quick_ajax_helper.helper.filter_data_button) ||
                (button.attr('data-button') === qapl_quick_ajax_helper.helper.sort_button)){
@@ -111,6 +112,7 @@
                         console.error('Quick Ajax Post Loader: Error:', response.data.output);
                     }
                     container.removeClass('loading');
+                    self.qapl_quick_ajax_append_end_message(container, response.data.show_end_message);
                 },
                 error: function(xhr, status, error) {
                     console.error('Quick Ajax Post Loader: Error:', error);
@@ -144,6 +146,11 @@
                 container.parent().find('.quick-ajax-load-more-container').remove();
                 container.parent().append(load_more_html);
                 this.qapl_quick_ajax_infinite_scroll();
+            }
+        },
+        qapl_quick_ajax_append_end_message: function(container, end_message) {
+            if (end_message) {
+                container.append(end_message);
             }
         },        
         qapl_quick_ajax_handle_sort: function(selectButton) {
