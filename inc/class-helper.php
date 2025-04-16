@@ -14,13 +14,13 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.6.3',
+            'version' => '1.6.4',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
             'minimum_php_version' => '7.4',
             'minimum_wp_version' => '5.6',
-            'tested_wp_version' => '6.7.2'
+            'tested_wp_version' => '6.8'
         ];
     }
     public static function get_instance() {
@@ -573,11 +573,11 @@ class QAPL_Quick_Ajax_Helper{
     public static function global_options_field_set_load_more_label(){
         return self::admin_page_global_options_name().'[load_more_label]';
     }
-    public static function global_options_field_set_end_post_message(){
-        return self::admin_page_global_options_name().'[end_post_message]';
-    }
     public static function global_options_field_set_no_post_message(){
         return self::admin_page_global_options_name().'[no_post_message]';
+    }
+    public static function global_options_field_set_end_post_message(){
+        return self::admin_page_global_options_name().'[end_post_message]';
     }
 
     //Sorting Options Labels
@@ -1230,30 +1230,30 @@ class QAPL_Form_Fields_Helper{
         );
         return $field_properties;
     }
-    public static function get_global_options_field_set_end_post_message() {
-        $field_properties = array(
-            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_end_post_message(),
-            'label' => __('Set "End of Posts" Message', 'quick-ajax-post-loader'),
-            'type' => 'text',
-            'options' => '', // Not required for text field
-            'default' => __('No more posts to load.', 'quick-ajax-post-loader'),
-            'placeholder' => __('Enter message for end of posts', 'quick-ajax-post-loader'),
-            'description' => __('Customize the message that appears when there are no more posts to load. Examples: "No more posts", "You have reached the end", or "That\'s all for now".', 'quick-ajax-post-loader')
-        );
-        return $field_properties;
-    }
     public static function get_global_options_field_set_no_post_message() {
         $field_properties = array(
             'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_no_post_message(),
             'label' => __('Set "No Posts Found" Message', 'quick-ajax-post-loader'),
             'type' => 'text',
             'options' => '', // Not required for text field
-            'default' => __('No posts found.', 'quick-ajax-post-loader'),
+            'default' => __('No posts found', 'quick-ajax-post-loader'),
             'placeholder' => __('Enter message for no posts found', 'quick-ajax-post-loader'),
             'description' => __('Customize the message shown when no posts match the selected filters. Examples: "No posts found", "Nothing to display", or "Try adjusting your filters".', 'quick-ajax-post-loader')
         );
         return $field_properties;
-    }    
+    }   
+    public static function get_global_options_field_set_end_post_message() {
+        $field_properties = array(
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_end_post_message(),
+            'label' => __('Set "End of Posts" Message', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'options' => '', // Not required for text field
+            'default' => __('No more posts to load', 'quick-ajax-post-loader'),
+            'placeholder' => __('Enter message for end of posts', 'quick-ajax-post-loader'),
+            'description' => __('Customize the message that appears when there are no more posts to load. Examples: "No more posts", "You have reached the end", or "That\'s all for now".', 'quick-ajax-post-loader')
+        );
+        return $field_properties;
+    } 
     public static function get_global_options_field_set_post_date_format() {
         $field_properties = array(
             'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_post_date_format(),
@@ -1387,6 +1387,7 @@ class QAPL_Hooks {
     const HOOK_TEMPLATE_POST_ITEM_EXCERPT = 'qapl_template_post_item_excerpt';
     const HOOK_TEMPLATE_POST_ITEM_READ_MORE = 'qapl_template_post_item_read_more';
     const HOOK_TEMPLATE_LOAD_MORE_BUTTON = 'qapl_template_load_more_button';
+    const HOOK_TEMPLATE_NO_POST_MESSAGE = 'qapl_template_no_post_message';
     const HOOK_TEMPLATE_END_POST_MESSAGE = 'qapl_template_end_post_message';
 }
 

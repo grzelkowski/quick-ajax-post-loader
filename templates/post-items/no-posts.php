@@ -4,5 +4,5 @@ if (!defined('ABSPATH')) {
 }
 ?>
 <div class="qapl-no-posts-found">
-<p><?php echo esc_html__('No posts found', 'quick-ajax-post-loader') ?></p>
+<?php qapl_output_template_no_post_message(); ?>
 </div>

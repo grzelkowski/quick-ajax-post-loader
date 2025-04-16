@@ -540,13 +540,14 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             do_action(QAPL_Hooks::HOOK_POSTS_CONTAINER_START, $this->quick_ajax_id);
             echo '<div class="quick-ajax-posts-wrapper '.esc_attr($container_inner_class).'">';
             
-            $container_settings = [
-                'quick_ajax_id' => $this->quick_ajax_id,
-                'template_name' => $this->attributes['post_item_template'],
-            ];
-            $qapl_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
-            QAPL_Post_Template_Context::set_template($qapl_post_template);
+
             if ($query->have_posts()) {
+                $container_settings = [
+                    'quick_ajax_id' => $this->quick_ajax_id,
+                    'template_name' => $this->attributes['post_item_template'],
+                ];
+                $qapl_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
+                QAPL_Post_Template_Context::set_template($qapl_post_template);
                 if ($this->ajax_initial_load) {
                     echo '<div class="qapl-initial-loader" data-button="quick-ajax-filter-button" style="display:none;" data-action="' . esc_attr(wp_json_encode($this->args)) . '" data-attributes="' . esc_attr(wp_json_encode($this->attributes)) . '"></div>';
                 } else {
@@ -555,10 +556,19 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                         include($this->layout[$this->helper->layout_post_item_template()]);
                     }
                 }
+                QAPL_Post_Template_Context::clear_template(); 
             } else {
+                // No posts found
+                $container_settings = [
+                    'quick_ajax_id' => $ajax_class->attributes['quick_ajax_id'],
+                    'template_name' => 'no-post-message',
+                ];
+                $qapl_no_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
+                QAPL_Post_Template_Context::set_template($qapl_no_post_template);
                 include($this->helper->plugin_templates_no_posts());
+                QAPL_Post_Template_Context::clear_template(); 
             }
-            QAPL_Post_Template_Context::clear_template();            
+                       
             echo '</div>';
             do_action(QAPL_Hooks::HOOK_LOADER_BEFORE, $this->quick_ajax_id);
             echo '<div class="quick-ajax-loader-container">'; 

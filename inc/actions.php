@@ -48,34 +48,40 @@ function qapl_quick_ajax_load_posts() {
         $args = $ajax_class->args;
 
 
-        $container_settings = [
-            'quick_ajax_id' => $ajax_class->attributes['quick_ajax_id'],
-            'template_name' => $ajax_class->attributes['post_item_template'],
-        ];
-        $qapl_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
-        QAPL_Post_Template_Context::set_template($qapl_post_template);
+
         $query = new WP_Query($args);
 
         ob_start();        
         if ($query->have_posts()) {
+            $container_settings = [
+                'quick_ajax_id' => $ajax_class->attributes['quick_ajax_id'],
+                'template_name' => $ajax_class->attributes['post_item_template'],
+            ];
+            $qapl_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
+            QAPL_Post_Template_Context::set_template($qapl_post_template);
             while ($query->have_posts()) {
                 $query->the_post();
                 $template_path = $qapl_helper->plugin_templates_post_item_template(esc_attr($ajax_class->attributes[QAPL_Quick_Ajax_Helper::layout_post_item_template()]));
-                if ($template_path && file_exists($template_path)) {
-                    include $template_path;
-                } else {
+                if (!$template_path || !file_exists($template_path)) {
                     wp_send_json_error(['message' => 'Quick Ajax Post Loader: Template file not found']);
                 }
-            }          
-            
+                include $template_path;
+            }
+            QAPL_Post_Template_Context::clear_template();
         } else {
             // No posts found
+            $container_settings = [
+                'quick_ajax_id' => $ajax_class->attributes['quick_ajax_id'],
+                'template_name' => 'no-post-message',
+            ];
+            $qapl_no_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
+            QAPL_Post_Template_Context::set_template($qapl_no_post_template);
             $no_posts_template = $qapl_helper->plugin_templates_no_posts();
-            if ($no_posts_template && file_exists($no_posts_template)) {
-                include $no_posts_template;
-            } else {
-                wp_send_json_error(['message' => 'Quick Ajax Post Loader: No posts template file not found']);
+            if (!$no_posts_template || !file_exists($no_posts_template)) {
+                wp_send_json_error(['message' => 'Quick Ajax Post Loader: Template file not found']);
             }
+            include $no_posts_template;
+            QAPL_Post_Template_Context::clear_template();
         }
         wp_reset_postdata();
        
@@ -83,7 +89,7 @@ function qapl_quick_ajax_load_posts() {
         $load_more = $ajax_class->load_more_button(esc_attr($query->get('paged')), esc_attr($query->max_num_pages), esc_attr($query->found_posts), esc_attr($ajax_class->attributes['infinite_scroll']));
         $show_end_message = $ajax_class->render_end_of_posts_message($ajax_class->attributes['show_end_message'], $load_more, esc_attr($query->max_num_pages), esc_attr($ajax_class->attributes['quick_ajax_id']));
        
-        QAPL_Post_Template_Context::clear_template();
+
         //$output = $ajax_class->replace_placeholders($output);
         wp_send_json_success([
             'output' => $output,

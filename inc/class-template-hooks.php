@@ -32,6 +32,10 @@ interface QAPL_End_Post_Message_Interface {
     public function render_end_post_message();
 }
 
+interface QAPL_No_Post_Message_Interface {
+    public function render_no_post_message();
+}
+
 function qapl_output_template_post_date() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_date')) {
@@ -68,6 +72,12 @@ function qapl_output_template_button_load_more() {
         echo wp_kses_post($template->render_load_more_button());
     }
 }
+function qapl_output_template_no_post_message() {
+    $template = QAPL_Post_Template_Context::get_template();
+    if ($template && method_exists($template, 'render_no_post_message')) {
+        echo wp_kses_post($template->render_no_post_message());
+    }
+}
 function qapl_output_template_end_post_message() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_end_post_message')) {
@@ -84,6 +94,7 @@ class QAPL_Quick_Ajax_Template_Config {
             'show_read_more'   => true,                // Show/hide "read more"
             'read_more_label'  => null,                // Read more label;
             'load_more_label'  => null,                // Load more label;
+            'no_post_message' => null,                 // No post message;
             'end_post_message' => null,                // End post message;
         ];
         $this->options = wp_parse_args($options, $defaults);
@@ -123,8 +134,11 @@ abstract class QAPL_Quick_Ajax_Template_Base {
         if ($this->config->get('load_more_label') === null) {
             $this->config->set('load_more_label', !empty($global_options['load_more_label']) ? $global_options['load_more_label'] : __('Load More', 'quick-ajax-post-loader'));
         }
+        if ($this->config->get('no_post_message') === null) {
+            $this->config->set('no_post_message', !empty($global_options['no_post_message']) ? $global_options['no_post_message'] : __('No posts found', 'quick-ajax-post-loader'));
+        }
         if ($this->config->get('end_post_message') === null) {
-            $this->config->set('end_post_message', !empty($global_options['end_post_message']) ? $global_options['end_post_message'] : __('No more posts to load.', 'quick-ajax-post-loader'));
+            $this->config->set('end_post_message', !empty($global_options['end_post_message']) ? $global_options['end_post_message'] : __('No more posts to load', 'quick-ajax-post-loader'));
         }
               
     }
@@ -220,7 +234,6 @@ class QAPL_Quick_Ajax_Template_Post_Item_Qapl_Full_Background_Image extends QAPL
 }
 
 class QAPL_Quick_Ajax_Template_Load_More_Button extends QAPL_Quick_Ajax_Template_Base implements QAPL_Load_More_Interface {
-
     public function render_load_more_button() {   
         $label = $this->config->get('load_more_label');
         $output = '<button type="button" class="qapl-load-more-button qapl-button" data-button="quick-ajax-load-more-button">' . esc_html($label) . '</button>';
@@ -229,11 +242,18 @@ class QAPL_Quick_Ajax_Template_Load_More_Button extends QAPL_Quick_Ajax_Template
 }
 
 class QAPL_Quick_Ajax_Template_End_Post_Message extends QAPL_Quick_Ajax_Template_Base implements QAPL_End_Post_Message_Interface {
-
     public function render_end_post_message() {   
         $end_post_message = $this->config->get('end_post_message');
         $output = '<p>' . esc_html($end_post_message) . '</p>';
         return apply_filters(QAPL_Hooks::HOOK_TEMPLATE_END_POST_MESSAGE, $output, $this->quick_ajax_id);
+    }
+}
+
+class QAPL_Quick_Ajax_Template_No_Post_Message extends QAPL_Quick_Ajax_Template_Base implements QAPL_No_Post_Message_Interface {
+    public function render_no_post_message() {   
+        $no_post_message = $this->config->get('no_post_message');
+        $output = '<p>' . esc_html($no_post_message) . '</p>';
+        return apply_filters(QAPL_Hooks::HOOK_TEMPLATE_NO_POST_MESSAGE, $output, $this->quick_ajax_id);
     }
 }
 
@@ -245,6 +265,7 @@ abstract class QAPL_Quick_Ajax_Template_Empty_Filters {
     public function render_excerpt() { return ''; }
     public function render_read_more() { return ''; }
     public function render_load_more_button() { return ''; }
+    public function render_no_post_message() { return ''; }
     public function render_end_post_message() { return ''; }
 }
 
@@ -254,6 +275,7 @@ class QAPL_Post_Template_Factory {
         'post-item' => QAPL_Quick_Ajax_Template_Post_Item::class,
         'post-item-qapl-full-background-image' => QAPL_Quick_Ajax_Template_Post_Item_Qapl_Full_Background_Image::class,
         'load-more-button' => QAPL_Quick_Ajax_Template_Load_More_Button::class,
+        'no-post-message' => QAPL_Quick_Ajax_Template_No_Post_Message::class,
         'end-post-message' => QAPL_Quick_Ajax_Template_End_Post_Message::class,
 
     ];

@@ -40,10 +40,11 @@ Below are some of the key benefits of using this plugin:
     - 4.6. [Hooks: Modify Taxonomy Filter Buttons](#46-hooks-modify-taxonomy-filter-buttons)
     - 4.7. [Hooks: Modify Template Elements](#47-hooks-modify-template-elements)
     - 4.8. [Hooks: Modifying Post Content Elements](#48-hooks-modifying-post-content-elements)
-    - 4.9. [Hooks: Customize Load More Button HTML & Styling](#49-hooks-customize-load-more-button-html--styling)
+    - 4.9. [Hooks: Customize "No Posts Found" Message](#49-hooks-customize-no-posts-found-message)
     - 4.10. [Hooks: Customize End of Posts Message](#410-hooks-customize-end-of-posts-message)
-    - 4.11. [Debugging: Find & Log quick_ajax_id for AJAX Hooks](#411-debugging-find--log-quick_ajax_id-for-ajax-hooks)
-    - 4.12. [Best Practices for Hooks and Filters](#412-best-practices-for-hooks-and-filters)
+    - 4.11. [Hooks: Customize Load More Button HTML & Styling](#411-hooks-customize-load-more-button-html--styling)
+    - 4.12. [Debugging: Find & Log quick_ajax_id for AJAX Hooks](#412-debugging-find--log-quick_ajax_id-for-ajax-hooks)
+    - 4.13. [Best Practices for Hooks and Filters](#413-best-practices-for-hooks-and-filters)
 5. [Advanced Features](#5-advanced-features)
     - 5.1. [AJAX Function Generator](#51-ajax-function-generator)
     - 5.2. [Key Functions & Parameters](#52-key-functions--parameters)
@@ -256,7 +257,7 @@ Place a file named **no-posts.php** in the following directory:
 
 #### Example File Structure
 
-    <div class="qapl-no-posts">
+    <div class="qapl-no-posts-found">
        <p>Sorry, no posts found to display.</p>
     </div>
 
@@ -414,7 +415,7 @@ Triggered just before rendering the filter container.
 **Example:**
 
     function my_filter_container_before( $quick_ajax_id ) {
-        if ( $quick_ajax_id === 'example_id' ) {
+        if ( $quick_ajax_id === 'p963' ) {
             echo '<div class="custom-filter-header">My Custom Filter Section</div>';
         }
     }
@@ -542,7 +543,7 @@ This filter allows you to modify **WP_Query** arguments to fully control the dat
 **Example:**
 
     function modify_query_args( $args, $quick_ajax_id ) {
-        if ($quick_ajax_id === 'some_specific_id') {
+        if ($quick_ajax_id === 'p963') {
             $args['posts_per_page'] = 5; // change posts per page to 5
         }
         return $args;
@@ -567,7 +568,7 @@ This filter allows modifying or extending the available sorting methods.
 **Example:**
 
     function modify_sorting_options_variants( $sorting_options, $quick_ajax_id ) {
-    if ($quick_ajax_id === 'p369') {
+    if ($quick_ajax_id === 'p963') {
         $sorting_options[] = [
             'orderby' => 'modified',
             'order'   => 'DESC',
@@ -597,7 +598,7 @@ This filter allows modifying the properties of taxonomy filter buttons.
 
     function modify_filter_buttons( $buttons, $quick_ajax_id ) {
         foreach ($buttons as &$button) {
-            if ($quick_ajax_id === 'some_specific_id') {
+            if ($quick_ajax_id === 'p963') {
                 if ($button['term_id'] === 'none') {
                     $button['button_label'] = 'View All';
                 } else {
@@ -748,7 +749,57 @@ This example changes the **text of the "Read More" button** to "Read Full Articl
 
 ---
 
-### 4.9. Hooks: Customize Load More Button HTML & Styling
+### 4.9. Hooks: Customize "No Posts Found" Message
+
+Customize the **"No Posts Found" message** displayed when there are no posts to show initially (e.g., after filtering).
+
+#### **qapl_template_no_post_message**
+
+Modify the HTML output for the message shown when no posts match the filter or query.
+
+**Parameters:**
+- `$output` *(string)* - the default message HTML output.
+- `$quick_ajax_id` *(string)* - unique instance identifier.
+
+**Example:**
+
+    function customize_no_post_message( $output, $quick_ajax_id ) {
+        if ( $quick_ajax_id === 'p963' ) {
+            $output = '<div class="custom-no-posts-found"><p>Nothing to display</p></div>';
+        }
+        return $output;
+    }
+    add_filter( 'qapl_template_no_post_message', 'customize_no_post_message', 10, 2 );
+
+This example replaces the **default "No Posts Found" message** with a custom message for a specific instance.
+
+---
+
+### 4.10. Hooks: Customize End of Posts Message
+
+Customize the **"End of Posts" message** displayed when all posts have been loaded and there are no more items to show.
+
+#### **qapl_template_end_post_message**
+
+Modify the HTML output for the final message shown when no more posts are available to load.
+
+**Parameters:**
+- `$output` *(string)* - the default message HTML output.
+- `$quick_ajax_id` *(string)* - unique instance identifier.
+
+**Example:**
+
+    function customize_end_post_message( $output, $quick_ajax_id ) {
+        $output = '<div class="custom-end-message"><p>That\'s all we have for now!</p></div>';
+        return $output;
+    }
+    add_filter( 'qapl_template_end_post_message', 'customize_end_post_message', 10, 2 );
+
+This example replaces the **default "End of Posts" message** with a custom-styled HTML block.
+
+---
+
+### 4.11. Hooks: Customize Load More Button HTML & Styling
 
 Customize the **"Load More" button** styling and behavior.
 
@@ -772,32 +823,7 @@ This example replaces the **default "Load More" button** with a custom-styled ve
 
 ---
 
-### 4.10. Hooks: Customize End of Posts Message
-
-Customize the **"End of Posts" message** displayed when all posts have been loaded and there are no more items to show.
-
-#### **qapl_template_end_post_message**
-
-Modify the HTML output for the final message shown when no more posts are available to load.
-
-**Parameters:**
-- `$output` *(string)* - the default message HTML output.
-- `$template_name` *(string)* - the template type used.
-- `$quick_ajax_id` *(string)* - unique instance identifier.
-
-**Example:**
-
-    function customize_end_post_message( $output, $quick_ajax_id ) {
-        $output = '<div class="custom-end-message"><p>That\'s all we have for now!</p></div>';
-        return $output;
-    }
-    add_filter( 'qapl_template_end_post_message', 'customize_end_post_message', 10, 2 );
-
-This example replaces the **default "End of Posts" message** with a custom-styled HTML block.
-
----
-
-### 4.11. Debugging: Find & Log quick_ajax_id for AJAX Hooks
+### 4.12. Debugging: Find & Log quick_ajax_id for AJAX Hooks
 
 Each **quick_ajax_id** is unique to an instance of the **Quick Ajax Post Loader** shortcode. It is needed when using hooks and filters to apply changes to a specific shortcode instance.
 
@@ -859,7 +885,7 @@ If you prefer debugging on the **server side**, log the **quick_ajax_id** into t
 
 ---
 
-### 4.12. Best Practices for Hooks and Filters
+### 4.13. Best Practices for Hooks and Filters
 
 To ensure safe and effective modifications to the **Quick Ajax Post Loader**, follow these best practices:
 

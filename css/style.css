@@ -148,6 +148,7 @@
 .quick-ajax-posts-container.quick-ajax-theme .qapl-no-posts-found{
     display: block;
     width: 100%;
+    text-align: center;
 }
 .quick-ajax-posts-container.quick-ajax-theme .quick-ajax-end-message-container{
     display: block;
@@ -414,6 +415,7 @@
     border-radius: 50%;
     width: 60px;
     height: 60px;
+    margin: 1rem auto 1rem;
     -webkit-animation: loader-one-spin 2s linear infinite;
             animation: loader-one-spin 2s linear infinite;
   }

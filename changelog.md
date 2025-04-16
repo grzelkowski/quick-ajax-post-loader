@@ -1,8 +1,15 @@
 ## Changelog
 
+### 1.6.4 - 2025-04-16
+- Added a new global option to define a custom "No Posts Found" message.
+- Updated the "No Posts Found" template and added the `qapl_template_no_post_message` filter hook to allow developers to customize the message.
+- Fixed an issue where the loader icon did not appear correctly in some configurations.
+- Fixed problems with text labels not displaying as expected.
+- Tested and confirmed compatibility with WordPress 6.8.
+
 ### 1.6.3 - 2025-04-09
 - Added a new option to display an "End Message" when there are no more posts to load via AJAX.
-  - The message can now be set via a global option in the plugin settings, customized in the template, or controlled using a filter hook for full flexibility.
+  - The message can now be set via a global option in the plugin settings, customized in the template, or modified using the `qapl_template_end_post_message` filter hook for full flexibility.
 - Improved CSS styling to ensure better compatibility with a wider range of WordPress themes.
 - Updated Polish translations for improved clarity and consistency.
 
@@ -139,6 +146,24 @@
 - Initial release.
 
 ## Upgrade Notice
+
+### 1.6.4
+This update adds a new global option and filter hook to customize the "No Posts Found" message.
+
+**Important:**
+- Developers can use the `qapl_template_no_post_message` filter to modify the output.
+- Includes fixes for loader display and label issues.
+
+Fully tested with WordPress 6.8.
+
+### 1.6.3
+This update adds support for an "End Message" that appears when there are no more posts to load.
+
+**Important:**
+- The message can be set globally, customized in templates, or modified using the `qapl_template_end_post_message` filter hook.
+- This improves user experience but may require adjustments to your template or CSS.
+
+Recommended update for improved usability and developer flexibility.
 
 ### 1.6.0
 This update introduces an Infinite Scroll feature and an improved Help section within the plugin settings.
