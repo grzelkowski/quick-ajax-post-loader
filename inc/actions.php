@@ -135,3 +135,65 @@ function qapl_quick_ajax_get_taxonomies_by_post_type() {
     wp_send_json_success($output);
     wp_die();
 }
+add_action('wp_ajax_qapl_quick_ajax_get_terms_by_taxonomy', 'qapl_quick_ajax_get_terms_by_taxonomy');
+add_action('wp_ajax_nopriv_qapl_quick_ajax_get_terms_by_taxonomy', 'qapl_quick_ajax_get_terms_by_taxonomy');
+function qapl_quick_ajax_get_terms_by_taxonomy() {
+    if (!defined('DOING_AJAX') || !DOING_AJAX) {
+        wp_send_json_error(['message' => 'Quick Ajax Post Loader: Not an AJAX request']);
+    }
+    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), QAPL_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_action())) {
+        wp_send_json_error(['message' => 'Quick Ajax Post Loader: Unauthorized request']);
+    }
+    //return info if No taxonomy
+    if (empty($_POST['taxonomy']) || $_POST['taxonomy'] === '0') {
+        ob_start();
+        ?>
+        <div class="quick-ajax-multiselect-option">
+            <span class="no-options"><?php echo esc_html__('No taxonomy available', 'quick-ajax-post-loader'); ?></span>
+        </div>
+        <?php
+        $output = ob_get_clean();
+        wp_send_json_success($output);
+        wp_die();
+    }
+    $taxonomy = sanitize_text_field(wp_unslash($_POST['taxonomy']));
+    $terms = get_terms([
+        'taxonomy' => $taxonomy,
+        'hide_empty' => false,
+    ]);
+    /*
+    $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+    $saved_terms = [];    
+    if ($post_id > 0) {
+        $post_meta = get_post_meta($post_id, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings(), true);
+        $post_meta_values = maybe_unserialize($post_meta);
+        if (is_array($post_meta_values) && isset($post_meta_values['qapl_manual_selected_terms'])) {
+            $saved_terms = array_map('intval', (array) $post_meta_values['qapl_manual_selected_terms']);
+        }
+    }
+    //$checked = in_array($term->term_id, $saved_terms) ? 'checked' : '';
+    
+    */
+    ob_start();
+    if (!empty($terms) && !is_wp_error($terms)) {
+        foreach ($terms as $term) {
+            ?>
+            <div class="quick-ajax-multiselect-option">
+                <label>
+                    <input type="checkbox" name="qapl_manual_selected_terms[]" value="<?php echo esc_attr($term->term_id); ?>">
+                    <?php echo esc_html($term->name); ?>
+                </label>
+            </div>
+            <?php
+        }
+    } else {
+        ?>
+        <div class="quick-ajax-multiselect-option">
+            <span class="no-options"><?php echo esc_html__('No terms found', 'quick-ajax-post-loader'); ?></span>
+        </div>
+        <?php
+    }
+    $output = ob_get_clean();
+    wp_send_json_success($output);
+    wp_die();
+}

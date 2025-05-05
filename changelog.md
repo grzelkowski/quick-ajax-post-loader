@@ -1,5 +1,14 @@
 ## Changelog
 
+### 1.7.0 - 2025-05-05
+- Added support for manually selecting specific taxonomy terms in the shortcode or PHP function settings.
+- Improved loader icon system with support for dark variants and better visual integration.
+- Updated labels and structure of filter and loader buttons for clarity and consistency.
+- Updated the `qapl_render_taxonomy_filter()` PHP function - the `$taxonomy` parameter is now optional (still supported for backward compatibility).
+- Optimized internal plugin code for better performance, readability, and long-term maintainability.
+- Enhanced shortcode parameter handling and security validation to prevent conflicts and unexpected behavior.
+- Fixed several minor styling issues to improve compatibility with custom themes.
+
 ### 1.6.4 - 2025-04-16
 - Added a new global option to define a custom "No Posts Found" message.
 - Updated the "No Posts Found" template and added the `qapl_template_no_post_message` filter hook to allow developers to customize the message.
@@ -146,6 +155,16 @@
 - Initial release.
 
 ## Upgrade Notice
+
+### 1.7.0
+This update introduces improvements to filter buttons, loader styling, and shortcode parameter handling.
+
+**Important:**
+- New support for selecting specific taxonomy terms directly via shortcode settings offers more control and flexibility.
+- The `qapl_render_taxonomy_filter()` PHP function has been updated – the `$taxonomy` parameter is now optional and auto-detected from the shortcode or function arguments.
+- If you previously passed the taxonomy manually, your code will still work — no changes required.
+
+Recommended update for improved developer experience and enhanced plugin stability.
 
 ### 1.6.4
 This update adds a new global option and filter hook to customize the "No Posts Found" message.

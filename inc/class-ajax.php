@@ -7,19 +7,20 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
     class QAPL_Quick_Ajax_Handler{
         private static $instance = null;
         private $helper;
-        public $args = array();
-        public $attributes = array();
-        public $layout = array();
+        private $input_args = [];
+        private $selected_terms = [];
+        public $args = [];
+        public $load_more_args = [];
+        public $attributes = [];
+        public $layout = [];
         private $ajax_initial_load;
         private $quick_ajax_id;
-        private $quick_ajax_block_id;
         private $global_options;
         //private $placeholder_replacer;
         
         public function __construct(){
             $this->helper = QAPL_Quick_Ajax_Helper::get_instance();
             $this->quick_ajax_id = 0;
-            $this->quick_ajax_block_id = '';
             $this->global_options = get_option($this->helper->admin_page_global_options_name(), []);
             //$this->placeholder_replacer = new QAPL_Placeholder_Replacer(); // not in use after removing placeholders
             // Filter hooks for filter wrapper
@@ -96,7 +97,6 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 // Prefix 'p' for 'shortcode' equal to true, otherwise 'c'
                 $prefix = (isset($attributes['shortcode']) && $attributes['shortcode'] === true) ? 'p' : 'c';              
                 $this->quick_ajax_id = esc_attr($prefix . $attributes[$this->helper->layout_quick_ajax_id()]);
-                $this->quick_ajax_block_id = 'quick-ajax-' . esc_attr($prefix . $attributes[$this->helper->layout_quick_ajax_id()]);
             } else {
                 // Increment qapl_id if 'quick_ajax_id' is not set
                 $this->quick_ajax_id++;
@@ -117,6 +117,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
         public function wp_query_args($args, $attributes = false){
             $this->args = [];
             $this->generate_block_id($attributes);
+            $this->input_args = $args;
             $quick_ajax_args = $this->initialize_query_args($args);
             $this->args['post_status'] = $this->helper->shortcode_page_select_post_status_default_value();
             if (isset($quick_ajax_args['post_type']) && !empty($quick_ajax_args['post_type'])) {
@@ -129,6 +130,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             if(isset($args['tax_query']) && !empty($args['tax_query'])){
                 $this->args['tax_query'] = $args['tax_query'];
             }
+            
             $this->args = apply_filters(QAPL_Hooks::HOOK_MODIFY_POSTS_QUERY_ARGS, $this->args, $this->quick_ajax_id);
 
             if (empty($this->args)) {
@@ -139,24 +141,59 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
         }
         private function initialize_query_args($args) {
             // Set default query arguments
-            $query_args = [
+            $query_args = $this->query_args_base_query_args($args);
+            $query_args = $this->query_args_add_tax_query($query_args, $args);            
+            $query_args = $this->query_args_apply_offset_or_paged($query_args, $args);
+            $this->get_selected_terms($args);
+            return $query_args;    
+        }
+        private function query_args_base_query_args($args) {
+            return [
                 'post_type' => isset($args['post_type']) ? sanitize_text_field($args['post_type']) : null,
                 'posts_per_page' => isset($args['posts_per_page']) ? intval($args['posts_per_page']) : $this->helper->shortcode_page_select_posts_per_page_default_value(),
                 'orderby' => isset($args['orderby']) ? sanitize_text_field($args['orderby']) : $this->helper->shortcode_page_select_orderby_default_value(),
                 'order' => isset($args['order']) ? sanitize_text_field($args['order']) : $this->helper->shortcode_page_select_order_default_value(),
                 'post__not_in' => isset($args['post__not_in']) ? array_map('absint', $this->create_post_not_in($args['post__not_in'])) : '',
                 'ignore_sticky_posts' => isset($args['ignore_sticky_posts']) ? intval($args['ignore_sticky_posts']) : $this->helper->shortcode_page_ignore_sticky_posts_default_value(),
-                'paged' => isset($args['paged']) ? intval($args['paged']) : 1
+                'paged' => isset($args['paged']) ? intval($args['paged']) : 1,
             ];
+        }        
+        private function query_args_apply_offset_or_paged($query_args, $args) {
             // Check if 'offset' is provided and use it instead of 'paged'
             if (isset($args['offset']) && !is_null($args['offset'])) {
                 // Set the offset value and remove 'paged' from the query
                 $query_args['offset'] = intval($args['offset']);
                 unset($query_args['paged']);
             }
-
-            return $query_args;    
+            return $query_args;
         }
+        private function query_args_add_tax_query($query_args, $args) {
+            $taxonomy = isset($args['selected_taxonomy']) ? sanitize_text_field($args['selected_taxonomy']) : '';
+            $terms = isset($args['selected_terms']) && is_array($args['selected_terms']) ? array_map('absint', $args['selected_terms']) : [];
+        
+            if ($taxonomy && !empty($terms)) {
+                $query_args['tax_query'][] = [
+                    'taxonomy' => $taxonomy,
+                    'field'    => 'term_id',
+                    'terms'    => $terms,
+                    'operator' => 'IN',
+                ];
+            } elseif ($taxonomy) {
+                $query_args['tax_query'][] = [
+                    'taxonomy' => $taxonomy,
+                    'operator' => 'EXISTS',
+                ];
+            }        
+            return $query_args;
+        }
+        private function get_selected_terms($args) {
+            $taxonomy = isset($args['selected_taxonomy']) ? sanitize_text_field($args['selected_taxonomy']) : '';
+            $terms = isset($args['selected_terms']) && is_array($args['selected_terms']) ? array_map('absint', $args['selected_terms']) : [];        
+            if ($taxonomy && !empty($terms)) {
+                $this->selected_terms = $terms;
+            }       
+        }
+
         public function sanitize_json_to_array($data) {
             // Check if input is a JSON string
             if (is_string($data)) {
@@ -193,6 +230,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                         'taxonomy' => $term->taxonomy,
                         'field'    => 'term_id',
                         'terms'    => $term->term_id,
+                        'operator' => 'IN',
                     ),
                 ),
                 'post__not_in' => $excluded_post_ids,
@@ -208,11 +246,18 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             if(!$this->args){
                 return false;
             }
-            $terms = get_terms( array(
-                'taxonomy' => $taxonomy,
-                'object_type' => array($this->args['post_type']),
-                'hide_empty' => true,                
-            ) );
+
+            $terms_args = array(
+                'taxonomy'     => $taxonomy,
+                'object_type'  => array($this->args['post_type']),
+                'hide_empty'   => true,
+            );            
+            // only include specific terms if selected_terms is not empty
+            if (!empty($this->selected_terms) && is_array($this->selected_terms)) {
+                $terms_args['include'] = $this->selected_terms;
+            }            
+            $terms = get_terms($terms_args);            
+
             $block_id = 'quick-ajax-filter-'.$this->quick_ajax_id;
             $class_container = 'quick-ajax-filter-container';
             if (isset($this->layout[$this->helper->layout_quick_ajax_css_style()]) && $this->layout[$this->helper->layout_quick_ajax_css_style()] != 0) {
@@ -244,7 +289,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                     'template' => $button_base['template'],
                     'button_label' => $show_all_label,
                     'data-button' => $button_base['data-button'],
-                    'data-action' => $this->args,
+                    'data-action' => $this->input_args,
                     'data-attributes' => $button_base['data-attributes'],
                 ];
                 $navigation_buttons[] = $show_all_button;
@@ -252,13 +297,15 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 foreach ( $terms as $term ) { 
                     $not_empty = $this->get_post_assigned_to_the_term($term, $this->args['post_type'], $exclude_ids);
                     if($not_empty == true){
+                        $data_action = $this->input_args;
+                        $data_action['selected_terms'] = [$term->term_id];
                         $term_button_data = [                        
                             'term_id' => $term->term_id,
                             'taxonomy' => $term->taxonomy,
                             'template' => $button_base['template'],
                             'button_label' => $term->name,
                             'data-button' => $button_base['data-button'],
-                            'data-action' => $this->generate_tax_query($taxonomy, $term->slug),
+                            'data-action' => $data_action,
                             'data-attributes' => $button_base['data-attributes'],
                         ];
                         $navigation_buttons[] = $term_button_data;
@@ -347,7 +394,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 $sort_option .= '<option value="' . $value . '"'.$selected.'>' . $label . '</option>';
             }
             $sort_option .= '</select>';
-            $sort_option .= '<span class="quick-ajax-settings" data-button="'.$this->helper->sort_option_button_data_button().'" data-attributes="' . esc_attr(wp_json_encode($this->attributes)) . '" data-action="' . esc_attr(wp_json_encode($this->args)) . '"></span>';
+            $sort_option .= '<span class="quick-ajax-settings" data-button="'.$this->helper->sort_option_button_data_button().'" data-attributes="' . esc_attr(wp_json_encode($this->attributes)) . '" data-action="' . esc_attr(wp_json_encode($this->input_args)) . '"></span>';
             $sort_option .= '</div>';                      
             return $sort_option;
         }
@@ -422,15 +469,16 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             return $modified_content;
         }
 
-        private function generate_tax_query($taxonomy, $term_slug){
+        private function generate_tax_query($taxonomy, $term_id){
             $term_args = $this->args;
             unset($term_args['paged']);
             unset($term_args['offset']);
             $term_args['tax_query'] = array(
                 array(
                     'taxonomy' => $taxonomy, 
-                    'field' => 'slug',
-                    'terms' => $term_slug,
+                    'field' => 'term_id',
+                    'terms' => $term_id,
+                    'operator' => 'IN',
                 ),
             );
             return $term_args;
@@ -517,7 +565,9 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 return false;
             }
             $args = $this->args;
-            
+
+            $args['selected_taxonomy'] = isset($this->input_args['selected_taxonomy']) ? sanitize_text_field($this->input_args['selected_taxonomy']) : '';
+            $args['selected_terms'] = isset($this->input_args['selected_terms']) && is_array($this->input_args['selected_terms']) ? array_map('absint', $this->input_args['selected_terms']) : [];
             $query = new WP_Query($args);
             $this->attributes[$this->helper->layout_quick_ajax_id()] = $this->quick_ajax_id;
             $layout_quick_ajax_id = esc_attr($this->attributes[$this->helper->layout_quick_ajax_id()]);
@@ -549,7 +599,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 $qapl_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
                 QAPL_Post_Template_Context::set_template($qapl_post_template);
                 if ($this->ajax_initial_load) {
-                    echo '<div class="qapl-initial-loader" data-button="quick-ajax-filter-button" style="display:none;" data-action="' . esc_attr(wp_json_encode($this->args)) . '" data-attributes="' . esc_attr(wp_json_encode($this->attributes)) . '"></div>';
+                    echo '<div class="qapl-initial-loader" data-button="quick-ajax-filter-button" style="display:none;" data-action="' . esc_attr(wp_json_encode($this->input_args)) . '" data-attributes="' . esc_attr(wp_json_encode($this->attributes)) . '"></div>';
                 } else {
                     while ($query->have_posts()) {
                         $query->the_post();                        
@@ -560,7 +610,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             } else {
                 // No posts found
                 $container_settings = [
-                    'quick_ajax_id' => $ajax_class->attributes['quick_ajax_id'],
+                    'quick_ajax_id' => $this->quick_ajax_id,
                     'template_name' => 'no-post-message',
                 ];
                 $qapl_no_post_template = QAPL_Post_Template_Factory::get_template($container_settings);

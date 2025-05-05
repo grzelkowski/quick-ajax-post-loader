@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 //add get qapl_render_post_container - echo qapl_render_post_container()
 //add get qapl_render_taxonomy_filter
-function qapl_render_post_container($args, $attributes = null, $params = null, $meta_query = null) {
+function qapl_render_post_container($args, $attributes = null, $render_context = null, $meta_query = null) {
     if (!class_exists('QAPL_Quick_Ajax_Handler') || !method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             //error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
@@ -17,16 +17,16 @@ function qapl_render_post_container($args, $attributes = null, $params = null, $
     $ajax_class->layout_customization($attributes);
     $output = '';
     $filter_wrapper_start = $filter_wrapper_end = '';
-    if(isset($params['controls_container']) && $params['controls_container'] == 1){
+    if(isset($render_context['controls_container']) && $render_context['controls_container'] == 1){
         $filter_wrapper_start = '<div class="quick-ajax-controls-container">';
          $filter_wrapper_end = '</div>';
     }
     $output .= $filter_wrapper_start;
-    if (isset($params['sort_options']) && !empty($params['sort_options']) && is_array($params['sort_options'])) {
-        $output .= $ajax_class->render_sort_options($params['sort_options']);
+    if (isset($render_context['sort_options']) && !empty($render_context['sort_options']) && is_array($render_context['sort_options'])) {
+        $output .= $ajax_class->render_sort_options($render_context['sort_options']);
     }
-    if (isset($params['taxonomy']) && !empty($params['taxonomy']) && is_string($params['taxonomy'])) {
-        $output .= $ajax_class->render_taxonomy_terms_filter($params['taxonomy']);
+    if (isset($render_context['taxonomy']) && !empty($render_context['taxonomy']) && is_string($render_context['taxonomy'])) {
+        $output .= $ajax_class->render_taxonomy_terms_filter($render_context['taxonomy']);
     }
     $output .= $filter_wrapper_end;
     $output .= $ajax_class->wp_query();
@@ -49,8 +49,15 @@ function qapl_render_taxonomy_filter($args, $attributes, $taxonomy = null){
     $attributes = $attributes ?? [];
     $ajax_class->wp_query_args($args, $attributes);
     $ajax_class->layout_customization($attributes);
-    if(!empty($taxonomy) && is_string($taxonomy)) {
-        echo $ajax_class->render_taxonomy_terms_filter($taxonomy);
+    $selected_taxonomy = null;
+
+    if (!empty($taxonomy) && is_string($taxonomy)) {
+        $selected_taxonomy = $taxonomy;
+    } elseif (!empty($args['selected_taxonomy']) && is_string($args['selected_taxonomy'])) {
+        $selected_taxonomy = $args['selected_taxonomy'];
+    }
+    if(!empty($selected_taxonomy) && is_string($selected_taxonomy)) {
+        echo $ajax_class->render_taxonomy_terms_filter($selected_taxonomy);
     }
 }
 //alias for backward compatibility

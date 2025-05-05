@@ -347,6 +347,10 @@
     margin: 1rem auto 1rem;
     animation: loader-one-spin 2s linear infinite;
   }
+  .qapl-loader-default.dark-loader{
+    border: 8px solid rgba(0,0,0,0.3);
+    border-top: 8px solid rgba(0,0,0,0.6);
+}
   
   @keyframes loader-one-spin {
     0% { transform: rotate(0deg); }
@@ -368,6 +372,9 @@
     border-radius: 50%;
     margin: 5px;
     animation: dotPulse 1.2s infinite ease-in-out both;
+}
+.qapl-loader-dot.dark-loader .dot{
+    background: rgba(0,0,0,0.6);
 }
 
 .qapl-loader-dot .dot:nth-child(1) { animation-delay: -0.24s; }
@@ -396,9 +403,12 @@
     width: 5px;
     height: 30px;
     background: rgba(255,255,255,0.1);
-    margin: 0 2px;
-    
+    margin: 0 2px;    
     animation: wave 1.2s infinite ease-in-out;
+}
+.qapl-loader-wave.dark-loader .wave {
+    background: rgba(0,0,0,0.1);
+    animation: wave-dark 1.2s infinite ease-in-out;
 }
 .qapl-loader-wave .wave:nth-child(1) { animation-delay: -1.1s; }
 .qapl-loader-wave .wave:nth-child(2) { animation-delay: -1.0s; }
@@ -413,6 +423,15 @@
     20% {
         transform: scaleY(1.0);
         background: rgba(255,255,255,1);
+    }
+}
+@keyframes wave-dark {
+    0%, 40%, 100% {
+        transform: scaleY(0.4);
+    }
+    20% {
+        transform: scaleY(1.0);
+        background: rgba(0,0,0,0.6);
     }
 }
 

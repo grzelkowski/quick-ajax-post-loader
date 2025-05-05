@@ -2,6 +2,6 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-/* Loader Icon Name: Default Icon */
+/* Loader Icon Name: Default Loader */
 ?>
 <div class="qapl-loader-default"></div>

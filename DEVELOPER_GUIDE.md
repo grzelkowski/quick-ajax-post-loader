@@ -98,11 +98,13 @@ To add a new shortcode:
 1. Go to **Quick Ajax > Shortcodes** in the WordPress admin panel.
 2. Click **Add New Shortcode** and fill in the configuration form.
 3. Enter the following details:
-   - **Shortcode Name** - Provide a name for the configuration, e.g., "My Post List."
-   - **Select Post Type** - Choose the type of content to load (e.g., posts, pages, or custom post types).
-   - **Show Taxonomy Filter** - Enable or disable filtering by category or tag.
-   - **Select Taxonomy** - If filtering is enabled, select which taxonomy (e.g., categories, tags) will be used.
-   - **Posts Per Page** - Define how many posts will be loaded in a single AJAX request.
+    - **Shortcode Name** - Provide a name for the configuration, e.g., "My Post List."
+    - **Select Post Type** - Choose the type of content to load (e.g., posts, pages, or custom post types).
+    - **Show Taxonomy Filter** - Enable or disable filtering by category or tag.
+    - **Select Taxonomy** - If filtering is enabled, select which taxonomy (e.g., categories, tags) will be used.
+    - **Select Specific Terms** - If enabled, you can manually choose specific terms to include in the filter.
+    - **Choose Terms** - Select one or more terms from the selected taxonomy to be available in the filter. If no terms are selected, no results will be shown.
+    - **Posts Per Page** - Define how many posts will be loaded in a single AJAX request.
 
 After saving the settings, copy the generated shortcode, e.g.:
 
@@ -933,6 +935,8 @@ The following code enables dynamically displaying posts via AJAX without the nee
         'order' => 'DESC',
         'post__not_in' => [3, 66, 999],
         'ignore_sticky_posts' => 1,
+        'selected_taxonomy' => 'category',
+        'selected_terms' => [3, 6, 9]
     ];
 
     // Define attributes for AJAX.
@@ -941,8 +945,8 @@ The following code enables dynamically displaying posts via AJAX without the nee
         'quick_ajax_css_style' => 1,
         'grid_num_columns' => 3,
         'post_item_template' => 'post-item',
-        'taxonomy_filter_class' => 'class-taxonomy filter-class',
-        'container_class' => 'container-class',
+        'taxonomy_filter_class' => 'class-taxonomy, filter-class',
+        'container_class' => 'container-class, my-style',
         'load_more_posts' => 4,
         'loader_icon' => 'loader-icon',
         'ajax_initial_load' => 1,
@@ -961,15 +965,11 @@ The following code enables dynamically displaying posts via AJAX without the nee
         );
     endif;
 
-    // Set the taxonomy for filtering posts.
-    $quick_ajax_taxonomy = 'category';
-
-    // Render the navigation for 'category' taxonomy.
+    // Render the navigation for selected taxonomy.
     if(function_exists('qapl_render_taxonomy_filter')):
         qapl_render_taxonomy_filter(
             $quick_ajax_args,
-            $quick_ajax_attributes,
-            $quick_ajax_taxonomy
+            $quick_ajax_attributes
         );
     endif;
 
@@ -1003,7 +1003,6 @@ Function that generates **filter buttons** for a selected taxonomy.
 
 - **$quick_ajax_args** - WP_Query arguments array.
 - **$quick_ajax_attributes** - display attributes array.
-- **$quick_ajax_taxonomy** - taxonomy name (e.g., `'category'`, `'tag'`).
 
 ### qapl_render_sort_controls
 
@@ -1042,13 +1041,16 @@ If you want to customize post loading behavior, use these parameters in the **qa
 ### Available Options:
 
 - **post_type** *(string)* - the post type to retrieve, e.g., `'post'`, `'page'`, or custom post types.
-- **posts_per_page** *(int)* - the number of posts displayed per page.
-- **orderby** *(string)* - the sorting criteria for posts, e.g., `'date'`, `'title'`.
+- **posts_per_page** *(int)* - number of items to load per AJAX request.
+- **orderby** *(string)* - how to sort the results, e.g., `'date'`, `'title'`.
 - **order** *(string)* - the order in which posts are sorted, e.g., `'ASC'`, `'DESC'`.
-- **post__not_in** *(array)* - an array of post IDs to exclude.
-- **ignore_sticky_posts** *(bool)*  
-  - `true` - ignores sticky posts.
-  - `false` - follows WordPress default behavior.
+- **post__not_in** *(array)* - array of post IDs to exclude from the results.
+- **ignore_sticky_posts** *(bool)* - whether to ignore sticky posts.
+- **selected_taxonomy** *(string)* - slug of the taxonomy to display in the filter navigation (e.g., `'category'`, `'product_color'`).
+  Enables rendering of a taxonomy-based filter UI with toggle buttons for terms.
+- **selected_terms** *(array)* - array of term IDs that should appear in the filter navigation.
+  If not defined or empty, **all terms** from the selected taxonomy will be included.
+  If defined, **only the specified terms** will be displayed and used for filtering.
 
 ### Example Configuration of $quick_ajax_args
 
@@ -1059,6 +1061,8 @@ If you want to customize post loading behavior, use these parameters in the **qa
         'order'               => 'DESC',
         'post__not_in'        => [3, 66, 100],
         'ignore_sticky_posts' => true,
+        'selected_taxonomy'   => 'category',
+        'selected_terms'      => [3, 6, 9]
     ];
 
 This setup fetches **the 6 most recent posts**, ignores **sticky posts**, and excludes posts with **IDs 3, 66, and 100**.

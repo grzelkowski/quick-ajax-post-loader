@@ -14,7 +14,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.6.4',
+            'version' => '1.7.0',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
@@ -133,6 +133,7 @@ class QAPL_Quick_Ajax_Helper{
             'quick_ajax_settings_wrapper' => self::settings_wrapper_id(),
             'quick_ajax_post_type' => self::shortcode_page_select_post_type(),
             'quick_ajax_taxonomy' => self::shortcode_page_select_taxonomy(),
+            'quick_ajax_manual_selected_terms' => self::shortcode_page_manual_selected_terms(),
             'quick_ajax_css_style' => self::layout_quick_ajax_css_style(),
             'grid_num_columns' => self::layout_container_num_columns(),
             'post_item_template' => self::layout_post_item_template(),
@@ -352,6 +353,15 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function shortcode_page_select_taxonomy(){
         return 'qapl_select_taxonomy';
+    }
+    public static function shortcode_page_manual_term_selection(){
+        return 'qapl_manual_term_selection';
+    }
+    public static function shortcode_page_manual_term_selection_default_value(){
+        return 0;
+    }
+    public static function shortcode_page_manual_selected_terms(){
+        return 'qapl_manual_selected_terms';
     }
     public static function shortcode_page_select_posts_per_page(){
         return 'qapl_select_posts_per_page';
@@ -865,6 +875,27 @@ class QAPL_Form_Fields_Helper{
             'options' => '',
             'default' => '',
             'description' => __('Select the taxonomy to be used for filtering posts.', 'quick-ajax-post-loader')
+        );
+    }
+    //manual term selection checkbox
+    public static function get_field_manual_term_selection(){
+        return array(
+            'name'        => QAPL_Quick_Ajax_Helper::shortcode_page_manual_term_selection(),
+            'label'       => __('Select Specific Terms', 'quick-ajax-post-loader'),
+            'type'        => 'checkbox',
+            'default'     => QAPL_Quick_Ajax_Helper::shortcode_page_manual_term_selection_default_value(),
+            'description' => __('Enable manual selection of taxonomy terms to be used for filtering.', 'quick-ajax-post-loader')
+        );
+    }
+    //manual selected terms multiselect
+    public static function get_field_manual_selected_terms(){
+        return array(
+            'name'        => QAPL_Quick_Ajax_Helper::shortcode_page_manual_selected_terms(),
+            'label'       => __('Choose Terms', 'quick-ajax-post-loader'),
+            'type'        => 'multiselect',
+            'options'     => '',
+            'default'     => array(),
+            'description' => __('Select the specific terms to be used for filtering posts. If left empty, no results will be shown.', 'quick-ajax-post-loader')
         );
     }
     //post per page number

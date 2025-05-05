@@ -5,6 +5,7 @@
             this.click_and_select_shortcode();
             this.click_and_select_all();
             this.handle_post_type_change();
+            this.handle_taxonomy_change();
             this.show_hide_element_on_change();
             this.quick_ajax_tabs();
             this.copy_code();
@@ -13,6 +14,7 @@
             // Any other functions you want to initialize
         },
         handle_post_type_change: function() {
+            var self = this;
             if (typeof qapl_quick_ajax_helper !== 'undefined' && qapl_quick_ajax_helper) {
                 if ($('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_post_type).length) {
                     $('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_post_type).on('change', function () {
@@ -30,6 +32,7 @@
                                     var taxonomySelect = $('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_taxonomy);
                                     taxonomySelect.empty();
                                     taxonomySelect.append(response.data);
+                                    self.trigger_taxonomy_change();
                                 }
                                 else {
                                     console.error('Quick Ajax Post Loader: Invalid response structure');
@@ -43,15 +46,83 @@
                 }
             }
         },
+        handle_taxonomy_change: function() {
+            var self = this;
+            if (typeof qapl_quick_ajax_helper !== 'undefined' && qapl_quick_ajax_helper) {
+                var taxonomySelect = $('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_taxonomy);
+                var termsContainer = $('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_manual_selected_terms);
+                if (taxonomySelect.length) {
+                    taxonomySelect.on('change', function () {
+                        termsContainer.empty();
+                        self.admin_page_loader(termsContainer);
+                        var taxonomy = $(this).val();
+                        var post_id = '';
+                        if($('#post_ID').length){
+                            post_id = $('#post_ID').val(); 
+                        }
+                        $.ajax({
+                            url: qapl_quick_ajax_helper.ajax_url,
+                            type: 'POST',
+                            data: {
+                                action: 'qapl_quick_ajax_get_terms_by_taxonomy',
+                                taxonomy: taxonomy,
+                                post_id: post_id,
+                                nonce: qapl_quick_ajax_helper.nonce
+                            },
+                            success: function (response) {
+                                if (response && response.data) {                                    
+                                    termsContainer.fadeOut(100, function() {
+                                    termsContainer.empty();
+                                    termsContainer.append(response.data);
+                                    termsContainer.fadeIn(100);
+                                    });
+                                } else {
+                                    console.error('Quick Ajax Post Loader: Invalid response structure for terms');
+                                }
+                            },                            
+                            error: function (xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+                    });
+                }
+            }
+        },
+        trigger_taxonomy_change: function() {
+            var self = this;
+            if (typeof qapl_quick_ajax_helper !== 'undefined' && qapl_quick_ajax_helper) {
+                var taxonomySelect = $('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_taxonomy);
+                var termsContainer = $('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_manual_selected_terms);
+                if (termsContainer.length) {
+                    self.admin_page_loader(termsContainer);
+                    taxonomySelect.trigger('change');
+                }
+            }
+        },        
+        admin_page_loader: function(container) {
+            container.append('<div class="qapl-admin-page-loader"><span></span><span></span><span></span></div>');
+        },
         show_hide_element_on_change: function() {
-            $('.show-hide-element').each(function () {
-                var checkbox = $(this).find('input');
-                var targetID = checkbox.attr('id'); 
-                checkbox.change(function () {
-                    if (checkbox.is(':checked')) {
-                    $('div[data-item="' + targetID + '"]').removeClass('inactive');
+            $('.show-hide-trigger input, .show-hide-trigger select').on('change', function() {
+                $('.quick-ajax-field-container[data-conditional]').each(function() {
+                    var $container = $(this);
+                    var conditions = $container.data('conditional');
+                    var shouldBeVisible = true;
+            
+                    $.each(conditions, function(fieldId, expectedValue) {
+                        var $triggerField = $('#' + fieldId);
+                        var actualValue = $triggerField.is(':checkbox') ? ($triggerField.is(':checked') ? '1' : '0') : $triggerField.val();
+            
+                        if (actualValue !== expectedValue) {
+                            shouldBeVisible = false;
+                            return false; // break out of loop
+                        }
+                    });
+            
+                    if (shouldBeVisible) {
+                        $container.removeClass('inactive');
                     } else {
-                    $('div[data-item="' + targetID + '"]').addClass('inactive');
+                        $container.addClass('inactive');
                     }
                 });
             });
@@ -151,7 +222,7 @@
             });
 
             // Join the cleaned class names with a single space
-            return classNames.join(' ');
+            return classNames.join(', ');
         },
         quick_ajax_function_generator: function() {
             var self = this;
@@ -203,7 +274,27 @@
                 }   
                 if (inputData.qapl_ignore_sticky_posts === 1) {
                     quickAjaxArgsText += "    'ignore_sticky_posts' => " + inputData.qapl_ignore_sticky_posts + ",\n";
-                }   
+                }
+                if (inputData.qapl_show_select_taxonomy === 1) {
+                    quickAjaxArgsText += "    'selected_taxonomy' => '" + inputData.qapl_select_taxonomy + "',\n";
+                }
+                /* */
+                if (inputData.qapl_show_select_taxonomy === 1 && inputData.qapl_manual_term_selection === 1) {
+                    var quickAjaxSelectedTerms = inputData.qapl_manual_selected_terms;
+                    if (quickAjaxSelectedTerms && quickAjaxSelectedTerms.length > 0) {
+                        var quickAjaxSelectedTermsArray = "[";
+                        quickAjaxSelectedTermsArray += quickAjaxSelectedTerms.map(option => `${option}`).join(', ');
+                        quickAjaxSelectedTermsArray += "]";
+                    }
+                    if(quickAjaxSelectedTermsArray){
+                        quickAjaxArgsText += "    'selected_terms' => " + quickAjaxSelectedTermsArray + ",\n";
+                    }                   
+                }
+                let cleanArray = quickAjaxArgsText.trimEnd(); // maybe change to push and join
+                if (cleanArray.endsWith(',')) {
+                    // remove last coma
+                    quickAjaxArgsText = cleanArray.slice(0, -1) + '\n';
+                }
                 quickAjaxArgsText += "];";
                 if (typeof qapl_quick_ajax_helper !== 'undefined' && qapl_quick_ajax_helper) {
                     var quickAjaxAttributes = {};
@@ -281,7 +372,7 @@
                 if (quickAjaxSortControl !== null) {
                     quickAjaxSortControlValue = "";
                     quickAjaxSortControlValue += quickAjaxSortControlValueOptions;
-                    //qapl_render_taxonomy_filter     
+                    //qapl_render_sort_controls
                     quickAjaxSortControlText = "";
                     quickAjaxSortControlText += "if(function_exists('qapl_render_sort_controls')):\n";
                     quickAjaxSortControlText += "    qapl_render_sort_controls(\n";
@@ -303,14 +394,14 @@
                 var quickAjaxTaxonomyFilterText = "";
                 if (quickAjaxTaxonomy !== null) {
                     quickAjaxTaxonomyFilterValue = "";
-                    quickAjaxTaxonomyFilterValue += `$quick_ajax_taxonomy = '${quickAjaxTaxonomy}';`;
+                    //quickAjaxTaxonomyFilterValue += `$quick_ajax_taxonomy = '${quickAjaxTaxonomy}';`;
                     //qapl_render_taxonomy_filter     
                     quickAjaxTaxonomyFilterText = "";
                     quickAjaxTaxonomyFilterText += "if(function_exists('qapl_render_taxonomy_filter')):\n";
                     quickAjaxTaxonomyFilterText += "    qapl_render_taxonomy_filter(\n";
                     quickAjaxTaxonomyFilterText += "        $quick_ajax_args,\n";
                     quickAjaxTaxonomyFilterText += "        $quick_ajax_attributes,\n";
-                    quickAjaxTaxonomyFilterText += "        $quick_ajax_taxonomy,\n";
+                    //quickAjaxTaxonomyFilterText += "        $quick_ajax_taxonomy,\n";
                     //remove last comma
                     quickAjaxTaxonomyFilterText = quickAjaxTaxonomyFilterText.slice(0, -2) + "\n";
                     quickAjaxTaxonomyFilterText += "    );\n";
