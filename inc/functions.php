@@ -25,8 +25,8 @@ function qapl_render_post_container($args, $attributes = null, $render_context =
     if (isset($render_context['sort_options']) && !empty($render_context['sort_options']) && is_array($render_context['sort_options'])) {
         $output .= $ajax_class->render_sort_options($render_context['sort_options']);
     }
-    if (isset($render_context['taxonomy']) && !empty($render_context['taxonomy']) && is_string($render_context['taxonomy'])) {
-        $output .= $ajax_class->render_taxonomy_terms_filter($render_context['taxonomy']);
+    if (isset($render_context['show_taxonomy_filter']) && $render_context['show_taxonomy_filter'] && !empty($args['selected_taxonomy'])) {
+        $output .= $ajax_class->render_taxonomy_terms_filter($args['selected_taxonomy']);
     }
     $output .= $filter_wrapper_end;
     $output .= $ajax_class->wp_query();

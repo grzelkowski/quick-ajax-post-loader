@@ -8,9 +8,8 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
         private static $instance = null;
         private $helper;
         private $input_args = [];
-        private $selected_terms = [];
+        private $action_args = [];
         public $args = [];
-        public $load_more_args = [];
         public $attributes = [];
         public $layout = [];
         private $ajax_initial_load;
@@ -59,20 +58,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
         public function get_quick_ajax_id() {
             return $this->quick_ajax_id;
         }
-
-        private function create_post_not_in($excluded_post_ids){
-            $post__not_in = [];
-            $array_ids = is_array($excluded_post_ids) ? $excluded_post_ids : preg_split('/[,\s]+/', $excluded_post_ids);
-            
-            foreach ($array_ids as $post_id) {
-                $int_post_id = intval($post_id);
-                //Check if the value is greater than 0 and not already in the array
-                if ($int_post_id > 0 && !in_array($int_post_id, $post__not_in, true)) {
-                    $post__not_in[] = $int_post_id;
-                }
-            }
-            return $post__not_in;                     
-        }
+        
         /*
         public function filter_modify_query_args($args, $quick_ajax_id) {
             if($quick_ajax_id == $this->quick_ajax_id){
@@ -114,12 +100,44 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             return $where;
         }
         */
+        private function sanitize_to_int_array($value) {
+            // if it's a string (e.g. "1,2,3"), split it by comma or whitespace
+            if (!is_array($value)) {
+                $value = preg_split('/[,\s]+/', $value);
+            }        
+            // normalize and sanitize all values
+            $value = array_map('absint', $value);        
+            // remove empty values (0s, nulls, etc.)
+            $value = array_filter($value, function($id) {
+                return $id > 0;
+            });        
+            // remove duplicates
+            $int_array = array_values(array_unique($value));        
+            return $int_array;
+        }
+        private function normalize_args($args) {
+            // convert comma-separated string to array of integers
+            if (isset($args['post__not_in'])) {
+                $args['post__not_in'] = $this->sanitize_to_int_array($args['post__not_in']);
+            }        
+            if (isset($args['selected_terms'])) {
+                $args['selected_terms'] = $this->sanitize_to_int_array($args['selected_terms']);
+            } 
+            return $args;
+        }
         public function wp_query_args($args, $attributes = false){
             $this->args = [];
             $this->generate_block_id($attributes);
-            $this->input_args = $args;
-            $quick_ajax_args = $this->initialize_query_args($args);
+
+             //normalize input args (sanitize selected_terms, post__not_in, etc.)
+            $this->input_args = $this->normalize_args($args);
+            $this->action_args = $this->input_args;
+            
+            // generate query args (post_type, tax_query, etc.)
+            $quick_ajax_args = $this->initialize_query_args($this->input_args);
+
             $this->args['post_status'] = $this->helper->shortcode_page_select_post_status_default_value();
+
             if (isset($quick_ajax_args['post_type']) && !empty($quick_ajax_args['post_type'])) {
                 foreach ($quick_ajax_args as $key => $value) {
                     if (!empty($value)) {
@@ -127,9 +145,11 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                     }
                 }
             }
+            /* not in use yet
             if(isset($args['tax_query']) && !empty($args['tax_query'])){
                 $this->args['tax_query'] = $args['tax_query'];
             }
+            */
             
             $this->args = apply_filters(QAPL_Hooks::HOOK_MODIFY_POSTS_QUERY_ARGS, $this->args, $this->quick_ajax_id);
 
@@ -144,7 +164,6 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             $query_args = $this->query_args_base_query_args($args);
             $query_args = $this->query_args_add_tax_query($query_args, $args);            
             $query_args = $this->query_args_apply_offset_or_paged($query_args, $args);
-            $this->get_selected_terms($args);
             return $query_args;    
         }
         private function query_args_base_query_args($args) {
@@ -153,7 +172,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 'posts_per_page' => isset($args['posts_per_page']) ? intval($args['posts_per_page']) : $this->helper->shortcode_page_select_posts_per_page_default_value(),
                 'orderby' => isset($args['orderby']) ? sanitize_text_field($args['orderby']) : $this->helper->shortcode_page_select_orderby_default_value(),
                 'order' => isset($args['order']) ? sanitize_text_field($args['order']) : $this->helper->shortcode_page_select_order_default_value(),
-                'post__not_in' => isset($args['post__not_in']) ? array_map('absint', $this->create_post_not_in($args['post__not_in'])) : '',
+                'post__not_in' => $args['post__not_in'] ?? [],
                 'ignore_sticky_posts' => isset($args['ignore_sticky_posts']) ? intval($args['ignore_sticky_posts']) : $this->helper->shortcode_page_ignore_sticky_posts_default_value(),
                 'paged' => isset($args['paged']) ? intval($args['paged']) : 1,
             ];
@@ -169,7 +188,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
         }
         private function query_args_add_tax_query($query_args, $args) {
             $taxonomy = isset($args['selected_taxonomy']) ? sanitize_text_field($args['selected_taxonomy']) : '';
-            $terms = isset($args['selected_terms']) && is_array($args['selected_terms']) ? array_map('absint', $args['selected_terms']) : [];
+            $terms = isset($args['selected_terms']) ? $args['selected_terms'] : [];
         
             if ($taxonomy && !empty($terms)) {
                 $query_args['tax_query'][] = [
@@ -185,13 +204,6 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 ];
             }        
             return $query_args;
-        }
-        private function get_selected_terms($args) {
-            $taxonomy = isset($args['selected_taxonomy']) ? sanitize_text_field($args['selected_taxonomy']) : '';
-            $terms = isset($args['selected_terms']) && is_array($args['selected_terms']) ? array_map('absint', $args['selected_terms']) : [];        
-            if ($taxonomy && !empty($terms)) {
-                $this->selected_terms = $terms;
-            }       
         }
 
         public function sanitize_json_to_array($data) {
@@ -242,9 +254,12 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             }
             return false;      
         }
-        public function render_taxonomy_terms_filter($taxonomy){
+        public function render_taxonomy_terms_filter($taxonomy = false){
             if(!$this->args){
                 return false;
+            }
+            if(!$taxonomy){
+                $taxonomy = $this->input_args['selected_taxonomy'];
             }
 
             $terms_args = array(
@@ -253,8 +268,8 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 'hide_empty'   => true,
             );            
             // only include specific terms if selected_terms is not empty
-            if (!empty($this->selected_terms) && is_array($this->selected_terms)) {
-                $terms_args['include'] = $this->selected_terms;
+            if (!empty($this->input_args['selected_terms']) && is_array($this->input_args['selected_terms'])) {
+                $terms_args['include'] = $this->input_args['selected_terms'];
             }            
             $terms = get_terms($terms_args);            
 
@@ -289,7 +304,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                     'template' => $button_base['template'],
                     'button_label' => $show_all_label,
                     'data-button' => $button_base['data-button'],
-                    'data-action' => $this->input_args,
+                    'data-action' => $this->action_args,
                     'data-attributes' => $button_base['data-attributes'],
                 ];
                 $navigation_buttons[] = $show_all_button;
@@ -297,7 +312,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 foreach ( $terms as $term ) { 
                     $not_empty = $this->get_post_assigned_to_the_term($term, $this->args['post_type'], $exclude_ids);
                     if($not_empty == true){
-                        $data_action = $this->input_args;
+                        $data_action = $this->action_args;
                         $data_action['selected_terms'] = [$term->term_id];
                         $term_button_data = [                        
                             'term_id' => $term->term_id,
@@ -394,7 +409,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 $sort_option .= '<option value="' . $value . '"'.$selected.'>' . $label . '</option>';
             }
             $sort_option .= '</select>';
-            $sort_option .= '<span class="quick-ajax-settings" data-button="'.$this->helper->sort_option_button_data_button().'" data-attributes="' . esc_attr(wp_json_encode($this->attributes)) . '" data-action="' . esc_attr(wp_json_encode($this->input_args)) . '"></span>';
+            $sort_option .= '<span class="quick-ajax-settings" data-button="'.$this->helper->sort_option_button_data_button().'" data-attributes="' . esc_attr(wp_json_encode($this->attributes)) . '" data-action="' . esc_attr(wp_json_encode($this->action_args)) . '"></span>';
             $sort_option .= '</div>';                      
             return $sort_option;
         }
@@ -646,26 +661,27 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             }
             //echo 'paged:'.$paged.'<br />$max_num_pages:'.$max_num_pages.'<br />$found_posts:'.$found_posts.'<br />';
             //print_r($this->args);
-
+            $load_more_args = $this->action_args;
+            $load_more_args['paged'] = isset($this->args['paged']) ? intval($this->args['paged']) : 1;
             if (isset($this->attributes[$this->helper->layout_load_more_posts()]) && !empty($this->attributes[$this->helper->layout_load_more_posts()])) {
             // Check if load_more_posts attribute is set
             // if we want to add a different number of posts than displayed at the start
             // use 'offset' not 'paged'
                 $load_more_posts = intval($this->attributes[$this->helper->layout_load_more_posts()]);
-                $offset = isset($this->args['offset']) ? $this->args['offset'] + $load_more_posts : + $load_more_posts;
+                $offset = isset($load_more_args['offset']) ? $load_more_args['offset'] + $load_more_posts : + $load_more_posts;
                
-                if (($found_posts <= $offset) || ($found_posts <= intval($this->args['posts_per_page']))) {
+                if (($found_posts <= $offset) || ($found_posts <= intval($load_more_args['posts_per_page']))) {
                     return false;
                 }
                  // Update offset
-                $this->args['offset'] = isset($this->args['offset']) ? intval($this->args['offset']) + $load_more_posts : intval($this->args['posts_per_page']);
-                $this->args['posts_per_page'] = $load_more_posts;
+                $load_more_args['offset'] = isset($load_more_args['offset']) ? intval($load_more_args['offset']) + $load_more_posts : intval($load_more_args['posts_per_page']);
+                $load_more_args['posts_per_page'] = $load_more_posts;
             } else {
                 // Check if there are no more pages to load
                 if ($max_num_pages <= $paged) {
                     return false;
                 }                
-                $this->args['paged'] += 1;
+                $load_more_args['paged'] += 1;
             }
             $class = '';
             if ($infinite_scroll) {
@@ -675,7 +691,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             $button_data['template'] = $this->helper->plugin_templates_load_more_button();
             $button_data['button_label'] = __('Load More', 'quick-ajax-post-loader');
             $button_data['data-button'] = $this->helper->load_more_button_data_button();
-            $button_data['data-action'] = $this->args;
+            $button_data['data-action'] = $load_more_args;
             $button_data['data-attributes'] = $this->attributes;
             $load_more_button = '<div class="quick-ajax-load-more-container'.$class.'">';
             $load_more_button .=  $this->update_button_template($button_data);
@@ -683,7 +699,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             return $load_more_button;
             //do_action(QAPL_Hooks::HOOK_LOAD_MORE_AFTER);
         }
-        public function render_end_of_posts_message($show_end_post_message = false, $load_more, $max_num_pages, $quick_ajax_id) {
+        public function render_end_of_posts_message($load_more, $max_num_pages, $quick_ajax_id, $show_end_post_message = false) {
             if(!$show_end_post_message){
                 return '';
             }

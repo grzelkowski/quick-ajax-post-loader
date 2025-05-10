@@ -1,5 +1,11 @@
 ## Changelog
 
+### 1.7.1 - 2025-05-10
+- Enhanced taxonomy filter in shortcode settings – saved terms are now automatically pre-selected when editing.
+- The "Load More" button now passes only essential parameters, ensuring cleaner functionality.
+- Improved compatibility with the latest PHP versions, ensuring smooth operation without deprecated warnings.
+- Applied minor code optimizations for better performance.
+
 ### 1.7.0 - 2025-05-05
 - Added support for manually selecting specific taxonomy terms in the shortcode or PHP function settings.
 - Improved loader icon system with support for dark variants and better visual integration.

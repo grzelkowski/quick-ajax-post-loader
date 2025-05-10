@@ -161,26 +161,29 @@ function qapl_quick_ajax_get_terms_by_taxonomy() {
         'taxonomy' => $taxonomy,
         'hide_empty' => false,
     ]);
-    /*
+    //get checked terms if saved in post_meta
     $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
-    $saved_terms = [];    
+    $saved_terms = [];
     if ($post_id > 0) {
+        // get saved terms from post meta
         $post_meta = get_post_meta($post_id, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings(), true);
         $post_meta_values = maybe_unserialize($post_meta);
+        // if terms exist in post meta
         if (is_array($post_meta_values) && isset($post_meta_values['qapl_manual_selected_terms'])) {
             $saved_terms = array_map('intval', (array) $post_meta_values['qapl_manual_selected_terms']);
         }
     }
-    //$checked = in_array($term->term_id, $saved_terms) ? 'checked' : '';
-    
-    */
     ob_start();
     if (!empty($terms) && !is_wp_error($terms)) {
         foreach ($terms as $term) {
             ?>
             <div class="quick-ajax-multiselect-option">
                 <label>
-                    <input type="checkbox" name="qapl_manual_selected_terms[]" value="<?php echo esc_attr($term->term_id); ?>">
+                    <?php
+                    //check if term is selected in post meta
+                    $checked = in_array($term->term_id, $saved_terms) ? 'checked' : ''; 
+                    ?>
+                    <input type="checkbox" name="qapl_manual_selected_terms[]" value="<?php echo esc_attr($term->term_id); ?>" <?php echo $checked; ?>>
                     <?php echo esc_html($term->name); ?>
                 </label>
             </div>

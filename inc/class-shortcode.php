@@ -255,6 +255,7 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
     class QAPL_Quick_Ajax_Shortcode {
         private $shortcode_params = array();
         private $shortcode_postmeta = array();
+        private $query_args = array();
         
         private function get_shortcode_params($params) {
             $this->shortcode_params = QAPL_Shortcode_Params_Handler::get_params($params);
@@ -320,16 +321,16 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                 */
             }
             if(!empty($args)){
-                return $args;
+                $this->query_args = $args;
             }
             return false;
         }
+        /*
+        // replaced by args['selected_taxonomy'] - may be needed in the future if there is an option to hide the filter
         private function create_shortcode_taxonomy(){
             if (empty($this->shortcode_params['id'])) {
                 return null;
             }
-            //$postID = $this->shortcode_params['id'];
-            //$selectedTaxonomy = get_post_meta($postID, 'quick_ajax_meta_box_select_taxonomy', true);
             $show_taxonomies_filter = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_show_taxonomy_filter()]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_show_taxonomy_filter()] : null;
             if($show_taxonomies_filter==1){
                 $selectedTaxonomy = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_select_taxonomy()]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_select_taxonomy()] : null;
@@ -339,7 +340,7 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
                 return $selectedTaxonomy;
             }
             return null;
-        }
+        }*/
         private function create_shortcode_controls_container(){
             if(!empty($this->shortcode_params['id'])){
                 $show_sort_orderby_button = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button()]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button()] : null;
@@ -371,15 +372,16 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
             if (!empty($this->shortcode_params['id'])) {
                 $this->unserialize_shortcode_data($this->shortcode_params['id']);
             }
-            $query_args = $this->create_shortcode_args();
+            $this->create_shortcode_args();
             $attribute_provider = new QAPL_Shortcode_Ajax_Attributes_Provider($this->shortcode_params, $this->shortcode_postmeta);
             $attributes = $attribute_provider->get_attributes();
-            $render_context['taxonomy'] = $this->create_shortcode_taxonomy();
+            //$render_context['show_taxonomy_filter'] = $this->create_shortcode_taxonomy();
+            $render_context['show_taxonomy_filter'] = !empty($this->query_args['selected_taxonomy']);
             $render_context['sort_options'] = $this->create_shortcode_sort_button();
             $render_context['controls_container'] = $this->create_shortcode_controls_container();
             ob_start();
-            if (!empty($query_args) && function_exists('qapl_render_post_container')) {
-                qapl_render_post_container($query_args, $attributes, $render_context);
+            if (!empty($this->query_args) && function_exists('qapl_render_post_container')) {
+                qapl_render_post_container($this->query_args, $attributes, $render_context);
             }
             $output = ob_get_clean();
             return $output;

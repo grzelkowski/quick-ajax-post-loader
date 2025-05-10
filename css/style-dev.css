@@ -137,6 +137,7 @@
     flex-wrap: wrap;
     width:100%;
     padding:1rem;
+    box-sizing: border-box;
 }
 .quick-ajax-posts-container.quick-ajax-theme .col-qty-2 .qapl-post-item{
     width: calc(100% / 2); 
