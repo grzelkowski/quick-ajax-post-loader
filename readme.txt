@@ -4,7 +4,7 @@ Contributors: grzelkowski
 Tags: ajax-load-more, infinite-scroll, category-filter, load-more, ajax
 Requires at least: 5.6
 Tested up to: 6.8
-Stable tag: 1.7.1
+Stable tag: 1.7.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -105,8 +105,12 @@ Yes, developers can use available WordPress hooks and filters to fully customize
 
 == Changelog ==
 
+= 1.7.2 - 2025-05-18 =
+- Fixed an issue where multiple custom CSS classes added to the post container were not handled correctly when separated by commas or spaces.
+- Minor internal improvements for better code reliability.
+
 = 1.7.1 - 2025-05-10 =
-- Enhanced taxonomy filter in shortcode settings – saved terms are now automatically pre-selected when editing.
+- Enhanced taxonomy filter in shortcode settings - saved terms are now automatically pre-selected when editing.
 - The "Load More" button now passes only essential parameters, ensuring cleaner functionality.
 - Improved compatibility with the latest PHP versions, ensuring smooth operation without deprecated warnings.
 - Applied minor code optimizations for better performance.

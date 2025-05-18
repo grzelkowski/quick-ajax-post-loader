@@ -332,7 +332,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 foreach ( $navigation_buttons as $button ) {
                     $filter_buttons .= $this->update_button_template($button);
                 }
-                echo $filter_buttons;
+                echo wp_kses_post($filter_buttons);
             }
             do_action(QAPL_Hooks::HOOK_FILTER_CONTAINER_END, $this->quick_ajax_id);
             echo '</div>';
@@ -350,6 +350,38 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             }          
             $container_class = $this->extract_classes_from_string($class_container);
             $sort_buttons ='';
+            $allowed_button_html = [
+                'div' => [
+                    'class' => [],
+                    'id' => [],
+                    'data-*' => [],
+                ],
+                'select' => [
+                    'id' => [],
+                    'name' => [],
+                    'aria-label' => [],
+                    'class' => [],
+                    'data-*' => [],
+                ],
+                'option' => [
+                    'value' => [],
+                    'selected' => [],
+                    'class' => [],
+                    'data-*' => [],
+                ],
+                'span' => [
+                    'class' => [],
+                    'data-button' => [],
+                    'data-attributes' => true,
+                    'data-action' => true,
+                    'data-*' => [],
+                ],
+                'p' => [
+                    'class' => [],
+                    'data-*' => [],
+                ]
+            ];
+
             ob_start(); // Start output buffering
 
             echo '<div id="'.esc_attr($block_id).'" class="'.esc_attr($container_class).'">';
@@ -389,8 +421,9 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                     'options' => $filtered_orderby_options
                 ];
                 $sort_buttons .= $this->create_sort_button($button_option);
+                
             }
-            echo $sort_buttons;
+            echo wp_kses($sort_buttons, $allowed_button_html);
             
             echo '</div>';
             

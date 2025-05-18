@@ -265,10 +265,10 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
         $field .= '<div class="quick-ajax-field-options" id="' . esc_attr($this->fields[$field_name]['name']) . '">';
         if(is_array($this->fields[$field_name]['options'])){
             foreach ($this->fields[$field_name]['options'] as $option) {
-                if(is_array($current_values)){
-                    $checked = in_array($option['value'], $current_values) ? 'checked' : '';
-                }else{
-                    $checked = $option['value'] ? 'checked' : '';
+                if (is_array($current_values)) {
+                    $checked = checked(in_array($option['value'], $current_values), true, false);
+                } else {
+                    $checked = checked($option['value'], true, false);
                 }
                 $field .= '<div class="quick-ajax-multiselect-option">';         
                 $field .= '<label class="quick-ajax-checkbox">';

@@ -301,7 +301,7 @@ Create or edit the **taxonomy-filter-button.php** file.
 
     <button type="button" class="qapl-filter-button custom-class" data-button="quick-ajax-filter-button">
        QUICK_AJAX_LABEL
-    </button>  
+    </button>
 
 #### Note:
 - The **label (`QUICK_AJAX_LABEL`) and `data-button` attribute are required** for filtering to work correctly.
@@ -383,10 +383,10 @@ This ensures that custom loading icons in the child theme take priority and are 
 
 ### 3.8. Templates: Best Practices for Working with Post Layouts
 
-- **Work with a child theme** - This ensures that your changes won't be lost when updating your theme or the plugin.  
-- **Test all changes on a staging site** before deploying them to your live site.  
-- **Use clear comments in your modifications** to make future maintenance easier.  
-- **Utilize dedicated hooks and filters** to introduce changes **without modifying core plugin template files**.  
+- **Work with a child theme** - This ensures that your changes won't be lost when updating your theme or the plugin.
+- **Test all changes on a staging site** before deploying them to your live site.
+- **Use clear comments in your modifications** to make future maintenance easier.
+- **Utilize dedicated hooks and filters** to introduce changes **without modifying core plugin template files**.
 
 ---
 
@@ -891,13 +891,13 @@ If you prefer debugging on the **server side**, log the **quick_ajax_id** into t
 
 To ensure safe and effective modifications to the **Quick Ajax Post Loader**, follow these best practices:
 
-- **Use filters and hooks instead of modifying core plugin files.**  
-- **Target only specific instances** using `$quick_ajax_id`, instead of applying global changes.  
-- **Test all modifications on a staging site** before applying them to a live website.  
-- **Use debugging tools** such as `error_log(print_r($args, true));` to inspect filter output.  
-- **Check for conflicts with other plugins and themes** when applying modifications.  
-- **Follow WordPress coding standards** to ensure compatibility and maintainability.  
-- **Document your changes** if working in a team or managing multiple sites.  
+- **Use filters and hooks instead of modifying core plugin files.**
+- **Target only specific instances** using `$quick_ajax_id`, instead of applying global changes.
+- **Test all modifications on a staging site** before applying them to a live website.
+- **Use debugging tools** such as `error_log(print_r($args, true));` to inspect filter output.
+- **Check for conflicts with other plugins and themes** when applying modifications.
+- **Follow WordPress coding standards** to ensure compatibility and maintainability.
+- **Document your changes** if working in a team or managing multiple sites.
 
 By following these practices, you can ensure that your custom modifications are **reliable, efficient, and easy to maintain**.
 
@@ -905,7 +905,7 @@ By following these practices, you can ensure that your custom modifications are 
 
 ## 5. Advanced Features
 
-The **Quick Ajax Post Loader** plugin provides additional features that allow for even more advanced configuration and customization of the plugin's behavior.  
+The **Quick Ajax Post Loader** plugin provides additional features that allow for even more advanced configuration and customization of the plugin's behavior.
 In this section, you will find:
 
 - **AJAX Function Generator**
@@ -917,7 +917,7 @@ In this section, you will find:
 
 ### Description
 
-The **AJAX Function Generator** is a tool available in the WordPress admin panel under **Quick Ajax > Settings & Features**, in the **"Function Generator"** tab.  
+The **AJAX Function Generator** is a tool available in the WordPress admin panel under **Quick Ajax > Settings & Features**, in the **"Function Generator"** tab.
 It allows you to generate PHP code that can be placed directly in theme files such as **page.php, single.php**, or other page templates.
 
 The generated code works similarly to shortcodes but provides greater flexibility since it can be embedded in PHP files.
@@ -1016,9 +1016,9 @@ This function generates **sorting buttons**, allowing users to dynamically chang
 
 ### Advanced Features Tips
 
-- **Test all changes** in a staging environment before deploying them.  
-- **Use the generated code** to avoid errors.  
-- **Customize attributes in the PHP code** instead of relying solely on shortcodes.  
+- **Test all changes** in a staging environment before deploying them.
+- **Use the generated code** to avoid errors.
+- **Customize attributes in the PHP code** instead of relying solely on shortcodes.
 
 ---
 
@@ -1026,8 +1026,8 @@ This function generates **sorting buttons**, allowing users to dynamically chang
 
 The **Quick Ajax Post Loader** plugin allows detailed configuration of how posts are retrieved and displayed using two main sets of parameters:
 
-- **$quick_ajax_args** controls **which posts** are retrieved.  
-- **$quick_ajax_attributes** controls **how posts** are displayed.  
+- **$quick_ajax_args** controls **which posts** are retrieved.
+- **$quick_ajax_attributes** controls **how posts** are displayed.
 
 If you want to customize post loading behavior, use these parameters in the **qapl_render_post_container** and **qapl_render_taxonomy_filter** functions.
 

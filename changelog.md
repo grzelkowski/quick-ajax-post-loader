@@ -1,7 +1,11 @@
 ## Changelog
 
+### 1.7.2 - 2025-05-18
+- Fixed an issue where multiple custom CSS classes added to the post container were not handled correctly when separated by commas or spaces.
+- Minor internal improvements for better code reliability.
+
 ### 1.7.1 - 2025-05-10
-- Enhanced taxonomy filter in shortcode settings – saved terms are now automatically pre-selected when editing.
+- Enhanced taxonomy filter in shortcode settings - saved terms are now automatically pre-selected when editing.
 - The "Load More" button now passes only essential parameters, ensuring cleaner functionality.
 - Improved compatibility with the latest PHP versions, ensuring smooth operation without deprecated warnings.
 - Applied minor code optimizations for better performance.

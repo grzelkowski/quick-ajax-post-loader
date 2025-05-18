@@ -195,7 +195,7 @@ class QAPL_Shortcode_Ajax_Attributes_Provider {
             'shortcode_key' => QAPL_Quick_Ajax_Helper::layout_show_end_message(),
             'postmeta_key' => QAPL_Quick_Ajax_Helper::shortcode_page_show_end_message(),
             'type' => 'bool',
-        ]);        
+        ]);  
         return !empty($attributes) ? $attributes : false;
     }
 
@@ -216,6 +216,7 @@ class QAPL_Shortcode_Ajax_Attributes_Provider {
         $type = $config['type'] ?? 'string';
         $only_if_meta_key_true = $config['only_if_meta_key_true'] ?? null;
         $value = null;
+        
         // try to get value from shortcode args
         if (!empty($this->shortcode_params[$shortcode_key])) {
             $value = $this->shortcode_params[$shortcode_key];
@@ -243,7 +244,9 @@ class QAPL_Shortcode_Ajax_Attributes_Provider {
             case 'bool':
                 return filter_var($value, FILTER_VALIDATE_BOOLEAN) ? 1 : 0;
             case 'html_class':
-                return sanitize_html_class($value);
+                    $classes = preg_split('/[\s,]+/', $value, -1, PREG_SPLIT_NO_EMPTY);
+                    $sanitized_classes = array_map('sanitize_html_class', $classes);
+                    return implode(' ', $sanitized_classes);
             case 'string':
             default:
                 return sanitize_text_field($value);
