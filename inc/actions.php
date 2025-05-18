@@ -179,11 +179,7 @@ function qapl_quick_ajax_get_terms_by_taxonomy() {
             ?>
             <div class="quick-ajax-multiselect-option">
                 <label>
-                    <?php
-                    //check if term is selected in post meta
-                    $checked = in_array($term->term_id, $saved_terms) ? 'checked' : ''; 
-                    ?>
-                    <input type="checkbox" name="qapl_manual_selected_terms[]" value="<?php echo esc_attr($term->term_id); ?>" <?php echo $checked; ?>>
+                    <input type="checkbox" name="qapl_manual_selected_terms[]" value="<?php echo esc_attr($term->term_id); ?>" <?php checked(in_array($term->term_id, $saved_terms)); ?>>
                     <?php echo esc_html($term->name); ?>
                 </label>
             </div>
