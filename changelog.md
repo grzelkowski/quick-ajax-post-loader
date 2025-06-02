@@ -1,5 +1,14 @@
 ## Changelog
 
+### 1.7.3 - 2025-05-31
+- Updated CSS to improve the responsive grid layout and visual consistency.
+- Improved internal logic for cleaner structure and better maintainability.
+- Updated the image output to use `get_the_post_thumbnail()` for better responsiveness and maintainability, and ensured alt tags are properly set for accessibility and SEO.
+- Post images now use the `large` image size by default - this can be changed in the WordPress Media settings to better suit your layout.
+
+**Important:**
+- These style updates may slightly change the visual presentation of posts if you use the plugin's default styling.
+
 ### 1.7.2 - 2025-05-18
 - Fixed an issue where multiple custom CSS classes added to the post container were not handled correctly when separated by commas or spaces.
 - Minor internal improvements for better code reliability.
@@ -166,12 +175,17 @@
 
 ## Upgrade Notice
 
+### 1.7.3
+**Important:**
+- The updated CSS may slightly change the visual presentation of posts if you use the plugin's default styling.
+- Post images now use the `large` image size by default - you can adjust this size in your WordPress Media settings (`Settings → Media`) to better suit your layout.
+
 ### 1.7.0
 This update introduces improvements to filter buttons, loader styling, and shortcode parameter handling.
 
 **Important:**
 - New support for selecting specific taxonomy terms directly via shortcode settings offers more control and flexibility.
-- The `qapl_render_taxonomy_filter()` PHP function has been updated – the `$taxonomy` parameter is now optional and auto-detected from the shortcode or function arguments.
+- The `qapl_render_taxonomy_filter()` PHP function has been updated - the `$taxonomy` parameter is now optional and auto-detected from the shortcode or function arguments.
 - If you previously passed the taxonomy manually, your code will still work — no changes required.
 
 Recommended update for improved developer experience and enhanced plugin stability.

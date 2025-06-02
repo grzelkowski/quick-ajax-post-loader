@@ -254,6 +254,16 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             }
             return false;      
         }
+        /**
+         * Render taxonomy terms filter if conditions are met.
+         *
+         * This method allows passing a taxonomy directly, but if it's not provided,
+         * it tries to use the 'selected_taxonomy' value from $input_args.
+         * The 'selected_taxonomy' exists only if a taxonomy has been chosen.
+         * If a taxonomy has been chosen, the filter will be rendered.
+         * In the future, there might be an option to select a taxonomy but not display the filter itself,
+         * so this method should also accommodate such a scenario if implemented.
+         */
         public function render_taxonomy_terms_filter($taxonomy = false){
             if(!$this->args){
                 return false;
@@ -352,33 +362,31 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             $sort_buttons ='';
             $allowed_button_html = [
                 'div' => [
-                    'class' => [],
                     'id' => [],
-                    'data-*' => [],
+                    'class' => [],
                 ],
                 'select' => [
                     'id' => [],
+                    'class' => [],
                     'name' => [],
                     'aria-label' => [],
-                    'class' => [],
-                    'data-*' => [],
                 ],
                 'option' => [
+                    'id' => [],
+                    'class' => [],
                     'value' => [],
                     'selected' => [],
-                    'class' => [],
-                    'data-*' => [],
                 ],
                 'span' => [
+                    'id' => [],
                     'class' => [],
                     'data-button' => [],
-                    'data-attributes' => true,
-                    'data-action' => true,
-                    'data-*' => [],
+                    'data-attributes' => [],
+                    'data-action' => [],
                 ],
                 'p' => [
+                    'id' => [],
                     'class' => [],
-                    'data-*' => [],
                 ]
             ];
 

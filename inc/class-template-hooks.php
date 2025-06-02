@@ -162,7 +162,8 @@ class QAPL_Quick_Ajax_Template_Post_Item extends QAPL_Quick_Ajax_Template_Base
 
     public function render_image() {
         $output = has_post_thumbnail()
-            ? '<div class="qapl-post-image">' . get_the_post_thumbnail(get_the_ID(), 'medium', ['loading' => 'lazy']) . '</div>'
+            //? '<div class="qapl-post-image">' . get_the_post_thumbnail(get_the_ID(), 'large', ['loading' => 'lazy']) . '</div>'
+            ? '<div class="qapl-post-image">' . get_the_post_thumbnail(get_the_ID(), 'large', ['alt' => esc_attr(get_the_title()), 'loading' => 'lazy']) . '</div>'
             : '<div class="qapl-post-image qapl-no-image"></div>';
 
         return apply_filters(QAPL_Hooks::HOOK_TEMPLATE_POST_ITEM_IMAGE, $output, $this->template_name, $this->quick_ajax_id);
@@ -207,7 +208,8 @@ class QAPL_Quick_Ajax_Template_Post_Item_Qapl_Full_Background_Image extends QAPL
 
     public function render_image() {
         $output = has_post_thumbnail()
-            ? '<img src="' . esc_url(get_the_post_thumbnail_url(null, "full")) . '" alt="' . esc_attr(get_the_title()) . '" class="qapl-post-image">'
+            //? '<img src="' . esc_url(get_the_post_thumbnail_url(null, "full")) . '" alt="' . esc_attr(get_the_title()) . '" class="qapl-post-image">'
+            ? get_the_post_thumbnail(get_the_ID(), 'large', array('alt' => esc_attr(get_the_title()), 'class'  => 'qapl-post-image', 'loading' => 'lazy'))
             : '<span class="qapl-no-image"></span>';
 
         return apply_filters(QAPL_Hooks::HOOK_TEMPLATE_POST_ITEM_IMAGE, $output, $this->template_name, $this->quick_ajax_id);

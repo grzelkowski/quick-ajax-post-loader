@@ -4,14 +4,14 @@
 * Plugin URI: https://github.com/grzelkowski/quick-ajax-post-loader/releases
 * Text Domain: quick-ajax-post-loader
 * Domain Path: /languages
-* Version: 1.7.2
+* Version: 1.7.3
 * Description: Supercharge post loading with Quick Ajax Post Loader. Enhance user experience and optimize site performance using AJAX technology.
 * Author: Pawel Grzelkowski
 * Author URI: https://grzelkowski.com
 * License: GPLv2 or later
 * Requires PHP: 7.4
 * Requires at least: 5.6
-* Tested up to: 6.8
+* Tested up to: 6.8.1
 */
 if (!defined('ABSPATH')) {
     exit;

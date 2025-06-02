@@ -59,7 +59,7 @@ export const optimizeCss = gulp.task('optimize-css', function () {
         .pipe(postcss([
             autoprefixer({
                 overrideBrowserslist: ['> 0.5%', 'last 3 versions'],
-                grid: true
+                grid: false
             })
         ])) // add vendor prefixes
         .pipe(rename(function (path) {

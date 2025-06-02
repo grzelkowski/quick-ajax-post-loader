@@ -6,7 +6,7 @@
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     text-align: center;
     -webkit-box-pack: center;
         -ms-flex-pack: center;
@@ -136,13 +136,81 @@
 
 /* post container */
 .quick-ajax-posts-container.quick-ajax-theme .quick-ajax-posts-wrapper{
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-    width: calc(100% + 2rem);
-    margin-left:-1rem;
+    display: grid;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    gap: var(--qapl-gap);
+    grid-template-columns: repeat(auto-fit, minmax(var(--qapl-min-col-size), 1fr));
+}
+.quick-ajax-posts-container.quick-ajax-theme .quick-ajax-posts-wrapper.col-qty-1 {
+    --qapl-cols: 1;
+    --qapl-min-col-size: 100%;
+    --qapl-gap: 2rem;
+}
+.quick-ajax-posts-container.quick-ajax-theme .quick-ajax-posts-wrapper.col-qty-2 {
+    --qapl-cols: 2;
+    --qapl-min-col-size: 300px;
+    --qapl-gap: 2rem;
+}
+.quick-ajax-posts-container.quick-ajax-theme .quick-ajax-posts-wrapper.col-qty-3 {
+    --qapl-cols: 3;
+    --qapl-min-col-size: 250px;
+    --qapl-gap: 2rem;
+}
+.quick-ajax-posts-container.quick-ajax-theme .quick-ajax-posts-wrapper.col-qty-4 {
+    --qapl-cols: 4;
+    --qapl-min-col-size: 220px;
+    --qapl-gap: 2rem;
+}
+.quick-ajax-posts-container.quick-ajax-theme .quick-ajax-posts-wrapper.col-qty-5 {
+    --qapl-cols: 5;
+    --qapl-min-col-size: 200px;
+    --qapl-gap: 2rem;
+}
+.quick-ajax-posts-container.quick-ajax-theme .quick-ajax-posts-wrapper.col-qty-6 {
+    --qapl-cols: 6;
+    --qapl-min-col-size: 180px;
+    --qapl-gap: 2rem;
+}
+.quick-ajax-posts-container.quick-ajax-theme .quick-ajax-posts-wrapper.col-qty-7 {
+    --qapl-cols: 7;
+    --qapl-min-col-size: 160px;
+    --qapl-gap: 1rem;
+}
+.quick-ajax-posts-container.quick-ajax-theme .quick-ajax-posts-wrapper.col-qty-8 {
+    --qapl-cols: 8;
+    --qapl-min-col-size: 150px;
+    --qapl-gap: 1rem;
+}
+.quick-ajax-posts-container.quick-ajax-theme .quick-ajax-posts-wrapper.col-qty-9 {
+    --qapl-cols: 9;
+    --qapl-min-col-size: 140px;
+    --qapl-gap: 1rem;
+}
+.quick-ajax-posts-container.quick-ajax-theme .quick-ajax-posts-wrapper.col-qty-10 {
+    --qapl-cols: 10;
+    --qapl-min-col-size: 130px;
+    --qapl-gap: 1rem;
+}
+.quick-ajax-posts-container.quick-ajax-theme .quick-ajax-posts-wrapper.col-qty-11 {
+    --qapl-cols: 11;
+    --qapl-min-col-size: 120px;
+    --qapl-gap: 1rem;
+}
+.quick-ajax-posts-container.quick-ajax-theme .quick-ajax-posts-wrapper.col-qty-12 {
+    --qapl-cols: 12;
+    --qapl-min-col-size: 110px;
+    --qapl-gap: 1rem;
+}
+@media (min-width: 1024px) {
+    .quick-ajax-posts-container.quick-ajax-theme .quick-ajax-posts-wrapper[class*="col-qty-"] {
+        grid-template-columns: repeat(var(--qapl-cols), 1fr);
+        gap: var(--qapl-gap);
+    }
 }
 
 .quick-ajax-posts-container.quick-ajax-theme .qapl-no-posts-found{
@@ -160,7 +228,6 @@
     -webkit-animation-delay: 0.5s;
             animation-delay: 0.5s;
 }
-
 .quick-ajax-posts-container.quick-ajax-theme .qapl-load-more-button{
     display: block;
     width: auto;
@@ -175,42 +242,8 @@
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
     width:100%;
-    padding:1rem;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-}
-.quick-ajax-posts-container.quick-ajax-theme .col-qty-2 .qapl-post-item{
-    width: calc(100% / 2); 
-}
-.quick-ajax-posts-container.quick-ajax-theme .col-qty-3 .qapl-post-item{
-    width: calc(100% / 3); 
-}
-.quick-ajax-posts-container.quick-ajax-theme .col-qty-4 .qapl-post-item{
-    width: calc(100% / 4); 
-}
-.quick-ajax-posts-container.quick-ajax-theme .col-qty-5 .qapl-post-item{
-    width: calc(100% / 5); 
-}
-.quick-ajax-posts-container.quick-ajax-theme .col-qty-6 .qapl-post-item{
-    width: calc(100% / 6); 
-}
-.quick-ajax-posts-container.quick-ajax-theme .col-qty-7 .qapl-post-item{
-    width: calc(100% / 7); 
-}
-.quick-ajax-posts-container.quick-ajax-theme .col-qty-8 .qapl-post-item{
-    width: calc(100% / 8); 
-}
-.quick-ajax-posts-container.quick-ajax-theme .col-qty-9 .qapl-post-item{
-    width: calc(100% / 9); 
-}
-.quick-ajax-posts-container.quick-ajax-theme .col-qty-10 .qapl-post-item{
-    width: calc(100% / 10); 
-}
-.quick-ajax-posts-container.quick-ajax-theme .col-qty-11 .qapl-post-item{
-    width: calc(100% / 11); 
-}
-.quick-ajax-posts-container.quick-ajax-theme .col-qty-12 .qapl-post-item{
-    width: calc(100% / 12); 
 }
 .quick-ajax-posts-container.quick-ajax-theme .qapl-post-item a:focus{
     outline: none;
@@ -230,6 +263,10 @@
     display: flex;
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
     width: 100%;
 }
 
@@ -264,6 +301,11 @@
     transition: all 0.3s ease;
 }
 .quick-ajax-posts-container.quick-ajax-theme .qapl-post-item.qapl-post-item-default .qapl-post-image{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    overflow: hidden;
+    aspect-ratio: 5 / 3;
     -webkit-box-ordinal-group:2;
         -ms-flex-order:1;
             order:1;
@@ -307,9 +349,6 @@
 .quick-ajax-posts-container.quick-ajax-theme .qapl-post-item.qapl-post-item-default .qapl-post-title > *{
     color:#1e1e1e;
 }
-.quick-ajax-posts-container.quick-ajax-theme .qapl-post-item.qapl-post-item-default .qapl-no-image + .qapl-post-title{
-    margin-top: 3rem;
-}
 .quick-ajax-posts-container.quick-ajax-theme .qapl-post-item.qapl-post-item-default .qapl-post-description{
     -webkit-box-ordinal-group:4;
         -ms-flex-order:3;
@@ -345,7 +384,7 @@
     opacity:0;
 }
 .quick-ajax-posts-container.quick-ajax-theme .quick-ajax-load-more-container .qapl-load-more-wrapper{
-    margin-top: 1rem;
+    margin-top: 3rem;
 }
 .quick-ajax-posts-container.quick-ajax-theme .qapl-load-more-button{
     display: block;
@@ -618,14 +657,14 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background:rgba(0,0,0,0.6);
+    background:rgba(0,0,0,0.5);
     border-radius: 4px;
     z-index: 0;
 }
 .quick-ajax-posts-container .qapl-post-item.qapl-post-item-bg-img .post-content {
     position: relative;
     z-index: 2;
-    background-color: rgba(0, 0, 0, 0.6); 
+    background-color: rgba(0, 0, 0, 0.5); 
     padding: 20px;
     display: -webkit-box;
     display: -ms-flexbox;

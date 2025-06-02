@@ -14,13 +14,13 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.7.2',
+            'version' => '1.7.3',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
             'minimum_php_version' => '7.4',
             'minimum_wp_version' => '5.6',
-            'tested_wp_version' => '6.8'
+            'tested_wp_version' => '6.8.1'
         ];
     }
     public static function get_instance() {
