@@ -201,6 +201,7 @@ input:checked + .switch:before {
             flex-direction: column;
 }
 .quick-ajax-form-wrap .quick-ajax-field-container{
+    position: relative;
     width: 100%;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -210,6 +211,7 @@ input:checked + .switch:before {
     -webkit-box-align: start;
         -ms-flex-align: start;
             align-items: flex-start;
+    gap:1rem;
     margin-bottom: 1rem;
     visibility: visible;
     opacity:1;

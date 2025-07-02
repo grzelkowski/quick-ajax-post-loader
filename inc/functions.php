@@ -30,7 +30,8 @@ function qapl_render_post_container($args, $attributes = null, $render_context =
     }
     $output .= $filter_wrapper_end;
     $output .= $ajax_class->wp_query();
-    echo $output;
+    echo $output;// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
    
 }
 //alias for backward compatibility
@@ -57,7 +58,7 @@ function qapl_render_taxonomy_filter($args, $attributes, $taxonomy = null){
         $selected_taxonomy = $args['selected_taxonomy'];
     }
     if(!empty($selected_taxonomy) && is_string($selected_taxonomy)) {
-        echo $ajax_class->render_taxonomy_terms_filter($selected_taxonomy);
+        echo $ajax_class->render_taxonomy_terms_filter($selected_taxonomy);// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 //alias for backward compatibility
@@ -77,7 +78,7 @@ function qapl_render_sort_controls($args, $attributes, $sort_options){
     $ajax_class->wp_query_args($args, $attributes);
     $ajax_class->layout_customization($attributes);
     if(!empty($sort_options) && is_array($sort_options)) {
-        echo $ajax_class->render_sort_options($sort_options);
+        echo $ajax_class->render_sort_options($sort_options);// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 

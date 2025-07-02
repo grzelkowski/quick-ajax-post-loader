@@ -178,8 +178,8 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_date_desc_label());
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_date_asc_label());
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_comment_count_desc_label());
-            $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_title_desc_label());
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_title_asc_label());
+            $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_title_desc_label());
             $content .= $this->add_field(QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_rand_label());
             $content .= $settings_fields_html;
             $content .= get_submit_button(esc_html__('Save Settings', 'quick-ajax-post-loader'), 'primary', 'save_settings_button', false);
@@ -342,7 +342,7 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
                 if (!isset($section['title']) || !isset($section['content'])) {
                     continue;
                 }        
-                $section_title = esc_html(strip_tags($section['title']));
+                $section_title = esc_html(wp_strip_all_tags($section['title']));
                 $section_content = wp_kses_post($section['content']);        
                 $accordion_content .= '<div class="quick-ajax-section">';
                 $accordion_content .= '<h3>' . esc_html($section_title) . '</h3>';

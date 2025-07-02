@@ -14,13 +14,13 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.7.3',
+            'version' => '1.7.4',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
             'minimum_php_version' => '7.4',
             'minimum_wp_version' => '5.6',
-            'tested_wp_version' => '6.8.1'
+            'tested_wp_version' => '6.8'
         ];
     }
     public static function get_instance() {
@@ -81,9 +81,8 @@ class QAPL_Quick_Ajax_Helper{
         }
     }
     private function is_dev_mode() {
-        // Check for the 'dev' parameter in the URL
-        $dev_param = isset($_GET['dev']) ? sanitize_text_field(wp_unslash($_GET['dev'])) : null;
-        if ($dev_param === 'true' || $dev_param === '1') {
+        // return true if QAPL_DEV_MODE is defined and enabled
+        if((defined('QAPL_DEV_MODE') && QAPL_DEV_MODE)) {
             return true;
         }
         return false;
@@ -416,14 +415,14 @@ class QAPL_Quick_Ajax_Helper{
             ],
             [
                 'value' => 'title-asc',
-                'label' => isset($global_sort_labels['sort_option_title_desc_label'])
-                    ? $global_sort_labels['sort_option_title_desc_label']
+                'label' => isset($global_sort_labels['sort_option_title_asc_label'])
+                    ? $global_sort_labels['sort_option_title_asc_label']
                     : __('A → Z', 'quick-ajax-post-loader')
             ],
             [
                 'value' => 'title-desc',
-                'label' => isset($global_sort_labels['sort_option_title_asc_label'])
-                    ? $global_sort_labels['sort_option_title_asc_label']
+                'label' => isset($global_sort_labels['sort_option_title_desc_label'])
+                    ? $global_sort_labels['sort_option_title_desc_label']
                     : __('Z → A', 'quick-ajax-post-loader')
             ],
             [
@@ -842,7 +841,7 @@ class QAPL_Form_Fields_Helper{
         foreach ($post_types as $post_type) {
             if (isset($post_type->labels->name) && $post_type->labels->name !== 'Media') {
                 $post_type_options[] = array(
-                    'label' => $post_type->label,
+                    'label' => $post_type->labels->name,
                     'value' => $post_type->name,
                 );
             }
@@ -1140,7 +1139,7 @@ class QAPL_Form_Fields_Helper{
     public static function get_field_layout_taxonomy_filter_class(){
         $field_properties = array(
             'name' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_taxonomy_filter_class(),
-            'label' => __('Add class to taxonomy filter', 'quick-ajax-post-loader'),
+            'label' => __('Add Class to Taxonomy Filter', 'quick-ajax-post-loader'),
             'type' => 'text',
             'options' => '',
             'default' => '',
@@ -1153,7 +1152,7 @@ class QAPL_Form_Fields_Helper{
     public static function get_field_layout_container_class(){
         $field_properties = array(
             'name' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_container_class(),
-            'label' => __('Add class to post container', 'quick-ajax-post-loader'),
+            'label' => __('Add Class to Post Container', 'quick-ajax-post-loader'),
             'type' => 'text',
             'options' => '',
             'default' => '',
@@ -1166,10 +1165,10 @@ class QAPL_Form_Fields_Helper{
     public static function get_field_show_custom_load_more_post_quantity(){
         $field_properties = array(
             'name' => QAPL_Quick_Ajax_Helper::shortcode_page_show_custom_load_more_post_quantity(),
-            'label' => __('Custom Load More Post Quantity', 'quick-ajax-post-loader'),
+            'label' => __('Load More Post Quantity', 'quick-ajax-post-loader'),
             'type' => 'checkbox',
             'default' => QAPL_Quick_Ajax_Helper::shortcode_page_show_custom_load_more_post_quantity_default_value(),
-            'description' => __('Load a different number of posts than the default page display.', 'quick-ajax-post-loader')
+            'description' => __('Load a different number of posts after the initial display.', 'quick-ajax-post-loader')
         );
         return $field_properties;
     }
@@ -1177,10 +1176,10 @@ class QAPL_Form_Fields_Helper{
     public static function get_field_select_custom_load_more_post_quantity(){
         $field_properties = array(
             'name' => QAPL_Quick_Ajax_Helper::shortcode_page_select_custom_load_more_post_quantity(),
-            'label' => __('Custom Load More Post Quantity', 'quick-ajax-post-loader'),
+            'label' => __('Posts Per Load (After Initial)', 'quick-ajax-post-loader'),
             'type' => 'number',
             'default' => QAPL_Quick_Ajax_Helper::shortcode_page_select_custom_load_more_post_quantity_default_value(),
-            'description' => __('Select the custom number of posts to load when using the "Load More" button.', 'quick-ajax-post-loader')
+            'description' => __('Set how many posts to load each time the "Load More" button is clicked.', 'quick-ajax-post-loader')
         );
         return $field_properties;
     }
@@ -1333,9 +1332,9 @@ class QAPL_Form_Fields_Helper{
         );
         return $field_properties;
     }
-    public static function get_global_options_field_set_sort_option_title_desc_label() {
+    public static function get_global_options_field_set_sort_option_title_asc_label() {
         $field_properties = array(
-            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_title_desc_label(),
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_title_asc_label(),
             'label' => __('Set "A → Z" Label', 'quick-ajax-post-loader'),
             'type' => 'text',
             'options' => '', // Not required for text field
@@ -1345,9 +1344,9 @@ class QAPL_Form_Fields_Helper{
         );
         return $field_properties;
     }
-    public static function get_global_options_field_set_sort_option_title_asc_label() {
+    public static function get_global_options_field_set_sort_option_title_desc_label() {
         $field_properties = array(
-            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_title_asc_label(),
+            'name' => QAPL_Quick_Ajax_Helper::global_options_field_set_sort_option_title_desc_label(),
             'label' => __('Set "Z → A" Label', 'quick-ajax-post-loader'),
             'type' => 'text',
             'options' => '', // Not required for text field
@@ -1379,10 +1378,6 @@ class QAPL_Form_Fields_Helper{
             'description' => __('Choose this option to remove old, unused data from the database. This will help keep your site clean and efficient. Be aware that if you switch back to an older version of the plugin, it might not work as expected.', 'quick-ajax-post-loader'),
         );
     }
-}
-
-if (!defined('ABSPATH')) {
-    exit;
 }
 
 class QAPL_Hooks {

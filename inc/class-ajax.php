@@ -246,13 +246,14 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                     ),
                 ),
                 'post__not_in' => $excluded_post_ids,
+                'fields' => 'ids',
             );
             $posts = get_posts($args);
 
             if (!empty($posts)) {
                 return true;
             }
-            return false;      
+            return false;
         }
         /**
          * Render taxonomy terms filter if conditions are met.
@@ -442,7 +443,9 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             $this->attributes[$this->helper->layout_quick_ajax_id()] = $this->quick_ajax_id;
             $sort_option = '<div class="quick-ajax-sort-option-wrapper">';
             $default_option = strtolower($this->args['orderby']).'-'.strtolower($this->args['order']);
-            $sort_option .= '<select id="'.esc_attr($button_data['id']).'" name="'.esc_attr($button_data['name']).'" aria-label="'.$button_data['label'].'">';
+            // escape the aria-label
+            $aria_label = isset($button_data['label']) ? esc_attr($button_data['label']) : '';
+            $sort_option .= '<select id="'.esc_attr($button_data['id']).'" name="'.esc_attr($button_data['name']).'" aria-label="'.$aria_label.'">';
             foreach ($button_data['options'] as $option) {
                 $value = esc_attr($option['value']);
                 $label = esc_html($option['label']);
@@ -683,7 +686,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             do_action(QAPL_Hooks::HOOK_LOADER_AFTER, $this->quick_ajax_id);
             if (!$this->ajax_initial_load) {
                 $infinite_scroll = isset($this->attributes[$this->helper->layout_ajax_infinite_scroll()]) ? intval($this->attributes[$this->helper->layout_ajax_infinite_scroll()]) : $this->helper->shortcode_page_ajax_on_initial_load_default_value();
-                echo $this->load_more_button($query->get('paged'), $query->max_num_pages, $query->found_posts, $infinite_scroll);
+                echo wp_kses_post($this->load_more_button(intval($query->get('paged')), intval($query->max_num_pages), intval($query->found_posts), $infinite_scroll));
             }
             do_action(QAPL_Hooks::HOOK_POSTS_CONTAINER_END, $this->quick_ajax_id);
             echo '</div>';

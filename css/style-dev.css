@@ -205,6 +205,9 @@
     width:100%;
     box-sizing: border-box;
 }
+.quick-ajax-posts-container.quick-ajax-theme .qapl-post-item div{
+    box-sizing: border-box;
+}
 .quick-ajax-posts-container.quick-ajax-theme .qapl-post-item a:focus{
     outline: none;
     text-decoration: none;

@@ -1,5 +1,14 @@
 ## Changelog
 
+### 1.7.4 - 2025-07-02
+- Updated CSS styles for improved layout consistency and better theme compatibility.
+- Improved default labels for title sorting options to make them clearer and more user-friendly.
+- Updated several field labels in the plugin settings for better clarity and understanding.
+- Applied internal code improvements focused on security, stability, and maintainability.
+
+**Important:**
+- Some styling or label changes may slightly affect the appearance of your filters or UI if you use default settings.
+
 ### 1.7.3 - 2025-05-31
 - Updated CSS to improve the responsive grid layout and visual consistency.
 - Improved internal logic for cleaner structure and better maintainability.
@@ -184,9 +193,8 @@
 This update introduces improvements to filter buttons, loader styling, and shortcode parameter handling.
 
 **Important:**
-- New support for selecting specific taxonomy terms directly via shortcode settings offers more control and flexibility.
-- The `qapl_render_taxonomy_filter()` PHP function has been updated - the `$taxonomy` parameter is now optional and auto-detected from the shortcode or function arguments.
-- If you previously passed the taxonomy manually, your code will still work — no changes required.
+- New support for selecting taxonomy terms directly in shortcode settings offers better control.
+- The `qapl_render_taxonomy_filter()` function now auto-detects taxonomy and remains backward compatible.
 
 Recommended update for improved developer experience and enhanced plugin stability.
 
@@ -203,8 +211,7 @@ Fully tested with WordPress 6.8.
 This update adds support for an "End Message" that appears when there are no more posts to load.
 
 **Important:**
-- The message can be set globally, customized in templates, or modified using the `qapl_template_end_post_message` filter hook.
-- This improves user experience but may require adjustments to your template or CSS.
+- The message can be set globally, edited in the template, or modified via the `qapl_template_end_post_message` filter.
 
 Recommended update for improved usability and developer flexibility.
 
@@ -212,23 +219,24 @@ Recommended update for improved usability and developer flexibility.
 This update introduces an Infinite Scroll feature and an improved Help section within the plugin settings.
 
 **Important:**
-- A new Development Guide has been added to assist developers with customization and integration.
-- The grid structure has been refined, and additional CSS improvements have been made for better responsiveness and theme compatibility.
+- A new Developer Guide helps with customization and integration.
+- The grid and CSS have been improved for better responsiveness and theme compatibility.
 
 ### 1.5.0
 Introduces a new sorting button feature and global sorting label options.
 
 **Important:**
-- The plugin now only supports posts with `publish` status, removing unnecessary settings.
-- Unused `orderby` options have been removed but can still be re-added using the `qapl_modify_posts_query_args` hook.
+- The plugin now supports only `publish` posts, removing unnecessary settings.
+- Removed unused `orderby` values (can still be re-added via the `qapl_modify_posts_query_args` hook).
 
 Recommended update for improved sorting control and better plugin stability.
 
 ### 1.4.0
 This update introduces new template filters, allowing developers to modify post elements (date, title, image, excerpt, and buttons) using filters.
 
-Additionally, action and filter names have been standardized, and a backward compatibility layer has been implemented for deprecated hooks.
-**Important:** If you rely on existing hooks, review your customizations and update them to use the new standardized names for long-term stability.
+**Important:**
+- Action and filter names were standardized.
+- Review and update your custom code to use new names for future compatibility.
 
 ### 1.3.9
 Adds support for loading the initial set of posts via AJAX, improving caching compatibility and ensuring fresh content. Enhances "Load More" button functionality for greater flexibility.

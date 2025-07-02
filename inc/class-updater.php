@@ -69,7 +69,8 @@ if (!class_exists('QAPL_Quick_Ajax_Updater')) {
             $update_strategies = array(
                 '1.3.2' => new QAPL_Update_Version_1_3_2(),
                 '1.3.3' => new QAPL_Update_Version_1_3_3(),
-                '1.3.4' => new QAPL_Update_Version_1_3_4()
+                '1.3.4' => new QAPL_Update_Version_1_3_4(),
+                '1.7.4' => new QAPL_Update_Version_1_7_4()
             );
             $updater = new QAPL_Quick_Ajax_Updater($update_strategies);
             $updater->run_all_updates();
@@ -108,6 +109,27 @@ class QAPL_Update_Version_1_3_4 implements QAPL_Update_Interface {
         return $return;
     }    
 }
+class QAPL_Update_Version_1_7_4 implements QAPL_Update_Interface {
+    // fix wrong label assignment for title ASC and DESC sort options due to naming issue
+    public function run_update(): bool {
+        $option_name = QAPL_Quick_Ajax_Helper::admin_page_global_options_name();
+        $options = get_option($option_name, array());
+        if (!is_array($options)) {
+            return true; // nothing to update
+        }
+        $asc_key  = 'sort_option_title_asc_label';
+        $desc_key = 'sort_option_title_desc_label';
+        if (isset($options[$asc_key], $options[$desc_key])) {
+            $temp = $options[$asc_key];
+            $options[$asc_key]  = $options[$desc_key];
+            $options[$desc_key] = $temp;
+            update_option($option_name, $options);
+        }
+        return true;
+    }
+}
+
+
 
 
 class QAPL_Data_Migrator {

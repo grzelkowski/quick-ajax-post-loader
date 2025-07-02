@@ -245,6 +245,10 @@
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
 }
+.quick-ajax-posts-container.quick-ajax-theme .qapl-post-item div{
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+}
 .quick-ajax-posts-container.quick-ajax-theme .qapl-post-item a:focus{
     outline: none;
     text-decoration: none;

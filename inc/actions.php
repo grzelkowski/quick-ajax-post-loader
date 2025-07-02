@@ -23,12 +23,14 @@ function qapl_quick_ajax_load_posts() {
         // Sanitize 'args'
         $args = [];
         if (isset($_POST['args'])) {
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized in sanitize_json_to_array()
             $args = $ajax_class->sanitize_json_to_array(wp_unslash($_POST['args'])); // Sanitize JSON to array
         }
 
         // Sanitize 'attributes'
         $attributes = [];
         if (isset($_POST['attributes'])) {
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized in sanitize_json_to_array()
             $attributes = $ajax_class->sanitize_json_to_array(wp_unslash($_POST['attributes'])); // Sanitize JSON to array
         }
 
