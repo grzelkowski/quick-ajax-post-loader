@@ -1,20 +1,19 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Quick Ajax Post Loader\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-12 16:17+0000\n"
+"POT-Creation-Date: 2025-07-03 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
 "Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.6.14; wp-6.7.1\n"
-"X-Domain: quick-ajax-post-loader"
+"X-Loco-Version: 2.7.2; wp-6.8\n"
+"X-Domain: quick-ajax-post-loader\n"
 
 #: inc/class-helper.php:420 inc/class-helper.php:1341 inc/class-helper.php:1342
 #: inc/class-helper_new.php:625

@@ -84,8 +84,16 @@
             // remove existing end message if any
             container.find('.quick-ajax-end-message-container').remove();
             container.addClass('loading');
+            //set container height to first item height to prevent layout shift
+            if (container.hasClass('quick-ajax-theme')) {
+                var firstItem = container_inner.find('.qapl-post-item:first');
+                if (firstItem.length) {
+                    container.css('min-height', firstItem.outerHeight() + 'px');
+                }
+            }
             if((button.attr('data-button') === qapl_quick_ajax_helper.helper.filter_data_button) ||
                (button.attr('data-button') === qapl_quick_ajax_helper.helper.sort_button)){
+                container.addClass('filter-update');
                 container_inner.fadeOut(100, function() {
                     $(this).empty().fadeIn(100);
                 });
@@ -105,18 +113,25 @@
                         if(button_type === qapl_quick_ajax_helper.helper.load_more_data_button){
                             self.qapl_quick_ajax_load_more_add_posts(container_inner, button, response.data.output);
                         } else if((button.attr('data-button') === qapl_quick_ajax_helper.helper.filter_data_button) || (button.attr('data-button') === qapl_quick_ajax_helper.helper.sort_button)){
-                            self.qapl_quick_ajax_taxonomy_filter_show_posts(container_inner, button, response.data.output);
+                            self.qapl_quick_ajax_taxonomy_filter_show_posts(container_inner, button, response.data.output, containerId);
                         }
                         self.qapl_quick_ajax_append_load_more_button(container_inner, response.data.load_more);
                     } else {
                         console.error('Quick Ajax Post Loader: Error:', response.data.output);
                     }
                     container.removeClass('loading');
+                    setTimeout(function() {
+                        container.removeClass('filter-update');
+                    }, 200);
+                    
                     self.qapl_quick_ajax_append_end_message(container, response.data.show_end_message);
                 },
                 error: function(xhr, status, error) {
                     console.error('Quick Ajax Post Loader: Error:', error);
                     container.removeClass('loading');
+                    setTimeout(function() {
+                            container.removeClass('filter-update');
+                    }, 200);
                 }
             });
         },
@@ -128,17 +143,20 @@
                 $(this).removeAttr("style");
             });
         },
-        qapl_quick_ajax_taxonomy_filter_show_posts: function(container, button, response) {
-            $(`[data-button="${qapl_quick_ajax_helper.helper.filter_data_button}"]`).removeClass('active');
+        qapl_quick_ajax_taxonomy_filter_show_posts: function(container, button, response, containerId) {
+            let filterContainer = $('#quick-ajax-filter-' + containerId);
+            filterContainer.find(`[data-button="${qapl_quick_ajax_helper.helper.filter_data_button}"]`).removeClass("active");
             button.addClass('active');
             container.parent().find('.quick-ajax-load-more-container').remove();
-            var new_posts = $(response).css('opacity', '0');
-            container.html(new_posts);
-            new_posts.animate({ opacity: 1 }, {
-                duration: 400,
-                complete: function() {
-                    $(this).removeAttr('style');
-                }
+            container.stop(true, true).fadeOut(100, function () {
+                var new_posts = $(response).css("opacity", "0");
+                container.html(new_posts).fadeIn(400);
+                new_posts.animate({ opacity: 1 }, {
+                    duration: 400,
+                    complete: function () {
+                        $(this).removeAttr("style");
+                    }
+                });
             });
         },
         qapl_quick_ajax_append_load_more_button: function(container, load_more_html) {
@@ -155,8 +173,8 @@
         },        
         qapl_quick_ajax_handle_sort: function(selectButton) {
             let $sortContainer = selectButton.closest('.quick-ajax-sort-options-container');
-            let $QuerySettings = $sortContainer.find('.quick-ajax-settings');
-            let settingsData = $QuerySettings.data('attributes');
+            let QuerySettings = $sortContainer.find('.quick-ajax-settings');
+            let settingsData = QuerySettings.data('attributes');
 
             // check if quick_ajax_id exists
             if (!settingsData || !settingsData.quick_ajax_id) {
@@ -164,12 +182,12 @@
             }
 
             let quickAjaxId = settingsData.quick_ajax_id;
-            let $filterContainer = $('#quick-ajax-filter-' + quickAjaxId);
+            let filterContainer = $('#quick-ajax-filter-' + quickAjaxId);
             // get selected value
             let selectedValue = selectButton.val();
             let [orderby, order] = selectedValue.split('-');
             // update quick-ajax-settings in the same sort container
-            let actionData = $QuerySettings.data('action');
+            let actionData = QuerySettings.data('action');
             // convert to object if needed
             if (typeof actionData === 'string') {
                 actionData = JSON.parse(actionData);
@@ -178,18 +196,18 @@
             actionData.orderby = orderby;
             actionData.order = order;
             //update data-action
-            $QuerySettings.attr('data-action', JSON.stringify(actionData));
+            QuerySettings.attr('data-action', JSON.stringify(actionData));
             // if filter container does not exist, trigger only settings span click
-            if (!$filterContainer.length) {
-                if ($QuerySettings.is('[data-action]')) {
-                    $QuerySettings.trigger('click');
+            if (!filterContainer.length) {
+                if (QuerySettings.is('[data-action]')) {
+                    QuerySettings.trigger('click');
                 }
                 return;
             }
             // update all filter buttons in the matching filter container
-            $filterContainer.find('.qapl-filter-button').each(function () {
-                let $button = $(this);
-                let actionData = $button.data('action');
+            filterContainer.find('.qapl-filter-button').each(function () {
+                let button = $(this);
+                let actionData = button.data('action');
                 // get action data
                 if (typeof actionData === 'string') {
                     actionData = JSON.parse(actionData);
@@ -197,18 +215,18 @@
                 // convert to object if needed
                 actionData.orderby = orderby;
                 actionData.order = order;
-                $button.attr('data-action', JSON.stringify(actionData));
+                button.attr('data-action', JSON.stringify(actionData));
             });
             // find the active button
-            let $activeButton = $filterContainer.find('.qapl-filter-button.active');
+            let activeButton = filterContainer.find('.qapl-filter-button.active');
 
-            if ($activeButton.length) {
+            if (activeButton.length) {
                 // click active button if exists
-                $activeButton.trigger('click');
+                activeButton.trigger('click');
             } else {
                  //click settings span
-                if ($QuerySettings.is('[data-action]')) {
-                    $QuerySettings.trigger('click');
+                if (QuerySettings.is('[data-action]')) {
+                    QuerySettings.trigger('click');
                 }
             }
         }

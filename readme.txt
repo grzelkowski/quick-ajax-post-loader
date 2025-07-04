@@ -4,7 +4,7 @@ Contributors: grzelkowski
 Tags: ajax-load-more, infinite-scroll, category-filter, load-more, ajax
 Requires at least: 5.6
 Tested up to: 6.8
-Stable tag: 1.7.4
+Stable tag: 1.7.5
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -104,6 +104,13 @@ Yes, you can create multiple AJAX grids with different configurations.
 Yes, developers can use available WordPress hooks and filters to fully customize functionality.
 
 == Changelog ==
+
+= 1.7.5 - 2025-07-04 =
+- Resolved post visibility problems in specific configurations when using taxonomy filter buttons.
+- Improved layout stability by preserving container height during AJAX transitions.
+- Refined CSS styling for better visual presentation and smoother content reloads.
+- Enhanced support for multiple AJAX containers on a single page when switching filters.
+- Fixed issue with Polish translation not loading correctly.
 
 = 1.7.4 - 2025-07-02 =
 - Updated CSS styles for improved layout consistency and better theme compatibility.
