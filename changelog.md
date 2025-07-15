@@ -1,11 +1,17 @@
 ## Changelog
 
+### 1.7.6 - 2025-07-15
+- Refactored the Function Generator module to produce cleaner and more consistent PHP output.
+- Enhanced the shortcode generation process for better formatting and improved reliability.
+- Updated admin area CSS to improve layout consistency, spacing, and alignment within the Function Generator.
+
 ### 1.7.5 - 2025-07-04
-- Resolved post visibility problems in specific configurations when using taxonomy filter buttons.
-- Improved layout stability by preserving container height during AJAX transitions.
-- Refined CSS styling for better visual presentation and smoother content reloads.
-- Enhanced support for multiple AJAX containers on a single page when switching filters.
-- Fixed issue with Polish translation not loading correctly.
+- Resolved post visibility issues that occurred in specific configurations when using taxonomy filter buttons.
+- Improved layout stability by preserving the container height during AJAX transitions.
+- Refined CSS styling for smoother reloads and better consistency with various themes.
+- Enhanced support for using multiple AJAX containers on a single page.
+- Fixed an issue where Polish translation files were not loading correctly in some environments.
+
 
 ### 1.7.4 - 2025-07-02
 - Updated CSS styles for improved layout consistency and better theme compatibility.

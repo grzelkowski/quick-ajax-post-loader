@@ -2,7 +2,6 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-//require_once(plugin_dir_path( __FILE__ ).'/class-helper_new.php');
 
 class QAPL_Quick_Ajax_Helper{
     private static $instance = null;
@@ -14,7 +13,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.7.5',
+            'version' => '1.7.6',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',
