@@ -1,5 +1,14 @@
 ## Changelog
 
+### 1.7.7 - 2025-08-01
+- Improved CSS for better layout adaptability and responsiveness across various screen sizes.
+- Enhanced the admin interface styling for more consistent alignment and spacing in the Function Generator.
+- Optimized admin scripts to improve loading performance and reduce unnecessary processing.
+- Refactored frontend JavaScript to simplify the codebase and improve maintainability.
+
+**Note:**
+- Minor visual differences may occur in some themes if you rely on the plugin's default styling. Please review your layout after updating.
+
 ### 1.7.6 - 2025-07-15
 - Refactored the Function Generator module to produce cleaner and more consistent PHP output.
 - Enhanced the shortcode generation process for better formatting and improved reliability.

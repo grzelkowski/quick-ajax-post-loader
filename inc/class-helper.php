@@ -13,7 +13,7 @@ class QAPL_Quick_Ajax_Helper{
     }
     public static function get_plugin_info() {
         return [
-            'version' => '1.7.6',
+            'version' => '1.7.7',
             'name' => 'Quick Ajax Post Loader',
             'text_domain' => 'quick-ajax-post-loader',
             'slug' => 'quick-ajax-post-loader',

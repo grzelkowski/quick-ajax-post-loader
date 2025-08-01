@@ -35,8 +35,6 @@
 .sunrise-style {
     --qapl-theme-color: #dd823b;
 }
-
-
 /* shortcode box */
 #shortcode-box-wrap{
     display:-webkit-box;
@@ -77,10 +75,7 @@
     white-space: pre-wrap;
     word-break: break-word;
     cursor:pointer;
-    -webkit-transition: .3s;
-    transition: .3s;
 }
-
 /* switch button */
 .quick-ajax-form-wrap .switch-checkbox{
     display: inline-block;
@@ -99,7 +94,7 @@
 }
 .quick-ajax-form-wrap .switch {
     border-radius: 12px;
-    }
+}
 .quick-ajax-form-wrap .switch:before {
     border-radius: 50%;
 }
@@ -113,8 +108,10 @@
     background-color: var(--qapl-switch-bg);
     -webkit-box-shadow: inset 0 0 3px var(--qapl-switch-shadow);
             box-shadow: inset 0 0 3px var(--qapl-switch-shadow);
-    -webkit-transition: .3s;
-    transition: .3s;
+    -webkit-transition: background-color 0.3s ease, -webkit-box-shadow 0.3s ease, -webkit-transform 0.3s ease;
+    transition: background-color 0.3s ease, -webkit-box-shadow 0.3s ease, -webkit-transform 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, -webkit-box-shadow 0.3s ease, -webkit-transform 0.3s ease;
 }
 .quick-ajax-form-wrap .switch:before {
     position: absolute;
@@ -124,22 +121,20 @@
     left: 3px;
     bottom: 3px;
     background-color: var(--qapl-bg);
-    -webkit-transition: .4s;
-    transition: .4s;
+    -webkit-transition: background-color 0.3s ease, -webkit-box-shadow 0.3s ease, -webkit-transform 0.3s ease;
+    transition: background-color 0.3s ease, -webkit-box-shadow 0.3s ease, -webkit-transform 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, -webkit-box-shadow 0.3s ease, -webkit-transform 0.3s ease;
 }
 .quick-ajax-form-wrap input:checked + .switch {
     background-color: var(--qapl-theme-color);
     -webkit-box-shadow: inset 0 0 3px var(--qapl-switch-shadow);
             box-shadow: inset 0 0 3px var(--qapl-switch-shadow);
 }
-.quick-ajax-form-wrap input:focus + .switch {
-    -webkit-box-shadow: inset 0 0 3px var(--qapl-switch-shadow);
-            box-shadow: inset 0 0 3px var(--qapl-switch-shadow);
-}
 .quick-ajax-form-wrap input:checked + .switch:before {
     -webkit-transform: translateX(20px);
-    -ms-transform: translateX(20px);
-    transform: translateX(20px);
+        -ms-transform: translateX(20px);
+            transform: translateX(20px);
 }
 /* quick ajax form wrap */
 .quick-ajax-form-wrap{
@@ -171,28 +166,33 @@
         -ms-flex-align: start;
             align-items: flex-start;
     gap:16px;
-    margin-bottom: 16px;
     visibility: visible;
     opacity:1;
-    -webkit-transition: .15s;
-    transition: .15s;
+    margin-bottom: 16px;
+    -webkit-transition: opacity 0.15s ease, margin-bottom 0.15s ease;
+    transition: opacity 0.15s ease, margin-bottom 0.15s ease;
 }
 .quick-ajax-form-wrap .quick-ajax-field-container.inactive{
     visibility: hidden;
-    opacity:0;
     height: 0;
+    opacity:0;
     margin-bottom: 0;
-    -webkit-transition: .15s;
-    transition: .15s;
 }
-
 .quick-ajax-form-wrap .quick-ajax-field-container > label{
-    width:210px;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 210px;
+            flex: 0 0 210px;
     margin-top: 6px;
 }
 .quick-ajax-form-wrap .quick-ajax-field-container > .quick-ajax-field {
     max-width: 580px;
-    width: calc(100% - 226px);
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 0px;
+            flex: 1 1 0;
+}
+.quick-ajax-form-wrap .quick-ajax-field-container select,
+.quick-ajax-form-wrap .quick-ajax-field-container input{
+    margin: 0;
 }
 .quick-ajax-form-wrap .quick-ajax-field-container .quick-ajax-field > div,
 .quick-ajax-form-wrap .quick-ajax-field-container .quick-ajax-field > select,
@@ -226,14 +226,6 @@
     color: var(--qapl-text-muted);
     font-style: italic;
 }
-.quick-ajax-form-wrap .quick-ajax-field-container > select,
-.quick-ajax-form-wrap .quick-ajax-field-container > input{
-    padding: 0 6px;
-    margin: 0;
-}
-
-
-
 @media (max-width: 782px) {
     .quick-ajax-form-wrap .quick-ajax-field-container > label{
         -ms-flex-preferred-size:100%;
@@ -244,10 +236,9 @@
     .quick-ajax-form-wrap .quick-ajax-field-container > .quick-ajax-field{
         -ms-flex-preferred-size:100%;
             flex-basis:100%;
-    }
-    
+        max-width: 100%;
+    }    
  }
-
  /* tabs */
 .quick-ajax-tabs {
     display: -webkit-box;
@@ -279,23 +270,19 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-transition: all 0.3s ease;
-    transition: all 0.3s ease;
+    -webkit-transition: background-color 0.3s ease, border-color 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 .quick-ajax-tab-button:first-of-type{
     margin-left:0;
 }
 .quick-ajax-tab-button:hover{
-    -webkit-transition: all 0.3s ease;
-    transition: all 0.3s ease;
     background: var(--qapl-bg-mute);
 }
 .quick-ajax-tab-button.active{
     background:var(--qapl-bg);
     z-index: 1;
     border-bottom:1px solid var(--qapl-bg);
-    -webkit-transition: all 0.1s ease;
-    transition: all 0.1s ease;
 }
 .quick-ajax-tab-content,
 .quick-ajax-tab-content[hidden]{
@@ -305,7 +292,6 @@
     border: 1px solid var(--qapl-border);
     -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
             box-shadow: 0 1px 1px rgba(0,0,0,.04);
-    /* width: 100%; */
     display: none;  
 }
 .quick-ajax-tab-content.active{
@@ -315,7 +301,6 @@
 .quick-ajax-tab-content + .quick-ajax-tab-content{
     border-top: none;
 }
-
 /* function-generator-options */
 .function-generator-wrap{
     display: -webkit-box;
@@ -361,7 +346,6 @@
         max-width: unset;
     }
 }
-
 .quick-ajax-form-wrap code.no-background{
     background: transparent;
     padding: 3px 0px 2px;
@@ -383,7 +367,6 @@
 .quick-ajax-form-wrap li ul{
     margin-top: 6px;
 }
-
 /* accordion block */
 .quick-ajax-accordion-wrapper{
     position: relative;
@@ -458,10 +441,6 @@
 .quick-ajax-accordion-wrapper .quick-ajax-accordion-toggle.active .accordion-icon{
     -webkit-transform: rotateX(180deg);
             transform: rotateX(180deg);
-    -webkit-transition: -webkit-transform 0.3s ease-in-out;
-    transition: -webkit-transform 0.3s ease-in-out;
-    transition: transform 0.3s ease-in-out;
-    transition: transform 0.3s ease-in-out, -webkit-transform 0.3s ease-in-out;
 }
 .quick-ajax-accordion-wrapper .accordion-icon span{
     pointer-events: none;
@@ -492,7 +471,6 @@
     right: 1px;
     margin-top: -1px;
 }
-
 /* content loader animation */
 .qapl-admin-page-loader {
     position: relative;
@@ -502,7 +480,6 @@
     margin-left: 0;
     vertical-align: middle;
 }
-
 .qapl-admin-page-loader span {
     position: absolute;
     top: 50%;

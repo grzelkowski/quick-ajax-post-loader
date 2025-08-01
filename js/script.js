@@ -1,5 +1,5 @@
 (function ($) {
-    var qapl_quick_ajax_post_loader_scripts = {
+    const qapl_quick_ajax_post_loader_scripts = {
         init: function () {
             this.qapl_quick_ajax_handlers();
             this.qapl_quick_ajax_initial_load();
@@ -7,7 +7,7 @@
         },
         qapl_quick_ajax_handlers: function () {
             if (typeof qapl_quick_ajax_helper !== "undefined" && qapl_quick_ajax_helper) {
-                var self = this;
+                const self = this;
                 if (qapl_quick_ajax_helper.helper.load_more_data_button) {
                     $(".quick-ajax-posts-container").on("click", `[data-button="${qapl_quick_ajax_helper.helper.load_more_data_button}"]`, function () {
                         self.qapl_quick_ajax_handle_ajax($(this));
@@ -30,22 +30,22 @@
             }
         },
         qapl_quick_ajax_initial_load: function () {
-            var self = this;
-            var initialLoader = $(".qapl-initial-loader");
+            const self = this;
+            const initialLoader = $(".qapl-initial-loader");
             if (initialLoader.length > 0) {
                 //auto load ajax posts on page load
                 self.qapl_quick_ajax_handle_ajax(initialLoader);
             }
         },
         qapl_quick_ajax_infinite_scroll: function () {
-            var self = this;
+            const self = this;
             // check if any infinite scroll container exists
             $(".quick-ajax-load-more-container.infinite-scroll").each(function () {
-                var observer = new IntersectionObserver(
+                const observer = new IntersectionObserver(
                     function (entries) {
                         entries.forEach(function (entry) {
                             if (entry.isIntersecting) {
-                                var button = $(entry.target).find('button[data-button="' + qapl_quick_ajax_helper.helper.load_more_data_button + '"]');
+                                const button = $(entry.target).find('button[data-button="' + qapl_quick_ajax_helper.helper.load_more_data_button + '"]');
                                 if (button.length && !button.hasClass("loading")) {
                                     button.addClass("loading");
                                     button.trigger("click");
@@ -64,10 +64,12 @@
             });
         },
         qapl_quick_ajax_handle_ajax: function (button) {
-            var self = this;
+            const self = this;
+            let args = {};
+            let attributes = {};
             try {
-                var args = JSON.parse(button.attr("data-action") || "{}");
-                var attributes = JSON.parse(button.attr("data-attributes") || "{}");
+                args = JSON.parse(button.attr("data-action") || "{}");
+                attributes = JSON.parse(button.attr("data-attributes") || "{}");
                 if (typeof args !== "object" || typeof attributes !== "object") {
                     throw new Error("Quick Ajax Post Loader: Invalid JSON structure");
                 }
@@ -76,10 +78,10 @@
                 return;
             }
 
-            var button_type = button.attr("data-button");
-            var containerId = attributes[qapl_quick_ajax_helper.helper.block_id] || "";
-            var container = $("#quick-ajax-" + containerId);
-            var container_inner = $("#quick-ajax-" + containerId + " .quick-ajax-posts-wrapper");
+            const button_type = button.attr("data-button");
+            const containerId = attributes[qapl_quick_ajax_helper.helper.block_id] || "";
+            const container = $("#quick-ajax-" + containerId);
+            const container_inner = $("#quick-ajax-" + containerId + " .quick-ajax-posts-wrapper");
             if (!container.length || !container_inner.length) {
                 console.error("Quick Ajax Post Loader: Container or inner container not found:", containerId);
                 return;
@@ -89,12 +91,12 @@
             container.addClass("loading");
             //set container height to first item height to prevent layout shift
             if (container.hasClass("quick-ajax-theme")) {
-                var firstItem = container_inner.find(".qapl-post-item:first");
+                const firstItem = container_inner.find(".qapl-post-item:first");
                 if (firstItem.length) {
                     container.css("min-height", firstItem.outerHeight() + "px");
                 }
             }
-            if (button.attr("data-button") === qapl_quick_ajax_helper.helper.filter_data_button || button.attr("data-button") === qapl_quick_ajax_helper.helper.sort_button) {
+            if (button_type === qapl_quick_ajax_helper.helper.filter_data_button || button_type === qapl_quick_ajax_helper.helper.sort_button) {
                 container.addClass("filter-update");
                 container_inner.fadeOut(100, function () {
                     $(this).empty().fadeIn(100);
@@ -114,7 +116,7 @@
                     if (response && response.data) {
                         if (button_type === qapl_quick_ajax_helper.helper.load_more_data_button) {
                             self.qapl_quick_ajax_load_more_add_posts(container_inner, button, response.data.output);
-                        } else if (button.attr("data-button") === qapl_quick_ajax_helper.helper.filter_data_button || button.attr("data-button") === qapl_quick_ajax_helper.helper.sort_button) {
+                        } else if (button_type === qapl_quick_ajax_helper.helper.filter_data_button || button_type === qapl_quick_ajax_helper.helper.sort_button) {
                             self.qapl_quick_ajax_taxonomy_filter_show_posts(container_inner, button, response.data.output, containerId);
                         }
                         self.qapl_quick_ajax_append_load_more_button(container_inner, response.data.load_more);
@@ -139,7 +141,7 @@
         },
         qapl_quick_ajax_load_more_add_posts: function (container, button, response) {
             button.parent().remove();
-            var new_posts = $(response).hide();
+            const new_posts = $(response).hide();
             container.append(new_posts);
             new_posts.slideDown(function () {
                 $(this).removeAttr("style");
@@ -151,7 +153,7 @@
             button.addClass("active");
             container.parent().find(".quick-ajax-load-more-container").remove();
             container.stop(true, true).fadeOut(100, function () {
-                var new_posts = $(response).css("opacity", "0");
+                const new_posts = $(response).css("opacity", "0");
                 container.html(new_posts).fadeIn(400);
                 new_posts.animate(
                     { opacity: 1 },
@@ -177,45 +179,55 @@
             }
         },
         qapl_quick_ajax_handle_sort: function (selectButton) {
-            let $sortContainer = selectButton.closest(".quick-ajax-sort-options-container");
-            let QuerySettings = $sortContainer.find(".quick-ajax-settings");
-            let settingsData = QuerySettings.data("attributes");
+            const sortContainer = selectButton.closest(".quick-ajax-sort-options-container");
+            const querySettings = sortContainer.find(".quick-ajax-settings");
+            const settingsData = querySettings.data("attributes");
 
             // check if quick_ajax_id exists
             if (!settingsData || !settingsData.quick_ajax_id) {
                 return; // stop if quick_ajax_id is missing
             }
 
-            let quickAjaxId = settingsData.quick_ajax_id;
-            let filterContainer = $("#quick-ajax-filter-" + quickAjaxId);
+            const quickAjaxId = settingsData.quick_ajax_id;
+            const filterContainer = $("#quick-ajax-filter-" + quickAjaxId);
             // get selected value
-            let selectedValue = selectButton.val();
-            let [orderby, order] = selectedValue.split("-");
+            const selectedValue = selectButton.val();
+            const [orderby = "", order = ""] = selectedValue.split("-");
             // update quick-ajax-settings in the same sort container
-            let actionData = QuerySettings.data("action");
+            let actionData = querySettings.data("action");
             // convert to object if needed
             if (typeof actionData === "string") {
-                actionData = JSON.parse(actionData);
+                try {
+                    actionData = JSON.parse(actionData);
+                } catch (e) {
+                    console.error("Quick Ajax Post Loader: Invalid JSON in sort settings");
+                    return;
+                }
             }
             // change orderby and order
             actionData.orderby = orderby;
             actionData.order = order;
             //update data-action
-            QuerySettings.attr("data-action", JSON.stringify(actionData));
+            querySettings.attr("data-action", JSON.stringify(actionData));
             // if filter container does not exist, trigger only settings span click
             if (!filterContainer.length) {
-                if (QuerySettings.is("[data-action]")) {
-                    QuerySettings.trigger("click");
+                if (querySettings.is("[data-action]")) {
+                    querySettings.trigger("click");
                 }
                 return;
             }
             // update all filter buttons in the matching filter container
             filterContainer.find(".qapl-filter-button").each(function () {
-                let button = $(this);
+                const button = $(this);
                 let actionData = button.data("action");
                 // get action data
                 if (typeof actionData === "string") {
-                    actionData = JSON.parse(actionData);
+                    try {
+                        actionData = JSON.parse(actionData);
+                    } catch (e) {
+                        console.error("Quick Ajax Post Loader: Invalid JSON in filter button");
+                        return;
+                    }
                 }
                 // convert to object if needed
                 actionData.orderby = orderby;
@@ -223,16 +235,14 @@
                 button.attr("data-action", JSON.stringify(actionData));
             });
             // find the active button
-            let activeButton = filterContainer.find(".qapl-filter-button.active");
+            const activeButton = filterContainer.find(".qapl-filter-button.active");
 
             if (activeButton.length) {
                 // click active button if exists
                 activeButton.trigger("click");
-            } else {
+            } else if (querySettings.is("[data-action]")) {
                 //click settings span
-                if (QuerySettings.is("[data-action]")) {
-                    QuerySettings.trigger("click");
-                }
+                querySettings.trigger("click");
             }
         }
     };

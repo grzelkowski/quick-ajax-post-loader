@@ -1,0 +1,43 @@
+# Node.js dependencies
+node_modules/
+package-lock.json
+
+# system files
+.DS_Store
+Thumbs.db
+
+# log files
+logs/
+*.log
+
+# environment configuration files
+.env
+
+# dev-tools folder
+#dev-tools/
+
+# development and build folders
+.history/
+dist/
+src/
+build/
+
+# IDE-specific files (Visual Studio Code)
+.vscode/
+
+# JetBrains IDEs (IntelliJ, PhpStorm, WebStorm)
+.idea/
+
+# temporary files and project configurations
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+
+# SCSS compilation
+*.scss
+
+# Database backup files
+*.sql
+
+# Archive files
+*.zip
