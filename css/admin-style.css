@@ -190,15 +190,12 @@
         -ms-flex: 1 1 0px;
             flex: 1 1 0;
 }
-.quick-ajax-form-wrap .quick-ajax-field-container select,
-.quick-ajax-form-wrap .quick-ajax-field-container input{
-    margin: 0;
-}
 .quick-ajax-form-wrap .quick-ajax-field-container .quick-ajax-field > div,
 .quick-ajax-form-wrap .quick-ajax-field-container .quick-ajax-field > select,
 .quick-ajax-form-wrap .quick-ajax-field-container .quick-ajax-field > input{
     max-width: 100%;
     width: 100%;
+    margin: 0;
 }
 .quick-ajax-form-wrap .quick-ajax-field-container.quick-ajax-multiselect-field .quick-ajax-field .quick-ajax-field-options{
     display: -webkit-box;

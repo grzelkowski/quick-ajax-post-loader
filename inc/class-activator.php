@@ -6,11 +6,10 @@ if (!class_exists('QAPL_Quick_Ajax_Activator')) {
     class QAPL_Quick_Ajax_Activator {
         public static function activate() {
             require_once plugin_dir_path(__FILE__) . 'class-helper.php';
-            $qapl_helper = QAPL_Quick_Ajax_Helper::get_instance();
             $default_value = [
-                'loader_icon' => $qapl_helper::shortcode_page_select_loader_icon_default_value(),
+                'loader_icon' => QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON_DEFAULT,
             ];
-            $qapl_helper::add_or_update_option_autoload($qapl_helper::admin_page_global_options_name(), $default_value, 'off');
+            QAPL_Quick_Ajax_Utilities::add_or_update_option_autoload(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_OPTIONS_NAME, $default_value, 'off');
         }
     }
 }

@@ -5,16 +5,20 @@ if (!defined('ABSPATH')) {
 //add get qapl_render_post_container - echo qapl_render_post_container()
 //add get qapl_render_taxonomy_filter
 function qapl_render_post_container($args, $attributes = null, $render_context = null, $meta_query = null) {
-    if (!class_exists('QAPL_Quick_Ajax_Handler') || !method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            //error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
-        }
+    if (!class_exists('QAPL_Quick_Ajax_Handler')) {
         return;
     }
-    $ajax_class = QAPL_Quick_Ajax_Handler::get_instance();
-    $attributes = $attributes ?? [];
+    if (!is_array($args)) {
+        return;
+    }
+
+    $attributes = is_array($attributes) ? $attributes : [];
+    $file_manager = new QAPL_Quick_Ajax_File_Manager();
+    $ajax_class = new QAPL_Quick_Ajax_Handler($file_manager);
+
     $ajax_class->wp_query_args($args, $attributes);
     $ajax_class->layout_customization($attributes);
+    
     $output = '';
     $filter_wrapper_start = $filter_wrapper_end = '';
     if(isset($render_context['controls_container']) && $render_context['controls_container'] == 1){
@@ -40,16 +44,15 @@ function qapl_quick_ajax_post_grid($args, $attributes) {
 }
 
 function qapl_render_taxonomy_filter($args, $attributes, $taxonomy = null){
-    if (!class_exists('QAPL_Quick_Ajax_Handler') || !method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            //error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
-        }
+    if (!class_exists('QAPL_Quick_Ajax_Handler')) {
         return;
     }
-    $ajax_class = QAPL_Quick_Ajax_Handler::get_instance();
-    $attributes = $attributes ?? [];
-    $ajax_class->wp_query_args($args, $attributes);
-    $ajax_class->layout_customization($attributes);
+    $attributes = is_array($attributes) ? $attributes : [];
+    $file_manager = new QAPL_Quick_Ajax_File_Manager();
+    $ajax_handler = new QAPL_Quick_Ajax_Handler($file_manager);
+
+    $ajax_handler->wp_query_args($args, $attributes);
+    $ajax_handler->layout_customization($attributes);
     $selected_taxonomy = null;
 
     if (!empty($taxonomy) && is_string($taxonomy)) {
@@ -58,7 +61,7 @@ function qapl_render_taxonomy_filter($args, $attributes, $taxonomy = null){
         $selected_taxonomy = $args['selected_taxonomy'];
     }
     if(!empty($selected_taxonomy) && is_string($selected_taxonomy)) {
-        echo $ajax_class->render_taxonomy_terms_filter($selected_taxonomy);// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        echo $ajax_handler->render_taxonomy_terms_filter($selected_taxonomy);// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 //alias for backward compatibility
@@ -67,30 +70,19 @@ function qapl_quick_ajax_term_filter($args, $attributes, $taxonomy) {
 }
 
 function qapl_render_sort_controls($args, $attributes, $sort_options){
-    if (!class_exists('QAPL_Quick_Ajax_Handler') || !method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            //error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
-        }
+    if (!class_exists('QAPL_Quick_Ajax_Handler')) {
         return;
     }
-    $ajax_class = QAPL_Quick_Ajax_Handler::get_instance();
-    $attributes = $attributes ?? [];
-    $ajax_class->wp_query_args($args, $attributes);
-    $ajax_class->layout_customization($attributes);
-    if(!empty($sort_options) && is_array($sort_options)) {
-        echo $ajax_class->render_sort_options($sort_options);// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-    }
-}
+    $attributes = is_array($attributes) ? $attributes : [];
+    $file_manager = new QAPL_Quick_Ajax_File_Manager();
+    $ajax_handler = new QAPL_Quick_Ajax_Handler($file_manager);
 
-function qapl_quick_ajax_get_quick_ajax_id(){
-    if (!class_exists('QAPL_Quick_Ajax_Handler') || !method_exists('QAPL_Quick_Ajax_Handler', 'get_instance')) {
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            //error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Handler class or method get_instance not found');
-        }
-        return '';
+    $ajax_handler->wp_query_args($args, $attributes);
+    $ajax_handler->layout_customization($attributes);
+
+    if(!empty($sort_options) && is_array($sort_options)) {
+        echo $ajax_handler->render_sort_options($sort_options);// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
-    $instance = QAPL_Quick_Ajax_Handler::get_instance();
-    return sanitize_text_field($instance->get_quick_ajax_id());
 }
 
 function qapl_quick_ajax_check_page_type($values){

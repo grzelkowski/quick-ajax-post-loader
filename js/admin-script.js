@@ -379,7 +379,7 @@
             }
             var quickAjaxSortControlValue = "";
             var quickAjaxSortControlText = "";
-            if (quickAjaxSortControl !== null) {
+            if (quickAjaxSortControl !== null && quickAjaxSortControlValueOptions) {
                 quickAjaxSortControlValue = "";
                 quickAjaxSortControlValue += quickAjaxSortControlValueOptions;
                 //qapl_render_sort_controls
@@ -393,11 +393,11 @@
                 quickAjaxSortControlText += "}";
             }
             let formattedText = "";
-            if (quickAjaxSortControlValue.trim() !== "") {
+            if (typeof quickAjaxSortControlValue === "string" && quickAjaxSortControlValue.trim() !== "") {
                 formattedText += "\n// Set the sort options for the button.\n";
                 formattedText += quickAjaxSortControlValue.trim() + "\n";
             }
-            if (quickAjaxSortControlText.trim() !== "") {
+            if (typeof quickAjaxSortControlText === "string" && quickAjaxSortControlText.trim() !== "") {
                 formattedText += "\n// Render the sorting control button.\n";
                 formattedText += quickAjaxSortControlText.trim() + "\n";
             }

@@ -10,8 +10,8 @@ if (!class_exists('QAPL_Quick_Ajax_Updater')) {
         private $update_strategies = array();
 
         public function __construct(array $update_strategies) {
-            $this->current_version = get_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_version());
-            $this->new_version = QAPL_Quick_Ajax_Helper::get_plugin_info()['version'];
+            $this->current_version = get_option(QAPL_Quick_Ajax_Plugin_Constants::DB_OPTION_PLUGIN_VERSION);
+            $this->new_version = QAPL_Quick_Ajax_Plugin_Constants::PLUGIN_VERSION;
             QAPL_Update_Validator::init(); // initialise flags
             $this->update_strategies = $update_strategies; // save the given update classes to the class property
         }
@@ -42,17 +42,17 @@ if (!class_exists('QAPL_Quick_Ajax_Updater')) {
         }
         private function finalise_updates() {
             QAPL_Update_Validator::save_cleanup_flags();
-            update_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_version(), $this->new_version);
+            update_option(QAPL_Quick_Ajax_Plugin_Constants::DB_OPTION_PLUGIN_VERSION, $this->new_version);
         }
         private function check_and_downgrade_version(): bool {
-            $stored_version = get_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_version());
+            $stored_version = get_option(QAPL_Quick_Ajax_Plugin_Constants::DB_OPTION_PLUGIN_VERSION);
             if ($stored_version === false) {
-                add_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_version(), $this->new_version, '', 'off');
+                add_option(QAPL_Quick_Ajax_Plugin_Constants::DB_OPTION_PLUGIN_VERSION, $this->new_version, '', 'off');
                 //error_log('QAPL Updater: Version record created.');
                 return true;
             }
             if (version_compare($stored_version, $this->new_version, '>')) {
-                update_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_version(), $this->new_version);
+                update_option(QAPL_Quick_Ajax_Plugin_Constants::DB_OPTION_PLUGIN_VERSION, $this->new_version);
                 //error_log('QAPL Updater: Version downgraded successfully.');
                 return true;
             }
@@ -62,8 +62,8 @@ if (!class_exists('QAPL_Quick_Ajax_Updater')) {
     // Register the update strategies and execute updates
     add_action('init', 'qapl_action_quick_ajax_check_version_and_run_updates');
     function qapl_action_quick_ajax_check_version_and_run_updates() {
-        $current_version = get_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_version());
-        $plugin_version = QAPL_Quick_Ajax_Helper::get_plugin_info()['version'];
+        $current_version = get_option(QAPL_Quick_Ajax_Plugin_Constants::DB_OPTION_PLUGIN_VERSION);
+        $plugin_version = QAPL_Quick_Ajax_Plugin_Constants::PLUGIN_VERSION;
         if ($current_version !== $plugin_version) {
             // register update strategies and send them to the constructor
             $update_strategies = array(
@@ -85,8 +85,8 @@ interface QAPL_Update_Interface {
 class QAPL_Update_Version_1_3_2 implements QAPL_Update_Interface {
     public function run_update(): bool {
         $results = array();
-        $results[] = QAPL_Data_Migrator::migrate_meta_for_all_posts(QAPL_Quick_Ajax_Helper::cpt_shortcode_slug(), 'qapl_quick_ajax_meta_box_shortcode_shortcode', 'qapl_quick_ajax_shortcode_code');
-        $results[] = QAPL_Data_Migrator::migrate_meta_for_all_posts(QAPL_Quick_Ajax_Helper::cpt_shortcode_slug(), 'qapl_settings_wrapper' , 'qapl_quick_ajax_shortcode_settings');
+        $results[] = QAPL_Data_Migrator::migrate_meta_for_all_posts(QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG, 'qapl_quick_ajax_meta_box_shortcode_shortcode', 'qapl_quick_ajax_shortcode_code');
+        $results[] = QAPL_Data_Migrator::migrate_meta_for_all_posts(QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG, 'qapl_settings_wrapper' , 'qapl_quick_ajax_shortcode_settings');
         return QAPL_Update_Validator::check_migration_results($results, '1.3.2');
     }
 }
@@ -94,8 +94,8 @@ class QAPL_Update_Version_1_3_2 implements QAPL_Update_Interface {
 class QAPL_Update_Version_1_3_3 implements QAPL_Update_Interface {
     public function run_update(): bool {
         $results = array();
-        $results[] = QAPL_Data_Migrator::migrate_option('qapl-global-options', QAPL_Quick_Ajax_Helper::admin_page_global_options_name());
-        $results[] = QAPL_Data_Migrator::migrate_meta_for_all_posts(QAPL_Quick_Ajax_Helper::cpt_shortcode_slug(), 'qapl_quick_ajax_shortcode_settings', QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings());
+        $results[] = QAPL_Data_Migrator::migrate_option('qapl-global-options', QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_OPTIONS_NAME);
+        $results[] = QAPL_Data_Migrator::migrate_meta_for_all_posts(QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG, 'qapl_quick_ajax_shortcode_settings', QAPL_Quick_Ajax_Plugin_Constants::DB_POSTMETA_SHORTCODE_SETTINGS);
         $return = QAPL_Update_Validator::check_migration_results($results, '1.3.3');
         return $return;
     }    
@@ -103,8 +103,8 @@ class QAPL_Update_Version_1_3_3 implements QAPL_Update_Interface {
 class QAPL_Update_Version_1_3_4 implements QAPL_Update_Interface {
     public function run_update(): bool {
         $results = array();
-        $results[] = QAPL_Data_Migrator::update_autoload_for_option(QAPL_Quick_Ajax_Helper::admin_page_global_options_name(),'off');
-        $results[] = QAPL_Data_Migrator::update_autoload_for_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_version(),'off');
+        $results[] = QAPL_Data_Migrator::update_autoload_for_option(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_OPTIONS_NAME,'off');
+        $results[] = QAPL_Data_Migrator::update_autoload_for_option(QAPL_Quick_Ajax_Plugin_Constants::DB_OPTION_PLUGIN_VERSION,'off');
         $return = QAPL_Update_Validator::check_migration_results($results, '1.3.4');
         return $return;
     }    
@@ -112,7 +112,7 @@ class QAPL_Update_Version_1_3_4 implements QAPL_Update_Interface {
 class QAPL_Update_Version_1_7_4 implements QAPL_Update_Interface {
     // fix wrong label assignment for title ASC and DESC sort options due to naming issue
     public function run_update(): bool {
-        $option_name = QAPL_Quick_Ajax_Helper::admin_page_global_options_name();
+        $option_name = QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_OPTIONS_NAME;
         $options = get_option($option_name, array());
         if (!is_array($options)) {
             return true; // nothing to update
@@ -245,7 +245,7 @@ class QAPL_Update_Validator {
     private static $cleanup_flags = array();
 
     public static function init() {
-        $flags = get_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_cleanup_flags(), array());
+        $flags = get_option(QAPL_Quick_Ajax_Plugin_Constants::DB_OPTION_PLUGIN_CLEANUP_FLAGS, array());
         if (is_array($flags)) {
             self::$cleanup_flags = array_map('boolval', $flags);
         }else {
@@ -297,12 +297,12 @@ class QAPL_Update_Validator {
        self::$cleanup_flags = array_map('boolval', self::$cleanup_flags);
        //error_log('QAPL_Quick_Ajax_Cleaner: cleanup ' . json_encode(self::$cleanup_flags));
         if (empty(self::$cleanup_flags)) {
-            delete_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_cleanup_flags());
+            delete_option(QAPL_Quick_Ajax_Plugin_Constants::DB_OPTION_PLUGIN_CLEANUP_FLAGS);
         } else {
-            if (get_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_cleanup_flags()) === false) {
-                add_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_cleanup_flags(), self::$cleanup_flags, '', 'off');
+            if (get_option(QAPL_Quick_Ajax_Plugin_Constants::DB_OPTION_PLUGIN_CLEANUP_FLAGS) === false) {
+                add_option(QAPL_Quick_Ajax_Plugin_Constants::DB_OPTION_PLUGIN_CLEANUP_FLAGS, self::$cleanup_flags, '', 'off');
             } else {
-                update_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_cleanup_flags(), self::$cleanup_flags);
+                update_option(QAPL_Quick_Ajax_Plugin_Constants::DB_OPTION_PLUGIN_CLEANUP_FLAGS, self::$cleanup_flags);
             }
         }
     }
@@ -316,7 +316,7 @@ if (!class_exists('QAPL_Quick_Ajax_Cleaner')) {
         private $cleanup_strategies = [];
 
         public function __construct($cleanup_strategies) {
-            $this->cleanup_flags = get_option(QAPL_Quick_Ajax_Helper::quick_ajax_plugin_cleanup_flags(), []);
+            $this->cleanup_flags = get_option(QAPL_Quick_Ajax_Plugin_Constants::DB_OPTION_PLUGIN_CLEANUP_FLAGS, []);
             if (!is_array($this->cleanup_flags)) {
                 $this->cleanup_flags = [];
             }
@@ -423,8 +423,8 @@ interface QAPL_Data_Clean_Interface {
 class QAPL_Cleanup_Version_1_3_2 implements QAPL_Data_Clean_Interface {
     public function run_cleanup(): bool {
         $results = [];
-        $results[] = QAPL_Data_Cleaner::remove_old_meta_for_all_posts(QAPL_Quick_Ajax_Helper::cpt_shortcode_slug(), 'qapl_quick_ajax_meta_box_shortcode_shortcode');
-        $results[] = QAPL_Data_Cleaner::remove_old_meta_for_all_posts(QAPL_Quick_Ajax_Helper::cpt_shortcode_slug(), 'qapl_settings_wrapper');
+        $results[] = QAPL_Data_Cleaner::remove_old_meta_for_all_posts(QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG, 'qapl_quick_ajax_meta_box_shortcode_shortcode');
+        $results[] = QAPL_Data_Cleaner::remove_old_meta_for_all_posts(QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG, 'qapl_settings_wrapper');
         return QAPL_Update_Validator::check_result_array_if_all_true($results);
     }
 }
@@ -437,8 +437,8 @@ class QAPL_Cleanup_Version_1_3_3 implements QAPL_Data_Clean_Interface {
             //error_log('QAPL Cleaner: Failed to delete the option "qapl-global-options" due to an unexpected error.');
             $results[] = false; 
         }
-        $results[] = QAPL_Data_Cleaner::remove_old_meta_for_all_posts(QAPL_Quick_Ajax_Helper::cpt_shortcode_slug(), 'qapl_quick_ajax_shortcode_settings');
-        $results[] = QAPL_Data_Cleaner::remove_old_meta_for_all_posts(QAPL_Quick_Ajax_Helper::cpt_shortcode_slug(), 'qapl_quick_ajax_shortcode_code');
+        $results[] = QAPL_Data_Cleaner::remove_old_meta_for_all_posts(QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG, 'qapl_quick_ajax_shortcode_settings');
+        $results[] = QAPL_Data_Cleaner::remove_old_meta_for_all_posts(QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG, 'qapl_quick_ajax_shortcode_code');
         return QAPL_Update_Validator::check_result_array_if_all_true($results);
     }
 }

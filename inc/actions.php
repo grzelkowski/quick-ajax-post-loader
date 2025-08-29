@@ -10,15 +10,15 @@ function qapl_quick_ajax_load_posts() {
         wp_send_json_error(['message' => 'Quick Ajax Post Loader: Not an AJAX request']);
     }
     // nonce verification
-    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), QAPL_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_action())) {
+    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), QAPL_Quick_Ajax_Plugin_Constants::NONCE_FORM_QUICK_AJAX_ACTION)) {
         wp_send_json_error(['message' => 'Quick Ajax Post Loader: Unauthorized request']);
     }
     // validate and sanitize input
     if (empty($_POST['args'])) {
         wp_send_json_error(['message' => 'Quick Ajax Post Loader: Invalid request, Missing arguments.']);
     } else {
-        $qapl_helper = QAPL_Quick_Ajax_Helper::get_instance();
-        $ajax_class = new QAPL_Quick_Ajax_Handler;
+        $file_manager = new QAPL_Quick_Ajax_File_Manager();
+        $ajax_class = new QAPL_Quick_Ajax_Handler($file_manager);
 
         // Sanitize 'args'
         $args = [];
@@ -63,7 +63,7 @@ function qapl_quick_ajax_load_posts() {
             QAPL_Post_Template_Context::set_template($qapl_post_template);
             while ($query->have_posts()) {
                 $query->the_post();
-                $template_path = $qapl_helper->plugin_templates_post_item_template(esc_attr($ajax_class->attributes[QAPL_Quick_Ajax_Helper::layout_post_item_template()]));
+                $template_path = $file_manager->get_post_item_template(esc_attr($ajax_class->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE]));
                 if (!$template_path || !file_exists($template_path)) {
                     wp_send_json_error(['message' => 'Quick Ajax Post Loader: Template file not found']);
                 }
@@ -78,7 +78,7 @@ function qapl_quick_ajax_load_posts() {
             ];
             $qapl_no_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
             QAPL_Post_Template_Context::set_template($qapl_no_post_template);
-            $no_posts_template = $qapl_helper->plugin_templates_no_posts();
+            $no_posts_template = $file_manager->get_no_posts_template();
             if (!$no_posts_template || !file_exists($no_posts_template)) {
                 wp_send_json_error(['message' => 'Quick Ajax Post Loader: Template file not found']);
             }
@@ -89,7 +89,7 @@ function qapl_quick_ajax_load_posts() {
        
         $output = ob_get_clean();
         $load_more = $ajax_class->load_more_button(esc_attr($query->get('paged')), esc_attr($query->max_num_pages), esc_attr($query->found_posts), esc_attr($ajax_class->attributes['infinite_scroll']));
-        $show_end_message = $ajax_class->render_end_of_posts_message($ajax_class->attributes['show_end_message'], $load_more, esc_attr($query->max_num_pages), esc_attr($ajax_class->attributes['quick_ajax_id']));
+        $show_end_message = $ajax_class->render_end_of_posts_message($load_more, esc_attr($query->max_num_pages), esc_attr($ajax_class->attributes['quick_ajax_id']), $ajax_class->attributes['show_end_message']);
        
 
         //$output = $ajax_class->replace_placeholders($output);
@@ -110,7 +110,7 @@ function qapl_quick_ajax_get_taxonomies_by_post_type() {
     if (!defined('DOING_AJAX') || !DOING_AJAX) {
         wp_send_json_error(['message' => 'Quick Ajax Post Loader: Not an AJAX request']);
     }
-    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), QAPL_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_action())) {
+    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), QAPL_Quick_Ajax_Plugin_Constants::NONCE_FORM_QUICK_AJAX_ACTION)) {
         wp_send_json_error(['message' => 'Quick Ajax Post Loader: Unauthorized request']);
     }
 
@@ -143,7 +143,7 @@ function qapl_quick_ajax_get_terms_by_taxonomy() {
     if (!defined('DOING_AJAX') || !DOING_AJAX) {
         wp_send_json_error(['message' => 'Quick Ajax Post Loader: Not an AJAX request']);
     }
-    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), QAPL_Quick_Ajax_Helper::wp_nonce_form_quick_ajax_action())) {
+    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), QAPL_Quick_Ajax_Plugin_Constants::NONCE_FORM_QUICK_AJAX_ACTION)) {
         wp_send_json_error(['message' => 'Quick Ajax Post Loader: Unauthorized request']);
     }
     //return info if No taxonomy
@@ -168,7 +168,7 @@ function qapl_quick_ajax_get_terms_by_taxonomy() {
     $saved_terms = [];
     if ($post_id > 0) {
         // get saved terms from post meta
-        $post_meta = get_post_meta($post_id, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings(), true);
+        $post_meta = get_post_meta($post_id, QAPL_Quick_Ajax_Plugin_Constants::DB_POSTMETA_SHORTCODE_SETTINGS, true);
         $post_meta_values = maybe_unserialize($post_meta);
         // if terms exist in post meta
         if (is_array($post_meta_values) && isset($post_meta_values['qapl_manual_selected_terms'])) {

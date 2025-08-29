@@ -5,8 +5,7 @@ if (!defined('ABSPATH')) {
 
 if (!class_exists('QAPL_Quick_Ajax_Handler')) {
     class QAPL_Quick_Ajax_Handler{
-        private static $instance = null;
-        private $helper;
+        private $file_manager;
         private $input_args = [];
         private $action_args = [];
         public $args = [];
@@ -17,43 +16,37 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
         private $global_options;
         //private $placeholder_replacer;
         
-        public function __construct(){
-            $this->helper = QAPL_Quick_Ajax_Helper::get_instance();
+        public function __construct(QAPL_Quick_Ajax_File_Manager $file_manager){
             $this->quick_ajax_id = 0;
-            $this->global_options = get_option($this->helper->admin_page_global_options_name(), []);
+            $this->global_options = get_option(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_OPTIONS_NAME, []);
+            $this->file_manager = $file_manager;
             //$this->placeholder_replacer = new QAPL_Placeholder_Replacer(); // not in use after removing placeholders
             // Filter hooks for filter wrapper
             /*
-            add_action(QAPL_Hooks::HOOK_FILTER_CONTAINER_BEFORE, array($this, 'action_filter_wrapper_pre'));         
-            add_action(QAPL_Hooks::HOOK_FILTER_CONTAINER_START, array($this, 'action_filter_wrapper_open'));
-            add_action(QAPL_Hooks::HOOK_FILTER_CONTAINER_END, array($this, 'action_filter_wrapper_close'));
-            add_action(QAPL_Hooks::HOOK_FILTER_CONTAINER_AFTER, array($this, 'action_filter_wrapper_complete'));
+            add_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_FILTER_CONTAINER_BEFORE, array($this, 'action_filter_wrapper_pre'));         
+            add_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_FILTER_CONTAINER_START, array($this, 'action_filter_wrapper_open'));
+            add_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_FILTER_CONTAINER_END, array($this, 'action_filter_wrapper_close'));
+            add_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_FILTER_CONTAINER_AFTER, array($this, 'action_filter_wrapper_complete'));
 
             // Filter hooks for posts wrapper
-            add_action(QAPL_Hooks::HOOK_POSTS_CONTAINER_BEFORE, array($this, 'action_posts_wrapper_pre'));     
-            add_action(QAPL_Hooks::HOOK_POSTS_CONTAINER_START, array($this, 'action_posts_wrapper_open'));
-            add_action(QAPL_Hooks::HOOK_POSTS_CONTAINER_END, array($this, 'action_posts_wrapper_close'));     
-            add_action(QAPL_Hooks::HOOK_POSTS_CONTAINER_AFTER, array($this, 'action_posts_wrapper_complete'));
+            add_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_POSTS_CONTAINER_BEFORE, array($this, 'action_posts_wrapper_pre'));     
+            add_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_POSTS_CONTAINER_START, array($this, 'action_posts_wrapper_open'));
+            add_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_POSTS_CONTAINER_END, array($this, 'action_posts_wrapper_close'));     
+            add_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_POSTS_CONTAINER_AFTER, array($this, 'action_posts_wrapper_complete'));
 
             // Filter hooks for load more button
-            add_action(QAPL_Hooks::HOOK_LOAD_MORE_BEFORE, array($this, 'action_load_more_button_pre'));     
-            add_action(QAPL_Hooks::HOOK_LOAD_MORE_AFTER, array($this, 'action_load_more_button_complete')); 
+            add_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_LOAD_MORE_BEFORE, array($this, 'action_load_more_button_pre'));     
+            add_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_LOAD_MORE_AFTER, array($this, 'action_load_more_button_complete')); 
 
             // Filter hooks for loader icon
-            add_action(QAPL_Hooks::HOOK_LOADER_BEFORE, array($this, 'action_loader_icon_pre'));     
-            add_action(QAPL_Hooks::HOOK_LOADER_AFTER, array($this, 'action_loader_icon_complete'));
+            add_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_LOADER_BEFORE, array($this, 'action_loader_icon_pre'));     
+            add_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_LOADER_AFTER, array($this, 'action_loader_icon_complete'));
             */
             // Filters with arguments (query and taxonomy buttons)
-            //add_filter(QAPL_Hooks::HOOK_MODIFY_POSTS_QUERY_ARGS, array($this, 'filter_modify_query_args'), 10, 2); 
-            //add_filter(QAPL_Hooks::HOOK_MODIFY_TAXONOMY_FILTER_BUTTONS, array($this, 'filter_modify_taxonomy_filter_buttons'), 10, 2);
+            //add_filter(QAPL_Quick_Ajax_Plugin_Constants::HOOK_MODIFY_POSTS_QUERY_ARGS, array($this, 'filter_modify_query_args'), 10, 2); 
+            //add_filter(QAPL_Quick_Ajax_Plugin_Constants::HOOK_MODIFY_TAXONOMY_FILTER_BUTTONS, array($this, 'filter_modify_taxonomy_filter_buttons'), 10, 2);
         }
-        
-        public static function get_instance() {
-            if (null === self::$instance) {
-                self::$instance = new self();
-            }
-            return self::$instance;
-        }        
+         
 
         public function get_quick_ajax_id() {
             return $this->quick_ajax_id;
@@ -77,12 +70,12 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
 
         private function generate_block_id($attributes = false) {
             if (!is_array($attributes)) {
-                $attributes = [$this->helper->layout_quick_ajax_id() => sanitize_text_field($attributes)];
+                $attributes = [QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_ID => sanitize_text_field($attributes)];
             }
-            if (isset($attributes[$this->helper->layout_quick_ajax_id()])) {
+            if (isset($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_ID])) {
                 // Prefix 'p' for 'shortcode' equal to true, otherwise 'c'
                 $prefix = (isset($attributes['shortcode']) && $attributes['shortcode'] === true) ? 'p' : 'c';              
-                $this->quick_ajax_id = esc_attr($prefix . $attributes[$this->helper->layout_quick_ajax_id()]);
+                $this->quick_ajax_id = esc_attr($prefix . $attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_ID]);
             } else {
                 // Increment qapl_id if 'quick_ajax_id' is not set
                 $this->quick_ajax_id++;
@@ -136,7 +129,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             // generate query args (post_type, tax_query, etc.)
             $quick_ajax_args = $this->initialize_query_args($this->input_args);
 
-            $this->args['post_status'] = $this->helper->shortcode_page_select_post_status_default_value();
+            $this->args['post_status'] = QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_POST_STATUS_DEFAULT;
 
             if (isset($quick_ajax_args['post_type']) && !empty($quick_ajax_args['post_type'])) {
                 foreach ($quick_ajax_args as $key => $value) {
@@ -151,7 +144,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             }
             */
             
-            $this->args = apply_filters(QAPL_Hooks::HOOK_MODIFY_POSTS_QUERY_ARGS, $this->args, $this->quick_ajax_id);
+            $this->args = apply_filters(QAPL_Quick_Ajax_Plugin_Constants::HOOK_MODIFY_POSTS_QUERY_ARGS, $this->args, $this->quick_ajax_id);
 
             if (empty($this->args)) {
                 return false;
@@ -169,11 +162,11 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
         private function query_args_base_query_args($args) {
             return [
                 'post_type' => isset($args['post_type']) ? sanitize_text_field($args['post_type']) : null,
-                'posts_per_page' => isset($args['posts_per_page']) ? intval($args['posts_per_page']) : $this->helper->shortcode_page_select_posts_per_page_default_value(),
-                'orderby' => isset($args['orderby']) ? sanitize_text_field($args['orderby']) : $this->helper->shortcode_page_select_orderby_default_value(),
-                'order' => isset($args['order']) ? sanitize_text_field($args['order']) : $this->helper->shortcode_page_select_order_default_value(),
+                'posts_per_page' => isset($args['posts_per_page']) ? intval($args['posts_per_page']) : QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE_DEFAULT,
+                'orderby' => isset($args['orderby']) ? sanitize_text_field($args['orderby']) : QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_ORDERBY_DEFAULT,
+                'order' => isset($args['order']) ? sanitize_text_field($args['order']) : QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_ORDER_DEFAULT,
                 'post__not_in' => $args['post__not_in'] ?? [],
-                'ignore_sticky_posts' => isset($args['ignore_sticky_posts']) ? intval($args['ignore_sticky_posts']) : $this->helper->shortcode_page_ignore_sticky_posts_default_value(),
+                'ignore_sticky_posts' => isset($args['ignore_sticky_posts']) ? intval($args['ignore_sticky_posts']) : QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_IGNORE_STICKY_POSTS_DEFAULT,
                 'paged' => isset($args['paged']) ? intval($args['paged']) : 1,
             ];
         }        
@@ -286,26 +279,26 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
 
             $block_id = 'quick-ajax-filter-'.$this->quick_ajax_id;
             $class_container = 'quick-ajax-filter-container';
-            if (isset($this->layout[$this->helper->layout_quick_ajax_css_style()]) && $this->layout[$this->helper->layout_quick_ajax_css_style()] != 0) {
+            if (isset($this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE]) && $this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE] != 0) {
                 $class_container .= ' quick-ajax-theme';
             }
-            if(isset($this->layout[$this->helper->layout_taxonomy_filter_class()]) && !empty(trim($this->layout[$this->helper->layout_taxonomy_filter_class()]))){
-                $class_container .= ' '.$this->layout[$this->helper->layout_taxonomy_filter_class()];
+            if(isset($this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS]) && !empty(trim($this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS]))){
+                $class_container .= ' '.$this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS];
             }            
             $container_class = $this->extract_classes_from_string($class_container);
 
             ob_start(); // Start output buffering
 
-            do_action(QAPL_Hooks::HOOK_FILTER_CONTAINER_BEFORE, $this->quick_ajax_id);
+            do_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_FILTER_CONTAINER_BEFORE, $this->quick_ajax_id);
             echo '<div id="'.esc_attr($block_id).'" class="'.esc_attr($container_class).'">';
-            do_action(QAPL_Hooks::HOOK_FILTER_CONTAINER_START, $this->quick_ajax_id);
+            do_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_FILTER_CONTAINER_START, $this->quick_ajax_id);
             if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-                $this->attributes[$this->helper->layout_quick_ajax_id()] = $this->quick_ajax_id;
+                $this->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $this->quick_ajax_id;
                 
                 $navigation_buttons = [];                
                 $button_base = [
-                    'data-button' => $this->helper->taxonomy_filter_button_data_button(),
-                    'template' => $this->helper->plugin_templates_taxonomy_filter_button(),
+                    'data-button' => QAPL_Quick_Ajax_Plugin_Constants::TERM_FILTER_BUTTON_DATA_BUTTON,
+                    'template' => $this->file_manager->get_taxonomy_filter_button_template(),
                     'data-attributes' => $this->attributes,
                 ];
                 $show_all_label = $this->global_options['show_all_label'] ?? __('Show All', 'quick-ajax-post-loader');    
@@ -338,16 +331,16 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                     }
                 }
                 
-                $navigation_buttons = apply_filters(QAPL_Hooks::HOOK_MODIFY_TAXONOMY_FILTER_BUTTONS, $navigation_buttons, $this->quick_ajax_id);
+                $navigation_buttons = apply_filters(QAPL_Quick_Ajax_Plugin_Constants::HOOK_MODIFY_TAXONOMY_FILTER_BUTTONS, $navigation_buttons, $this->quick_ajax_id);
                 $filter_buttons='';
                 foreach ( $navigation_buttons as $button ) {
                     $filter_buttons .= $this->update_button_template($button);
                 }
                 echo wp_kses_post($filter_buttons);
             }
-            do_action(QAPL_Hooks::HOOK_FILTER_CONTAINER_END, $this->quick_ajax_id);
+            do_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_FILTER_CONTAINER_END, $this->quick_ajax_id);
             echo '</div>';
-            do_action(QAPL_Hooks::HOOK_FILTER_CONTAINER_AFTER, $this->quick_ajax_id);
+            do_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_FILTER_CONTAINER_AFTER, $this->quick_ajax_id);
 
             $output = ob_get_clean(); // Get the buffered content into a variable
             //$output = $this->replace_placeholders($output); // not in use after removing placeholders
@@ -356,7 +349,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
         public function render_sort_options($sort_options){
             $block_id = 'quick-ajax-sort-options-'.$this->quick_ajax_id;
             $class_container = 'quick-ajax-sort-options-container';
-            if (isset($this->layout[$this->helper->layout_quick_ajax_css_style()]) && $this->layout[$this->helper->layout_quick_ajax_css_style()] != 0) {
+            if (isset($this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE]) && $this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE] != 0) {
                 $class_container .= ' quick-ajax-theme';
             }          
             $container_class = $this->extract_classes_from_string($class_container);
@@ -395,7 +388,8 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
 
             echo '<div id="'.esc_attr($block_id).'" class="'.esc_attr($container_class).'">';
             if(isset($sort_options) && is_array($sort_options)){
-                $default_sort_options = $this->helper->shortcode_page_select_sort_button_options_values();
+                $field = QAPL_Quick_Ajax_Form_Field_Factory::build_select_sort_button_options_field();
+                $default_sort_options = $field->get_options();
                 $label_map = [];
                 foreach ($default_sort_options as $option) {
                     $label_map[$option['value']] = $option['label'];
@@ -414,7 +408,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                         'label'   => $label,
                     ];
                 }
-                $sorted_options = apply_filters(QAPL_Hooks::HOOK_MODIFY_SORTING_OPTIONS_VARIANTS, $sorted_options, $this->quick_ajax_id);
+                $sorted_options = apply_filters(QAPL_Quick_Ajax_Plugin_Constants::HOOK_MODIFY_SORTING_OPTIONS_VARIANTS, $sorted_options, $this->quick_ajax_id);
                 $filtered_orderby_options = [];
                 foreach ($sorted_options as $option) {
                     $filtered_orderby_options[] = [
@@ -440,7 +434,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             return $output; // Return the content
         }
         private function create_sort_button($button_data) {         
-            $this->attributes[$this->helper->layout_quick_ajax_id()] = $this->quick_ajax_id;
+            $this->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $this->quick_ajax_id;
             $sort_option = '<div class="quick-ajax-sort-option-wrapper">';
             $default_option = strtolower($this->args['orderby']).'-'.strtolower($this->args['order']);
             // escape the aria-label
@@ -453,7 +447,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 $sort_option .= '<option value="' . $value . '"'.$selected.'>' . $label . '</option>';
             }
             $sort_option .= '</select>';
-            $sort_option .= '<span class="quick-ajax-settings" data-button="'.$this->helper->sort_option_button_data_button().'" data-attributes="' . esc_attr(wp_json_encode($this->attributes)) . '" data-action="' . esc_attr(wp_json_encode($this->action_args)) . '"></span>';
+            $sort_option .= '<span class="quick-ajax-settings" data-button="'.QAPL_Quick_Ajax_Plugin_Constants::SORT_OPTION_BUTTON_DATA_BUTTON.'" data-attributes="' . esc_attr(wp_json_encode($this->attributes)) . '" data-action="' . esc_attr(wp_json_encode($this->action_args)) . '"></span>';
             $sort_option .= '</div>';                      
             return $sort_option;
         }
@@ -463,7 +457,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             if (empty($button_label)){
                 return '';
             }
-            if($button_data['data-button'] == $this->helper->load_more_button_data_button()){
+            if($button_data['data-button'] == QAPL_Quick_Ajax_Plugin_Constants::LOAD_MORE_BUTTON_DATA_BUTTON){
                 $load_more_settings = [
                     'quick_ajax_id' => $this->quick_ajax_id,
                     'template_name' => 'load-more-button',
@@ -577,46 +571,46 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             $this->attributes = [];
             $this->layout = [];
             //Apply quick AJAX CSS Style
-            $this->layout[$this->helper->layout_quick_ajax_css_style()] = (isset($attributes[$this->helper->layout_quick_ajax_css_style()])) ? esc_attr($attributes[$this->helper->layout_quick_ajax_css_style()]) : 0;
+            $this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE] = (isset($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE])) ? esc_attr($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE]) : 0;
             //Number of columns
-            $this->layout[$this->helper->layout_container_num_columns()] = (isset($attributes[$this->helper->layout_container_num_columns()])) ? esc_attr($attributes[$this->helper->layout_container_num_columns()]) : 0;
+            $this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_GRID_NUM_COLUMNS] = (isset($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_GRID_NUM_COLUMNS])) ? esc_attr($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_GRID_NUM_COLUMNS]) : 0;
             //add custom class for taxonomy filter
-            if(isset($attributes[$this->helper->layout_taxonomy_filter_class()])){
-                $this->layout[$this->helper->layout_taxonomy_filter_class()] = $this->extract_classes_from_string($attributes[$this->helper->layout_taxonomy_filter_class()]);
+            if(isset($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS])){
+                $this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS] = $this->extract_classes_from_string($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS]);
             }
             //Add class to post container
-            if(isset($attributes[$this->helper->layout_container_class()])){
-                $this->layout[$this->helper->layout_container_class()] = $this->extract_classes_from_string($attributes[$this->helper->layout_container_class()]);
+            if(isset($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_CONTAINER_CLASS])){
+                $this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_CONTAINER_CLASS] = $this->extract_classes_from_string($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_CONTAINER_CLASS]);
             }
             //Post Item Template
-            $post_item_template = isset($attributes[$this->helper->layout_post_item_template()]) ? $attributes[$this->helper->layout_post_item_template()] : false;
-            $this->layout[$this->helper->layout_post_item_template()] = $this->helper->plugin_templates_post_item_template($post_item_template);
-            $this->attributes[$this->helper->layout_post_item_template()] = $post_item_template;
+            $post_item_template = isset($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE]) ? $attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE] : false;
+            $this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE] = $this->file_manager->get_post_item_template($post_item_template);
+            $this->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE] = $post_item_template;
             //Custom Load More Post Quantity            
-            if(isset($attributes[$this->helper->layout_load_more_posts()])){
-                $this->attributes[$this->helper->layout_load_more_posts()] = intval($attributes[$this->helper->layout_load_more_posts()]);
+            if(isset($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOAD_MORE_POSTS])){
+                $this->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOAD_MORE_POSTS] = intval($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOAD_MORE_POSTS]);
             }            
             //Select Loader Icon
-            if (isset($attributes[$this->helper->layout_select_loader_icon()]) && !empty($attributes[$this->helper->layout_select_loader_icon()])) {
-                $loader_icon = $attributes[$this->helper->layout_select_loader_icon()];
+            if (isset($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOADER_ICON]) && !empty($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOADER_ICON])) {
+                $loader_icon = $attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOADER_ICON];
             } elseif (isset($this->global_options['loader_icon']) && !empty($this->global_options['loader_icon'])) {
                 // fallback to global option if attributes value is invalid
                 $loader_icon = $this->global_options['loader_icon'];
             } else {
                 // final fallback to default value
-                $loader_icon = $this->helper->shortcode_page_select_loader_icon_default_value();
+                $loader_icon = QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON_DEFAULT;
             }
-            $this->layout[$this->helper->layout_select_loader_icon()] = $this->helper->plugin_templates_loader_icon_template($loader_icon);
-            $this->attributes[$this->helper->layout_select_loader_icon()] = $loader_icon;
+            $this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOADER_ICON] = $this->file_manager->get_loader_icon_template($loader_icon);
+            $this->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOADER_ICON] = $loader_icon;
             // infinite_scroll
-            if(isset($attributes[$this->helper->layout_ajax_infinite_scroll()])){
-                $this->attributes[$this->helper->layout_ajax_infinite_scroll()] = intval($attributes[$this->helper->layout_ajax_infinite_scroll()]);
+            if(isset($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL])){
+                $this->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL] = intval($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL]);
             }
             // show_end_message
-            if(isset($attributes[$this->helper->layout_show_end_message()])){
-                $this->attributes[$this->helper->layout_show_end_message()] = intval($attributes[$this->helper->layout_show_end_message()]);
+            if(isset($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_SHOW_END_MESSAGE])){
+                $this->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_SHOW_END_MESSAGE] = intval($attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_SHOW_END_MESSAGE]);
             }
-            $this->ajax_initial_load = isset($attributes[$this->helper->query_settings_ajax_on_initial_load()]) ? intval($attributes[$this->helper->query_settings_ajax_on_initial_load()]) : $this->helper->shortcode_page_ajax_on_initial_load_default_value();
+            $this->ajax_initial_load = isset($attributes[QAPL_Quick_Ajax_Plugin_Constants::AJAX_SETTING_AJAX_INITIAL_LOAD]) ? intval($attributes[QAPL_Quick_Ajax_Plugin_Constants::AJAX_SETTING_AJAX_INITIAL_LOAD]) : QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_AJAX_ON_INITIAL_LOAD_DEFAULT;
         }
 
         public function wp_query(){
@@ -628,25 +622,25 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             $args['selected_taxonomy'] = isset($this->input_args['selected_taxonomy']) ? sanitize_text_field($this->input_args['selected_taxonomy']) : '';
             $args['selected_terms'] = isset($this->input_args['selected_terms']) && is_array($this->input_args['selected_terms']) ? array_map('absint', $this->input_args['selected_terms']) : [];
             $query = new WP_Query($args);
-            $this->attributes[$this->helper->layout_quick_ajax_id()] = $this->quick_ajax_id;
-            $layout_quick_ajax_id = esc_attr($this->attributes[$this->helper->layout_quick_ajax_id()]);
+            $this->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $this->quick_ajax_id;
+            $layout_quick_ajax_id = esc_attr($this->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_ID]);
             $class_container = $class_inner_container = '';
-            if (isset($this->layout[$this->helper->layout_quick_ajax_css_style()]) && $this->layout[$this->helper->layout_quick_ajax_css_style()] != 0) {
+            if (isset($this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE]) && $this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE] != 0) {
                 $class_container .= 'quick-ajax-theme';
             }
-            if(isset($this->layout[$this->helper->layout_container_num_columns()]) && (!empty($this->layout[$this->helper->layout_container_num_columns()]))){
-                $class_inner_container .= 'col-qty-'.$this->layout[$this->helper->layout_container_num_columns()];   
+            if(isset($this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_GRID_NUM_COLUMNS]) && (!empty($this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_GRID_NUM_COLUMNS]))){
+                $class_inner_container .= 'col-qty-'.$this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_GRID_NUM_COLUMNS];   
             }
-            if(isset($this->layout[$this->helper->layout_container_class()]) && !empty(trim($this->layout[$this->helper->layout_container_class()]))){
-                $class_inner_container .= ' '.$this->layout[$this->helper->layout_container_class()];
+            if(isset($this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_CONTAINER_CLASS]) && !empty(trim($this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_CONTAINER_CLASS]))){
+                $class_inner_container .= ' '.$this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_CONTAINER_CLASS];
             }
             $container_class = $this->extract_classes_from_string($class_container);
             $container_inner_class = $this->extract_classes_from_string($class_inner_container);
             ob_start();
             // Start output buffering
-            do_action(QAPL_Hooks::HOOK_POSTS_CONTAINER_BEFORE, $this->quick_ajax_id);
+            do_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_POSTS_CONTAINER_BEFORE, $this->quick_ajax_id);
             echo '<div id="quick-ajax-'.esc_attr($layout_quick_ajax_id).'" class="quick-ajax-posts-container '.esc_attr($container_class).'">';
-            do_action(QAPL_Hooks::HOOK_POSTS_CONTAINER_START, $this->quick_ajax_id);
+            do_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_POSTS_CONTAINER_START, $this->quick_ajax_id);
             echo '<div class="quick-ajax-posts-wrapper '.esc_attr($container_inner_class).'">';
             
 
@@ -662,7 +656,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 } else {
                     while ($query->have_posts()) {
                         $query->the_post();                        
-                        include($this->layout[$this->helper->layout_post_item_template()]);
+                        include($this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE]);
                     }
                 }
                 QAPL_Post_Template_Context::clear_template(); 
@@ -674,23 +668,23 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
                 ];
                 $qapl_no_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
                 QAPL_Post_Template_Context::set_template($qapl_no_post_template);
-                include($this->helper->plugin_templates_no_posts());
+                include($this->file_manager->get_no_posts_template());
                 QAPL_Post_Template_Context::clear_template(); 
             }
                        
             echo '</div>';
-            do_action(QAPL_Hooks::HOOK_LOADER_BEFORE, $this->quick_ajax_id);
+            do_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_LOADER_BEFORE, $this->quick_ajax_id);
             echo '<div class="quick-ajax-loader-container">'; 
-            include($this->layout[$this->helper->layout_select_loader_icon()]);
+            include($this->layout[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOADER_ICON]);
             echo '</div>';
-            do_action(QAPL_Hooks::HOOK_LOADER_AFTER, $this->quick_ajax_id);
+            do_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_LOADER_AFTER, $this->quick_ajax_id);
             if (!$this->ajax_initial_load) {
-                $infinite_scroll = isset($this->attributes[$this->helper->layout_ajax_infinite_scroll()]) ? intval($this->attributes[$this->helper->layout_ajax_infinite_scroll()]) : $this->helper->shortcode_page_ajax_on_initial_load_default_value();
+                $infinite_scroll = isset($this->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL]) ? intval($this->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL]) : QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_AJAX_ON_INITIAL_LOAD_DEFAULT;
                 echo wp_kses_post($this->load_more_button(intval($query->get('paged')), intval($query->max_num_pages), intval($query->found_posts), $infinite_scroll));
             }
-            do_action(QAPL_Hooks::HOOK_POSTS_CONTAINER_END, $this->quick_ajax_id);
+            do_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_POSTS_CONTAINER_END, $this->quick_ajax_id);
             echo '</div>';
-            do_action(QAPL_Hooks::HOOK_POSTS_CONTAINER_AFTER, $this->quick_ajax_id);
+            do_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_POSTS_CONTAINER_AFTER, $this->quick_ajax_id);
             
             wp_reset_postdata();
             // Get the buffered content into a variable
@@ -707,11 +701,11 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             //print_r($this->args);
             $load_more_args = $this->action_args;
             $load_more_args['paged'] = isset($this->args['paged']) ? intval($this->args['paged']) : 1;
-            if (isset($this->attributes[$this->helper->layout_load_more_posts()]) && !empty($this->attributes[$this->helper->layout_load_more_posts()])) {
+            if (isset($this->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOAD_MORE_POSTS]) && !empty($this->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOAD_MORE_POSTS])) {
             // Check if load_more_posts attribute is set
             // if we want to add a different number of posts than displayed at the start
             // use 'offset' not 'paged'
-                $load_more_posts = intval($this->attributes[$this->helper->layout_load_more_posts()]);
+                $load_more_posts = intval($this->attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOAD_MORE_POSTS]);
                 $offset = isset($load_more_args['offset']) ? $load_more_args['offset'] + $load_more_posts : + $load_more_posts;
                
                 if (($found_posts <= $offset) || ($found_posts <= intval($load_more_args['posts_per_page']))) {
@@ -731,17 +725,17 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             if ($infinite_scroll) {
                $class = ' infinite-scroll';
             }
-            //do_action(QAPL_Hooks::HOOK_LOAD_MORE_BEFORE);
-            $button_data['template'] = $this->helper->plugin_templates_load_more_button();
+            //do_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_LOAD_MORE_BEFORE);
+            $button_data['template'] = $this->file_manager->get_load_more_button_template();
             $button_data['button_label'] = __('Load More', 'quick-ajax-post-loader');
-            $button_data['data-button'] = $this->helper->load_more_button_data_button();
+            $button_data['data-button'] = QAPL_Quick_Ajax_Plugin_Constants::LOAD_MORE_BUTTON_DATA_BUTTON;
             $button_data['data-action'] = $load_more_args;
             $button_data['data-attributes'] = $this->attributes;
             $load_more_button = '<div class="quick-ajax-load-more-container'.$class.'">';
             $load_more_button .=  $this->update_button_template($button_data);
             $load_more_button .= '</div>';
             return $load_more_button;
-            //do_action(QAPL_Hooks::HOOK_LOAD_MORE_AFTER);
+            //do_action(QAPL_Quick_Ajax_Plugin_Constants::HOOK_LOAD_MORE_AFTER);
         }
         public function render_end_of_posts_message($load_more, $max_num_pages, $quick_ajax_id, $show_end_post_message = false) {
             if(!$show_end_post_message){
@@ -762,7 +756,7 @@ if (!class_exists('QAPL_Quick_Ajax_Handler')) {
             
             ob_start();
             echo '<div class="quick-ajax-end-message-container">';
-            include($this->helper->plugin_templates_end_posts());
+            include($this->file_manager->get_end_posts_template());
             echo '</div>';
             $content = ob_get_clean();
             QAPL_Post_Template_Context::clear_template();

@@ -63,7 +63,7 @@ class QAPL_Shortcode_Params_Handler {
 }
 class QAPL_Shortcode_Post_Meta_Handler {
     public static function load_and_sanitize($id) {
-        $serialized_data = get_post_meta($id, QAPL_Quick_Ajax_Helper::quick_ajax_shortcode_settings(), true);
+        $serialized_data = get_post_meta($id, QAPL_Quick_Ajax_Plugin_Constants::DB_POSTMETA_SHORTCODE_SETTINGS, true);
         if (!$serialized_data) {
             return array();
         }
@@ -137,63 +137,63 @@ class QAPL_Shortcode_Ajax_Attributes_Provider {
         $attributes = array();        
         if (!empty($this->shortcode_params['id'])) {
             $attributes['shortcode'] = true;
-            $attributes[QAPL_Quick_Ajax_Helper::layout_quick_ajax_id()] = absint($this->shortcode_params['id']);
+            $attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_ID] = absint($this->shortcode_params['id']);
         } else {
-            $attributes[QAPL_Quick_Ajax_Helper::layout_quick_ajax_id()] = $this->get_sanitized_attribute([
-                'shortcode_key' => QAPL_Quick_Ajax_Helper::layout_quick_ajax_id(),
+            $attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $this->get_sanitized_attribute([
+                'shortcode_key' => QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_ID,
                 'type' => 'number',
             ]);
         }
-        $attributes[QAPL_Quick_Ajax_Helper::layout_quick_ajax_css_style()] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Helper::layout_quick_ajax_css_style(),
-            'postmeta_key' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_quick_ajax_css_style(),
+        $attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE,
+            'postmeta_key' => QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE,
             'type' => 'string',
         ]);
-        $attributes[QAPL_Quick_Ajax_Helper::layout_container_num_columns()] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Helper::layout_container_num_columns(),
-            'postmeta_key' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_select_columns_qty(),
+        $attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_GRID_NUM_COLUMNS] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_GRID_NUM_COLUMNS,
+            'postmeta_key' => QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_SELECT_COLUMNS_QTY,
             'type' => 'number',
         ]);
-        $attributes[QAPL_Quick_Ajax_Helper::layout_post_item_template()] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Helper::layout_post_item_template(),
-            'postmeta_key' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_post_item_template(),
+        $attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE,
+            'postmeta_key' => QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE,
             'type' => 'string',
         ]);
-        $attributes[QAPL_Quick_Ajax_Helper::layout_taxonomy_filter_class()] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Helper::layout_taxonomy_filter_class(),
-            'postmeta_key' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_taxonomy_filter_class(),
+        $attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS,
+            'postmeta_key' => QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_TAXONOMY_FILTER_CLASS,
             'type' => 'html_class',
         ]);
-        $attributes[QAPL_Quick_Ajax_Helper::layout_container_class()] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Helper::layout_container_class(),
-            'postmeta_key' => QAPL_Quick_Ajax_Helper::shortcode_page_layout_container_class(),
+        $attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_CONTAINER_CLASS] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_CONTAINER_CLASS,
+            'postmeta_key' => QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_CONTAINER_CLASS,
             'type' => 'html_class',
         ]);
-        $attributes[QAPL_Quick_Ajax_Helper::layout_load_more_posts()] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Helper::layout_load_more_posts(),
-            'postmeta_key' => QAPL_Quick_Ajax_Helper::shortcode_page_select_custom_load_more_post_quantity(),
-            'only_if_meta_key_true' => QAPL_Quick_Ajax_Helper::shortcode_page_show_custom_load_more_post_quantity(),
+        $attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOAD_MORE_POSTS] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOAD_MORE_POSTS,
+            'postmeta_key' => QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_CUSTOM_LOAD_MORE_POST_QUANTITY,
+            'only_if_meta_key_true' => QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_CUSTOM_LOAD_MORE_POST_QUANTITY,
             'type' => 'number',
         ]);
-        $attributes[QAPL_Quick_Ajax_Helper::layout_select_loader_icon()] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Helper::layout_select_loader_icon(),
-            'postmeta_key' => QAPL_Quick_Ajax_Helper::shortcode_page_select_loader_icon(),
-            'only_if_meta_key_true' => QAPL_Quick_Ajax_Helper::shortcode_page_override_global_loader_icon(),
+        $attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOADER_ICON] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_LOADER_ICON,
+            'postmeta_key' => QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON,
+            'only_if_meta_key_true' => QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_OVERRIDE_GLOBAL_LOADER_ICON,
             'type' => 'string',
         ]);
-        $attributes[QAPL_Quick_Ajax_Helper::query_settings_ajax_on_initial_load()] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Helper::query_settings_ajax_on_initial_load(),
-            'postmeta_key' => QAPL_Quick_Ajax_Helper::shortcode_page_ajax_on_initial_load(),
+        $attributes[QAPL_Quick_Ajax_Plugin_Constants::AJAX_SETTING_AJAX_INITIAL_LOAD] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Quick_Ajax_Plugin_Constants::AJAX_SETTING_AJAX_INITIAL_LOAD,
+            'postmeta_key' => QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_AJAX_ON_INITIAL_LOAD,
             'type' => 'bool',
         ]);
-        $attributes[QAPL_Quick_Ajax_Helper::layout_ajax_infinite_scroll()] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Helper::layout_ajax_infinite_scroll(),
-            'postmeta_key' => QAPL_Quick_Ajax_Helper::shortcode_page_ajax_infinite_scroll(),
+        $attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL,
+            'postmeta_key' => QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_AJAX_INFINITE_SCROLL,
             'type' => 'bool',
         ]);
-        $attributes[QAPL_Quick_Ajax_Helper::layout_show_end_message()] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Helper::layout_show_end_message(),
-            'postmeta_key' => QAPL_Quick_Ajax_Helper::shortcode_page_show_end_message(),
+        $attributes[QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_SHOW_END_MESSAGE] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Quick_Ajax_Plugin_Constants::ATTRIBUTE_SHOW_END_MESSAGE,
+            'postmeta_key' => QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_END_MESSAGE,
             'type' => 'bool',
         ]);  
         return !empty($attributes) ? $attributes : false;
@@ -269,17 +269,17 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
         private function create_shortcode_args(){
             $data_args = new QAPL_Shortcode_Query_Args_Provider($this->shortcode_params, $this->shortcode_postmeta);
             $args = array();
-            // get main query params from shortcode or postmeta
-            $selected_post_type = $data_args->get_arg_value('post_type', QAPL_Quick_Ajax_Helper::shortcode_page_select_post_type());
-            $post_per_page = $data_args->get_arg_value('posts_per_page', QAPL_Quick_Ajax_Helper::shortcode_page_select_posts_per_page());
-            $post_order = $data_args->get_arg_value('order', QAPL_Quick_Ajax_Helper::shortcode_page_select_order());
-            $post_orderby = $data_args->get_arg_value('orderby', QAPL_Quick_Ajax_Helper::shortcode_page_select_orderby());
-            $post_not_in = $data_args->get_arg_value('excluded_post_ids', QAPL_Quick_Ajax_Helper::shortcode_page_set_post_not_in());
-            $ignore_sticky_posts = $data_args->get_arg_value('ignore_sticky_posts', QAPL_Quick_Ajax_Helper::shortcode_page_ignore_sticky_posts());
-            $show_taxonomy = $data_args->get_arg_value('show_taxonomy', QAPL_Quick_Ajax_Helper::shortcode_page_show_taxonomy_filter());
-            $select_taxonomy = $data_args->get_arg_value('select_taxonomy', QAPL_Quick_Ajax_Helper::shortcode_page_select_taxonomy());
-            $manual_term_selection = $data_args->get_arg_value('manual_term_selection', QAPL_Quick_Ajax_Helper::shortcode_page_manual_term_selection());
-            $manual_selected_terms = $data_args->get_arg_value('manual_selected_terms', QAPL_Quick_Ajax_Helper::shortcode_page_manual_selected_terms());
+            // get main query params from shortcode or postmeta 
+            $selected_post_type = $data_args->get_arg_value('post_type', QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_POST_TYPE);
+            $post_per_page = $data_args->get_arg_value('posts_per_page', QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE);
+            $post_order = $data_args->get_arg_value('order', QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_ORDER);
+            $post_orderby = $data_args->get_arg_value('orderby', QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_ORDERBY);
+            $post_not_in = $data_args->get_arg_value('excluded_post_ids', QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SET_POST_NOT_IN);
+            $ignore_sticky_posts = $data_args->get_arg_value('ignore_sticky_posts', QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_IGNORE_STICKY_POSTS);
+            $show_taxonomy = $data_args->get_arg_value('show_taxonomy', QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER);
+            $select_taxonomy = $data_args->get_arg_value('select_taxonomy', QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_TAXONOMY);
+            $manual_term_selection = $data_args->get_arg_value('manual_term_selection', QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_MANUAL_TERM_SELECTION);
+            $manual_selected_terms = $data_args->get_arg_value('manual_selected_terms', QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECTED_TERMS);
             // return query args if post type is defined
             if(!empty($selected_post_type)){
                 $args = array(
@@ -334,9 +334,9 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
             if (empty($this->shortcode_params['id'])) {
                 return null;
             }
-            $show_taxonomies_filter = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_show_taxonomy_filter()]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_show_taxonomy_filter()] : null;
+            $show_taxonomies_filter = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER] : null;
             if($show_taxonomies_filter==1){
-                $selectedTaxonomy = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_select_taxonomy()]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_select_taxonomy()] : null;
+                $selectedTaxonomy = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_TAXONOMY]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_TAXONOMY] : null;
                 $selectedTaxonomy = esc_attr($selectedTaxonomy);
             }           
             if(!empty($selectedTaxonomy)){
@@ -346,9 +346,9 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
         }*/
         private function create_shortcode_controls_container(){
             if(!empty($this->shortcode_params['id'])){
-                $show_sort_orderby_button = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button()]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button()] : null;
+                $show_sort_orderby_button = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_SORT_BUTTON]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_SORT_BUTTON] : null;
                 if($show_sort_orderby_button==1){
-                    $add_wrapper = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_show_inline_filter_sorting()]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_show_inline_filter_sorting()] : null;
+                    $add_wrapper = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SORTING]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SORTING] : null;
                     return $add_wrapper;
                 }
             }
@@ -356,9 +356,9 @@ if (!class_exists('QAPL_Quick_Ajax_Shortcode')) {
         }
         private function create_shortcode_sort_button(){
             if(!empty($this->shortcode_params['id'])){
-                $show_sort_orderby_button = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button()]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_show_sort_button()] : null;
+                $show_sort_orderby_button = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_SORT_BUTTON]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_SORT_BUTTON] : null;
                 if($show_sort_orderby_button==1){
-                    $sort_orderby = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_select_sort_button_options()]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Helper::shortcode_page_select_sort_button_options()] : null;
+                    $sort_orderby = isset($this->shortcode_postmeta[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_SORT_BUTTON_OPTIONS]) ? $this->shortcode_postmeta[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_SORT_BUTTON_OPTIONS] : null;
                     if (is_array($sort_orderby)) {
                         $sort_orderby = array_map('esc_attr', $sort_orderby);
                     }else{

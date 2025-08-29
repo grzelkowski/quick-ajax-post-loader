@@ -1,5 +1,15 @@
 ## Changelog
 
+### 1.8.0 - 2025-08-29
+- Major internal refactoring to improve plugin stability and long-term reliability.
+- Fixed several issues in the Function Generator for more consistent output.
+- Corrected minor CSS and JavaScript bugs to improve layout and functionality.
+- Optimized performance across both frontend and admin interface.
+- Improved compatibility with the latest WordPress versions.
+
+**Note:**
+- Most changes are behind the scenes. You may notice smoother performance and fewer issues, while the plugin remains fully compatible with your setup.
+
 ### 1.7.7 - 2025-08-01
 - Improved CSS for better layout adaptability and responsiveness across various screen sizes.
 - Enhanced the admin interface styling for more consistent alignment and spacing in the Function Generator.
@@ -206,19 +216,18 @@
 
 ## Upgrade Notice
 
+### 1.8.0
+Includes major internal improvements, bug fixes, and performance optimizations.  
+Recommended update for better stability and compatibility.
+
 ### 1.7.3
 **Important:**
 - The updated CSS may slightly change the visual presentation of posts if you use the plugin's default styling.
 - Post images now use the `large` image size by default - you can adjust this size in your WordPress Media settings (`Settings → Media`) to better suit your layout.
 
 ### 1.7.0
-This update introduces improvements to filter buttons, loader styling, and shortcode parameter handling.
+Improves filter buttons, loader styling, and shortcode parameters. Adds taxonomy term selection in settings. `qapl_render_taxonomy_filter()` now auto-detects taxonomy. Recommended for better stability.
 
-**Important:**
-- New support for selecting taxonomy terms directly in shortcode settings offers better control.
-- The `qapl_render_taxonomy_filter()` function now auto-detects taxonomy and remains backward compatible.
-
-Recommended update for improved developer experience and enhanced plugin stability.
 
 ### 1.6.4
 This update adds a new global option and filter hook to customize the "No Posts Found" message.
@@ -230,12 +239,7 @@ This update adds a new global option and filter hook to customize the "No Posts 
 Fully tested with WordPress 6.8.
 
 ### 1.6.3
-This update adds support for an "End Message" that appears when there are no more posts to load.
-
-**Important:**
-- The message can be set globally, edited in the template, or modified via the `qapl_template_end_post_message` filter.
-
-Recommended update for improved usability and developer flexibility.
+Adds support for an "End Message" shown when no more posts load. It can be set globally, edited in the template, or modified via the `qapl_template_end_post_message` filter.
 
 ### 1.6.0
 This update introduces an Infinite Scroll feature and an improved Help section within the plugin settings.
@@ -245,13 +249,7 @@ This update introduces an Infinite Scroll feature and an improved Help section w
 - The grid and CSS have been improved for better responsiveness and theme compatibility.
 
 ### 1.5.0
-Introduces a new sorting button feature and global sorting label options.
-
-**Important:**
-- The plugin now supports only `publish` posts, removing unnecessary settings.
-- Removed unused `orderby` values (can still be re-added via the `qapl_modify_posts_query_args` hook).
-
-Recommended update for improved sorting control and better plugin stability.
+Adds new sorting button and global sorting labels. Now supports only `publish` posts. Unused `orderby` values removed (can be restored via `qapl_modify_posts_query_args`). Improves sorting control and plugin stability.
 
 ### 1.4.0
 This update introduces new template filters, allowing developers to modify post elements (date, title, image, excerpt, and buttons) using filters.
