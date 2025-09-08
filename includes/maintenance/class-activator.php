@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 if (!class_exists('QAPL_Quick_Ajax_Activator')) {
     class QAPL_Quick_Ajax_Activator {
         public static function activate() {
-            require_once plugin_dir_path(__FILE__) . 'class-helper.php';
+            require_once dirname(__DIR__) . '/resources/class-utilities.php';
             $default_value = [
                 'loader_icon' => QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON_DEFAULT,
             ];
