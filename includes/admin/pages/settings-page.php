@@ -175,7 +175,7 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $this->add_quick_ajax_page_content($this->tabIndex++, $tab_title, $this->quick_ajax_content_function_generator());
             $tab_title = esc_html__('Help', 'quick-ajax-post-loader');
             $this->add_quick_ajax_page_content($this->tabIndex++, $tab_title, $this->quick_ajax_content_help());
-            $cleanup_flags = QAPL_Quick_Ajax_Plugin_Constants::DB_OPTION_PLUGIN_CLEANUP_FLAGS;
+            $cleanup_flags = QAPL_Quick_Ajax_Constants::DB_OPTION_PLUGIN_CLEANUP_FLAGS;
             if (!empty(get_option($cleanup_flags))) {
                 $tab_title = esc_html__('Purge Old Data', 'quick-ajax-post-loader');
                 $this->add_quick_ajax_page_content($this->tabIndex++, $tab_title, $this->quick_ajax_content_clear_old_data());
@@ -202,19 +202,19 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $content = '<div id="quick-ajax-example-code">';
             $content .= '<form method="post" action="options.php">';            
             $content .= '<h3>'.__('Global Options', 'quick-ajax-post-loader').'</h3>';
-            $content .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_LOADER_ICON_FIELD);
-            $content .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_READ_MORE_LABEL_FIELD);
-            $content .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_SHOW_ALL_LABEL_FIELD);
-            $content .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_LOAD_MORE_LABEL_FIELD);
-            $content .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_NO_POST_MESSAGE_FIELD);
-            $content .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_END_POST_MESSAGE_FIELD);
+            $content .= $this->add_field(QAPL_Quick_Ajax_Constants::GLOBAL_LOADER_ICON_FIELD);
+            $content .= $this->add_field(QAPL_Quick_Ajax_Constants::GLOBAL_READ_MORE_LABEL_FIELD);
+            $content .= $this->add_field(QAPL_Quick_Ajax_Constants::GLOBAL_SHOW_ALL_LABEL_FIELD);
+            $content .= $this->add_field(QAPL_Quick_Ajax_Constants::GLOBAL_LOAD_MORE_LABEL_FIELD);
+            $content .= $this->add_field(QAPL_Quick_Ajax_Constants::GLOBAL_NO_POST_MESSAGE_FIELD);
+            $content .= $this->add_field(QAPL_Quick_Ajax_Constants::GLOBAL_END_POST_MESSAGE_FIELD);
             $content .= '<h4>'.__('Sorting Option Labels', 'quick-ajax-post-loader').'</h4>';
-            $content .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_SORT_OPTION_DATE_DESC_LABEL_FIELD);
-            $content .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_SORT_OPTION_DATE_ASC_LABEL_FIELD);
-            $content .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_SORT_OPTION_COMMENT_COUNT_DESC_LABEL_FIELD);
-            $content .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_SORT_OPTION_TITLE_ASC_LABEL_FIELD);
-            $content .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_SORT_OPTION_TITLE_DESC_LABEL_FIELD);
-            $content .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_SORT_OPTION_RAND_LABEL_FIELD);
+            $content .= $this->add_field(QAPL_Quick_Ajax_Constants::GLOBAL_SORT_OPTION_DATE_DESC_LABEL_FIELD);
+            $content .= $this->add_field(QAPL_Quick_Ajax_Constants::GLOBAL_SORT_OPTION_DATE_ASC_LABEL_FIELD);
+            $content .= $this->add_field(QAPL_Quick_Ajax_Constants::GLOBAL_SORT_OPTION_COMMENT_COUNT_DESC_LABEL_FIELD);
+            $content .= $this->add_field(QAPL_Quick_Ajax_Constants::GLOBAL_SORT_OPTION_TITLE_ASC_LABEL_FIELD);
+            $content .= $this->add_field(QAPL_Quick_Ajax_Constants::GLOBAL_SORT_OPTION_TITLE_DESC_LABEL_FIELD);
+            $content .= $this->add_field(QAPL_Quick_Ajax_Constants::GLOBAL_SORT_OPTION_RAND_LABEL_FIELD);
             $content .= $settings_fields_html;
             $content .= get_submit_button(esc_html__('Save Settings', 'quick-ajax-post-loader'), 'primary', 'save_settings_button', false);
             $content .= '</form>';
@@ -225,71 +225,71 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
         private function quick_ajax_content_function_generator() {
             $form_tab_function_generator = '<h3>'.esc_html__('Function Generator', 'quick-ajax-post-loader').'</h3>
             <div class="function-generator-wrap">
-                <div class="function-generator-options" id="'.QAPL_Quick_Ajax_Plugin_Constants::SETTINGS_WRAPPER_ID.'">';
+                <div class="function-generator-options" id="'.QAPL_Quick_Ajax_Constants::SETTINGS_WRAPPER_ID.'">';
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings">';
             $form_tab_function_generator .= '<h4>'.__('General Settings', 'quick-ajax-post-loader').'</h4>';
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_POST_TYPE);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POST_TYPE);
             //show taxonomy checkbox
             $field_options = $this->field_options([
                 'is_trigger' => true,
             ]); 
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER, $field_options);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER, $field_options);
             //taxonomy select option
-            $this->fields[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_TAXONOMY]['options'] = $this->get_taxonomy_options_for_post_type();
+            $this->fields[QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_TAXONOMY]['options'] = $this->get_taxonomy_options_for_post_type();
             $field_options = $this->field_options([
                 'is_trigger' => false,
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
                 ]
             ]); 
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_TAXONOMY, $field_options);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_TAXONOMY, $field_options);
             // manual term selection checkbox
             $field_options = $this->field_options([
                 'is_trigger' => true,
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
                 ]
             ]);
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_MANUAL_TERM_SELECTION, $field_options);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_MANUAL_TERM_SELECTION, $field_options);
             
             // assign term options to field
-            $this->fields[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECTED_TERMS]['options'] = $this->get_term_options_for_taxonomy();
+            $this->fields[QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECTED_TERMS]['options'] = $this->get_term_options_for_taxonomy();
 
             // render field with multiple conditions
             $field_options = $this->field_options([
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_MANUAL_TERM_SELECTION => '1',
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_MANUAL_TERM_SELECTION => '1',
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
                 ]
             ]);
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECTED_TERMS, $field_options);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECTED_TERMS, $field_options);
 
             //end manual term selection checkbox 
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE);
             $form_tab_function_generator .= '</div>';
             //post settings
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
             $form_tab_function_generator .= '<h4>'.__('Sorting Settings', 'quick-ajax-post-loader').'</h4>';
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_ORDER);
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_ORDERBY);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDER);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDERBY);
             $field_options = $this->field_options([
                 'is_trigger' => true,
             ]);  
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_SORT_BUTTON, $field_options);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_SORT_BUTTON, $field_options);
             $field_options = $this->field_options([
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_SORT_BUTTON => '1'
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_SORT_BUTTON => '1'
                 ]
             ]);
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_SORT_BUTTON_OPTIONS, $field_options);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_SORT_BUTTON_OPTIONS, $field_options);
             $form_tab_function_generator .= '</div>';
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
             $form_tab_function_generator .= '<h4>'.esc_html__('Additional Settings', 'quick-ajax-post-loader').'</h4>';
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SET_POST_NOT_IN);
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_IGNORE_STICKY_POSTS);
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_AJAX_ON_INITIAL_LOAD);
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_AJAX_INFINITE_SCROLL);
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_END_MESSAGE);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SET_POST_NOT_IN);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_IGNORE_STICKY_POSTS);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_AJAX_ON_INITIAL_LOAD);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_AJAX_INFINITE_SCROLL);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_END_MESSAGE);
             $form_tab_function_generator .= '</div>';
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
             $form_tab_function_generator .= '<h4>'.__('Layout Settings', 'quick-ajax-post-loader').'</h4>';
@@ -297,44 +297,44 @@ if (!class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
             $field_options = $this->field_options([
                 'is_trigger' => true,
             ]); 
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE, $field_options);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE, $field_options);
             $field_options = $this->field_options([
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE => '1'
+                    QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE => '1'
                 ]
             ]);
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_SELECT_COLUMNS_QTY, $field_options);
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_SELECT_COLUMNS_QTY, $field_options);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE);
             $field_options = $this->field_options([
                 'is_trigger' => false,
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
                 ]
             ]);
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_TAXONOMY_FILTER_CLASS, $field_options);
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_CONTAINER_CLASS);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_TAXONOMY_FILTER_CLASS, $field_options);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_CONTAINER_CLASS);
             $field_options = $this->field_options([
                 'is_trigger' => true,
             ]); 
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_CUSTOM_LOAD_MORE_POST_QUANTITY, $field_options);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_CUSTOM_LOAD_MORE_POST_QUANTITY, $field_options);
             $field_options = $this->field_options([
                 'is_trigger' => false,
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_CUSTOM_LOAD_MORE_POST_QUANTITY => '1'
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_CUSTOM_LOAD_MORE_POST_QUANTITY => '1'
                 ]
             ]); 
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_CUSTOM_LOAD_MORE_POST_QUANTITY, $field_options);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_CUSTOM_LOAD_MORE_POST_QUANTITY, $field_options);
             $field_options = $this->field_options([
                 'is_trigger' => true,
             ]); 
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_OVERRIDE_GLOBAL_LOADER_ICON, $field_options);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_OVERRIDE_GLOBAL_LOADER_ICON, $field_options);
             $field_options = $this->field_options([
                 'is_trigger' => false,
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_OVERRIDE_GLOBAL_LOADER_ICON => '1'
+                    QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_OVERRIDE_GLOBAL_LOADER_ICON => '1'
                 ]
             ]);
-            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON, $field_options);
+            $form_tab_function_generator .= $this->add_field(QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON, $field_options);
             $form_tab_function_generator .= '</div>';
             $form_tab_function_generator .= '</div>';
             //Function generation buttons

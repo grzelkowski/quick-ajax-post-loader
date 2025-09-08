@@ -15,28 +15,28 @@ if (!class_exists('QAPL_Quick_Ajax_Admin_Pages')) {
                 'Quick AJAX',
                 'Quick AJAX',
                 'manage_options',
-                QAPL_Quick_Ajax_Plugin_Constants::PLUGIN_MENU_SLUG,
+                QAPL_Quick_Ajax_Constants::PLUGIN_MENU_SLUG,
                 array($this, 'options_page_content'),
                 'dashicons-editor-code',
                 80
             );
             // "Add New"
             add_submenu_page(
-                QAPL_Quick_Ajax_Plugin_Constants::PLUGIN_MENU_SLUG,
+                QAPL_Quick_Ajax_Constants::PLUGIN_MENU_SLUG,
                 __('Add New', 'quick-ajax-post-loader'),
                 __('Add New', 'quick-ajax-post-loader'),
                 'edit_posts',
-                'post-new.php?post_type=' . QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG
+                'post-new.php?post_type=' . QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG
             );
         }
         public function add_quick_ajax_settings_page() {
             // "settings"
             add_submenu_page(
-                QAPL_Quick_Ajax_Plugin_Constants::PLUGIN_MENU_SLUG,
+                QAPL_Quick_Ajax_Constants::PLUGIN_MENU_SLUG,
                 __('Settings & Features', 'quick-ajax-post-loader'),
                 __('Settings & Features', 'quick-ajax-post-loader'),
                 'manage_options',
-                QAPL_Quick_Ajax_Plugin_Constants::SETTINGS_PAGE_SLUG,
+                QAPL_Quick_Ajax_Constants::SETTINGS_PAGE_SLUG,
                 array($this, 'render_quick_ajax_settings_page')
             );
         }
@@ -46,15 +46,15 @@ if (!class_exists('QAPL_Quick_Ajax_Admin_Pages')) {
                 wp_die(esc_html(__('You do not have sufficient permissions to access this page.', 'quick-ajax-post-loader')));
             }
             if (class_exists('QAPL_Quick_Ajax_Creator_Settings_Page')) {
-                $form = new QAPL_Quick_Ajax_Creator_Settings_Page(QAPL_Quick_Ajax_Plugin_Constants::ADMIN_PAGE_SETTINGS_GROUP, QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_OPTIONS_NAME);
+                $form = new QAPL_Quick_Ajax_Creator_Settings_Page(QAPL_Quick_Ajax_Constants::ADMIN_PAGE_SETTINGS_GROUP, QAPL_Quick_Ajax_Constants::GLOBAL_OPTIONS_NAME);
                 $form->render_quick_ajax_page();
             }
         }
         public function register_quick_ajax_settings() {
             // Register the settings group
             register_setting(
-                QAPL_Quick_Ajax_Plugin_Constants::ADMIN_PAGE_SETTINGS_GROUP,
-                QAPL_Quick_Ajax_Plugin_Constants::GLOBAL_OPTIONS_NAME,
+                QAPL_Quick_Ajax_Constants::ADMIN_PAGE_SETTINGS_GROUP,
+                QAPL_Quick_Ajax_Constants::GLOBAL_OPTIONS_NAME,
                 array($this, 'quick_ajax_sanitize_callback')
             );
         }
@@ -81,9 +81,9 @@ if (!class_exists('QAPL_Quick_Ajax_Post_Type')) {
     class QAPL_Quick_Ajax_Post_Type {
         public function __construct() {
             add_action('init', array($this, 'register_quick_ajax_post_type'));
-            add_action('manage_' . QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG . '_posts_columns', array($this, 'quick_ajax_shortcode_column'));
-            add_action('manage_' . QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG . '_posts_custom_column', array($this, 'quick_ajax_shortcode_column_content'), 10, 2);
-            add_filter('manage_' . QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG . '_posts_columns', array($this, 'quick_ajax_shortcode_column_sort'));
+            add_action('manage_' . QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG . '_posts_columns', array($this, 'quick_ajax_shortcode_column'));
+            add_action('manage_' . QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG . '_posts_custom_column', array($this, 'quick_ajax_shortcode_column_content'), 10, 2);
+            add_filter('manage_' . QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG . '_posts_columns', array($this, 'quick_ajax_shortcode_column_sort'));
         }
 
         public function register_quick_ajax_post_type() {
@@ -107,9 +107,9 @@ if (!class_exists('QAPL_Quick_Ajax_Post_Type')) {
                 'public'              => false,
                 'publicly_queryable'  => false,
                 'show_ui'             => true,
-                'show_in_menu'        => QAPL_Quick_Ajax_Plugin_Constants::PLUGIN_MENU_SLUG,
+                'show_in_menu'        => QAPL_Quick_Ajax_Constants::PLUGIN_MENU_SLUG,
                 'query_var'           => true,
-                'rewrite'             => array( 'slug' => QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG ),
+                'rewrite'             => array( 'slug' => QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG ),
                 'capability_type'     => 'post',
                 'has_archive'         => true,
                 'hierarchical'        => false,
@@ -117,7 +117,7 @@ if (!class_exists('QAPL_Quick_Ajax_Post_Type')) {
                 'supports'            => array( 'title'),
                 'menu_icon'            => 'dashicons-editor-code'
             );
-            register_post_type( QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG, $args );
+            register_post_type( QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG, $args );
         }
 
         public function quick_ajax_shortcode_column($columns) {
@@ -382,9 +382,9 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
     }
     protected function get_taxonomy_options_for_post_type(?string $post_type = null): array{
         if (empty($post_type)) {
-            $post_type = $this->get_the_value_if_exist(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_POST_TYPE);
+            $post_type = $this->get_the_value_if_exist(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POST_TYPE);
             if (empty($post_type)) {
-                $post_type = QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_POST_TYPE_DEFAULT;
+                $post_type = QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POST_TYPE_DEFAULT;
             }
         }
         $taxonomy_options = [];
@@ -414,14 +414,14 @@ abstract class QAPL_Quick_Ajax_Content_Builder{
     protected function get_term_options_for_taxonomy(?string $taxonomy = null){
         if (empty($taxonomy)) {
             // try to get taxonomy from saved shortcode value
-            $taxonomy = $this->get_the_value_if_exist(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_TAXONOMY);
+            $taxonomy = $this->get_the_value_if_exist(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_TAXONOMY);
         }
         if (empty($taxonomy)) {
             // try to get first available taxonomy based on post type
-            $post_type = $this->get_the_value_if_exist(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_POST_TYPE);
+            $post_type = $this->get_the_value_if_exist(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POST_TYPE);
             if (empty($post_type)) {
                 // fallback to default post type
-                $post_type = QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_POST_TYPE_DEFAULT;
+                $post_type = QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POST_TYPE_DEFAULT;
             }
             if (!empty($post_type)) {
                 $taxonomies = get_object_taxonomies($post_type);
@@ -624,7 +624,7 @@ abstract class QAPL_Quick_Ajax_Post_Type_Form extends QAPL_Quick_Ajax_Content_Bu
             $this->unserialize_data($post->ID);
             echo '<div class="quick-ajax-form-wrap '.esc_attr($this->get_quick_ajax_form_class()).'" id="' . esc_attr($this->form_id) . '">';
             echo wp_kses($this->render_quick_ajax_form(), $this->wp_kses_allowed_tags());
-            wp_nonce_field(QAPL_Quick_Ajax_Plugin_Constants::NONCE_FORM_QUICK_AJAX_ACTION, QAPL_Quick_Ajax_Plugin_Constants::NONCE_FORM_QUICK_AJAX_FIELD);
+            wp_nonce_field(QAPL_Quick_Ajax_Constants::NONCE_FORM_QUICK_AJAX_ACTION, QAPL_Quick_Ajax_Constants::NONCE_FORM_QUICK_AJAX_FIELD);
             echo '</div>';
         }
     }   
@@ -633,7 +633,7 @@ abstract class QAPL_Quick_Ajax_Post_Type_Form extends QAPL_Quick_Ajax_Content_Bu
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
-        if (!isset($_POST[QAPL_Quick_Ajax_Plugin_Constants::NONCE_FORM_QUICK_AJAX_FIELD]) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST[QAPL_Quick_Ajax_Plugin_Constants::NONCE_FORM_QUICK_AJAX_FIELD])), QAPL_Quick_Ajax_Plugin_Constants::NONCE_FORM_QUICK_AJAX_ACTION)) {
+        if (!isset($_POST[QAPL_Quick_Ajax_Constants::NONCE_FORM_QUICK_AJAX_FIELD]) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST[QAPL_Quick_Ajax_Constants::NONCE_FORM_QUICK_AJAX_FIELD])), QAPL_Quick_Ajax_Constants::NONCE_FORM_QUICK_AJAX_ACTION)) {
             return;
         }       
         if (!current_user_can('edit_post', $post_id)) {

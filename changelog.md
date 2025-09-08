@@ -1,5 +1,12 @@
 ## Changelog
 
+### 1.8.1 - 2025-09-08
+- Improved plugin startup process with better class loading and dependency checks.
+- Improved the way plugin scripts and styles are loaded for better reliability.
+- Enhanced plugin stability by adding internal class verification before startup.
+- Introduced internal logger with fallback to WordPress debug log.
+- Cleaned up internal utility functions to support better error handling and production readiness.
+
 ### 1.8.0 - 2025-08-29
 - Major internal refactoring to improve plugin stability and long-term reliability.
 - Fixed several issues in the Function Generator for more consistent output.

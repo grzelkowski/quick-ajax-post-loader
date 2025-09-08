@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 add_action('edit_form_after_title', 'qapl_quick_ajax_display_shortcode_on_single_page');
 function qapl_quick_ajax_display_shortcode_on_single_page($post) {
     //check the post type
-    if ($post && $post->post_type === QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG) {
+    if ($post && $post->post_type === QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG) {
         $shortcode = QAPL_Quick_Ajax_Shortcode_Generator::generate_shortcode($post->ID);
         echo '<div id="shortcode-box-wrap">';
         echo '<span class="shortcode-description">' . esc_html__('Copy and paste this shortcode on the page to display the posts list', 'quick-ajax-post-loader') . '</span>';
@@ -130,74 +130,74 @@ if (!class_exists('QAPL_Quick_Ajax_Form_Creator')) {
             $shortcode_page = '<div class="quick-ajax-layout-settings">';
             $shortcode_page .= '<h4>'.esc_html__('General Settings', 'quick-ajax-post-loader').'</h4>';
             //select post type
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_POST_TYPE);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POST_TYPE);
             //show taxonomy checkbox
             $field_options = $this->field_options([
                 'is_trigger' => true,
             ]);   
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER, $field_options);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER, $field_options);
             //select taxonomy
-            $this->fields[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_TAXONOMY]['options'] = $this->get_taxonomy_options_for_post_type();            
+            $this->fields[QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_TAXONOMY]['options'] = $this->get_taxonomy_options_for_post_type();            
             $field_options = $this->field_options([
                 'is_trigger' => false,
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
                 ]
             ]);            
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_TAXONOMY, $field_options);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_TAXONOMY, $field_options);
 
             // manual term selection checkbox
             $field_options = $this->field_options([
                 'is_trigger' => true,
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
                 ]
             ]);
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_MANUAL_TERM_SELECTION, $field_options);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_MANUAL_TERM_SELECTION, $field_options);
             
             // assign term options to field
-            $this->fields[QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECTED_TERMS]['options'] = $this->get_term_options_for_taxonomy();
+            $this->fields[QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECTED_TERMS]['options'] = $this->get_term_options_for_taxonomy();
 
             // render field with multiple conditions
             $field_options = $this->field_options([
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_MANUAL_TERM_SELECTION => '1',
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_MANUAL_TERM_SELECTION => '1',
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
                 ]
             ]);
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECTED_TERMS, $field_options);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECTED_TERMS, $field_options);
 
             //end manual term selection checkbox 
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE);
             $shortcode_page .= '</div>';
             $shortcode_page .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
             $shortcode_page .= '<h4>'.esc_html__('Sorting Settings', 'quick-ajax-post-loader').'</h4>';
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_ORDER);
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_ORDERBY);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDER);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDERBY);
             $field_options = $this->field_options([
                 'is_trigger' => true,
             ]);  
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_SORT_BUTTON, $field_options);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_SORT_BUTTON, $field_options);
             $field_options = $this->field_options([
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_SORT_BUTTON => '1'
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_SORT_BUTTON => '1'
                 ]
             ]);
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_SORT_BUTTON_OPTIONS, $field_options);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_SORT_BUTTON_OPTIONS, $field_options);
             $field_options = $this->field_options([
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_SORT_BUTTON => '1'
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_SORT_BUTTON => '1'
                 ]
             ]);
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SORTING, $field_options);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SORTING, $field_options);
             $shortcode_page .= '</div>';
             $shortcode_page .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
             $shortcode_page .= '<h4>'.esc_html__('Additional Settings', 'quick-ajax-post-loader').'</h4>';
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SET_POST_NOT_IN);
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_IGNORE_STICKY_POSTS);
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_AJAX_ON_INITIAL_LOAD);
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_AJAX_INFINITE_SCROLL);
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_END_MESSAGE);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SET_POST_NOT_IN);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_IGNORE_STICKY_POSTS);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_AJAX_ON_INITIAL_LOAD);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_AJAX_INFINITE_SCROLL);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_END_MESSAGE);
             $shortcode_page .= '</div>';
 
             //layout Settings
@@ -206,44 +206,44 @@ if (!class_exists('QAPL_Quick_Ajax_Form_Creator')) {
             $field_options = $this->field_options([
                 'is_trigger' => true,
             ]); 
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE, $field_options);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE, $field_options);
             $field_options = $this->field_options([
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE => '1'
+                    QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE => '1'
                 ]
             ]);
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_SELECT_COLUMNS_QTY, $field_options);
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_SELECT_COLUMNS_QTY, $field_options);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE);
             $field_options = $this->field_options([
                 'is_trigger' => false,
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
                 ]
             ]);
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_TAXONOMY_FILTER_CLASS, $field_options);
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_CONTAINER_CLASS);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_TAXONOMY_FILTER_CLASS, $field_options);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_CONTAINER_CLASS);
             $field_options = $this->field_options([
                 'is_trigger' => true,
             ]); 
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_CUSTOM_LOAD_MORE_POST_QUANTITY, $field_options);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_CUSTOM_LOAD_MORE_POST_QUANTITY, $field_options);
             $field_options = $this->field_options([
                 'is_trigger' => false,
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SHOW_CUSTOM_LOAD_MORE_POST_QUANTITY => '1'
+                    QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_CUSTOM_LOAD_MORE_POST_QUANTITY => '1'
                 ]
             ]); 
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::QUERY_SETTING_SELECT_CUSTOM_LOAD_MORE_POST_QUANTITY, $field_options);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_CUSTOM_LOAD_MORE_POST_QUANTITY, $field_options);
             $field_options = $this->field_options([
                 'is_trigger' => true,
             ]); 
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_OVERRIDE_GLOBAL_LOADER_ICON, $field_options);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_OVERRIDE_GLOBAL_LOADER_ICON, $field_options);
             $field_options = $this->field_options([
                 'is_trigger' => false,
                 'visible_if' => [
-                    QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_OVERRIDE_GLOBAL_LOADER_ICON => '1'
+                    QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_OVERRIDE_GLOBAL_LOADER_ICON => '1'
                 ]
             ]);
-            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Plugin_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON, $field_options);
+            $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON, $field_options);
             $shortcode_page .= '</div>';
 
             return $shortcode_page;
@@ -259,7 +259,7 @@ if (!class_exists('QAPL_Quick_Ajax_Form_Creator')) {
             $post_type = filter_input(INPUT_POST, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         }
     }
-    if ($post_type === QAPL_Quick_Ajax_Plugin_Constants::CPT_SHORTCODE_SLUG) {
-        $form = new QAPL_Quick_Ajax_Form_Creator(QAPL_Quick_Ajax_Plugin_Constants::SETTINGS_WRAPPER_ID, QAPL_Quick_Ajax_Plugin_Constants::DB_POSTMETA_SHORTCODE_SETTINGS, $post_type);
+    if ($post_type === QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG) {
+        $form = new QAPL_Quick_Ajax_Form_Creator(QAPL_Quick_Ajax_Constants::SETTINGS_WRAPPER_ID, QAPL_Quick_Ajax_Constants::DB_POSTMETA_SHORTCODE_SETTINGS, $post_type);
     }
 }
