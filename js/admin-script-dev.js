@@ -1,7 +1,7 @@
 (function($) {
     // Define a unique namespace for your plugin's functions
     var qapl_quick_ajax_post_loader_admin_scripts = {
-        helper_available: typeof qapl_quick_ajax_helper !== 'undefined' && qapl_quick_ajax_helper,
+        data_available: typeof qapl_quick_ajax_admin_data !== 'undefined' && qapl_quick_ajax_admin_data,
         init: function() {
             this.click_and_select_shortcode();
             this.click_and_select_all();
@@ -15,23 +15,23 @@
             // Any other functions you want to initialize
         },
         handle_post_type_change: function() {
-            if (!this.helper_available) return;
+            if (!this.data_available) return;
             const self = this;
-            const postTypeSelect = $('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_post_type);
+            const postTypeSelect = $('#'+qapl_quick_ajax_admin_data.constants.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_admin_data.constants.quick_ajax_post_type);
             if (postTypeSelect.length) {
                 postTypeSelect.on('change', function () {
                     const postType = $(this).val();
                     $.ajax({
-                        url: qapl_quick_ajax_helper.ajax_url,
+                        url: qapl_quick_ajax_admin_data.ajax_url,
                         type: 'POST',
                         data: {
                         action: 'qapl_quick_ajax_get_taxonomies_by_post_type',
                         post_type: postType,
-                        nonce: qapl_quick_ajax_helper.nonce
+                        nonce: qapl_quick_ajax_admin_data.nonce
                         },
                         success: function (response) {
                             if (response && response.data) {
-                                const taxonomySelect = $('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_taxonomy);
+                                const taxonomySelect = $('#'+qapl_quick_ajax_admin_data.constants.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_admin_data.constants.quick_ajax_taxonomy);
                                 taxonomySelect.empty();
                                 taxonomySelect.append(response.data);
                                 self.trigger_taxonomy_change();
@@ -48,10 +48,10 @@
             }
         },
         handle_taxonomy_change: function() {
-            if (!this.helper_available) return;
+            if (!this.data_available) return;
             const self = this;
-            const taxonomySelect = $('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_taxonomy);
-            const termsContainer = $('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_manual_selected_terms);
+            const taxonomySelect = $('#'+qapl_quick_ajax_admin_data.constants.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_admin_data.constants.quick_ajax_taxonomy);
+            const termsContainer = $('#'+qapl_quick_ajax_admin_data.constants.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_admin_data.constants.quick_ajax_manual_selected_terms);
             if (taxonomySelect.length) {
                 taxonomySelect.on('change', function () {
                     termsContainer.empty();
@@ -62,13 +62,13 @@
                         post_id = $('#post_ID').val(); 
                     }
                     $.ajax({
-                        url: qapl_quick_ajax_helper.ajax_url,
+                        url: qapl_quick_ajax_admin_data.ajax_url,
                         type: 'POST',
                         data: {
                             action: 'qapl_quick_ajax_get_terms_by_taxonomy',
                             taxonomy: taxonomy,
                             post_id: post_id,
-                            nonce: qapl_quick_ajax_helper.nonce
+                            nonce: qapl_quick_ajax_admin_data.nonce
                         },
                         success: function (response) {
                             if (response && response.data) {
@@ -89,10 +89,10 @@
             }
         },
         trigger_taxonomy_change: function() {
-            if (!this.helper_available) return;
+            if (!this.data_available) return;
             const self = this;
-            const taxonomySelect = $('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_taxonomy);
-            const termsContainer = $('#'+qapl_quick_ajax_helper.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_helper.quick_ajax_manual_selected_terms);
+            const taxonomySelect = $('#'+qapl_quick_ajax_admin_data.constants.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_admin_data.constants.quick_ajax_taxonomy);
+            const termsContainer = $('#'+qapl_quick_ajax_admin_data.constants.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_admin_data.constants.quick_ajax_manual_selected_terms);
             if (termsContainer.length) {
                 self.admin_page_loader(termsContainer);
                 taxonomySelect.trigger('change');
@@ -303,34 +303,34 @@
             const self = this;
             let quickAjaxAttributes = {};
             let formattedItem = '';
-            quickAjaxAttributes[qapl_quick_ajax_helper.quick_ajax_id] = quick_ajax_id;
+            quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.quick_ajax_id] = quick_ajax_id;
             if (inputData.qapl_layout_quick_ajax_css_style === 1) {
-                quickAjaxAttributes[qapl_quick_ajax_helper.quick_ajax_css_style] = inputData.qapl_layout_quick_ajax_css_style;
-                quickAjaxAttributes[qapl_quick_ajax_helper.grid_num_columns] = inputData.qapl_layout_select_columns_qty;
+                quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.quick_ajax_css_style] = inputData.qapl_layout_quick_ajax_css_style;
+                quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.grid_num_columns] = inputData.qapl_layout_select_columns_qty;
             }
             if (inputData.qapl_layout_quick_ajax_post_item_template) {
-                quickAjaxAttributes[qapl_quick_ajax_helper.post_item_template] = inputData.qapl_layout_quick_ajax_post_item_template;
+                quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.post_item_template] = inputData.qapl_layout_quick_ajax_post_item_template;
             }
             if (inputData.qapl_layout_add_taxonomy_filter_class && inputData.qapl_layout_add_taxonomy_filter_class !== '') {
-                quickAjaxAttributes[qapl_quick_ajax_helper.taxonomy_filter_class] = self.cleanClassNames(inputData.qapl_layout_add_taxonomy_filter_class);
+                quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.taxonomy_filter_class] = self.cleanClassNames(inputData.qapl_layout_add_taxonomy_filter_class);
             }
             if (inputData.qapl_layout_add_container_class && inputData.qapl_layout_add_container_class !== '') {
-                quickAjaxAttributes[qapl_quick_ajax_helper.container_class] = self.cleanClassNames(inputData.qapl_layout_add_container_class);
+                quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.container_class] = self.cleanClassNames(inputData.qapl_layout_add_container_class);
             }
             if (inputData.qapl_show_custom_load_more_post_quantity === 1) {
-                quickAjaxAttributes[qapl_quick_ajax_helper.load_more_posts] = inputData.qapl_select_custom_load_more_post_quantity;
+                quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.load_more_posts] = inputData.qapl_select_custom_load_more_post_quantity;
             }
             if (inputData.qapl_override_global_loader_icon === 1) {
-                quickAjaxAttributes[qapl_quick_ajax_helper.loader_icon] = inputData.qapl_loader_icon;
+                quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.loader_icon] = inputData.qapl_loader_icon;
             }
             if (inputData.qapl_ajax_on_initial_load === 1) {
-                quickAjaxAttributes[qapl_quick_ajax_helper.ajax_initial_load] = inputData.qapl_ajax_on_initial_load;
+                quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.ajax_initial_load] = inputData.qapl_ajax_on_initial_load;
             }
             if (inputData.qapl_ajax_infinite_scroll === 1) {
-                quickAjaxAttributes[qapl_quick_ajax_helper.infinite_scroll] = inputData.qapl_ajax_infinite_scroll;
+                quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.infinite_scroll] = inputData.qapl_ajax_infinite_scroll;
             }
             if (inputData.qapl_show_end_post_message === 1) {
-                quickAjaxAttributes[qapl_quick_ajax_helper.show_end_message] = inputData.qapl_show_end_post_message;
+                quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.show_end_message] = inputData.qapl_show_end_post_message;
             }            
             //quickAjaxAttributes code
             var quickAjaxAttributesText = "";
@@ -452,7 +452,7 @@
         },
         quick_ajax_function_generator: function() {
             const self = this;
-            if (!this.helper_available) return;
+            if (!this.data_available) return;
             $('.generate-function-button').on('click', function() {
                 const button = $(this);
                 const outputDiv = button.attr('data-output');

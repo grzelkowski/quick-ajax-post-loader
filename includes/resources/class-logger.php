@@ -11,7 +11,7 @@ final class QAPL_Quick_Ajax_Logger {
         $prefix = strtoupper($level);
         error_log("Quick Ajax Post Loader [".$prefix."]: ".$message);
     }
-    public static function backtrace(){
+    public static function log_backtrace(){
         if (!defined('WP_DEBUG') || WP_DEBUG !== true) {
         return;
     }

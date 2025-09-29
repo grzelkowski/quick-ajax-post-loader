@@ -1,5 +1,15 @@
 ## Changelog
 
+### 1.8.3 - 2025-09-29
+- Added sorting support for the Shortcode column in the shortcode list.
+- Improved shortcode editor form for more stable field initialization and saving.
+- Cleaned up labels and descriptions for better clarity.
+- Fixed minor admin warnings and improved overall stability.
+- Fixed issue where the Load More button could disappear too early when using custom post limits.
+
+### 1.8.2 - 2025-09-08
+- Fixed an issue in the plugin activator that could prevent the plugin from starting on some setups.
+
 ### 1.8.1 - 2025-09-08
 - Improved plugin startup process with better class loading and dependency checks.
 - Improved the way plugin scripts and styles are loaded for better reliability.

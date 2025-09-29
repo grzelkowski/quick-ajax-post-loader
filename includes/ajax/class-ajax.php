@@ -679,7 +679,7 @@ class QAPL_Quick_Ajax_Handler{
         do_action(QAPL_Quick_Ajax_Constants::HOOK_LOADER_AFTER, $this->quick_ajax_id);
         if (!$this->ajax_initial_load) {
             $infinite_scroll = isset($this->attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL]) ? intval($this->attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL]) : QAPL_Quick_Ajax_Constants::QUERY_SETTING_AJAX_ON_INITIAL_LOAD_DEFAULT;
-            echo wp_kses_post($this->load_more_button(intval($query->get('paged')), intval($query->max_num_pages), intval($query->found_posts), $infinite_scroll));
+            echo wp_kses_post($this->load_more_button(intval($query->get('paged')), intval($query->max_num_pages), intval($query->found_posts), intval($query->post_count), $infinite_scroll));
         }
         do_action(QAPL_Quick_Ajax_Constants::HOOK_POSTS_CONTAINER_END, $this->quick_ajax_id);
         echo '</div>';
@@ -692,7 +692,7 @@ class QAPL_Quick_Ajax_Handler{
         //$output = $this->replace_placeholders($output); // not in use after removing placeholders
         return $output; // Return the content
     }
-    public function load_more_button($paged, $max_num_pages, $found_posts, $infinite_scroll = false) {
+    public function load_more_button($paged, $max_num_pages, $found_posts, $post_count, $infinite_scroll = false) {
         if(!$this->args){
             return false;
         }
@@ -705,9 +705,19 @@ class QAPL_Quick_Ajax_Handler{
         // if we want to add a different number of posts than displayed at the start
         // use 'offset' not 'paged'
             $load_more_posts = intval($this->attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_LOAD_MORE_POSTS]);
-            $offset = isset($load_more_args['offset']) ? $load_more_args['offset'] + $load_more_posts : + $load_more_posts;
-            
-            if (($found_posts <= $offset) || ($found_posts <= intval($load_more_args['posts_per_page']))) {
+            //get initial offset and number of posts per page
+            $initial_offset = isset($load_more_args['offset']) ? intval($load_more_args['offset']) : 0;
+            //get number of posts per page
+            $posts_per_page = intval($load_more_args['posts_per_page']);
+                        
+            //old logic
+            //if post_found smaller than initial offset and post per page
+            //if ($found_posts <= $initial_offset + $posts_per_page) {
+            //   return false;
+            //}
+            //new logic
+            $shown_posts = $initial_offset + $post_count;
+            if ($found_posts <= $shown_posts) {
                 return false;
             }
                 // Update offset

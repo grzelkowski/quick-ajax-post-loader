@@ -30,7 +30,7 @@ class QAPL_Quick_Ajax_Utilities {
         return true;
     }
 
-    public static function element_exists(string $type, string $name) {
+    public static function check_name_conflict(string $type, string $name) {
         $exists = false;
         $type_formatted = '';
         $plugin_name = QAPL_Quick_Ajax_Constants::PLUGIN_NAME;
@@ -48,32 +48,5 @@ class QAPL_Quick_Ajax_Utilities {
             return false;
         }   
         return true;
-    }
-    public static function add_or_update_option_autoload(string $option_name, $default_value = '', string $autoload = 'auto'): void {
-        global $wpdb;
-        
-        // Check if the option exists
-        $existing_option = get_option($option_name, false);
-    
-        if ($existing_option !== false) {
-            // Update autoload value if the option exists            
-            $updated = $wpdb->update(
-                $wpdb->options,
-                ['autoload' => $autoload], // Update autoload field
-                ['option_name' => $option_name],
-                ['%s'],
-                ['%s']
-            );
-    
-            //clear cache after updating
-            if ($updated !== false) {
-                wp_cache_delete($option_name, 'options');
-            }
-        } else {
-            // Add the option with specified autoload value
-            add_option($option_name, $default_value, '', $autoload);    
-            //clear cache after adding
-            wp_cache_delete($option_name, 'options');
-        }
     }
 }

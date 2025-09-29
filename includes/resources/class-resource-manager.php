@@ -9,18 +9,36 @@ class QAPL_Quick_Ajax_Resource_Manager implements QAPL_Quick_Ajax_Resource_Manag
 
     // constants for page files
     private const PAGE_FILES = [
-        'admin_pages_config'        => 'includes/admin/admin-pages-config.php',
-        'settings_page'             => 'includes/admin/pages/settings-page.php',
-        'shortcode_page'            => 'includes/admin/pages/shortcode-page.php',
+        'class-admin-menu'                  => 'includes/admin/class-admin-menu.php', //main admin menu and submenu
+
+        //CPT
+        'class-post-form'                   => 'includes/admin/cpt/class-cpt-editor-form.php', //abstract form for post type meta box
+        // creator CPT
+        'class-creator-post-type'           => 'includes/admin/cpt/creator/class-creator-post-type.php',
+        'class-creator-columns'             => 'includes/admin/cpt/creator/class-creator-columns.php',
+        'class-creator-form'                => 'includes/admin/cpt/creator/class-creator-form.php',
+        'class-creator-shortcode-box'       => 'includes/admin/cpt/creator/class-creator-shortcode-box.php',
+        'class-creator-editor'              => 'includes/admin/cpt/creator/class-creator-editor.php',
+        
+        //admin pages
+        'class-options-form'                => 'includes/admin/pages/class-admin-options-page-form.php', //abstract form for option page
+        // settings page
+        'class-settings-tab-options'        => 'includes/admin/pages/settings/tabs/class-settings-tab-options.php',
+        'class-settings-tab-php-snippet'    => 'includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php',
+        'class-settings-tab-help'           => 'includes/admin/pages/settings/tabs/class-settings-tab-help.php',
+        'class-settings-tab-cleanup'        => 'includes/admin/pages/settings/tabs/class-settings-tab-cleanup.php',
+        'class-settings-page'               => 'includes/admin/pages/settings/class-settings-page.php',
+
     ];
 
     // constants for component files
     private const COMPONENT_FILES = [
         //form
-        'interface-form-field'      => 'includes/form/interface-form-field.php',
-        'class-form-field'          => 'includes/form/class-form-field.php',
-        'class-form-field-builder'  => 'includes/form/class-form-field-builder.php',
-        'class-form-field-factory'  => 'includes/form/class-form-field-factory.php',
+        'interface-form-field'      => 'includes/form/interface-form-field.php', //interface for form field
+        'class-form-field'          => 'includes/form/class-form-field.php', //final form field object
+        'class-form-field-builder'  => 'includes/form/class-form-field-builder.php', //builder for form fields
+        'class-form-field-factory'  => 'includes/form/class-form-field-factory.php', //factory to create form fields
+        'class-content-builder'     => 'includes/form/class-form-content-builder.php', //base class to build form fields html
         //shortcode
         'class-shortcode'           => 'includes/shortcode/class-shortcode.php',
         'shortcode-generator'       => 'includes/shortcode/class-shortcode-generator.php',

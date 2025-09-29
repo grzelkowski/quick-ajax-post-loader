@@ -267,8 +267,8 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-transition: background-color 0.3s ease, border-color 0.3s ease;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    -webkit-transition: background-color 0.15s ease, border-color 0.15s ease;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 .quick-ajax-tab-button:first-of-type{
     margin-left:0;

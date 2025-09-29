@@ -405,8 +405,8 @@ class QAPL_Quick_Ajax_Form_Field_Factory {
     }
     //build loader icon select field
     private static function loader_icon_get_field(string $name, string $default): QAPL_Quick_Ajax_Form_Field_Interface {
-        $file_helper = new QAPL_Quick_Ajax_File_Manager();
-        $templates = $file_helper->get_templates_items_array('loader-icon/*.php','Loader Icon Name:',$default);
+        $file_manager = new QAPL_Quick_Ajax_File_Manager();
+        $templates = $file_manager->get_templates_items_array('loader-icon/*.php','Loader Icon Name:',$default);
         $options = [];
         foreach ($templates as $item) {
             $options[] = [

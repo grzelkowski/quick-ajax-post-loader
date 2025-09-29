@@ -88,7 +88,7 @@ function qapl_quick_ajax_load_posts() {
         wp_reset_postdata();
        
         $output = ob_get_clean();
-        $load_more = $ajax_class->load_more_button(esc_attr($query->get('paged')), esc_attr($query->max_num_pages), esc_attr($query->found_posts), esc_attr($ajax_class->attributes['infinite_scroll']));
+        $load_more = $ajax_class->load_more_button(esc_attr($query->get('paged')), esc_attr($query->max_num_pages), esc_attr($query->found_posts), esc_attr($query->post_count), esc_attr($ajax_class->attributes['infinite_scroll']));
         $show_end_message = $ajax_class->render_end_of_posts_message($load_more, esc_attr($query->max_num_pages), esc_attr($ajax_class->attributes['quick_ajax_id']), $ajax_class->attributes['show_end_message']);
        
 

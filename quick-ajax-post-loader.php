@@ -4,7 +4,7 @@
 * Plugin URI: https://github.com/grzelkowski/quick-ajax-post-loader/releases
 * Text Domain: quick-ajax-post-loader
 * Domain Path: /languages
-* Version: 1.8.2
+* Version: 1.8.3
 * Description: Supercharge post loading with Quick Ajax Post Loader. Enhance user experience and optimize site performance using AJAX technology.
 * Author: Pawel Grzelkowski
 * Author URI: https://grzelkowski.com
@@ -21,7 +21,9 @@ require_once plugin_dir_path(__FILE__) . 'includes/resources/class-constants.php
 
 if (version_compare(PHP_VERSION, QAPL_Quick_Ajax_Constants::PLUGIN_MINIMUM_PHP_VERSION, '<')) {
     add_action( 'admin_notices', static function () {
+
         $message = sprintf(
+            // translators: %1$s is the required PHP version, %2$s is the current PHP version.
             __('This plugin requires PHP %1$s or higher. Your server is running %2$s.', 'quick-ajax-post-loader'),
             QAPL_Quick_Ajax_Constants::PLUGIN_MINIMUM_PHP_VERSION,
             PHP_VERSION
@@ -35,6 +37,7 @@ global $wp_version;
 if (version_compare($wp_version, QAPL_Quick_Ajax_Constants::PLUGIN_MINIMUM_WP_VERSION, '<')) {
     add_action( 'admin_notices', static function () use ($wp_version) {
         $message = sprintf(
+            // translators: %1$s is the minimum supported WordPress version, %2$s is the current WordPress version.
             __('This plugin was tested only with WordPress %1$s or higher. Your site is running %2$s. It may not work correctly.', 'quick-ajax-post-loader'),
             QAPL_Quick_Ajax_Constants::PLUGIN_MINIMUM_WP_VERSION,
             $wp_version

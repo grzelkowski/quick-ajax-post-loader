@@ -6,20 +6,20 @@
             this.qapl_quick_ajax_infinite_scroll();
         },
         qapl_quick_ajax_handlers: function () {
-            if (typeof qapl_quick_ajax_helper !== "undefined" && qapl_quick_ajax_helper) {
+            if (typeof qapl_quick_ajax_data !== "undefined" && qapl_quick_ajax_data) {
                 const self = this;
-                if (qapl_quick_ajax_helper.helper.load_more_data_button) {
-                    $(".quick-ajax-posts-container").on("click", `[data-button="${qapl_quick_ajax_helper.helper.load_more_data_button}"]`, function () {
+                if (qapl_quick_ajax_data.constants.load_more_data_button) {
+                    $(".quick-ajax-posts-container").on("click", `[data-button="${qapl_quick_ajax_data.constants.load_more_data_button}"]`, function () {
                         self.qapl_quick_ajax_handle_ajax($(this));
                     });
                 }
-                if (qapl_quick_ajax_helper.helper.filter_data_button) {
-                    $(".quick-ajax-filter-container").on("click", `[data-button="${qapl_quick_ajax_helper.helper.filter_data_button}"]`, function () {
+                if (qapl_quick_ajax_data.constants.filter_data_button) {
+                    $(".quick-ajax-filter-container").on("click", `[data-button="${qapl_quick_ajax_data.constants.filter_data_button}"]`, function () {
                         self.qapl_quick_ajax_handle_ajax($(this));
                     });
                 }
-                if (qapl_quick_ajax_helper.helper.sort_button) {
-                    $(".quick-ajax-sort-options-container").on("click", `[data-button="${qapl_quick_ajax_helper.helper.sort_button}"]`, function () {
+                if (qapl_quick_ajax_data.constants.sort_button) {
+                    $(".quick-ajax-sort-options-container").on("click", `[data-button="${qapl_quick_ajax_data.constants.sort_button}"]`, function () {
                         self.qapl_quick_ajax_handle_ajax($(this));
                     });
                 }
@@ -45,7 +45,7 @@
                     function (entries) {
                         entries.forEach(function (entry) {
                             if (entry.isIntersecting) {
-                                const button = $(entry.target).find('button[data-button="' + qapl_quick_ajax_helper.helper.load_more_data_button + '"]');
+                                const button = $(entry.target).find('button[data-button="' + qapl_quick_ajax_data.constants.load_more_data_button + '"]');
                                 if (button.length && !button.hasClass("loading")) {
                                     button.addClass("loading");
                                     button.trigger("click");
@@ -79,7 +79,7 @@
             }
 
             const button_type = button.attr("data-button");
-            const containerId = attributes[qapl_quick_ajax_helper.helper.block_id] || "";
+            const containerId = attributes[qapl_quick_ajax_data.constants.block_id] || "";
             const container = $("#quick-ajax-" + containerId);
             const container_inner = $("#quick-ajax-" + containerId + " .quick-ajax-posts-wrapper");
             if (!container.length || !container_inner.length) {
@@ -96,27 +96,27 @@
                     container.css("min-height", firstItem.outerHeight() + "px");
                 }
             }
-            if (button_type === qapl_quick_ajax_helper.helper.filter_data_button || button_type === qapl_quick_ajax_helper.helper.sort_button) {
+            if (button_type === qapl_quick_ajax_data.constants.filter_data_button || button_type === qapl_quick_ajax_data.constants.sort_button) {
                 container.addClass("filter-update");
                 container_inner.fadeOut(100, function () {
                     $(this).empty().fadeIn(100);
                 });
             }
             $.ajax({
-                url: qapl_quick_ajax_helper.ajax_url,
+                url: qapl_quick_ajax_data.ajax_url,
                 type: "POST",
                 data: {
                     action: "qapl_quick_ajax_load_posts",
-                    nonce: qapl_quick_ajax_helper.nonce,
+                    nonce: qapl_quick_ajax_data.nonce,
                     args: args,
                     attributes: attributes,
                     button_type: button_type
                 },
                 success: function (response) {
                     if (response && response.data) {
-                        if (button_type === qapl_quick_ajax_helper.helper.load_more_data_button) {
+                        if (button_type === qapl_quick_ajax_data.constants.load_more_data_button) {
                             self.qapl_quick_ajax_load_more_add_posts(container_inner, button, response.data.output);
-                        } else if (button_type === qapl_quick_ajax_helper.helper.filter_data_button || button_type === qapl_quick_ajax_helper.helper.sort_button) {
+                        } else if (button_type === qapl_quick_ajax_data.constants.filter_data_button || button_type === qapl_quick_ajax_data.constants.sort_button) {
                             self.qapl_quick_ajax_taxonomy_filter_show_posts(container_inner, button, response.data.output, containerId);
                         }
                         self.qapl_quick_ajax_append_load_more_button(container_inner, response.data.load_more);
@@ -149,7 +149,7 @@
         },
         qapl_quick_ajax_taxonomy_filter_show_posts: function (container, button, response, containerId) {
             let filterContainer = $("#quick-ajax-filter-" + containerId);
-            filterContainer.find(`[data-button="${qapl_quick_ajax_helper.helper.filter_data_button}"]`).removeClass("active");
+            filterContainer.find(`[data-button="${qapl_quick_ajax_data.constants.filter_data_button}"]`).removeClass("active");
             button.addClass("active");
             container.parent().find(".quick-ajax-load-more-container").remove();
             container.stop(true, true).fadeOut(100, function () {
