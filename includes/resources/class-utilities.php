@@ -19,12 +19,7 @@ class QAPL_Quick_Ajax_Utilities {
             if (!empty($context)) {
                 $message = "[" . $context . "] " . $message;
             }
-            if (class_exists('QAPL_Quick_Ajax_Logger')) {
-                QAPL_Quick_Ajax_Logger::log($message, 'error');
-            }
-            elseif (defined('WP_DEBUG') && WP_DEBUG && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
-                error_log($message);
-            }
+            qapl_log($message, 'error');
             return false;
         }
         return true;

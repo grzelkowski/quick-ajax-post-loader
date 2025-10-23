@@ -34,23 +34,34 @@ class QAPL_Quick_Ajax_Resource_Manager implements QAPL_Quick_Ajax_Resource_Manag
     // constants for component files
     private const COMPONENT_FILES = [
         //form
-        'interface-form-field'      => 'includes/form/interface-form-field.php', //interface for form field
-        'class-form-field'          => 'includes/form/class-form-field.php', //final form field object
-        'class-form-field-builder'  => 'includes/form/class-form-field-builder.php', //builder for form fields
-        'class-form-field-factory'  => 'includes/form/class-form-field-factory.php', //factory to create form fields
-        'class-content-builder'     => 'includes/form/class-form-content-builder.php', //base class to build form fields html
+        'interface-form-field'              => 'includes/form/interface-form-field.php', //interface for form field
+        'class-form-field'                  => 'includes/form/class-form-field.php', //final form field object
+        'class-form-field-builder'          => 'includes/form/class-form-field-builder.php', //builder for form fields
+        'class-form-field-factory'          => 'includes/form/class-form-field-factory.php', //factory to create form fields
+        'class-content-builder'             => 'includes/form/class-form-content-builder.php', //base class to build form fields html
         //shortcode
-        'class-shortcode'           => 'includes/shortcode/class-shortcode.php',
-        'shortcode-generator'       => 'includes/shortcode/class-shortcode-generator.php',
+        'class-shortcode-ajax-attributes'   => 'includes/shortcode/handlers/class-shortcode-ajax-attributes-provider.php',
+        'class-shortcode-params'            => 'includes/shortcode/handlers/class-shortcode-params-handler.php',
+        'class-shortcode-post-meta'         => 'includes/shortcode/handlers/class-shortcode-post-meta-handler.php',
+        'class-shortcode-query-args'        => 'includes/shortcode/handlers/class-shortcode-query-args-provider.php',
+        'class-shortcode'                   => 'includes/shortcode/class-shortcode.php',
+        'shortcode-generator'               => 'includes/shortcode/class-shortcode-generator.php',
         //AJAX
-        'class-ajax'                => 'includes/ajax/class-ajax.php',
-        'ajax-actions'              => 'includes/ajax/actions.php',
-        'template-renderers'        => 'includes/template-renderers/class-template-hooks.php',
-        'functions'                 => 'includes/functions.php',
+        'class-ajax-helper'                 => 'includes/ajax-render/class-ajax-helper.php',
+        'class-ajax-query-builder'          => 'includes/ajax-render/class-ajax-query-builder.php',
+        'class-ajax-ui-renderer'            => 'includes/ajax-render/class-ajax-ui-renderer.php',
+        'class-ajax-layout-renderer'        => 'includes/ajax-render/class-ajax-layout-renderer.php',
+        'class-ajax-render-handler'         => 'includes/ajax-render/class-ajax-render-handler.php',
+        'class-ajax-controller'             => 'includes/ajax-render/class-ajax-controller.php',
+        'ajax-actions'                      => 'includes/ajax/class-ajax-action-controller.php',
+        //template-renderers
+        'template-renderers'                => 'includes/template-renderers/class-template-hooks.php',
+        //functions
+        'functions'                         => 'includes/functions.php',
         //maintenance / compatibility
-        'updater'                   => 'includes/maintenance/class-updater.php',
-        'deprecated-hooks-handler'  => 'includes/deprecated/class-deprecated-hooks-handler.php',
-        'dev-hooks'                 => 'dev-tools/dev-hooks.php',
+        'updater'                           => 'includes/maintenance/class-updater.php',
+        'deprecated-hooks-handler'          => 'includes/deprecated/class-deprecated-hooks-handler.php',
+        'dev-hooks'                         => 'dev-tools/dev-hooks.php',
     ];
     
 

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Quick Ajax Post Loader\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-03 00:00+0000\n"
-"PO-Revision-Date: 2025-07-03 15:40+0000\n"
+"PO-Revision-Date: 2025-09-30 16:13+0000\n"
 "Last-Translator: \n"
 "Language-Team: English (UK)\n"
 "Language: en_GB\n"
@@ -12,74 +12,113 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.8.0; wp-6.8.1; php-7.4.33\n"
+"X-Loco-Version: 2.8.0; wp-6.8.2; php-7.4.33\n"
 "X-Domain: quick-ajax-post-loader\n"
 
-#: inc/class-helper.php:420 inc/class-helper.php:1341 inc/class-helper.php:1342
-#: inc/class-helper_new.php:625
+#: includes/form/class-form-field-factory.php:166
+#: includes/form/class-form-field-factory.php:533
+#: includes/form/class-form-field-factory.php:534
+#: build/github/includes/form/class-form-field-factory.php:166
+#: build/github/includes/form/class-form-field-factory.php:533
+#: build/github/includes/form/class-form-field-factory.php:534
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:166
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:533
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:534
 msgid "A → Z"
 msgstr "A → Z"
 
-#: inc/class-helper.php:1155 inc/class-helper_new.php:815
+#: includes/form/class-form-field-factory.php:355
+#: build/github/includes/form/class-form-field-factory.php:355
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:355
 #| msgid "Add class to post container"
 msgid "Add Class to Post Container"
 msgstr "Add Class to Post Container"
 
-#: inc/class-helper.php:1142 inc/class-helper_new.php:804
+#: includes/form/class-form-field-factory.php:344
+#: build/github/includes/form/class-form-field-factory.php:344
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:344
 #| msgid "Add class to taxonomy filter"
 msgid "Add Class to Taxonomy Filter"
 msgstr "Add Class to Taxonomy Filter"
 
-#: inc/class-helper.php:1147 inc/class-helper_new.php:808
+#: includes/form/class-form-field-factory.php:348
+#: build/github/includes/form/class-form-field-factory.php:348
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:348
 msgid "Add classes to the filter: class-one, class-two, class-three"
 msgstr "Add classes to the filter: class-one, class-two, class-three"
 
-#: inc/class-helper.php:1160 inc/class-helper_new.php:819
+#: includes/form/class-form-field-factory.php:359
+#: build/github/includes/form/class-form-field-factory.php:359
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:359
 msgid "Add classes to the post container: class-one, class-two, class-three"
 msgstr "Add classes to the post container: class-one, class-two, class-three"
 
-#: admin/admin-pages-config.php:26 admin/admin-pages-config.php:27
-#: admin/admin-pages-config.php:94
+#: includes/admin/class-admin-menu.php:27
+#: includes/admin/class-admin-menu.php:28
+#: build/github/includes/admin/class-admin-menu.php:27
+#: build/github/includes/admin/class-admin-menu.php:28
+#: includes/admin/cpt/creator/class-creator-post-type.php:15
+#: build/wordpress-org/trunk/includes/admin/class-admin-menu.php:27
+#: build/wordpress-org/trunk/includes/admin/class-admin-menu.php:28
+#: build/github/includes/admin/cpt/creator/class-creator-post-type.php:15
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-post-type.php:15
 msgid "Add New"
 msgstr "Add New"
 
-#: admin/admin-pages-config.php:95
+#: includes/admin/cpt/creator/class-creator-post-type.php:16
+#: build/github/includes/admin/cpt/creator/class-creator-post-type.php:16
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-post-type.php:16
 msgid "Add New Quick Ajax"
 msgstr "Add New Quick Ajax"
 
-#: admin/pages/settings-page.php:254 admin/pages/shortcode-page.php:173
+#: includes/admin/cpt/creator/class-creator-form.php:153
+#: includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:161
+#: build/github/includes/admin/cpt/creator/class-creator-form.php:153
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:161
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-form.php:153
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:161
 msgid "Additional Settings"
 msgstr "Additional Settings"
 
-#: inc/class-helper.php:1090 inc/class-helper_new.php:756
+#: includes/form/class-form-field-factory.php:296
+#: build/github/includes/form/class-form-field-factory.php:296
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:296
 msgid "Apply Quick AJAX CSS Style"
 msgstr "Apply Quick AJAX CSS Style"
 
-#: inc/class-helper.php:1094 inc/class-helper_new.php:759
+#: includes/form/class-form-field-factory.php:299
+#: build/github/includes/form/class-form-field-factory.php:299
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:299
 msgid "Apply Quick AJAX CSS styles and column layout."
 msgstr "Apply Quick AJAX CSS styles and column layout."
 
-#: inc/class-helper_new.php:547
-msgid "Ascending"
-msgstr "Ascending"
-
-#: inc/class-helper.php:919
+#: includes/form/class-form-field-factory.php:88
+#: build/github/includes/form/class-form-field-factory.php:88
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:88
 msgid "Ascending - order from lowest to highest"
 msgstr "Ascending - order from lowest to highest"
 
-#: admin/admin-pages-config.php:144
+#: includes/admin/cpt/creator/class-creator-columns.php:29
+#: build/github/includes/admin/cpt/creator/class-creator-columns.php:29
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-columns.php:29
 msgid "Author"
 msgstr "Author"
 
-#: inc/class-helper.php:969 inc/class-helper_new.php:642
+#: includes/form/class-form-field-factory.php:183
+#: build/github/includes/form/class-form-field-factory.php:183
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:183
 msgid "Available Sorting Options"
 msgstr "Available Sorting Options"
 
-#: inc/class-helper.php:1134 inc/class-helper_new.php:797
+#: includes/form/class-form-field-factory.php:337
+#: build/github/includes/form/class-form-field-factory.php:337
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:337
 msgid "Choose a template for displaying post items."
 msgstr "Choose a template for displaying post items."
 
-#: inc/class-helper.php:1223
+#: includes/form/class-form-field-factory.php:423
+#: build/github/includes/form/class-form-field-factory.php:423
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:423
 msgid ""
 "Choose an icon to display as the loading indicator when the \"Load More\" "
 "button is clicked."
@@ -87,23 +126,27 @@ msgstr ""
 "Choose an icon to display as the loading indicator when the \"Load More\" "
 "button is clicked."
 
-#: inc/class-helper.php:893 inc/class-helper_new.php:522
+#: includes/form/class-form-field-factory.php:63
+#: build/github/includes/form/class-form-field-factory.php:63
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:63
 msgid "Choose Terms"
 msgstr "Choose Terms"
 
-#: inc/class-helper.php:854 inc/class-helper_new.php:483
+#: includes/form/class-form-field-factory.php:24
+#: build/github/includes/form/class-form-field-factory.php:24
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:24
 msgid "Choose the post type you want to display using AJAX."
 msgstr "Choose the post type you want to display using AJAX."
 
-#: inc/class-helper.php:949 inc/class-helper_new.php:586
+#: includes/form/class-form-field-factory.php:127
+#: build/github/includes/form/class-form-field-factory.php:127
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:127
 msgid "Choose the sorting criteria for posts."
 msgstr "Choose the sorting criteria for posts."
 
-#: inc/class-helper_new.php:505
-msgid "Choose the taxonomy to filter posts by."
-msgstr "Choose the taxonomy to filter posts by."
-
-#: inc/class-helper.php:1378
+#: includes/form/class-form-field-factory.php:567
+#: build/github/includes/form/class-form-field-factory.php:567
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:567
 msgid ""
 "Choose this option to remove old, unused data from the database. This will "
 "help keep your site clean and efficient. Be aware that if you switch back to "
@@ -113,32 +156,42 @@ msgstr ""
 "help keep your site clean and efficient. Be aware that if you switch back to "
 "an older version of the plugin, it might not work as expected."
 
-#: inc/class-helper.php:1146 inc/class-helper.php:1159
-#: inc/class-helper_new.php:807 inc/class-helper_new.php:818
+#: includes/form/class-form-field-factory.php:347
+#: includes/form/class-form-field-factory.php:358
+#: build/github/includes/form/class-form-field-factory.php:347
+#: build/github/includes/form/class-form-field-factory.php:358
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:347
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:358
 msgid "class-name, another-class-name"
 msgstr "class-name, another-class-name"
 
-#: inc/class-helper_new.php:572
-msgid "Comment Count"
-msgstr "Comment Count"
-
-#: inc/class-helper.php:939
+#: includes/form/class-form-field-factory.php:113
+#: build/github/includes/form/class-form-field-factory.php:113
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:113
 msgid "Comments: Sort by comment count"
 msgstr "Comments: Sort by comment count"
 
-#: inc/class-helper.php:1374
+#: includes/form/class-form-field-factory.php:564
+#: build/github/includes/form/class-form-field-factory.php:564
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:564
 msgid "Confirm Purge of Old Data"
 msgstr "Confirm Purge of Old Data"
 
-#: admin/pages/shortcode-page.php:13
+#: includes/admin/cpt/creator/class-creator-shortcode-box.php:15
+#: build/github/includes/admin/cpt/creator/class-creator-shortcode-box.php:15
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-shortcode-box.php:15
 msgid "Copy and paste this shortcode on the page to display the posts list"
 msgstr "Copy and paste this shortcode on the page to display the posts list"
 
-#: admin/pages/settings-page.php:311
+#: includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:218
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:218
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:218
 msgid "Copy Code"
 msgstr "Copy Code"
 
-#: inc/class-helper.php:1259
+#: includes/form/class-form-field-factory.php:456
+#: build/github/includes/form/class-form-field-factory.php:456
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:456
 msgid ""
 "Customize the \"Load More\" button text. This label will appear on the "
 "button used to load additional posts dynamically. Examples: \"Load More\", "
@@ -148,7 +201,9 @@ msgstr ""
 "button used to load additional posts dynamically. Examples: \"Load More\", "
 "\"Show More\", or \"View More\"."
 
-#: inc/class-helper.php:1235
+#: includes/form/class-form-field-factory.php:434
+#: build/github/includes/form/class-form-field-factory.php:434
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:434
 msgid ""
 "Customize the \"Read More\" text for your templates. This label will appear "
 "as a link or button for each post item. Examples: \"Read More\", \"Continue "
@@ -158,7 +213,9 @@ msgstr ""
 "as a link or button for each post item. Examples: \"Read More\", \"Continue "
 "Reading\", or \"Learn More\"."
 
-#: inc/class-helper.php:1247
+#: includes/form/class-form-field-factory.php:445
+#: build/github/includes/form/class-form-field-factory.php:445
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:445
 msgid ""
 "Customize the \"Show All\" text label for the filter. This label will appear "
 "as an option to display all posts without filtering. Examples: \"Show All\", "
@@ -168,17 +225,9 @@ msgstr ""
 "as an option to display all posts without filtering. Examples: \"Show All\", "
 "\"View All\", or \"Display All\"."
 
-#: inc/class-helper.php:1295
-msgid ""
-"Customize the format for displaying post dates. This text will replace the "
-"default date format. For example: \"F j, Y\" (January 1, 2023) or \"Y-m-d\" "
-"(2023-01-01). Refer to the PHP date format documentation for more options."
-msgstr ""
-"Customise the format for displaying post dates. This text will replace the "
-"default date format. For example: \"F j, Y\" (January 1, 2023) or \"Y-m-d\" "
-"(2023-01-01). Refer to the PHP date format documentation for more options."
-
-#: inc/class-helper.php:1271
+#: includes/form/class-form-field-factory.php:467
+#: build/github/includes/form/class-form-field-factory.php:467
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:467
 msgid ""
 "Customize the message shown when no posts match the selected filters. "
 "Examples: \"No posts found\", \"Nothing to display\", or \"Try adjusting "
@@ -188,7 +237,9 @@ msgstr ""
 "Examples: \"No posts found\", \"Nothing to display\", or \"Try adjusting "
 "your filters\"."
 
-#: inc/class-helper.php:1283
+#: includes/form/class-form-field-factory.php:478
+#: build/github/includes/form/class-form-field-factory.php:478
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:478
 msgid ""
 "Customize the message that appears when there are no more posts to load. "
 "Examples: \"No more posts\", \"You have reached the end\", or \"That's all "
@@ -198,47 +249,45 @@ msgstr ""
 "Examples: \"No more posts\", \"You have reached the end\", or \"That's all "
 "for now\"."
 
-#: inc/class-helper_new.php:564
-msgid "Date"
-msgstr "Date"
-
-#: inc/class-helper.php:937
+#: includes/form/class-form-field-factory.php:105
+#: build/github/includes/form/class-form-field-factory.php:105
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:105
 msgid "Date: Sort by publication date"
 msgstr "Date: Sort by publication date"
 
-#: inc/class-helper.php:945 inc/class-helper_new.php:582
+#: includes/form/class-form-field-factory.php:123
+#: build/github/includes/form/class-form-field-factory.php:123
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:123
 msgid "Default Sort By"
 msgstr "Default Sort By"
 
-#: inc/class-helper.php:925 inc/class-helper_new.php:553
+#: includes/form/class-form-field-factory.php:94
+#: build/github/includes/form/class-form-field-factory.php:94
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:94
 msgid "Default Sort Order"
 msgstr "Default Sort Order"
 
-#: inc/class-helper_new.php:543
-msgid "Descending"
-msgstr "Descending"
-
-#: inc/class-helper.php:915
+#: includes/form/class-form-field-factory.php:84
+#: build/github/includes/form/class-form-field-factory.php:84
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:84
 msgid "Descending - order from highest to lowest"
 msgstr "Descending - order from highest to lowest"
 
-#: inc/class-helper.php:908 inc/class-helper_new.php:536
+#: includes/form/class-form-field-factory.php:77
+#: build/github/includes/form/class-form-field-factory.php:77
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:77
 msgid "Determine the number of posts to be loaded per AJAX request."
 msgstr "Determine the number of posts to be loaded per AJAX request."
 
-#: inc/class-helper.php:1082 inc/class-helper_new.php:749
+#: includes/form/class-form-field-factory.php:289
+#: build/github/includes/form/class-form-field-factory.php:289
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:289
 msgid "Display a message when there are no more posts to load via AJAX."
 msgstr "Display a message when there are no more posts to load via AJAX."
 
-#: inc/class-helper.php:982
-msgid ""
-"Display taxonomy filter and sorting options in a single row to save space "
-"and improve layout"
-msgstr ""
-"Display taxonomy filter and sorting options in a single row to save space "
-"and improve layout"
-
-#: inc/class-helper_new.php:656
+#: includes/form/class-form-field-factory.php:197
+#: build/github/includes/form/class-form-field-factory.php:197
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:197
 msgid ""
 "Display taxonomy filter and sorting options in a single row to save space "
 "and improve layout."
@@ -246,11 +295,15 @@ msgstr ""
 "Display taxonomy filter and sorting options in a single row to save space "
 "and improve layout."
 
-#: admin/admin-pages-config.php:96
+#: includes/admin/cpt/creator/class-creator-post-type.php:17
+#: build/github/includes/admin/cpt/creator/class-creator-post-type.php:17
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-post-type.php:17
 msgid "Edit Quick Ajax"
 msgstr "Edit Quick Ajax"
 
-#: inc/class-helper.php:961 inc/class-helper_new.php:596
+#: includes/form/class-form-field-factory.php:137
+#: build/github/includes/form/class-form-field-factory.php:137
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:137
 msgid ""
 "Enable a button that allows users to switch between ascending and descending "
 "order."
@@ -258,19 +311,27 @@ msgstr ""
 "Enable a button that allows users to switch between ascending and descending "
 "order."
 
-#: inc/class-helper.php:865 inc/class-helper_new.php:493
+#: includes/form/class-form-field-factory.php:34
+#: build/github/includes/form/class-form-field-factory.php:34
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:34
 msgid "Enable filtering by taxonomy/category."
 msgstr "Enable filtering by taxonomy/category."
 
-#: inc/class-helper.php:1067 inc/class-helper_new.php:736
+#: includes/form/class-form-field-factory.php:276
+#: build/github/includes/form/class-form-field-factory.php:276
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:276
 msgid "Enable Infinite Scroll"
 msgstr "Enable Infinite Scroll"
 
-#: inc/class-helper.php:886 inc/class-helper_new.php:515
+#: includes/form/class-form-field-factory.php:56
+#: build/github/includes/form/class-form-field-factory.php:56
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:56
 msgid "Enable manual selection of taxonomy terms to be used for filtering."
 msgstr "Enable manual selection of taxonomy terms to be used for filtering."
 
-#: inc/class-helper.php:1071 inc/class-helper_new.php:739
+#: includes/form/class-form-field-factory.php:279
+#: build/github/includes/form/class-form-field-factory.php:279
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:279
 msgid ""
 "Enable this option to automatically load more posts via AJAX as the user "
 "scrolls down the page."
@@ -278,7 +339,9 @@ msgstr ""
 "Enable this option to automatically load more posts via AJAX as the user "
 "scrolls down the page."
 
-#: inc/class-helper.php:1060 inc/class-helper_new.php:729
+#: includes/form/class-form-field-factory.php:269
+#: build/github/includes/form/class-form-field-factory.php:269
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:269
 msgid ""
 "Enable this option to load the initial set of posts via AJAX on page load. "
 "This can help in cases where caching might cause outdated content to be "
@@ -288,63 +351,96 @@ msgstr ""
 "This can help in cases where caching might cause outdated content to be "
 "displayed."
 
-#: inc/class-helper.php:1037 inc/class-helper_new.php:707
+#: includes/form/class-form-field-factory.php:249
+#: build/github/includes/form/class-form-field-factory.php:249
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:249
 msgid "Enter a list of post IDs to exclude from the query."
 msgstr "Enter a list of post IDs to exclude from the query."
 
-#: inc/class-helper.php:1258
+#: includes/form/class-form-field-factory.php:455
+#: build/github/includes/form/class-form-field-factory.php:455
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:455
 msgid "Enter custom label for Load More"
 msgstr "Enter custom label for Load More"
 
-#: inc/class-helper.php:1234
+#: includes/form/class-form-field-factory.php:433
+#: build/github/includes/form/class-form-field-factory.php:433
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:433
 msgid "Enter custom label for Read More"
 msgstr "Enter custom label for Read More"
 
-#: inc/class-helper.php:1246
+#: includes/form/class-form-field-factory.php:444
+#: build/github/includes/form/class-form-field-factory.php:444
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:444
 msgid "Enter custom label for Show All"
 msgstr "Enter custom label for Show All"
 
-#: inc/class-helper.php:1294
-msgid "Enter date format (e.g., F j, Y)"
-msgstr "Enter date format (e.g., F j, Y)"
-
-#: inc/class-helper.php:1282
+#: includes/form/class-form-field-factory.php:477
+#: build/github/includes/form/class-form-field-factory.php:477
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:477
 msgid "Enter message for end of posts"
 msgstr "Enter message for end of posts"
 
-#: inc/class-helper.php:1270
+#: includes/form/class-form-field-factory.php:466
+#: build/github/includes/form/class-form-field-factory.php:466
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:466
 msgid "Enter message for no posts found"
 msgstr "Enter message for no posts found"
 
-#: inc/class-helper.php:1032 inc/class-helper_new.php:704
+#: includes/form/class-form-field-factory.php:245
+#: build/github/includes/form/class-form-field-factory.php:245
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:245
 msgid "Excluded Post IDs"
 msgstr "Excluded Post IDs"
 
-#: admin/pages/settings-page.php:140 admin/pages/settings-page.php:192
-msgid "Function Generator"
-msgstr "Function Generator"
-
-#: admin/pages/settings-page.php:196 admin/pages/shortcode-page.php:108
+#: includes/admin/cpt/creator/class-creator-form.php:89
+#: includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:104
+#: build/github/includes/admin/cpt/creator/class-creator-form.php:89
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:104
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-form.php:89
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:104
 msgid "General Settings"
 msgstr "General Settings"
 
-#: admin/pages/settings-page.php:310
+#: includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:102
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:102
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:102
+msgid ""
+"Generate a fully functional PHP snippet to embed your custom AJAX post "
+"loader into your template. No shortcode needed."
+msgstr ""
+"Generate a fully functional PHP snippet to embed your custom AJAX post "
+"loader into your template. No shortcode needed."
+
+#: includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:217
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:217
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:217
 msgid "Generate Function"
 msgstr "Generate Function"
 
-#: admin/pages/settings-page.php:138 admin/pages/settings-page.php:170
+#: includes/admin/pages/settings/tabs/class-settings-tab-options.php:44
+#: includes/admin/pages/settings/tabs/class-settings-tab-options.php:56
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-options.php:44
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-options.php:56
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-options.php:44
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-options.php:56
 msgid "Global Options"
 msgstr "Global Options"
 
-#: admin/pages/settings-page.php:142
+#: includes/admin/pages/settings/tabs/class-settings-tab-help.php:17
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-help.php:17
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-help.php:17
 msgid "Help"
 msgstr "Help"
 
-#: admin/pages/settings-page.php:320
+#: includes/admin/pages/settings/tabs/class-settings-tab-help.php:23
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-help.php:23
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-help.php:23
 msgid "Help Content"
 msgstr "Help Content"
 
-#: admin/pages/settings-page.php:333
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-help.php:40
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-help.php:40
 msgid "Help file not found."
 msgstr "Help file not found."
 
@@ -356,91 +452,157 @@ msgstr "https://github.com/grzelkowski/quick-ajax-post-loader/releases"
 msgid "https://grzelkowski.com"
 msgstr "https://grzelkowski.com"
 
-#: inc/class-helper.php:1045 inc/class-helper_new.php:715
+#: includes/form/class-form-field-factory.php:256
+#: build/github/includes/form/class-form-field-factory.php:256
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:256
 msgid "Ignore Sticky Posts"
 msgstr "Ignore Sticky Posts"
 
-#: inc/class-helper.php:979 inc/class-helper_new.php:653
+#: includes/form/class-form-field-factory.php:194
+#: build/github/includes/form/class-form-field-factory.php:194
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:194
 msgid "Inline Filter & Sorting"
 msgstr "Inline Filter & Sorting"
 
-#: admin/pages/settings-page.php:338
-msgid "Invalid help file format."
-msgstr "Invalid help file format."
-
-#: admin/pages/settings-page.php:262
+#: includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:169
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:169
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:169
 msgid "Layout Settings"
 msgstr "Layout Settings"
 
-#: admin/pages/shortcode-page.php:183
+#: includes/admin/cpt/creator/class-creator-form.php:163
+#: build/github/includes/admin/cpt/creator/class-creator-form.php:163
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-form.php:163
 msgid "layout Settings"
 msgstr "layout Settings"
 
-#: inc/class-helper.php:1171 inc/class-helper_new.php:829
+#: includes/form/class-form-field-factory.php:369
+#: build/github/includes/form/class-form-field-factory.php:369
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:369
 msgid "Load a different number of posts after the initial display."
 msgstr "Load a different number of posts after the initial display."
 
-#: inc/class-helper.php:1056 inc/class-helper_new.php:726
+#: includes/form/class-form-field-factory.php:266
+#: build/github/includes/form/class-form-field-factory.php:266
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:266
 msgid "Load Initial Posts via AJAX"
 msgstr "Load Initial Posts via AJAX"
 
-#: inc/class-ajax.php:736 inc/class-helper.php:1257
-#: inc/class-template-hooks.php:135
+#: includes/ajax/class-ajax.php:739
+#: includes/form/class-form-field-factory.php:454
+#: includes/template-renderers/class-template-hooks.php:135
+#: build/github/includes/ajax/class-ajax.php:739
+#: build/github/includes/form/class-form-field-factory.php:454
+#: build/github/includes/template-renderers/class-template-hooks.php:135
+#: build/wordpress-org/trunk/includes/ajax/class-ajax.php:739
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:454
+#: build/wordpress-org/trunk/includes/template-renderers/class-template-hooks.php:135
 msgid "Load More"
 msgstr "Load More"
 
-#: inc/class-helper.php:1168 inc/class-helper_new.php:826
+#: includes/form/class-form-field-factory.php:366
+#: build/github/includes/form/class-form-field-factory.php:366
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:366
 #| msgid "Custom Load More Post Quantity"
 msgid "Load More Post Quantity"
 msgstr "Load More Post Quantity"
 
-#: admin/admin-pages-config.php:97
+#: includes/admin/cpt/creator/class-creator-post-type.php:18
+#: build/github/includes/admin/cpt/creator/class-creator-post-type.php:18
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-post-type.php:18
 msgid "New Quick Ajax"
 msgstr "New Quick Ajax"
 
-#: inc/class-helper.php:402 inc/class-helper.php:1305 inc/class-helper.php:1306
-#: inc/class-helper_new.php:607
+#: includes/form/class-form-field-factory.php:148
+#: includes/form/class-form-field-factory.php:500
+#: includes/form/class-form-field-factory.php:501
+#: build/github/includes/form/class-form-field-factory.php:148
+#: build/github/includes/form/class-form-field-factory.php:500
+#: build/github/includes/form/class-form-field-factory.php:501
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:148
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:500
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:501
 msgid "Newest"
 msgstr "Newest"
 
-#: admin/admin-pages-config.php:100
+#: includes/admin/cpt/creator/class-creator-post-type.php:21
+#: build/github/includes/admin/cpt/creator/class-creator-post-type.php:21
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-post-type.php:21
 msgid "No Items found"
 msgstr "No Items found"
 
-#: admin/admin-pages-config.php:101
+#: includes/admin/cpt/creator/class-creator-post-type.php:22
+#: build/github/includes/admin/cpt/creator/class-creator-post-type.php:22
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-post-type.php:22
 msgid "No Items found in trash"
 msgstr "No Items found in trash"
 
-#: inc/class-helper.php:1281 inc/class-template-hooks.php:141
+#: includes/form/class-form-field-factory.php:476
+#: includes/template-renderers/class-template-hooks.php:141
+#: build/github/includes/form/class-form-field-factory.php:476
+#: build/github/includes/template-renderers/class-template-hooks.php:141
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:476
+#: build/wordpress-org/trunk/includes/template-renderers/class-template-hooks.php:141
 msgid "No more posts to load"
 msgstr "No more posts to load"
 
-#: inc/class-helper.php:1269 inc/class-template-hooks.php:138
+#: includes/form/class-form-field-factory.php:465
+#: includes/template-renderers/class-template-hooks.php:138
+#: build/github/includes/form/class-form-field-factory.php:465
+#: build/github/includes/template-renderers/class-template-hooks.php:138
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:465
+#: build/wordpress-org/trunk/includes/template-renderers/class-template-hooks.php:138
 msgid "No posts found"
 msgstr "No posts found"
 
-#: admin/admin-pages-config.php:436 inc/actions.php:154
+#: includes/ajax/actions.php:154
+#: includes/form/class-form-content-builder.php:290
+#: build/github/includes/ajax/actions.php:154
+#: build/github/includes/form/class-form-content-builder.php:290
+#: build/wordpress-org/trunk/includes/ajax/actions.php:154
+#: build/wordpress-org/trunk/includes/form/class-form-content-builder.php:290
 msgid "No taxonomy available"
 msgstr "No taxonomy available"
 
-#: admin/admin-pages-config.php:409 inc/actions.php:133
+#: includes/ajax/actions.php:133
+#: includes/form/class-form-content-builder.php:263
+#: build/github/includes/ajax/actions.php:133
+#: build/github/includes/form/class-form-content-builder.php:263
+#: build/wordpress-org/trunk/includes/ajax/actions.php:133
+#: build/wordpress-org/trunk/includes/form/class-form-content-builder.php:263
 msgid "No taxonomy found"
 msgstr "No taxonomy found"
 
-#: admin/admin-pages-config.php:443 inc/actions.php:193
+#: includes/ajax/actions.php:193
+#: includes/form/class-form-content-builder.php:297
+#: build/github/includes/ajax/actions.php:193
+#: build/github/includes/form/class-form-content-builder.php:297
+#: build/wordpress-org/trunk/includes/ajax/actions.php:193
+#: build/wordpress-org/trunk/includes/form/class-form-content-builder.php:297
 msgid "No terms found"
 msgstr "No terms found"
 
-#: inc/class-helper.php:1109 inc/class-helper_new.php:773
+#: includes/form/class-form-field-factory.php:313
+#: build/github/includes/form/class-form-field-factory.php:313
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:313
 msgid "Number of Columns"
 msgstr "Number of Columns"
 
-#: inc/class-helper.php:408 inc/class-helper.php:1317 inc/class-helper.php:1318
-#: inc/class-helper_new.php:613
+#: includes/form/class-form-field-factory.php:154
+#: includes/form/class-form-field-factory.php:511
+#: includes/form/class-form-field-factory.php:512
+#: build/github/includes/form/class-form-field-factory.php:154
+#: build/github/includes/form/class-form-field-factory.php:511
+#: build/github/includes/form/class-form-field-factory.php:512
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:154
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:511
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:512
 msgid "Oldest"
 msgstr "Oldest"
 
-#: inc/class-helper.php:1190
+#: includes/form/class-form-field-factory.php:386
+#: build/github/includes/form/class-form-field-factory.php:386
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:386
 msgid "Override Global Loader Icon"
 msgstr "Override Global Loader Icon"
 
@@ -448,24 +610,51 @@ msgstr "Override Global Loader Icon"
 msgid "Pawel Grzelkowski"
 msgstr "Pawel Grzelkowski"
 
-#: inc/class-helper.php:414 inc/class-helper.php:1329 inc/class-helper.php:1330
-#: inc/class-helper_new.php:619
+#: includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:94
+#: includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:99
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:94
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:99
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:94
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:99
+msgid "PHP Snippet Generator"
+msgstr "PHP Snippet Generator"
+
+#: includes/form/class-form-field-factory.php:160
+#: includes/form/class-form-field-factory.php:522
+#: includes/form/class-form-field-factory.php:523
+#: build/github/includes/form/class-form-field-factory.php:160
+#: build/github/includes/form/class-form-field-factory.php:522
+#: build/github/includes/form/class-form-field-factory.php:523
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:160
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:522
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:523
 msgid "Popular"
 msgstr "Popular"
 
-#: inc/class-helper.php:1179 inc/class-helper_new.php:836
+#: includes/form/class-form-field-factory.php:376
+#: build/github/includes/form/class-form-field-factory.php:376
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:376
 msgid "Posts Per Load (After Initial)"
 msgstr "Posts Per Load (After Initial)"
 
-#: inc/class-helper.php:904 inc/class-helper_new.php:533
+#: includes/form/class-form-field-factory.php:74
+#: build/github/includes/form/class-form-field-factory.php:74
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:74
 msgid "Posts Per Page"
 msgstr "Posts Per Page"
 
-#: admin/pages/settings-page.php:146 admin/pages/settings-page.php:364
+#: includes/admin/pages/settings/tabs/class-settings-tab-cleanup.php:20
+#: includes/admin/pages/settings/tabs/class-settings-tab-cleanup.php:28
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-cleanup.php:20
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-cleanup.php:28
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-cleanup.php:20
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-cleanup.php:28
 msgid "Purge Old Data"
 msgstr "Purge Old Data"
 
-#: admin/pages/settings-page.php:370
+#: includes/admin/pages/settings/tabs/class-settings-tab-cleanup.php:34
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-cleanup.php:34
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-cleanup.php:34
 msgid "Purge Unused Data"
 msgstr "Purge Unused Data"
 
@@ -473,60 +662,96 @@ msgstr "Purge Unused Data"
 msgid "Quick Ajax Post Loader"
 msgstr "Quick Ajax Post Loader"
 
-#: admin/pages/settings-page.php:9
+#: includes/admin/pages/settings/class-settings-page.php:10
+#: build/github/includes/admin/pages/settings/class-settings-page.php:10
+#: build/wordpress-org/trunk/includes/admin/pages/settings/class-settings-page.php:10
 msgid "Quick AJAX settings"
 msgstr "Quick AJAX settings"
 
-#: admin/admin-pages-config.php:93
+#: includes/admin/cpt/creator/class-creator-post-type.php:14
+#: build/github/includes/admin/cpt/creator/class-creator-post-type.php:14
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-post-type.php:14
 msgid "Quick Ajax Shortcode"
 msgstr "Quick Ajax Shortcode"
 
-#: admin/admin-pages-config.php:92
+#: includes/admin/cpt/creator/class-creator-post-type.php:13
+#: build/github/includes/admin/cpt/creator/class-creator-post-type.php:13
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-post-type.php:13
 msgid "Quick Ajax Shortcodes"
 msgstr "Quick Ajax Shortcodes"
 
-#: inc/class-helper.php:432 inc/class-helper.php:1365 inc/class-helper.php:1366
-#: inc/class-helper_new.php:576 inc/class-helper_new.php:637
+#: includes/form/class-form-field-factory.php:178
+#: includes/form/class-form-field-factory.php:555
+#: includes/form/class-form-field-factory.php:556
+#: build/github/includes/form/class-form-field-factory.php:178
+#: build/github/includes/form/class-form-field-factory.php:555
+#: build/github/includes/form/class-form-field-factory.php:556
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:178
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:555
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:556
 msgid "Random"
 msgstr "Random"
 
-#: inc/class-helper.php:940
+#: includes/form/class-form-field-factory.php:117
+#: build/github/includes/form/class-form-field-factory.php:117
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:117
 msgid "Random: Random order"
 msgstr "Random: Random order"
 
-#: inc/class-helper.php:1233 inc/class-template-hooks.php:132
+#: includes/form/class-form-field-factory.php:432
+#: includes/template-renderers/class-template-hooks.php:132
+#: build/github/includes/form/class-form-field-factory.php:432
+#: build/github/includes/template-renderers/class-template-hooks.php:132
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:432
+#: build/wordpress-org/trunk/includes/template-renderers/class-template-hooks.php:132
 msgid "Read More"
 msgstr "Read More"
 
-#: admin/pages/settings-page.php:185
+#: includes/admin/pages/settings/tabs/class-settings-tab-options.php:71
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-options.php:71
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-options.php:71
 msgid "Save Settings"
 msgstr "Save Settings"
 
-#: admin/admin-pages-config.php:99
+#: includes/admin/cpt/creator/class-creator-post-type.php:20
+#: build/github/includes/admin/cpt/creator/class-creator-post-type.php:20
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-post-type.php:20
 msgid "Search Quick Ajax"
 msgstr "Search Quick Ajax"
 
-#: inc/class-helper.php:1219
+#: includes/form/class-form-field-factory.php:419
+#: build/github/includes/form/class-form-field-factory.php:419
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:419
 msgid "Select Loader Icon"
 msgstr "Select Loader Icon"
 
-#: inc/class-helper.php:1130 inc/class-helper_new.php:793
+#: includes/form/class-form-field-factory.php:333
+#: build/github/includes/form/class-form-field-factory.php:333
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:333
 msgid "Select Post Item Template"
 msgstr "Select Post Item Template"
 
-#: inc/class-helper.php:851 inc/class-helper_new.php:479
+#: includes/form/class-form-field-factory.php:20
+#: build/github/includes/form/class-form-field-factory.php:20
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:20
 msgid "Select Post Type"
 msgstr "Select Post Type"
 
-#: inc/class-helper.php:883 inc/class-helper_new.php:512
+#: includes/form/class-form-field-factory.php:53
+#: build/github/includes/form/class-form-field-factory.php:53
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:53
 msgid "Select Specific Terms"
 msgstr "Select Specific Terms"
 
-#: inc/class-helper.php:872 inc/class-helper_new.php:501
+#: includes/form/class-form-field-factory.php:42
+#: build/github/includes/form/class-form-field-factory.php:42
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:42
 msgid "Select Taxonomy"
 msgstr "Select Taxonomy"
 
-#: inc/class-helper.php:897 inc/class-helper_new.php:526
+#: includes/form/class-form-field-factory.php:67
+#: build/github/includes/form/class-form-field-factory.php:67
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:67
 msgid ""
 "Select the specific terms to be used for filtering posts. If left empty, no "
 "results will be shown."
@@ -534,73 +759,101 @@ msgstr ""
 "Select the specific terms to be used for filtering posts. If left empty, no "
 "results will be shown."
 
-#: inc/class-helper.php:876
+#: includes/form/class-form-field-factory.php:46
+#: build/github/includes/form/class-form-field-factory.php:46
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:46
 msgid "Select the taxonomy to be used for filtering posts."
 msgstr "Select the taxonomy to be used for filtering posts."
 
-#: inc/class-helper.php:973 inc/class-helper_new.php:646
+#: includes/form/class-form-field-factory.php:187
+#: build/github/includes/form/class-form-field-factory.php:187
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:187
 msgid "Select which sorting options will be available to users."
 msgstr "Select which sorting options will be available to users."
 
-#: inc/class-helper.php:1338
+#: includes/form/class-form-field-factory.php:531
+#: build/github/includes/form/class-form-field-factory.php:531
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:531
 msgid "Set \"A → Z\" Label"
 msgstr "Set \"A → Z\" Label"
 
-#: inc/class-helper.php:1278
+#: includes/form/class-form-field-factory.php:474
+#: build/github/includes/form/class-form-field-factory.php:474
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:474
 msgid "Set \"End of Posts\" Message"
 msgstr "Set \"End of Posts\" Message"
 
-#: inc/class-helper.php:1254
+#: includes/form/class-form-field-factory.php:452
+#: build/github/includes/form/class-form-field-factory.php:452
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:452
 msgid "Set \"Load More\" Label"
 msgstr "Set \"Load More\" Label"
 
-#: inc/class-helper.php:1302
+#: includes/form/class-form-field-factory.php:498
+#: build/github/includes/form/class-form-field-factory.php:498
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:498
 msgid "Set \"Newest\" Label"
 msgstr "Set \"Newest\" Label"
 
-#: inc/class-helper.php:1266
+#: includes/form/class-form-field-factory.php:463
+#: build/github/includes/form/class-form-field-factory.php:463
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:463
 msgid "Set \"No Posts Found\" Message"
 msgstr "Set \"No Posts Found\" Message"
 
-#: inc/class-helper.php:1314
+#: includes/form/class-form-field-factory.php:509
+#: build/github/includes/form/class-form-field-factory.php:509
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:509
 msgid "Set \"Oldest\" Label"
 msgstr "Set \"Oldest\" Label"
 
-#: inc/class-helper.php:1326
+#: includes/form/class-form-field-factory.php:520
+#: build/github/includes/form/class-form-field-factory.php:520
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:520
 msgid "Set \"Popular\" Label"
 msgstr "Set \"Popular\" Label"
 
-#: inc/class-helper.php:1362
+#: includes/form/class-form-field-factory.php:553
+#: build/github/includes/form/class-form-field-factory.php:553
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:553
 msgid "Set \"Random\" Label"
 msgstr "Set \"Random\" Label"
 
-#: inc/class-helper.php:1230
+#: includes/form/class-form-field-factory.php:430
+#: build/github/includes/form/class-form-field-factory.php:430
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:430
 msgid "Set \"Read More\" Label"
 msgstr "Set \"Read More\" Label"
 
-#: inc/class-helper.php:1242
+#: includes/form/class-form-field-factory.php:441
+#: build/github/includes/form/class-form-field-factory.php:441
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:441
 msgid "Set \"Show All\" Label"
 msgstr "Set \"Show All\" Label"
 
-#: inc/class-helper.php:1350
+#: includes/form/class-form-field-factory.php:542
+#: build/github/includes/form/class-form-field-factory.php:542
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:542
 msgid "Set \"Z → A\" Label"
 msgstr "Set \"Z → A\" Label"
 
-#: inc/class-helper.php:1193
+#: includes/form/class-form-field-factory.php:389
+#: build/github/includes/form/class-form-field-factory.php:389
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:389
 msgid "Set a different loader icon than the one specified in global options."
 msgstr "Set a different loader icon than the one specified in global options."
 
-#: inc/class-helper.php:1290
-msgid "Set Date Format"
-msgstr "Set Date Format"
-
-#: inc/class-helper.php:1182 inc/class-helper_new.php:839
+#: includes/form/class-form-field-factory.php:379
+#: build/github/includes/form/class-form-field-factory.php:379
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:379
 msgid ""
 "Set how many posts to load each time the \"Load More\" button is clicked."
 msgstr ""
 "Set how many posts to load each time the \"Load More\" button is clicked."
 
-#: inc/class-helper.php:1343
+#: includes/form/class-form-field-factory.php:535
+#: build/github/includes/form/class-form-field-factory.php:535
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:535
 msgid ""
 "Set the label for sorting posts alphabetically (A to Z) based on the post "
 "title. Examples: \"Alphabetical\", \"A → Z\", \"Sort by Name\"."
@@ -608,7 +861,9 @@ msgstr ""
 "Set the label for sorting posts alphabetically (A to Z) based on the post "
 "title. Examples: \"Alphabetical\", \"A → Z\", \"Sort by Name\"."
 
-#: inc/class-helper.php:1355
+#: includes/form/class-form-field-factory.php:546
+#: build/github/includes/form/class-form-field-factory.php:546
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:546
 msgid ""
 "Set the label for sorting posts alphabetically (Z to A) based on the post "
 "title. Examples: \"Reverse Alphabetical\", \"Z → A\", \"Sort by Name "
@@ -618,7 +873,9 @@ msgstr ""
 "title. Examples: \"Reverse Alphabetical\", \"Z → A\", \"Sort by Name "
 "Descending\"."
 
-#: inc/class-helper.php:1331
+#: includes/form/class-form-field-factory.php:524
+#: build/github/includes/form/class-form-field-factory.php:524
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:524
 msgid ""
 "Set the label for sorting posts by the highest number of comments. Examples: "
 "\"Popular\", \"Trending\", \"Most Discussed\"."
@@ -626,7 +883,9 @@ msgstr ""
 "Set the label for sorting posts by the highest number of comments. Examples: "
 "\"Popular\", \"Trending\", \"Most Discussed\"."
 
-#: inc/class-helper.php:1307
+#: includes/form/class-form-field-factory.php:502
+#: build/github/includes/form/class-form-field-factory.php:502
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:502
 msgid ""
 "Set the label for sorting posts from newest to oldest (based on publication "
 "date). Examples: \"Newest\", \"Latest\", \"Recent\"."
@@ -634,7 +893,9 @@ msgstr ""
 "Set the label for sorting posts from newest to oldest (based on publication "
 "date). Examples: \"Newest\", \"Latest\", \"Recent\"."
 
-#: inc/class-helper.php:1319
+#: includes/form/class-form-field-factory.php:513
+#: build/github/includes/form/class-form-field-factory.php:513
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:513
 msgid ""
 "Set the label for sorting posts from oldest to newest (based on publication "
 "date). Examples: \"Oldest\", \"First\", \"Earliest\"."
@@ -642,7 +903,9 @@ msgstr ""
 "Set the label for sorting posts from oldest to newest (based on publication "
 "date). Examples: \"Oldest\", \"First\", \"Earliest\"."
 
-#: inc/class-helper.php:1367
+#: includes/form/class-form-field-factory.php:557
+#: build/github/includes/form/class-form-field-factory.php:557
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:557
 msgid ""
 "Set the label for sorting posts in a random order. Examples: \"Shuffle\", "
 "\"Random\", \"Surprise Me\"."
@@ -650,55 +913,90 @@ msgstr ""
 "Set the label for sorting posts in a random order. Examples: \"Shuffle\", "
 "\"Random\", \"Surprise Me\"."
 
-#: admin/admin-pages-config.php:36 admin/admin-pages-config.php:37
+#: includes/admin/class-admin-menu.php:37
+#: includes/admin/class-admin-menu.php:38
+#: build/github/includes/admin/class-admin-menu.php:37
+#: build/github/includes/admin/class-admin-menu.php:38
+#: build/wordpress-org/trunk/includes/admin/class-admin-menu.php:37
+#: build/wordpress-org/trunk/includes/admin/class-admin-menu.php:38
 msgid "Settings & Features"
 msgstr "Settings & Features"
 
-#: admin/admin-pages-config.php:143
+#: includes/admin/cpt/creator/class-creator-columns.php:24
+#: build/github/includes/admin/cpt/creator/class-creator-columns.php:24
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-columns.php:24
 msgid "Shortcode"
 msgstr "Shortcode"
 
-#: admin/admin-pages-config.php:103
+#: includes/admin/cpt/creator/class-creator-post-type.php:23
+#: build/github/includes/admin/cpt/creator/class-creator-post-type.php:23
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-post-type.php:23
 msgid "Shortcodes"
 msgstr "Shortcodes"
 
-#: inc/class-ajax.php:311 inc/class-helper.php:1245
+#: includes/ajax/class-ajax.php:303
+#: includes/form/class-form-field-factory.php:443
+#: build/github/includes/ajax/class-ajax.php:303
+#: build/github/includes/form/class-form-field-factory.php:443
+#: build/wordpress-org/trunk/includes/ajax/class-ajax.php:303
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:443
 msgid "Show All"
 msgstr "Show All"
 
-#: inc/class-helper.php:1078 inc/class-helper_new.php:746
+#: includes/form/class-form-field-factory.php:286
+#: build/github/includes/form/class-form-field-factory.php:286
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:286
 msgid "Show End Message"
 msgstr "Show End Message"
 
-#: inc/class-helper.php:958 inc/class-helper_new.php:593
+#: includes/form/class-form-field-factory.php:134
+#: build/github/includes/form/class-form-field-factory.php:134
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:134
 msgid "Show Sorting Button"
 msgstr "Show Sorting Button"
 
-#: inc/class-helper.php:862 inc/class-helper_new.php:490
+#: includes/form/class-form-field-factory.php:31
+#: build/github/includes/form/class-form-field-factory.php:31
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:31
 msgid "Show Taxonomy Filter"
 msgstr "Show Taxonomy Filter"
 
-#: inc/class-ajax.php:427
+#: includes/ajax/class-ajax.php:420
+#: build/github/includes/ajax/class-ajax.php:420
+#: build/wordpress-org/trunk/includes/ajax/class-ajax.php:420
 msgid "Sort by"
 msgstr "Sort by"
 
-#: admin/pages/settings-page.php:177
+#: includes/admin/pages/settings/tabs/class-settings-tab-options.php:63
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-options.php:63
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-options.php:63
 msgid "Sorting Option Labels"
 msgstr "Sorting Option Labels"
 
-#: admin/pages/settings-page.php:239 admin/pages/shortcode-page.php:152
+#: includes/admin/cpt/creator/class-creator-form.php:132
+#: includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:146
+#: build/github/includes/admin/cpt/creator/class-creator-form.php:132
+#: build/github/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:146
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-form.php:132
+#: build/wordpress-org/trunk/includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:146
 msgid "Sorting Settings"
 msgstr "Sorting Settings"
 
-#: inc/class-helper.php:929 inc/class-helper_new.php:557
+#: includes/form/class-form-field-factory.php:98
+#: build/github/includes/form/class-form-field-factory.php:98
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:98
 msgid "Specify the order of posts."
 msgstr "Specify the order of posts."
 
-#: inc/class-helper.php:1113 inc/class-helper_new.php:777
+#: includes/form/class-form-field-factory.php:317
+#: build/github/includes/form/class-form-field-factory.php:317
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:317
 msgid "Specify the quantity of columns."
 msgstr "Specify the quantity of columns."
 
-#: inc/class-helper.php:1049 inc/class-helper_new.php:718
+#: includes/form/class-form-field-factory.php:259
+#: build/github/includes/form/class-form-field-factory.php:259
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:259
 msgid ""
 "Specify to ignore sticky posts, treating them as regular posts in the query."
 msgstr ""
@@ -712,24 +1010,56 @@ msgstr ""
 "Supercharge post loading with Quick Ajax Post Loader. Enhance user "
 "experience and optimize site performance using AJAX technology."
 
-#: inc/class-helper_new.php:568
-msgid "Title"
-msgstr "Title"
+#. %1$s is the required PHP version, %2$s is the current PHP version.
+#: quick-ajax-post-loader.php:27 build/github/quick-ajax-post-loader.php:27
+#: build/wordpress-org/trunk/quick-ajax-post-loader.php:27
+#, php-format
+msgid "This plugin requires PHP %1$s or higher. Your server is running %2$s."
+msgstr "This plugin requires PHP %1$s or higher. Your server is running %2$s."
 
-#: inc/class-helper.php:938
+#. %1$s is the minimum supported WordPress version, %2$s is the current WordPress version.
+#: quick-ajax-post-loader.php:41 build/github/quick-ajax-post-loader.php:41
+#: build/wordpress-org/trunk/quick-ajax-post-loader.php:41
+#, php-format
+msgid ""
+"This plugin was tested only with WordPress %1$s or higher. Your site is "
+"running %2$s. It may not work correctly."
+msgstr ""
+"This plugin was tested only with WordPress %1$s or higher. Your site is "
+"running %2$s. It may not work correctly."
+
+#: includes/form/class-form-field-factory.php:109
+#: build/github/includes/form/class-form-field-factory.php:109
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:109
 msgid "Title: Sort by post title"
 msgstr "Title: Sort by post title"
 
-#: admin/admin-pages-config.php:98
+#: includes/admin/cpt/creator/class-creator-post-type.php:19
+#: build/github/includes/admin/cpt/creator/class-creator-post-type.php:19
+#: build/wordpress-org/trunk/includes/admin/cpt/creator/class-creator-post-type.php:19
 msgid "View Quick Ajax"
 msgstr "View Quick Ajax"
 
-#: admin/admin-pages-config.php:46 inc/class-updater.php:308
-#: inc/class-updater.php:337
+#: includes/admin/class-admin-menu.php:47
+#: includes/maintenance/class-updater.php:328
+#: includes/maintenance/class-updater.php:357
+#: build/github/includes/admin/class-admin-menu.php:47
+#: build/github/includes/maintenance/class-updater.php:328
+#: build/github/includes/maintenance/class-updater.php:357
+#: build/wordpress-org/trunk/includes/admin/class-admin-menu.php:47
+#: build/wordpress-org/trunk/includes/maintenance/class-updater.php:328
+#: build/wordpress-org/trunk/includes/maintenance/class-updater.php:357
 msgid "You do not have sufficient permissions to access this page."
 msgstr "You do not have sufficient permissions to access this page."
 
-#: inc/class-helper.php:426 inc/class-helper.php:1353 inc/class-helper.php:1354
-#: inc/class-helper_new.php:631
+#: includes/form/class-form-field-factory.php:172
+#: includes/form/class-form-field-factory.php:544
+#: includes/form/class-form-field-factory.php:545
+#: build/github/includes/form/class-form-field-factory.php:172
+#: build/github/includes/form/class-form-field-factory.php:544
+#: build/github/includes/form/class-form-field-factory.php:545
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:172
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:544
+#: build/wordpress-org/trunk/includes/form/class-form-field-factory.php:545
 msgid "Z → A"
 msgstr "Z → A"

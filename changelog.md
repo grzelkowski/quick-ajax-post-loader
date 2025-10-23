@@ -1,5 +1,13 @@
 ## Changelog
 
+### 1.8.4 - 2025-10-23
+- Fixed issue with multiple initial post loaders not triggering correctly on the same page.
+- Improved label display for sorting options in certain configurations.
+- Improved handling of active taxonomy filters on first page load for better user experience.
+- Optimized AJAX handling and button rendering logic for better frontend performance.
+- Updated translations for improved localization support.
+- Minor code cleanups and stability improvements across core classes.
+
 ### 1.8.3 - 2025-09-29
 - Added sorting support for the Shortcode column in the shortcode list.
 - Improved shortcode editor form for more stable field initialization and saving.

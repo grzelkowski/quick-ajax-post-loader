@@ -130,8 +130,8 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
         $shortcode_page .= '</div>';
         $shortcode_page .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
         $shortcode_page .= '<h4>'.esc_html__('Sorting Settings', 'quick-ajax-post-loader').'</h4>';
-        $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDER);
         $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDERBY);
+        $shortcode_page .= $this->add_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDER);
         $field_options = $this->field_options([
             'is_trigger' => true,
         ]);  

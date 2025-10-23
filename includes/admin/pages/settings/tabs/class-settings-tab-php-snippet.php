@@ -144,8 +144,8 @@ class QAPL_Settings_Tab_PHP_Snippet{
             //post settings
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
             $form_tab_function_generator .= '<h4>'.__('Sorting Settings', 'quick-ajax-post-loader').'</h4>';
-            $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDER);
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDERBY);
+            $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDER);
             $field_options = $this->settings_page->field_options_wrapper([
                 'is_trigger' => true,
             ]);  

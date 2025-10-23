@@ -49,9 +49,7 @@ final class QAPL_Quick_Ajax_File_Manager implements QAPL_Quick_Ajax_File_Manager
             return $plugin_template_path;
         }
         // Template was not found
-        if (class_exists('QAPL_Quick_Ajax_Logger')) {
-            QAPL_Quick_Ajax_Logger::log('Template file not found: '.$file, 'warning');
-        }        
+        qapl_log('Template file not found: '.$file, 'warning');
         return false;
     }    
     //template file path
@@ -62,8 +60,8 @@ final class QAPL_Quick_Ajax_File_Manager implements QAPL_Quick_Ajax_File_Manager
         // Check if the template file exists. If not, use the default file.
         if (!file_exists($file_path)) {
             $file_path = $this->get_templates_dir_path($base_path . $default_name . '.php');
-            if (!file_exists($file_path) && class_exists('QAPL_Quick_Ajax_Logger')) {
-                QAPL_Quick_Ajax_Logger::log('Template file: "'.$template_name .'" not found. default name:'.$default_name.', path:'. $base_path, 'error');
+            if (!file_exists($file_path)) {
+                qapl_log('Template file: "'.$template_name .'" not found. default name:'.$default_name.', path:'. $base_path, 'error');
             }
         }    
         return $file_path;

@@ -31,10 +31,12 @@
         },
         qapl_quick_ajax_initial_load: function () {
             const self = this;
-            const initialLoader = $(".qapl-initial-loader");
-            if (initialLoader.length > 0) {
-                //auto load ajax posts on page load
-                self.qapl_quick_ajax_handle_ajax(initialLoader);
+            const initialLoaders = $(".qapl-initial-loader");
+            if (initialLoaders.length > 0) {
+                initialLoaders.each(function () {
+                    const loader = $(this);
+                    self.qapl_quick_ajax_handle_ajax(loader);
+                });
             }
         },
         qapl_quick_ajax_infinite_scroll: function () {
@@ -149,7 +151,10 @@
         },
         qapl_quick_ajax_taxonomy_filter_show_posts: function (container, button, response, containerId) {
             let filterContainer = $("#quick-ajax-filter-" + containerId);
-            filterContainer.find(`[data-button="${qapl_quick_ajax_data.constants.filter_data_button}"]`).removeClass("active");
+            //remove active classes if real filter button, not the initial loader
+            if (!button.hasClass("qapl-initial-loader")) {
+                filterContainer.find(`[data-button="${qapl_quick_ajax_data.constants.filter_data_button}"]`).removeClass("active");
+            }
             button.addClass("active");
             container.parent().find(".quick-ajax-load-more-container").remove();
             container.stop(true, true).fadeOut(100, function () {

@@ -4,7 +4,7 @@
 * Plugin URI: https://github.com/grzelkowski/quick-ajax-post-loader/releases
 * Text Domain: quick-ajax-post-loader
 * Domain Path: /languages
-* Version: 1.8.3
+* Version: 1.8.4
 * Description: Supercharge post loading with Quick Ajax Post Loader. Enhance user experience and optimize site performance using AJAX technology.
 * Author: Pawel Grzelkowski
 * Author URI: https://grzelkowski.com
@@ -21,7 +21,6 @@ require_once plugin_dir_path(__FILE__) . 'includes/resources/class-constants.php
 
 if (version_compare(PHP_VERSION, QAPL_Quick_Ajax_Constants::PLUGIN_MINIMUM_PHP_VERSION, '<')) {
     add_action( 'admin_notices', static function () {
-
         $message = sprintf(
             // translators: %1$s is the required PHP version, %2$s is the current PHP version.
             __('This plugin requires PHP %1$s or higher. Your server is running %2$s.', 'quick-ajax-post-loader'),
@@ -49,19 +48,7 @@ if (version_compare($wp_version, QAPL_Quick_Ajax_Constants::PLUGIN_MINIMUM_WP_VE
 register_activation_hook(plugin_basename(__FILE__), static function () {
     // load activator only on activation
     $activator_path = plugin_dir_path(__FILE__) . 'includes/maintenance/class-activator.php';
-    if (!file_exists($activator_path)) {
-        if (defined('WP_DEBUG') && WP_DEBUG === true && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG === true) {
-            error_log('Quick Ajax Post Loader: Missing class-activator.php during activation.');
-        }
-        return;
-    }
     require_once $activator_path;
-    if (!class_exists('QAPL_Quick_Ajax_Activator')) {
-        if (defined('WP_DEBUG') && WP_DEBUG === true && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG === true) {
-            error_log('Quick Ajax Post Loader: QAPL_Quick_Ajax_Activator class not found after including activator.');
-        }
-        return;
-    }
     QAPL_Quick_Ajax_Activator::activate();
 });
 

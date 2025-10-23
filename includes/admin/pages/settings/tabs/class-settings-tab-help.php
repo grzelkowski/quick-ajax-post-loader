@@ -37,14 +37,14 @@ class QAPL_Settings_Tab_Help{
         $help_json_file_path = $base_help_dir . $help_json_file_name;
 
         if (!file_exists($help_json_file_path)) {
-            return $content . '<p>' . esc_html__('Help file not found.', 'quick-ajax-post-loader') . '</p>';
+            return $content . '<p>' . esc_html('Help file not found.') . '</p>';
         }
 
         $json_data = file_get_contents($help_json_file_path);
         $help_data = json_decode($json_data, true);
 
         if (!is_array($help_data) || empty($help_data)) {
-            return $content . '<p>' . esc_html__('Invalid help file format or empty content.', 'quick-ajax-post-loader') . '</p>';
+            return $content . '<p>' . esc_html('Invalid help file format or empty content.') . '</p>';
         }
 
         foreach ($help_data as $section) {

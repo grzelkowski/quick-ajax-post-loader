@@ -162,13 +162,13 @@ class QAPL_Quick_Ajax_Form_Field_Factory {
             [
                 'value' => 'title-asc',
                 'label' => isset($global_sort_labels['sort_option_title_desc_label'])
-                    ? $global_sort_labels['sort_option_title_desc_label']
+                    ? $global_sort_labels['sort_option_title_asc_label']
                     : __('A → Z', 'quick-ajax-post-loader')
             ],
             [
                 'value' => 'title-desc',
                 'label' => isset($global_sort_labels['sort_option_title_asc_label'])
-                    ? $global_sort_labels['sort_option_title_asc_label']
+                    ? $global_sort_labels['sort_option_title_desc_label']
                     : __('Z → A', 'quick-ajax-post-loader')
             ],
             [

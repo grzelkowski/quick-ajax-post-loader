@@ -25,10 +25,11 @@ final class QAPL_Quick_Ajax_Initializer {
         self::require_resources();
         self::require_enqueue();
         self::require_plugin_starter();
-        
+        self::load_dev_tools();
+
         //check if classes exists
-        if (!class_exists('QAPL_Quick_Ajax_Utilities') && class_exists('QAPL_Quick_Ajax_Logger')) {
-            QAPL_Quick_Ajax_Logger::log('Missing class: QAPL_Quick_Ajax_Utilities', 'warning');
+        if (!class_exists('QAPL_Quick_Ajax_Utilities')) {
+            qapl_log('Missing class: QAPL_Quick_Ajax_Utilities', 'warning');
         }
         if (class_exists('QAPL_Quick_Ajax_Utilities')) {
             $verify = QAPL_Quick_Ajax_Utilities::verify_classes_exist(self::REQUIRED_CLASSES, 'Initializer');
@@ -47,7 +48,7 @@ final class QAPL_Quick_Ajax_Initializer {
     }
     private static function require_resources():void{
         $base = self::$includes_dir_path . 'resources/';
-        require_once $base . 'class-logger.php';
+        require_once $base . 'functions-helpers.php';
         require_once $base . 'interface-file-manager.php';
         require_once $base . 'class-file-manager.php';
         require_once $base . 'interface-resource-manager.php';
@@ -62,5 +63,11 @@ final class QAPL_Quick_Ajax_Initializer {
     private static function require_plugin_starter():void{
         $base = self::$includes_dir_path;
         require_once $base . 'class-plugin-starter.php';
+    }
+    private static function load_dev_tools(): void {
+        $dev_tools_path = self::$plugin_dir_path . 'dev-tools/dev-class-logger.php';
+        if (file_exists($dev_tools_path)) {
+            require_once $dev_tools_path;
+        }
     }
 }
