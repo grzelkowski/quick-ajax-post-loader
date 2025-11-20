@@ -73,13 +73,13 @@ abstract class QAPL_Admin_Options_Page_Form extends QAPL_Form_Content_Builder {
     public function render_quick_ajax_page(){ 
         echo '<div class="wrap">';
         echo '<div class="quick-ajax-heading">';
-        echo wp_kses($this->render_quick_ajax_page_heading(), $this->wp_kses_allowed_tags());
+        echo wp_kses($this->render_quick_ajax_page_heading(), QAPL_Form_Helper::wp_kses_allowed_tags());
         echo '</div>';
         echo '<div class="quick-ajax-form-wrap ' . esc_attr($this->get_quick_ajax_form_class()) . '" id="form-' . esc_attr($this->option_group) . '">';
         //echo '<form method="post" action="options.php">';
         //settings_fields($this->option_group); // Output security fields for the registered settings
-        echo wp_kses($this->render_quick_ajax_tabs_navigation(), $this->wp_kses_allowed_tags());
-        echo wp_kses($this->render_quick_ajax_tabs_content(), $this->wp_kses_allowed_tags());
+        echo wp_kses($this->render_quick_ajax_tabs_navigation(), QAPL_Form_Helper::wp_kses_allowed_tags());
+        echo wp_kses($this->render_quick_ajax_tabs_content(), QAPL_Form_Helper::wp_kses_allowed_tags());
         //echo '</form>';
         echo '</div>';
     }

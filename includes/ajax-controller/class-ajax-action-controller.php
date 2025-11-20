@@ -24,9 +24,15 @@ final class QAPL_Quick_Ajax_Action_Controller {
         if (empty($_POST['args'])) {
             wp_send_json_error(['message' => 'Quick Ajax Post Loader: Invalid request, Missing arguments.']);
         } else {
-
-            $helper = new QAPL_Ajax_Helper();
-
+            $global_options     = get_option(QAPL_Quick_Ajax_Constants::GLOBAL_OPTIONS_NAME, []);
+            $helper             = new QAPL_Ajax_Helper();
+            $file_manager       = new QAPL_Quick_Ajax_File_Manager();
+            $ajax_builder       = new QAPL_Ajax_Query_Builder();
+            $layout_builder     = new QAPL_Ajax_Layout_Builder($file_manager, $helper);
+            $ui_renderer        = new QAPL_Ajax_UI_Renderer($file_manager, $global_options, $helper);
+            $load_more_renderer = new QAPL_Ajax_Load_More_Renderer($file_manager,$ui_renderer, $helper);
+            $end_posts_renderer = new QAPL_Ajax_End_Message_Renderer($file_manager);
+            
             // Sanitize 'args'
             $post_args = [];
             if (isset($_POST['args'])) {
@@ -41,34 +47,16 @@ final class QAPL_Quick_Ajax_Action_Controller {
                 $post_attributes = $helper->sanitize_json_to_array(wp_unslash($_POST['attributes'])); // Sanitize JSON to array
             }
 
-            // Sanitize 'button_type'
-            $button_type = '';
-            if (isset($_POST['button_type'])) {
-                $button_type = sanitize_text_field(wp_unslash($_POST['button_type'])); // Sanitize string input
-            }
-
-            if ($button_type === 'quick-ajax-load-more-button' && isset($post_attributes['load_more_posts']) && $post_attributes['load_more_posts'] > 0) {
-                //investigate, load more works good without this parameter
-            //   $args['posts_per_page'] = intval($attributes['load_more_posts']);
-            }
-            
-            $ajax_builder = new QAPL_Ajax_Query_Builder();
-            $action_args = $post_args;
-            $query_args = $ajax_builder->wp_query_args($action_args, $post_attributes);
+            $source_args = $post_args;
+            $query_args = $ajax_builder->wp_query_args($source_args, $post_attributes);
             if (!$query_args) {
                 wp_send_json_error(['message' => 'Quick Ajax Post Loader: Invalid query arguments.']);
             }
 
-            // get global components
-            $file_manager = new QAPL_Quick_Ajax_File_Manager();
-            $ui_renderer = new QAPL_Ajax_UI_Renderer($file_manager, get_option(QAPL_Quick_Ajax_Constants::GLOBAL_OPTIONS_NAME, []));
-            $layout_renderer = new QAPL_Ajax_Layout_Renderer($file_manager, $ui_renderer);
-
             // prepare layout data
-            $layout_data = $layout_renderer->layout_customization($post_attributes, get_option(QAPL_Quick_Ajax_Constants::GLOBAL_OPTIONS_NAME, []));
+            $layout_data = $layout_builder->layout_customization($post_attributes, $global_options);
             $layout = $layout_data['layout'];
             $attrs = $layout_data['attributes'];
-            $ajax_initial_load = $layout_data['ajax_initial_load'];
 
             $quick_ajax_id = $ajax_builder->get_quick_ajax_id();
 
@@ -113,9 +101,11 @@ final class QAPL_Quick_Ajax_Action_Controller {
                 'post_count'      => intval($query->post_count),
                 'infinite_scroll' => intval($attrs[QAPL_Quick_Ajax_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL] ?? 0),
             ];
-            $load_more = $layout_renderer->load_more_button($query_args, $attrs, $action_args, $query_data, $quick_ajax_id);
-            $show_end_message = $layout_renderer->render_end_of_posts_message($load_more, intval($query->max_num_pages), $quick_ajax_id, intval($attrs[QAPL_Quick_Ajax_Constants::ATTRIBUTE_SHOW_END_MESSAGE] ?? 0));
+            $load_more_data = $load_more_renderer->build_load_more_button($attrs,$source_args,$query_data,$quick_ajax_id);            
+            $load_more = $load_more_data ? $load_more_renderer->render_load_more_button($load_more_data) : false;
 
+            $show_end_message = $end_posts_renderer->build_end_of_posts_message($load_more, intval($query->max_num_pages), $quick_ajax_id, intval($attrs[QAPL_Quick_Ajax_Constants::ATTRIBUTE_SHOW_END_MESSAGE] ?? 0));
+            
             //$output = $ajax_class->replace_placeholders($output);
             wp_send_json_success([
                 'output' => $output,

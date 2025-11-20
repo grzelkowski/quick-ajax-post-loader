@@ -9,18 +9,18 @@ final class QAPL_Ajax_Query_Builder{
     public function get_quick_ajax_id() {
         return $this->quick_ajax_id;
     }
-    public function wp_query_args($args, $attributes = false){
+    public function wp_query_args($source_args, $attributes = false){
         // sanitize and normalize input
-        $args = $this->normalize_args($args);
+        $source_args = $this->normalize_args($source_args);
 
         $this->generate_block_id($attributes);
 
         //normalize input args (sanitize selected_terms, post__not_in, etc.)
-        //$this->input_args = $this->normalize_args($args);
+        //$this->input_args = $this->normalize_args($source_args);
         //$this->action_args = $this->input_args;
         
         // generate query args (post_type, tax_query, etc.)
-        $query_args = $this->initialize_query_args($args);
+        $query_args = $this->initialize_query_args($source_args);
 
         $query_args['post_status'] = QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POST_STATUS_DEFAULT;
 
@@ -35,8 +35,8 @@ final class QAPL_Ajax_Query_Builder{
         */
 
         /* not in use yet
-        if(isset($args['tax_query']) && !empty($args['tax_query'])){
-            $this->args['tax_query'] = $args['tax_query'];
+        if(isset($source_args['tax_query']) && !empty($source_args['tax_query'])){
+            $this->args['tax_query'] = $source_args['tax_query'];
         }
         */
         // remove empty values
@@ -66,46 +66,46 @@ final class QAPL_Ajax_Query_Builder{
         $int_array = array_values(array_unique($value));        
         return $int_array;
     }
-    private function normalize_args($args) {
+    private function normalize_args($source_args) {
         // convert comma-separated string to array of integers
-        if (isset($args['post__not_in'])) {
-            $args['post__not_in'] = $this->sanitize_to_int_array($args['post__not_in']);
+        if (isset($source_args['post__not_in'])) {
+            $source_args['post__not_in'] = $this->sanitize_to_int_array($source_args['post__not_in']);
         }        
-        if (isset($args['selected_terms'])) {
-            $args['selected_terms'] = $this->sanitize_to_int_array($args['selected_terms']);
+        if (isset($source_args['selected_terms'])) {
+            $source_args['selected_terms'] = $this->sanitize_to_int_array($source_args['selected_terms']);
         } 
-        return $args;
+        return $source_args;
     }
-    private function initialize_query_args($args) {
+    private function initialize_query_args($source_args) {
         // Set default query arguments
-        $query_args = $this->query_args_base_query_args($args);
-        $query_args = $this->query_args_add_tax_query($query_args, $args);            
-        $query_args = $this->query_args_apply_offset_or_paged($query_args, $args);
+        $query_args = $this->query_args_base_query_args($source_args);
+        $query_args = $this->query_args_add_tax_query($query_args, $source_args);            
+        $query_args = $this->query_args_apply_offset_or_paged($query_args, $source_args);
         return $query_args;    
     }
-    private function query_args_base_query_args($args) {
+    private function query_args_base_query_args($source_args) {
         return [
-            'post_type' => isset($args['post_type']) ? sanitize_text_field($args['post_type']) : null,
-            'posts_per_page' => isset($args['posts_per_page']) ? intval($args['posts_per_page']) : QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE_DEFAULT,
-            'orderby' => isset($args['orderby']) ? sanitize_text_field($args['orderby']) : QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDERBY_DEFAULT,
-            'order' => isset($args['order']) ? sanitize_text_field($args['order']) : QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDER_DEFAULT,
-            'post__not_in' => $args['post__not_in'] ?? [],
-            'ignore_sticky_posts' => isset($args['ignore_sticky_posts']) ? intval($args['ignore_sticky_posts']) : QAPL_Quick_Ajax_Constants::QUERY_SETTING_IGNORE_STICKY_POSTS_DEFAULT,
-            'paged' => isset($args['paged']) ? intval($args['paged']) : 1,
+            'post_type' => isset($source_args['post_type']) ? sanitize_text_field($source_args['post_type']) : null,
+            'posts_per_page' => isset($source_args['posts_per_page']) ? intval($source_args['posts_per_page']) : QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE_DEFAULT,
+            'orderby' => isset($source_args['orderby']) ? sanitize_text_field($source_args['orderby']) : QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDERBY_DEFAULT,
+            'order' => isset($source_args['order']) ? sanitize_text_field($source_args['order']) : QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDER_DEFAULT,
+            'post__not_in' => $source_args['post__not_in'] ?? [],
+            'ignore_sticky_posts' => isset($source_args['ignore_sticky_posts']) ? intval($source_args['ignore_sticky_posts']) : QAPL_Quick_Ajax_Constants::QUERY_SETTING_IGNORE_STICKY_POSTS_DEFAULT,
+            'paged' => isset($source_args['paged']) ? intval($source_args['paged']) : 1,
         ];
     }  
-    private function query_args_apply_offset_or_paged($query_args, $args) {
+    private function query_args_apply_offset_or_paged($query_args, $source_args) {
         // Check if 'offset' is provided and use it instead of 'paged'
-        if (isset($args['offset']) && !is_null($args['offset'])) {
+        if (isset($source_args['offset']) && !is_null($source_args['offset'])) {
             // Set the offset value and remove 'paged' from the query
-            $query_args['offset'] = intval($args['offset']);
+            $query_args['offset'] = intval($source_args['offset']);
             unset($query_args['paged']);
         }
         return $query_args;
     }
-    private function query_args_add_tax_query($query_args, $args) {
-        $taxonomy = isset($args['selected_taxonomy']) ? sanitize_text_field($args['selected_taxonomy']) : '';
-        $terms = isset($args['selected_terms']) ? $args['selected_terms'] : [];
+    private function query_args_add_tax_query($query_args, $source_args) {
+        $taxonomy = isset($source_args['selected_taxonomy']) ? sanitize_text_field($source_args['selected_taxonomy']) : '';
+        $terms = isset($source_args['selected_terms']) ? $source_args['selected_terms'] : [];
     
         if ($taxonomy && !empty($terms)) {
             $query_args['tax_query'][] = [

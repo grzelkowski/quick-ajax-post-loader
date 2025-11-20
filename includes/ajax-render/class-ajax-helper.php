@@ -29,8 +29,22 @@ final class QAPL_Ajax_Helper{
         }
         return $data;
     }
-    public function args_json(array $args){
-        $json_data = wp_json_encode($args);
-        return $json_data;
+    public function args_json(array $args) {
+        return wp_json_encode($args);
+    }
+    public function extract_classes_from_string($string){
+        // Split the input string into an array using whitespace or comma as separators
+        $class_container_array = preg_split('/[\s,]+/', $string);
+        $class_container_array = array_map('sanitize_html_class', $class_container_array);
+
+        // Iterate over the array and remove elements that start with a digit
+        foreach ($class_container_array as $key => $item) {
+            if (preg_match('/^\d/', $item)) {
+                // Use unset to remove the item from the array if it starts with a digit
+                unset($class_container_array[$key]);
+            }
+        }
+        $container_class = implode(' ', $class_container_array);
+        return $container_class;
     }
 }

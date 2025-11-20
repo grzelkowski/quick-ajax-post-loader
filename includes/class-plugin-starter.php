@@ -22,6 +22,7 @@ final class QAPL_Quick_Ajax_Plugin_Starter{
                 'QAPL_Quick_Ajax_Resource_Manager',
                 'QAPL_Quick_Ajax_Utilities',
                 'QAPL_Quick_Ajax_Enqueue_Handler',
+                'QAPL_Form_Helper',
                 'QAPL_Quick_Ajax_Form_Field',
                 'QAPL_Quick_Ajax_Form_Field_Builder',
                 'QAPL_Quick_Ajax_Form_Field_Factory',

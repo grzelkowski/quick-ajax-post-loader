@@ -6,13 +6,15 @@ if (!defined('ABSPATH')) {
 final class QAPL_Ajax_UI_Renderer{
     private $file_manager;
     private $global_options;
+    private $helper;
 
-    public function __construct(QAPL_Quick_Ajax_File_Manager $file_manager, array $global_options = []) {
-        $this->file_manager = $file_manager;
-        $this->global_options = $global_options;
+    public function __construct(QAPL_Quick_Ajax_File_Manager $file_manager, array $global_options = [], QAPL_Ajax_Helper $helper) {
+        $this->file_manager     = $file_manager;
+        $this->global_options   = $global_options;
+        $this->helper           = $helper;
     }
     private function get_post_assigned_to_the_term($term, $post_type, $excluded_post_ids){
-        $args = array(
+        $query_args = array(
             'posts_per_page' => 1,
             'post_type' => $post_type,
             'tax_query' => array(
@@ -26,7 +28,7 @@ final class QAPL_Ajax_UI_Renderer{
             'post__not_in' => $excluded_post_ids,
             'fields' => 'ids',
         );
-        $posts = get_posts($args);
+        $posts = get_posts($query_args);
 
         if (!empty($posts)) {
             return true;
@@ -37,28 +39,28 @@ final class QAPL_Ajax_UI_Renderer{
      * Render taxonomy terms filter if conditions are met.
      *
      * This method allows passing a taxonomy directly, but if it's not provided,
-     * it tries to use the 'selected_taxonomy' value from $input_args.
+     * it tries to use the 'selected_taxonomy' value from $source_args.
      * The 'selected_taxonomy' exists only if a taxonomy has been chosen.
      * If a taxonomy has been chosen, the filter will be rendered.
      * In the future, there might be an option to select a taxonomy but not display the filter itself,
      * so this method should also accommodate such a scenario if implemented.
      */
-    public function render_taxonomy_terms_filter($taxonomy, $args, $input_args, $layout, $attributes, $action_args, $quick_ajax_id){
-        if (empty($args)) {
+    public function render_taxonomy_terms_filter($taxonomy, $query_args, $source_args, $layout, $attributes, $quick_ajax_id){
+        if (empty($query_args)) {
             return false;
         }
         if(!$taxonomy){
-            $taxonomy = $input_args['selected_taxonomy'];
+            $taxonomy = $source_args['selected_taxonomy'];
         }
 
         $terms_args = array(
             'taxonomy'     => $taxonomy,
-            'object_type'  => array($args['post_type']),
+            'object_type'  => array($query_args['post_type']),
             'hide_empty'   => true,
         );            
         // only include specific terms if selected_terms is not empty
-        if (!empty($input_args['selected_terms']) && is_array($input_args['selected_terms'])) {
-            $terms_args['include'] = $input_args['selected_terms'];
+        if (!empty($source_args['selected_terms']) && is_array($source_args['selected_terms'])) {
+            $terms_args['include'] = $source_args['selected_terms'];
         }            
         $terms = get_terms($terms_args);            
 
@@ -70,7 +72,7 @@ final class QAPL_Ajax_UI_Renderer{
         if (!empty(trim($layout[QAPL_Quick_Ajax_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS] ?? ''))) {
             $class_container .= ' ' . $layout[QAPL_Quick_Ajax_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS];
         }           
-        $container_class = $this->extract_classes_from_string($class_container);
+        $container_class = $this->helper->extract_classes_from_string($class_container);
 
         ob_start(); // Start output buffering
 
@@ -93,16 +95,16 @@ final class QAPL_Ajax_UI_Renderer{
                 'template' => $button_base['template'],
                 'button_label' => $show_all_label,
                 'data-button' => $button_base['data-button'],
-                'data-action' => $action_args,
+                'data-action' => $source_args,
                 'data-attributes' => $button_base['data-attributes'],
             ];
             $show_all_button['is_active'] = true;
             $navigation_buttons[] = $show_all_button;
-            $exclude_ids = (isset($args['post__not_in'])) ? $args['post__not_in'] : '';
+            $exclude_ids = (isset($query_args['post__not_in'])) ? $query_args['post__not_in'] : '';
             foreach ( $terms as $term ) { 
-                $not_empty = $this->get_post_assigned_to_the_term($term, $args['post_type'], $exclude_ids);
+                $not_empty = $this->get_post_assigned_to_the_term($term, $query_args['post_type'], $exclude_ids);
                 if($not_empty == true){
-                    $data_action = $action_args;
+                    $data_action = $source_args;
                     $data_action['selected_terms'] = [$term->term_id];
                     $term_button_data = [                        
                         'term_id' => $term->term_id,
@@ -132,13 +134,14 @@ final class QAPL_Ajax_UI_Renderer{
         //$output = $this->replace_placeholders($output); // not in use after removing placeholders
         return $output; // Return the content
     }
-        public function render_sort_options($sort_options, $layout, $args, $attributes, $action_args, $quick_ajax_id) {
+
+    public function render_sort_options($sort_options, $layout, $query_args, $attributes, $source_args, $quick_ajax_id) {
         $block_id = 'quick-ajax-sort-options-'.$quick_ajax_id;
         $class_container = 'quick-ajax-sort-options-container';
         if (!empty($layout[QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE])) {
             $class_container .= ' quick-ajax-theme';
         }       
-        $container_class = $this->extract_classes_from_string($class_container);
+        $container_class = $this->helper->extract_classes_from_string($class_container);
         $sort_buttons ='';
         $allowed_button_html = [
             'div' => [
@@ -209,7 +212,7 @@ final class QAPL_Ajax_UI_Renderer{
                 'name' => 'quick_ajax_sort_option',
                 'options' => $filtered_orderby_options
             ];
-            $sort_buttons .= $this->create_sort_button($button_option, $args, $attributes, $action_args, $quick_ajax_id);            
+            $sort_buttons .= $this->create_sort_button($button_option, $query_args, $attributes, $source_args, $quick_ajax_id);            
         }
         echo wp_kses($sort_buttons, $allowed_button_html);
         
@@ -218,10 +221,10 @@ final class QAPL_Ajax_UI_Renderer{
         $output = ob_get_clean(); // Get the buffered content into a variable
         return $output; // Return the content
     }
-    private function create_sort_button($button_data, $args, $attributes, $action_args, $quick_ajax_id) {         
+    private function create_sort_button($button_data, $query_args, $attributes, $source_args, $quick_ajax_id) {         
         $attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $quick_ajax_id;
         $sort_option = '<div class="quick-ajax-sort-option-wrapper">';
-        $default_option = strtolower($args['orderby']).'-'.strtolower($args['order']);
+        $default_option = strtolower($query_args['orderby']).'-'.strtolower($query_args['order']);
         // escape the aria-label
         $aria_label = isset($button_data['label']) ? esc_attr($button_data['label']) : '';
         $sort_option .= '<select id="'.esc_attr($button_data['id']).'" name="'.esc_attr($button_data['name']).'" aria-label="'.$aria_label.'">';
@@ -232,7 +235,7 @@ final class QAPL_Ajax_UI_Renderer{
             $sort_option .= '<option value="' . $value . '"'.$selected.'>' . $label . '</option>';
         }
         $sort_option .= '</select>';
-        $sort_option .= '<span class="quick-ajax-settings" data-button="'.QAPL_Quick_Ajax_Constants::SORT_OPTION_BUTTON_DATA_BUTTON.'" data-attributes="' . esc_attr(wp_json_encode($attributes)) . '" data-action="' . esc_attr(wp_json_encode($action_args)) . '"></span>';
+        $sort_option .= '<span class="quick-ajax-settings" data-button="'.QAPL_Quick_Ajax_Constants::SORT_OPTION_BUTTON_DATA_BUTTON.'" data-attributes="' . esc_attr(wp_json_encode($attributes)) . '" data-action="' . esc_attr(wp_json_encode($source_args)) . '"></span>';
         $sort_option .= '</div>';                      
         return $sort_option;
     }
@@ -321,20 +324,5 @@ final class QAPL_Ajax_UI_Renderer{
             $modified_content
         );
         return $modified_content;
-    }
-    private function extract_classes_from_string($string){
-        // Split the input string into an array using whitespace or comma as separators
-        $class_container_array = preg_split('/[\s,]+/', $string);
-        $class_container_array = array_map('sanitize_html_class', $class_container_array);
-
-        // Iterate over the array and remove elements that start with a digit
-        foreach ($class_container_array as $key => $item) {
-            if (preg_match('/^\d/', $item)) {
-                // Use unset to remove the item from the array if it starts with a digit
-                unset($class_container_array[$key]);
-            }
-        }
-        $container_class = implode(' ', $class_container_array);
-        return $container_class;
     }
 }

@@ -238,7 +238,7 @@ class QAPL_Quick_Ajax_Template_Post_Item_Qapl_Full_Background_Image extends QAPL
 class QAPL_Quick_Ajax_Template_Load_More_Button extends QAPL_Quick_Ajax_Template_Base implements QAPL_Load_More_Interface {
     public function render_load_more_button() {   
         $label = $this->config->get('load_more_label');
-        $output = '<button type="button" class="qapl-load-more-button qapl-button" data-button="quick-ajax-load-more-button">' . esc_html($label) . '</button>';
+        $output = '<button type="button" class="qapl-load-more-button qapl-button" data-button="'.QAPL_Quick_Ajax_Constants::LOAD_MORE_BUTTON_DATA_BUTTON.'">' . esc_html($label) . '</button>';
         return apply_filters(QAPL_Quick_Ajax_Constants::HOOK_TEMPLATE_LOAD_MORE_BUTTON, $output, $this->quick_ajax_id);
     }
 }

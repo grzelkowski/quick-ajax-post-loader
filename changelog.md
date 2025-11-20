@@ -1,5 +1,11 @@
 ## Changelog
 
+### 1.8.5 - 2025-11-20
+- Refactored internal AJAX rendering logic for improved structure and maintainability.
+- Improved internal code organization for better stability and future development.
+- Applied backend optimizations to reduce redundancy and improve overall performance.
+- Performed minor cleanups across related core classes.
+
 ### 1.8.4 - 2025-10-23
 - Fixed issue with multiple initial post loaders not triggering correctly on the same page.
 - Improved label display for sorting options in certain configurations.
