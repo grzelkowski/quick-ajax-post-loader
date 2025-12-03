@@ -3,10 +3,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class QAPL_Quick_Ajax_Enqueue_Handler implements QAPL_Quick_Ajax_Enqueue_Handler_Interface {
-    private QAPL_Quick_Ajax_File_Manager_Interface $file_manager;
+class QAPL_Enqueue_Handler implements QAPL_Enqueue_Handler_Interface {
+    private QAPL_File_Manager_Interface $file_manager;
 
-    public function __construct(QAPL_Quick_Ajax_File_Manager_Interface $file_manager) {
+    public function __construct(QAPL_File_Manager_Interface $file_manager) {
         $this->file_manager = $file_manager;
     }
     public function register_hooks(): void {
@@ -35,7 +35,7 @@ class QAPL_Quick_Ajax_Enqueue_Handler implements QAPL_Quick_Ajax_Enqueue_Handler
              return; 
         }  
         // Check if the current page matches the plugin-related pages
-        $plugin_pages = [QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG, QAPL_Quick_Ajax_Constants::SETTINGS_PAGE_SLUG];
+        $plugin_pages = [QAPL_Constants::CPT_SHORTCODE_SLUG, QAPL_Constants::SETTINGS_PAGE_SLUG];
         if (!qapl_quick_ajax_check_page_type($plugin_pages)) {
             return; 
         }
@@ -59,7 +59,7 @@ class QAPL_Quick_Ajax_Enqueue_Handler implements QAPL_Quick_Ajax_Enqueue_Handler
         return false;
     }
     private function get_version(): string {
-        return $this->is_dev_mode() ? (string) time() : QAPL_Quick_Ajax_Constants::PLUGIN_VERSION;
+        return $this->is_dev_mode() ? (string) time() : QAPL_Constants::PLUGIN_VERSION;
     }    
     private function get_file_suffix($base_path, $file_name): string {
         // Set the default suffix to '.min' if SCRIPT_DEBUG is disabled
@@ -81,7 +81,7 @@ class QAPL_Quick_Ajax_Enqueue_Handler implements QAPL_Quick_Ajax_Enqueue_Handler
     }
     
     private function get_localized_data() {
-        $nonce = wp_create_nonce(QAPL_Quick_Ajax_Constants::NONCE_FORM_QUICK_AJAX_ACTION);
+        $nonce = wp_create_nonce(QAPL_Constants::NONCE_FORM_QUICK_AJAX_ACTION);
         if (!$nonce) {
             return [];
         }
@@ -89,35 +89,35 @@ class QAPL_Quick_Ajax_Enqueue_Handler implements QAPL_Quick_Ajax_Enqueue_Handler
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' =>  $nonce,
             'constants' => [
-                'block_id' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_ID,
-                'filter_data_button' => QAPL_Quick_Ajax_Constants::TERM_FILTER_BUTTON_DATA_BUTTON,
-                'sort_button' => QAPL_Quick_Ajax_Constants::SORT_OPTION_BUTTON_DATA_BUTTON,
-                'load_more_data_button' => QAPL_Quick_Ajax_Constants::LOAD_MORE_BUTTON_DATA_BUTTON,
+                'block_id' => QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID,
+                'filter_data_button' => QAPL_Constants::TERM_FILTER_BUTTON_DATA_BUTTON,
+                'sort_button' => QAPL_Constants::SORT_OPTION_BUTTON_DATA_BUTTON,
+                'load_more_data_button' => QAPL_Constants::LOAD_MORE_BUTTON_DATA_BUTTON,
             ]
         ];
     }
     private function get_admin_localized_data() {
         return [
             'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce(QAPL_Quick_Ajax_Constants::NONCE_FORM_QUICK_AJAX_ACTION),
+            'nonce' => wp_create_nonce(QAPL_Constants::NONCE_FORM_QUICK_AJAX_ACTION),
             'constants' => [
-                'quick_ajax_settings_wrapper' => QAPL_Quick_Ajax_Constants::SETTINGS_WRAPPER_ID,
-                'quick_ajax_post_type' => QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POST_TYPE,
-                'quick_ajax_taxonomy' => QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_TAXONOMY,
-                'quick_ajax_manual_selected_terms' => QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECTED_TERMS,
-                'quick_ajax_css_style' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE,
-                'grid_num_columns' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_GRID_NUM_COLUMNS,
-                'post_item_template' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE,
-                'post_item_template_default' => QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE_DEFAULT,
-                'taxonomy_filter_class' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS,
-                'container_class' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_CONTAINER_CLASS,
-                'load_more_posts' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_LOAD_MORE_POSTS,
-                'loader_icon' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_LOADER_ICON,
-                'loader_icon_default' => QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON_DEFAULT,
-                'ajax_initial_load' => QAPL_Quick_Ajax_Constants::AJAX_SETTING_AJAX_INITIAL_LOAD,
-                'infinite_scroll' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL,
-                'show_end_message' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_SHOW_END_MESSAGE,
-                'quick_ajax_id' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_ID,
+                'quick_ajax_settings_wrapper' => QAPL_Constants::SETTINGS_WRAPPER_ID,
+                'quick_ajax_post_type' => QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE,
+                'quick_ajax_taxonomy' => QAPL_Constants::QUERY_SETTING_SELECT_TAXONOMY,
+                'quick_ajax_manual_selected_terms' => QAPL_Constants::QUERY_SETTING_SELECTED_TERMS,
+                'quick_ajax_css_style' => QAPL_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE,
+                'grid_num_columns' => QAPL_Constants::ATTRIBUTE_GRID_NUM_COLUMNS,
+                'post_item_template' => QAPL_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE,
+                'post_item_template_default' => QAPL_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE_DEFAULT,
+                'taxonomy_filter_class' => QAPL_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS,
+                'container_class' => QAPL_Constants::ATTRIBUTE_CONTAINER_CLASS,
+                'load_more_posts' => QAPL_Constants::ATTRIBUTE_LOAD_MORE_POSTS,
+                'loader_icon' => QAPL_Constants::ATTRIBUTE_LOADER_ICON,
+                'loader_icon_default' => QAPL_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON_DEFAULT,
+                'ajax_initial_load' => QAPL_Constants::AJAX_SETTING_AJAX_INITIAL_LOAD,
+                'infinite_scroll' => QAPL_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL,
+                'show_end_message' => QAPL_Constants::ATTRIBUTE_SHOW_END_MESSAGE,
+                'quick_ajax_id' => QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID,
             ]
         ];
     }

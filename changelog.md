@@ -1,5 +1,12 @@
 ## Changelog
 
+### 1.8.6 - 2025-12-03
+- Improved how multiple AJAX containers work together on the same page to ensure they stay independent and conflict-free.
+- Enhanced consistency between sorting, filtering, and post loading for a smoother user experience.
+- Optimized internal AJAX handling for better stability across different setups.
+- Added small internal cleanups to improve overall reliability and maintainability.
+- Tested and confirmed compatibility with WordPress 6.9.
+
 ### 1.8.5 - 2025-11-20
 - Refactored internal AJAX rendering logic for improved structure and maintainability.
 - Improved internal code organization for better stability and future development.

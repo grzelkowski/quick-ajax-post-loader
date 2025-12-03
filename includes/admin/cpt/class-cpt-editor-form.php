@@ -50,7 +50,7 @@ abstract class QAPL_CPT_Editor_Form extends QAPL_Form_Content_Builder {
             $this->unserialize_data($post->ID);
             echo '<div class="quick-ajax-form-wrap '.esc_attr($this->get_quick_ajax_form_class()).'" id="' . esc_attr($this->form_id) . '">';
             echo wp_kses($this->render_form(), QAPL_Form_Helper::wp_kses_allowed_tags());
-            wp_nonce_field(QAPL_Quick_Ajax_Constants::NONCE_FORM_QUICK_AJAX_ACTION, QAPL_Quick_Ajax_Constants::NONCE_FORM_QUICK_AJAX_FIELD);
+            wp_nonce_field(QAPL_Constants::NONCE_FORM_QUICK_AJAX_ACTION, QAPL_Constants::NONCE_FORM_QUICK_AJAX_FIELD);
             echo '</div>';
         }
     }   
@@ -59,7 +59,7 @@ abstract class QAPL_CPT_Editor_Form extends QAPL_Form_Content_Builder {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
-        if (!isset($_POST[QAPL_Quick_Ajax_Constants::NONCE_FORM_QUICK_AJAX_FIELD]) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST[QAPL_Quick_Ajax_Constants::NONCE_FORM_QUICK_AJAX_FIELD])), QAPL_Quick_Ajax_Constants::NONCE_FORM_QUICK_AJAX_ACTION)) {
+        if (!isset($_POST[QAPL_Constants::NONCE_FORM_QUICK_AJAX_FIELD]) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST[QAPL_Constants::NONCE_FORM_QUICK_AJAX_FIELD])), QAPL_Constants::NONCE_FORM_QUICK_AJAX_ACTION)) {
             return;
         }       
         if (!current_user_can('edit_post', $post_id)) {

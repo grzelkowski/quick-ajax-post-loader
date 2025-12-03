@@ -3,9 +3,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class QAPL_Quick_Ajax_Resource_Manager implements QAPL_Quick_Ajax_Resource_Manager_Interface {
+class QAPL_Resource_Manager implements QAPL_Resource_Manager_Interface {
 
-    private QAPL_Quick_Ajax_File_Manager_Interface $file_manager;
+    private QAPL_File_Manager_Interface $file_manager;
 
     // constants for page files
     private const PAGE_FILES = [
@@ -69,8 +69,8 @@ class QAPL_Quick_Ajax_Resource_Manager implements QAPL_Quick_Ajax_Resource_Manag
     ];
     
 
-    //construct expects instance of QAPL_Quick_Ajax_File_Manager
-    public function __construct(QAPL_Quick_Ajax_File_Manager_Interface $file_manager) {
+    //construct expects instance of QAPL_File_Manager
+    public function __construct(QAPL_File_Manager_Interface $file_manager) {
         $this->file_manager = $file_manager;
     }
     public function initialize_pages(): void{

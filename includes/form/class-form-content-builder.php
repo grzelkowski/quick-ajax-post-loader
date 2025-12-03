@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 abstract class QAPL_Form_Content_Builder{
     protected $fields = array();
     protected $existing_values = array();
-    protected function create_field(QAPL_Quick_Ajax_Form_Field_Interface $field) {
+    protected function create_field(QAPL_Form_Field_Interface $field) {
         $field_properties = $field->get_field();
         if (!empty($field_properties['name'])) {
             $field = [
@@ -237,9 +237,9 @@ abstract class QAPL_Form_Content_Builder{
     }
     protected function get_taxonomy_options_for_post_type(?string $post_type = null): array{
         if (empty($post_type)) {
-            $post_type = $this->get_the_value_if_exist(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POST_TYPE);
+            $post_type = $this->get_the_value_if_exist(QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE);
             if (empty($post_type)) {
-                $post_type = QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POST_TYPE_DEFAULT;
+                $post_type = QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE_DEFAULT;
             }
         }
         $taxonomy_options = [];
@@ -269,14 +269,14 @@ abstract class QAPL_Form_Content_Builder{
     protected function get_term_options_for_taxonomy(?string $taxonomy = null){
         if (empty($taxonomy)) {
             // try to get taxonomy from saved shortcode value
-            $taxonomy = $this->get_the_value_if_exist(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_TAXONOMY);
+            $taxonomy = $this->get_the_value_if_exist(QAPL_Constants::QUERY_SETTING_SELECT_TAXONOMY);
         }
         if (empty($taxonomy)) {
             // try to get first available taxonomy based on post type
-            $post_type = $this->get_the_value_if_exist(QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POST_TYPE);
+            $post_type = $this->get_the_value_if_exist(QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE);
             if (empty($post_type)) {
                 // fallback to default post type
-                $post_type = QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POST_TYPE_DEFAULT;
+                $post_type = QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE_DEFAULT;
             }
             if (!empty($post_type)) {
                 $taxonomies = get_object_taxonomies($post_type);

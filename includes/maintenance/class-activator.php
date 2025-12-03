@@ -7,9 +7,9 @@ if (!class_exists('QAPL_Quick_Ajax_Activator')) {
         public static function activate() {
             require_once dirname(__DIR__) . '/resources/class-utilities.php';
             $default_value = [
-                'loader_icon' => QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON_DEFAULT,
+                'loader_icon' => QAPL_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON_DEFAULT,
             ];
-            self::add_or_update_option_autoload(QAPL_Quick_Ajax_Constants::GLOBAL_OPTIONS_NAME, $default_value, 'off');
+            self::add_or_update_option_autoload(QAPL_Constants::GLOBAL_OPTIONS_NAME, $default_value, 'off');
         }
         private static function add_or_update_option_autoload(string $option_name, $default_value = '', string $autoload = 'auto'): void {
             global $wpdb;

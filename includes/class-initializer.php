@@ -3,16 +3,16 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-final class QAPL_Quick_Ajax_Initializer {
+final class QAPL_Initializer {
 
     private static bool $initialized = false;
     private static string $plugin_dir_path;
     private static string $includes_dir_path;
     private const REQUIRED_CLASSES = [
-        'QAPL_Quick_Ajax_File_Manager',
-        'QAPL_Quick_Ajax_Resource_Manager',
-        'QAPL_Quick_Ajax_Enqueue_Handler',
-        'QAPL_Quick_Ajax_Plugin_Starter',
+        'QAPL_File_Manager',
+        'QAPL_Resource_Manager',
+        'QAPL_Enqueue_Handler',
+        'QAPL_Plugin_Starter',
     ];
     public static function initialize():void{
         if (self::$initialized) {
@@ -28,21 +28,21 @@ final class QAPL_Quick_Ajax_Initializer {
         self::load_dev_tools();
 
         //check if classes exists
-        if (!class_exists('QAPL_Quick_Ajax_Utilities')) {
-            qapl_log('Missing class: QAPL_Quick_Ajax_Utilities', 'warning');
+        if (!class_exists('QAPL_Utilities')) {
+            qapl_log('Missing class: QAPL_Utilities', 'warning');
         }
-        if (class_exists('QAPL_Quick_Ajax_Utilities')) {
-            $verify = QAPL_Quick_Ajax_Utilities::verify_classes_exist(self::REQUIRED_CLASSES, 'Initializer');
+        if (class_exists('QAPL_Utilities')) {
+            $verify = QAPL_Utilities::verify_classes_exist(self::REQUIRED_CLASSES, 'Initializer');
             if ($verify === false) {
                 return;
             }
         }
         //build services
-        $file_manager = new QAPL_Quick_Ajax_File_Manager();
-        $resource_manager = new QAPL_Quick_Ajax_Resource_Manager($file_manager);
-        $enqueue_handler = new QAPL_Quick_Ajax_Enqueue_Handler($file_manager);
+        $file_manager = new QAPL_File_Manager();
+        $resource_manager = new QAPL_Resource_Manager($file_manager);
+        $enqueue_handler = new QAPL_Enqueue_Handler($file_manager);
         //wire starter with interfaces
-        $plugin_starter = new QAPL_Quick_Ajax_Plugin_Starter($resource_manager,$enqueue_handler);
+        $plugin_starter = new QAPL_Plugin_Starter($resource_manager,$enqueue_handler);
         //run plugin
         $plugin_starter->start();
     }

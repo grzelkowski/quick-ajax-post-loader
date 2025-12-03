@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 
 class QAPL_Shortcode_Post_Meta_Handler {
     public static function load_and_sanitize($id) {
-        $serialized_data = get_post_meta($id, QAPL_Quick_Ajax_Constants::DB_POSTMETA_SHORTCODE_SETTINGS, true);
+        $serialized_data = get_post_meta($id, QAPL_Constants::DB_POSTMETA_SHORTCODE_SETTINGS, true);
         if (!$serialized_data) {
             return array();
         }

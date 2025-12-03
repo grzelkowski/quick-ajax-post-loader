@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 //interface for form field data
 //it defines the methods that must exist in any field class
-interface QAPL_Quick_Ajax_Form_Field_Interface {
+interface QAPL_Form_Field_Interface {
     public function get_name(): string;
     public function get_label(): string;
     public function get_type(): string;

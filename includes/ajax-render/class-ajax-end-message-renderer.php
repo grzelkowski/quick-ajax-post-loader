@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 final class QAPL_Ajax_End_Message_Renderer {
         private $file_manager;
 
-    public function __construct(QAPL_Quick_Ajax_File_Manager $file_manager) {
+    public function __construct(QAPL_File_Manager $file_manager) {
         $this->file_manager = $file_manager;
     }
     public function build_end_of_posts_message($load_more, $max_num_pages, $quick_ajax_id, $show_end_post_message = false) {

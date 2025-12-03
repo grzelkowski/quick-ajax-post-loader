@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class QAPL_Shortcode_Ajax_Attributes_Provider {
+class QAPL_Shortcode_Attributes_Provider {
     private $shortcode_params = [];
     private $shortcode_postmeta = [];
 
@@ -19,63 +19,63 @@ class QAPL_Shortcode_Ajax_Attributes_Provider {
         $attributes = array();        
         if (!empty($this->shortcode_params['id'])) {
             $attributes['shortcode'] = true;
-            $attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_ID] = absint($this->shortcode_params['id']);
+            $attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID] = absint($this->shortcode_params['id']);
         } else {
-            $attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $this->get_sanitized_attribute([
-                'shortcode_key' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_ID,
+            $attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $this->get_sanitized_attribute([
+                'shortcode_key' => QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID,
                 'type' => 'number',
             ]);
         }
-        $attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE,
-            'postmeta_key' => QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE,
+        $attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE,
+            'postmeta_key' => QAPL_Constants::LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE,
             'type' => 'string',
         ]);
-        $attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_GRID_NUM_COLUMNS] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_GRID_NUM_COLUMNS,
-            'postmeta_key' => QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_SELECT_COLUMNS_QTY,
+        $attributes[QAPL_Constants::ATTRIBUTE_GRID_NUM_COLUMNS] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Constants::ATTRIBUTE_GRID_NUM_COLUMNS,
+            'postmeta_key' => QAPL_Constants::LAYOUT_SETTING_SELECT_COLUMNS_QTY,
             'type' => 'number',
         ]);
-        $attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE,
-            'postmeta_key' => QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE,
+        $attributes[QAPL_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE,
+            'postmeta_key' => QAPL_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE,
             'type' => 'string',
         ]);
-        $attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS,
-            'postmeta_key' => QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_TAXONOMY_FILTER_CLASS,
+        $attributes[QAPL_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS,
+            'postmeta_key' => QAPL_Constants::LAYOUT_SETTING_TAXONOMY_FILTER_CLASS,
             'type' => 'html_class',
         ]);
-        $attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_CONTAINER_CLASS] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_CONTAINER_CLASS,
-            'postmeta_key' => QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_CONTAINER_CLASS,
+        $attributes[QAPL_Constants::ATTRIBUTE_CONTAINER_CLASS] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Constants::ATTRIBUTE_CONTAINER_CLASS,
+            'postmeta_key' => QAPL_Constants::LAYOUT_SETTING_CONTAINER_CLASS,
             'type' => 'html_class',
         ]);
-        $attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_LOAD_MORE_POSTS] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_LOAD_MORE_POSTS,
-            'postmeta_key' => QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_CUSTOM_LOAD_MORE_POST_QUANTITY,
-            'only_if_meta_key_true' => QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_CUSTOM_LOAD_MORE_POST_QUANTITY,
+        $attributes[QAPL_Constants::ATTRIBUTE_LOAD_MORE_POSTS] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Constants::ATTRIBUTE_LOAD_MORE_POSTS,
+            'postmeta_key' => QAPL_Constants::QUERY_SETTING_SELECT_CUSTOM_LOAD_MORE_POST_QUANTITY,
+            'only_if_meta_key_true' => QAPL_Constants::QUERY_SETTING_SHOW_CUSTOM_LOAD_MORE_POST_QUANTITY,
             'type' => 'number',
         ]);
-        $attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_LOADER_ICON] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_LOADER_ICON,
-            'postmeta_key' => QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON,
-            'only_if_meta_key_true' => QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_OVERRIDE_GLOBAL_LOADER_ICON,
+        $attributes[QAPL_Constants::ATTRIBUTE_LOADER_ICON] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Constants::ATTRIBUTE_LOADER_ICON,
+            'postmeta_key' => QAPL_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON,
+            'only_if_meta_key_true' => QAPL_Constants::LAYOUT_SETTING_OVERRIDE_GLOBAL_LOADER_ICON,
             'type' => 'string',
         ]);
-        $attributes[QAPL_Quick_Ajax_Constants::AJAX_SETTING_AJAX_INITIAL_LOAD] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Constants::AJAX_SETTING_AJAX_INITIAL_LOAD,
-            'postmeta_key' => QAPL_Quick_Ajax_Constants::QUERY_SETTING_AJAX_ON_INITIAL_LOAD,
+        $attributes[QAPL_Constants::AJAX_SETTING_AJAX_INITIAL_LOAD] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Constants::AJAX_SETTING_AJAX_INITIAL_LOAD,
+            'postmeta_key' => QAPL_Constants::QUERY_SETTING_AJAX_ON_INITIAL_LOAD,
             'type' => 'bool',
         ]);
-        $attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL,
-            'postmeta_key' => QAPL_Quick_Ajax_Constants::QUERY_SETTING_AJAX_INFINITE_SCROLL,
+        $attributes[QAPL_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL,
+            'postmeta_key' => QAPL_Constants::QUERY_SETTING_AJAX_INFINITE_SCROLL,
             'type' => 'bool',
         ]);
-        $attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_SHOW_END_MESSAGE] = $this->get_sanitized_attribute([
-            'shortcode_key' => QAPL_Quick_Ajax_Constants::ATTRIBUTE_SHOW_END_MESSAGE,
-            'postmeta_key' => QAPL_Quick_Ajax_Constants::QUERY_SETTING_SHOW_END_MESSAGE,
+        $attributes[QAPL_Constants::ATTRIBUTE_SHOW_END_MESSAGE] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Constants::ATTRIBUTE_SHOW_END_MESSAGE,
+            'postmeta_key' => QAPL_Constants::QUERY_SETTING_SHOW_END_MESSAGE,
             'type' => 'bool',
         ]);  
         return !empty($attributes) ? $attributes : false;

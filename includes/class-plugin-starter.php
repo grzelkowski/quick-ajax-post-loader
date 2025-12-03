@@ -3,48 +3,49 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-final class QAPL_Quick_Ajax_Plugin_Starter{
-    private QAPL_Quick_Ajax_Resource_Manager_Interface $resources;
-    private QAPL_Quick_Ajax_Enqueue_Handler_Interface $enqueue;
+final class QAPL_Plugin_Starter{
+    private QAPL_Resource_Manager_Interface $resources;
+    private QAPL_Enqueue_Handler_Interface $enqueue;
 
-    public function __construct(QAPL_Quick_Ajax_Resource_Manager_Interface $resources, QAPL_Quick_Ajax_Enqueue_Handler_Interface $enqueue){
+    public function __construct(QAPL_Resource_Manager_Interface $resources, QAPL_Enqueue_Handler_Interface $enqueue){
         $this->resources=$resources; //set deps
         $this->enqueue=$enqueue; //set deps
     }
     private function verify_classes(): void {
-        if (!class_exists('QAPL_Quick_Ajax_Utilities')) {
-            qapl_log('Missing class: QAPL_Quick_Ajax_Utilities', 'warning');
+        if (!class_exists('QAPL_Utilities')) {
+            qapl_log('Missing class: QAPL_Utilities', 'warning');
         }
+        
         $classes = [
-                'QAPL_Quick_Ajax_Constants',
-                'QAPL_Quick_Ajax_Initializer',
-                'QAPL_Quick_Ajax_File_Manager',
-                'QAPL_Quick_Ajax_Resource_Manager',
-                'QAPL_Quick_Ajax_Utilities',
-                'QAPL_Quick_Ajax_Enqueue_Handler',
+                'QAPL_Constants',
+                'QAPL_Initializer',
+                'QAPL_File_Manager',
+                'QAPL_Resource_Manager',
+                'QAPL_Enqueue_Handler',
                 'QAPL_Form_Helper',
-                'QAPL_Quick_Ajax_Form_Field',
-                'QAPL_Quick_Ajax_Form_Field_Builder',
-                'QAPL_Quick_Ajax_Form_Field_Factory',
+                'QAPL_Form_Field',
+                'QAPL_Form_Field_Builder',
+                'QAPL_Form_Field_Factory',
                 'QAPL_Form_Content_Builder',
-                'QAPL_Shortcode_Ajax_Attributes_Provider',
+                'QAPL_Shortcode_Attributes_Provider',
                 'QAPL_Shortcode_Params_Handler',
                 'QAPL_Shortcode_Post_Meta_Handler',
                 'QAPL_Shortcode_Query_Args_Provider',
-                'QAPL_Quick_Ajax_Shortcode',
-                'QAPL_Quick_Ajax_Shortcode_Generator',
-                'QAPL_Quick_Ajax_Action_Controller',
-                'QAPL_Quick_Ajax_Template_Config',
-                'QAPL_Quick_Ajax_Template_Base',
-                'QAPL_Quick_Ajax_Template_Post_Item',
-                'QAPL_Quick_Ajax_Template_Post_Item_Qapl_Full_Background_Image',
-                'QAPL_Quick_Ajax_Template_Load_More_Button',
-                'QAPL_Quick_Ajax_Template_End_Post_Message',
-                'QAPL_Quick_Ajax_Template_No_Post_Message',
-                'QAPL_Quick_Ajax_Template_Empty_Filters',
+                'QAPL_Shortcode',
+                'QAPL_Shortcode_Generator',
+                'QAPL_Ajax_Controller',
+                'QAPL_Action_Controller',
+                'QAPL_Template_Config',
+                'QAPL_Template_Base',
+                'QAPL_Template_Post_Item',
+                'QAPL_Template_Post_Item_Qapl_Full_Background_Image',
+                'QAPL_Template_Load_More_Button',
+                'QAPL_Template_End_Post_Message',
+                'QAPL_Template_No_Post_Message',
+                'QAPL_Template_Empty_Filters',
                 'QAPL_Post_Template_Factory',
                 'QAPL_Post_Template_Context',
-                'QAPL_Quick_Ajax_Admin_Menu',
+                'QAPL_Admin_Menu',
                 'QAPL_CPT_Editor_Form',
                 'QAPL_Creator_Post_Type',
                 'QAPL_Creator_Columns',
@@ -56,14 +57,14 @@ final class QAPL_Quick_Ajax_Plugin_Starter{
                 'QAPL_Settings_Tab_PHP_Snippet',
                 'QAPL_Settings_Tab_Help',
                 'QAPL_Settings_Tab_Cleanup',
-                'QAPL_Quick_Ajax_Settings_Page',
-                'QAPL_Quick_Ajax_Updater',
+                'QAPL_Settings_Page',
+                'QAPL_Updater',
                 'QAPL_Data_Migrator',
                 'QAPL_Update_Validator',
-                'QAPL_Quick_Ajax_Cleaner',
+                'QAPL_Cleaner',
                 'QAPL_Data_Cleaner',
         ];        
-        QAPL_Quick_Ajax_Utilities::verify_classes_exist($classes, 'Plugin_Starter');
+        QAPL_Utilities::verify_classes_exist($classes, 'Plugin_Starter');
     }
 
     public function start():void{

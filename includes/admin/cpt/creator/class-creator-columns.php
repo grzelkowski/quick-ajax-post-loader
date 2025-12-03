@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 
 class QAPL_Creator_Columns {
     public static function init() {
-        $slug = QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG;
+        $slug = QAPL_Constants::CPT_SHORTCODE_SLUG;
         add_filter('manage_'.$slug.'_posts_columns', [__CLASS__, 'add_shortcode_column']);
         add_action('manage_'.$slug.'_posts_custom_column', [__CLASS__, 'render_shortcode_column'], 10, 2);
         add_filter('manage_edit-'.$slug.'_sortable_columns', [__CLASS__, 'make_shortcode_column_sortable']);
@@ -34,7 +34,7 @@ class QAPL_Creator_Columns {
     }
     public static function render_shortcode_column($column, $post_id) {
         if ($column === 'qapl_shortcode') {
-            $shortcode = QAPL_Quick_Ajax_Shortcode_Generator::generate_shortcode($post_id);
+            $shortcode = QAPL_Shortcode_Generator::generate_shortcode($post_id);
             echo '<div class="quick-ajax-shortcode">' . esc_html($shortcode)  . '</div>';
         }
     }

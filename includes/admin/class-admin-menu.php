@@ -3,8 +3,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-if (!class_exists('QAPL_Quick_Ajax_Admin_Menu')) {
-    class QAPL_Quick_Ajax_Admin_Menu {
+if (!class_exists('QAPL_Admin_Menu')) {
+    class QAPL_Admin_Menu {
         public function __construct() {
             add_action('admin_menu', array($this, 'add_menu'));
             add_action('admin_menu', array($this, 'add_settings_page'));
@@ -16,28 +16,28 @@ if (!class_exists('QAPL_Quick_Ajax_Admin_Menu')) {
                 'Quick AJAX',
                 'Quick AJAX',
                 'manage_options',
-                QAPL_Quick_Ajax_Constants::PLUGIN_MENU_SLUG,
+                QAPL_Constants::PLUGIN_MENU_SLUG,
                 array($this, 'options_page_content'),
                 'dashicons-editor-code',
                 80
             );
             // "Add New"
             add_submenu_page(
-                QAPL_Quick_Ajax_Constants::PLUGIN_MENU_SLUG,
+                QAPL_Constants::PLUGIN_MENU_SLUG,
                 __('Add New', 'quick-ajax-post-loader'),
                 __('Add New', 'quick-ajax-post-loader'),
                 'edit_posts',
-                'post-new.php?post_type=' . QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG
+                'post-new.php?post_type=' . QAPL_Constants::CPT_SHORTCODE_SLUG
             );
         }
         public function add_settings_page() {
             // "settings"
             add_submenu_page(
-                QAPL_Quick_Ajax_Constants::PLUGIN_MENU_SLUG,
+                QAPL_Constants::PLUGIN_MENU_SLUG,
                 __('Settings & Features', 'quick-ajax-post-loader'),
                 __('Settings & Features', 'quick-ajax-post-loader'),
                 'manage_options',
-                QAPL_Quick_Ajax_Constants::SETTINGS_PAGE_SLUG,
+                QAPL_Constants::SETTINGS_PAGE_SLUG,
                 array($this, 'render_quick_ajax_settings_page')
             );
         }
@@ -46,8 +46,8 @@ if (!class_exists('QAPL_Quick_Ajax_Admin_Menu')) {
             if (!current_user_can('manage_options')) {
                 wp_die(esc_html(__('You do not have sufficient permissions to access this page.', 'quick-ajax-post-loader')));
             }
-            if (class_exists('QAPL_Quick_Ajax_Settings_Page')) {
-                $form = new QAPL_Quick_Ajax_Settings_Page(QAPL_Quick_Ajax_Constants::ADMIN_PAGE_SETTINGS_GROUP, QAPL_Quick_Ajax_Constants::GLOBAL_OPTIONS_NAME);
+            if (class_exists('QAPL_Settings_Page')) {
+                $form = new QAPL_Settings_Page(QAPL_Constants::ADMIN_PAGE_SETTINGS_GROUP, QAPL_Constants::GLOBAL_OPTIONS_NAME);
                 $form->init();
                 $form->render_quick_ajax_page();
             }
@@ -55,8 +55,8 @@ if (!class_exists('QAPL_Quick_Ajax_Admin_Menu')) {
         public function register_settings() {
             // Register the settings group
             register_setting(
-                QAPL_Quick_Ajax_Constants::ADMIN_PAGE_SETTINGS_GROUP,
-                QAPL_Quick_Ajax_Constants::GLOBAL_OPTIONS_NAME,
+                QAPL_Constants::ADMIN_PAGE_SETTINGS_GROUP,
+                QAPL_Constants::GLOBAL_OPTIONS_NAME,
                 array($this, 'quick_ajax_sanitize_callback')
             );
         }
@@ -75,5 +75,5 @@ if (!class_exists('QAPL_Quick_Ajax_Admin_Menu')) {
         return $sanitized_value;
         }    
     }
-    $quick_ajax_admin_menu = new QAPL_Quick_Ajax_Admin_Menu();
+    $quick_ajax_admin_menu = new QAPL_Admin_Menu();
 }

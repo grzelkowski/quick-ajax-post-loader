@@ -56,28 +56,28 @@ class QAPL_Deprecated_Hooks_Handler {
 // Example of instantiating the class with the list of deprecated hooks
 $deprecated_hooks = [
     // Filter Wrapper Hooks
-    'qapl_filter_wrapper_pre' => QAPL_Quick_Ajax_Constants::HOOK_FILTER_CONTAINER_BEFORE,
-    'qapl_filter_wrapper_open' => QAPL_Quick_Ajax_Constants::HOOK_FILTER_CONTAINER_START,
-    'qapl_filter_wrapper_close' => QAPL_Quick_Ajax_Constants::HOOK_FILTER_CONTAINER_END,
-    'qapl_filter_wrapper_complete' => QAPL_Quick_Ajax_Constants::HOOK_FILTER_CONTAINER_AFTER,
+    'qapl_filter_wrapper_pre' => QAPL_Constants::HOOK_FILTER_CONTAINER_BEFORE,
+    'qapl_filter_wrapper_open' => QAPL_Constants::HOOK_FILTER_CONTAINER_START,
+    'qapl_filter_wrapper_close' => QAPL_Constants::HOOK_FILTER_CONTAINER_END,
+    'qapl_filter_wrapper_complete' => QAPL_Constants::HOOK_FILTER_CONTAINER_AFTER,
 
     // Posts Wrapper Hooks
-    'qapl_posts_wrapper_pre' => QAPL_Quick_Ajax_Constants::HOOK_POSTS_CONTAINER_BEFORE,
-    'qapl_posts_wrapper_open' => QAPL_Quick_Ajax_Constants::HOOK_POSTS_CONTAINER_START,
-    'qapl_posts_wrapper_close' => QAPL_Quick_Ajax_Constants::HOOK_POSTS_CONTAINER_END,
-    'qapl_posts_wrapper_complete' => QAPL_Quick_Ajax_Constants::HOOK_POSTS_CONTAINER_AFTER,
+    'qapl_posts_wrapper_pre' => QAPL_Constants::HOOK_POSTS_CONTAINER_BEFORE,
+    'qapl_posts_wrapper_open' => QAPL_Constants::HOOK_POSTS_CONTAINER_START,
+    'qapl_posts_wrapper_close' => QAPL_Constants::HOOK_POSTS_CONTAINER_END,
+    'qapl_posts_wrapper_complete' => QAPL_Constants::HOOK_POSTS_CONTAINER_AFTER,
 
     // Load More Button Hooks
-    //'qapl_load_more_button_pre' => QAPL_Quick_Ajax_Constants::HOOK_LOAD_MORE_BEFORE,
-    //'qapl_load_more_button_complete' => QAPL_Quick_Ajax_Constants::HOOK_LOAD_MORE_AFTER,
+    //'qapl_load_more_button_pre' => QAPL_Constants::HOOK_LOAD_MORE_BEFORE,
+    //'qapl_load_more_button_complete' => QAPL_Constants::HOOK_LOAD_MORE_AFTER,
 
     // Loader Icon Hooks
-    'qapl_loader_icon_pre' => QAPL_Quick_Ajax_Constants::HOOK_LOADER_BEFORE,
-    'qapl_loader_icon_complete' => QAPL_Quick_Ajax_Constants::HOOK_LOADER_AFTER,
+    'qapl_loader_icon_pre' => QAPL_Constants::HOOK_LOADER_BEFORE,
+    'qapl_loader_icon_complete' => QAPL_Constants::HOOK_LOADER_AFTER,
 
     // Filters
-    'qapl_modify_query' => QAPL_Quick_Ajax_Constants::HOOK_MODIFY_POSTS_QUERY_ARGS,
-    'qapl_modify_term_buttons' => QAPL_Quick_Ajax_Constants::HOOK_MODIFY_TAXONOMY_FILTER_BUTTONS
+    'qapl_modify_query' => QAPL_Constants::HOOK_MODIFY_POSTS_QUERY_ARGS,
+    'qapl_modify_term_buttons' => QAPL_Constants::HOOK_MODIFY_TAXONOMY_FILTER_BUTTONS
 ];
 
 new QAPL_Deprecated_Hooks_Handler($deprecated_hooks);

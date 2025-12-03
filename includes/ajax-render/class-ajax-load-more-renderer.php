@@ -9,7 +9,7 @@ final class QAPL_Ajax_Load_More_Renderer {
     private $ui_renderer;
     private $helper;
 
-    public function __construct( QAPL_Quick_Ajax_File_Manager $file_manager,QAPL_Ajax_UI_Renderer $ui_renderer, QAPL_Ajax_Helper $helper) {
+    public function __construct( QAPL_File_Manager $file_manager,QAPL_Ajax_UI_Renderer $ui_renderer, QAPL_Ajax_Helper $helper) {
         $this->file_manager = $file_manager;
         $this->ui_renderer  = $ui_renderer;
         $this->helper       = $helper;
@@ -30,11 +30,11 @@ final class QAPL_Ajax_Load_More_Renderer {
         $load_more_args = $source_args;
         //$load_more_args['paged'] = isset($this->args['paged']) ? intval($this->args['paged']) : 1;
         $load_more_args['paged'] = $paged;
-        if (isset($attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_LOAD_MORE_POSTS]) && !empty($attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_LOAD_MORE_POSTS])) {
+        if (isset($attributes[QAPL_Constants::ATTRIBUTE_LOAD_MORE_POSTS]) && !empty($attributes[QAPL_Constants::ATTRIBUTE_LOAD_MORE_POSTS])) {
         // Check if load_more_posts attribute is set
         // if we want to add a different number of posts than displayed at the start
         // use 'offset' not 'paged'
-            $load_more_posts = intval($attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_LOAD_MORE_POSTS]);
+            $load_more_posts = intval($attributes[QAPL_Constants::ATTRIBUTE_LOAD_MORE_POSTS]);
             //get initial offset and number of posts per page
             $initial_offset = isset($load_more_args['offset']) ? intval($load_more_args['offset']) : 0;
             //get number of posts per page
@@ -62,20 +62,20 @@ final class QAPL_Ajax_Load_More_Renderer {
         }
         $css_class = $infinite_scroll ? 'infinite-scroll' : '';
 
-        //do_action(QAPL_Quick_Ajax_Constants::HOOK_LOAD_MORE_BEFORE);
-        if (empty($attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_ID])) {
-            $attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $quick_ajax_id;
+        //do_action(QAPL_Constants::HOOK_LOAD_MORE_BEFORE);
+        if (empty($attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID])) {
+            $attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $quick_ajax_id;
         }
         $button_data = [
             'template'        => $this->file_manager->get_load_more_button_template(),
             'button_label'    => __('Load More', 'quick-ajax-post-loader'),
             'css_class'       => $css_class,
-            'data-button'     => QAPL_Quick_Ajax_Constants::LOAD_MORE_BUTTON_DATA_BUTTON,
+            'data-button'     => QAPL_Constants::LOAD_MORE_BUTTON_DATA_BUTTON,
             'data-action'     => $load_more_args,
             'data-attributes' => $attributes,
         ];        
         return $button_data;
-        //do_action(QAPL_Quick_Ajax_Constants::HOOK_LOAD_MORE_AFTER);
+        //do_action(QAPL_Constants::HOOK_LOAD_MORE_AFTER);
     }
     public function render_load_more_button(array $button_data): string {
         if (empty($button_data)) {

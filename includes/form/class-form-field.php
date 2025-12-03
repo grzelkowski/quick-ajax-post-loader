@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 //this class holds all field data,
 //it is the final field object
-class QAPL_Quick_Ajax_Form_Field implements QAPL_Quick_Ajax_Form_Field_Interface {
+class QAPL_Form_Field implements QAPL_Form_Field_Interface {
     private string $name;
     private string $label;
     private string $type;
