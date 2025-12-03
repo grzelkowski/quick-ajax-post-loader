@@ -28,9 +28,9 @@ class QAPL_Creator_Post_Type {
             'public'             => false,
             'publicly_queryable' => false,
             'show_ui'            => true,
-            'show_in_menu'       => QAPL_Quick_Ajax_Constants::PLUGIN_MENU_SLUG,
+            'show_in_menu'       => QAPL_Constants::PLUGIN_MENU_SLUG,
             'query_var'          => true,
-            'rewrite'            => ['slug' => QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG],
+            'rewrite'            => ['slug' => QAPL_Constants::CPT_SHORTCODE_SLUG],
             'capability_type'    => 'post',
             'has_archive'        => false,
             'hierarchical'       => false,
@@ -39,7 +39,7 @@ class QAPL_Creator_Post_Type {
             'menu_icon'          => 'dashicons-editor-code',
         ];
 
-        register_post_type(QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG, $args);
+        register_post_type(QAPL_Constants::CPT_SHORTCODE_SLUG, $args);
     }
 }
 

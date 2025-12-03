@@ -85,7 +85,7 @@ function qapl_output_template_end_post_message() {
     }
 }
 
-class QAPL_Quick_Ajax_Template_Config {
+class QAPL_Template_Config {
     protected $options = [];
     public function __construct(array $options = []) {
         $defaults = [
@@ -110,12 +110,12 @@ class QAPL_Quick_Ajax_Template_Config {
     }
 }
 
-abstract class QAPL_Quick_Ajax_Template_Base {
+abstract class QAPL_Template_Base {
     protected $quick_ajax_id;
     protected $template_name;
     protected $config;
 
-    public function __construct($quick_ajax_id, $template_name, QAPL_Quick_Ajax_Template_Config $config, array $global_options) {
+    public function __construct($quick_ajax_id, $template_name, QAPL_Template_Config $config, array $global_options) {
         $this->quick_ajax_id = $quick_ajax_id;
         $this->template_name = $template_name;
         $this->config = $config;
@@ -144,7 +144,7 @@ abstract class QAPL_Quick_Ajax_Template_Base {
     }
 }
 
-class QAPL_Quick_Ajax_Template_Post_Item extends QAPL_Quick_Ajax_Template_Base
+class QAPL_Template_Post_Item extends QAPL_Template_Base
     implements  QAPL_Post_Item_Date_Interface, 
                 QAPL_Post_Item_Image_Interface, 
                 QAPL_Post_Item_Title_Interface, 
@@ -157,7 +157,7 @@ class QAPL_Quick_Ajax_Template_Post_Item extends QAPL_Quick_Ajax_Template_Base
         }
         $date_format = $this->config->get('date_format');
         $output = '<div class="qapl-post-date"><span>' . esc_html(get_the_date($date_format)) . '</span></div>';
-        return apply_filters(QAPL_Quick_Ajax_Constants::HOOK_TEMPLATE_POST_ITEM_DATE, $output, $this->template_name, $this->quick_ajax_id);
+        return apply_filters(QAPL_Constants::HOOK_TEMPLATE_POST_ITEM_DATE, $output, $this->template_name, $this->quick_ajax_id);
     }
 
     public function render_image() {
@@ -166,17 +166,17 @@ class QAPL_Quick_Ajax_Template_Post_Item extends QAPL_Quick_Ajax_Template_Base
             ? '<div class="qapl-post-image">' . get_the_post_thumbnail(get_the_ID(), 'large', ['alt' => esc_attr(get_the_title()), 'loading' => 'lazy']) . '</div>'
             : '<div class="qapl-post-image qapl-no-image"></div>';
 
-        return apply_filters(QAPL_Quick_Ajax_Constants::HOOK_TEMPLATE_POST_ITEM_IMAGE, $output, $this->template_name, $this->quick_ajax_id);
+        return apply_filters(QAPL_Constants::HOOK_TEMPLATE_POST_ITEM_IMAGE, $output, $this->template_name, $this->quick_ajax_id);
     }
 
     public function render_title() {
         $output = '<div class="qapl-post-title"><h3>' . esc_html(get_the_title()) . '</h3></div>';
-        return apply_filters(QAPL_Quick_Ajax_Constants::HOOK_TEMPLATE_POST_ITEM_TITLE, $output, $this->template_name, $this->quick_ajax_id);
+        return apply_filters(QAPL_Constants::HOOK_TEMPLATE_POST_ITEM_TITLE, $output, $this->template_name, $this->quick_ajax_id);
     }
 
     public function render_excerpt() {
         $output = '<div class="qapl-post-description"><p>' . esc_html(wp_trim_words(get_the_excerpt(), 20)) . '</p></div>';
-        return apply_filters(QAPL_Quick_Ajax_Constants::HOOK_TEMPLATE_POST_ITEM_EXCERPT, $output, $this->template_name, $this->quick_ajax_id);
+        return apply_filters(QAPL_Constants::HOOK_TEMPLATE_POST_ITEM_EXCERPT, $output, $this->template_name, $this->quick_ajax_id);
     }
 
     public function render_read_more() {
@@ -185,12 +185,12 @@ class QAPL_Quick_Ajax_Template_Post_Item extends QAPL_Quick_Ajax_Template_Base
         }
         $label = $this->config->get('read_more_label');
         $output = '<div class="qapl-read-more"><p>' . esc_html($label) . '</p></div>';
-        return apply_filters(QAPL_Quick_Ajax_Constants::HOOK_TEMPLATE_POST_ITEM_READ_MORE, $output, $this->template_name, $this->quick_ajax_id);
+        return apply_filters(QAPL_Constants::HOOK_TEMPLATE_POST_ITEM_READ_MORE, $output, $this->template_name, $this->quick_ajax_id);
     }
 }
 
 
-class QAPL_Quick_Ajax_Template_Post_Item_Qapl_Full_Background_Image extends QAPL_Quick_Ajax_Template_Base
+class QAPL_Template_Post_Item_Qapl_Full_Background_Image extends QAPL_Template_Base
     implements  QAPL_Post_Item_Date_Interface, 
                 QAPL_Post_Item_Image_Interface, 
                 QAPL_Post_Item_Title_Interface, 
@@ -203,7 +203,7 @@ class QAPL_Quick_Ajax_Template_Post_Item_Qapl_Full_Background_Image extends QAPL
         }
         $date_format = $this->config->get('date_format');
         $output = '<div class="qapl-post-date"><span>' . esc_html(get_the_date($date_format)) . '</span></div>';
-        return apply_filters(QAPL_Quick_Ajax_Constants::HOOK_TEMPLATE_POST_ITEM_DATE, $output, $this->template_name, $this->quick_ajax_id);
+        return apply_filters(QAPL_Constants::HOOK_TEMPLATE_POST_ITEM_DATE, $output, $this->template_name, $this->quick_ajax_id);
     }
 
     public function render_image() {
@@ -212,17 +212,17 @@ class QAPL_Quick_Ajax_Template_Post_Item_Qapl_Full_Background_Image extends QAPL
             ? get_the_post_thumbnail(get_the_ID(), 'large', array('alt' => esc_attr(get_the_title()), 'class'  => 'qapl-post-image', 'loading' => 'lazy'))
             : '<span class="qapl-no-image"></span>';
 
-        return apply_filters(QAPL_Quick_Ajax_Constants::HOOK_TEMPLATE_POST_ITEM_IMAGE, $output, $this->template_name, $this->quick_ajax_id);
+        return apply_filters(QAPL_Constants::HOOK_TEMPLATE_POST_ITEM_IMAGE, $output, $this->template_name, $this->quick_ajax_id);
     }
 
     public function render_title() {
         $output = '<div class="qapl-post-title"><h3>' . esc_html(get_the_title()) . '</h3></div>';
-        return apply_filters(QAPL_Quick_Ajax_Constants::HOOK_TEMPLATE_POST_ITEM_TITLE, $output, $this->template_name, $this->quick_ajax_id);
+        return apply_filters(QAPL_Constants::HOOK_TEMPLATE_POST_ITEM_TITLE, $output, $this->template_name, $this->quick_ajax_id);
     }
 
     public function render_excerpt() {
         $output = '<div class="qapl-post-description"><p>' . esc_html(wp_trim_words(get_the_excerpt(), 20)) . '</p></div>';
-        return apply_filters(QAPL_Quick_Ajax_Constants::HOOK_TEMPLATE_POST_ITEM_EXCERPT, $output, $this->template_name, $this->quick_ajax_id);
+        return apply_filters(QAPL_Constants::HOOK_TEMPLATE_POST_ITEM_EXCERPT, $output, $this->template_name, $this->quick_ajax_id);
     }
     
     public function render_read_more() {
@@ -231,36 +231,36 @@ class QAPL_Quick_Ajax_Template_Post_Item_Qapl_Full_Background_Image extends QAPL
         }
         $label = $this->config->get('read_more_label');
         $output = '<div class="qapl-read-more"><p>' . esc_html($label) . '</p></div>';
-        return apply_filters(QAPL_Quick_Ajax_Constants::HOOK_TEMPLATE_POST_ITEM_READ_MORE, $output, $this->template_name, $this->quick_ajax_id);
+        return apply_filters(QAPL_Constants::HOOK_TEMPLATE_POST_ITEM_READ_MORE, $output, $this->template_name, $this->quick_ajax_id);
     }
 }
 
-class QAPL_Quick_Ajax_Template_Load_More_Button extends QAPL_Quick_Ajax_Template_Base implements QAPL_Load_More_Interface {
+class QAPL_Template_Load_More_Button extends QAPL_Template_Base implements QAPL_Load_More_Interface {
     public function render_load_more_button() {   
         $label = $this->config->get('load_more_label');
-        $output = '<button type="button" class="qapl-load-more-button qapl-button" data-button="'.QAPL_Quick_Ajax_Constants::LOAD_MORE_BUTTON_DATA_BUTTON.'">' . esc_html($label) . '</button>';
-        return apply_filters(QAPL_Quick_Ajax_Constants::HOOK_TEMPLATE_LOAD_MORE_BUTTON, $output, $this->quick_ajax_id);
+        $output = '<button type="button" class="qapl-load-more-button qapl-button" data-button="'.QAPL_Constants::LOAD_MORE_BUTTON_DATA_BUTTON.'">' . esc_html($label) . '</button>';
+        return apply_filters(QAPL_Constants::HOOK_TEMPLATE_LOAD_MORE_BUTTON, $output, $this->quick_ajax_id);
     }
 }
 
-class QAPL_Quick_Ajax_Template_End_Post_Message extends QAPL_Quick_Ajax_Template_Base implements QAPL_End_Post_Message_Interface {
+class QAPL_Template_End_Post_Message extends QAPL_Template_Base implements QAPL_End_Post_Message_Interface {
     public function render_end_post_message() {   
         $end_post_message = $this->config->get('end_post_message');
         $output = '<p>' . esc_html($end_post_message) . '</p>';
-        return apply_filters(QAPL_Quick_Ajax_Constants::HOOK_TEMPLATE_END_POST_MESSAGE, $output, $this->quick_ajax_id);
+        return apply_filters(QAPL_Constants::HOOK_TEMPLATE_END_POST_MESSAGE, $output, $this->quick_ajax_id);
     }
 }
 
-class QAPL_Quick_Ajax_Template_No_Post_Message extends QAPL_Quick_Ajax_Template_Base implements QAPL_No_Post_Message_Interface {
+class QAPL_Template_No_Post_Message extends QAPL_Template_Base implements QAPL_No_Post_Message_Interface {
     public function render_no_post_message() {   
         $no_post_message = $this->config->get('no_post_message');
         $output = '<p>' . esc_html($no_post_message) . '</p>';
-        return apply_filters(QAPL_Quick_Ajax_Constants::HOOK_TEMPLATE_NO_POST_MESSAGE, $output, $this->quick_ajax_id);
+        return apply_filters(QAPL_Constants::HOOK_TEMPLATE_NO_POST_MESSAGE, $output, $this->quick_ajax_id);
     }
 }
 
 
-abstract class QAPL_Quick_Ajax_Template_Empty_Filters {
+abstract class QAPL_Template_Empty_Filters {
     public function render_date() { return ''; }
     public function render_image() { return ''; }
     public function render_title() { return ''; }
@@ -274,19 +274,19 @@ abstract class QAPL_Quick_Ajax_Template_Empty_Filters {
 
 class QAPL_Post_Template_Factory {
     private static $available_templates = [
-        'post-item' => QAPL_Quick_Ajax_Template_Post_Item::class,
-        'post-item-qapl-full-background-image' => QAPL_Quick_Ajax_Template_Post_Item_Qapl_Full_Background_Image::class,
-        'load-more-button' => QAPL_Quick_Ajax_Template_Load_More_Button::class,
-        'no-post-message' => QAPL_Quick_Ajax_Template_No_Post_Message::class,
-        'end-post-message' => QAPL_Quick_Ajax_Template_End_Post_Message::class,
+        'post-item' => QAPL_Template_Post_Item::class,
+        'post-item-qapl-full-background-image' => QAPL_Template_Post_Item_Qapl_Full_Background_Image::class,
+        'load-more-button' => QAPL_Template_Load_More_Button::class,
+        'no-post-message' => QAPL_Template_No_Post_Message::class,
+        'end-post-message' => QAPL_Template_End_Post_Message::class,
 
     ];
     public static function get_template($container_settings) {
         $template_name = $container_settings['template_name'] ?? '';
         $quick_ajax_id = $container_settings['quick_ajax_id'] ?? '';
         $config_array = $container_settings['config'] ?? [];
-        $global_options = get_option(QAPL_Quick_Ajax_Constants::GLOBAL_OPTIONS_NAME, []);
-        $config = new QAPL_Quick_Ajax_Template_Config($config_array);
+        $global_options = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME, []);
+        $config = new QAPL_Template_Config($config_array);
 
         /*
         //generate the class name dynamically
@@ -301,13 +301,13 @@ class QAPL_Post_Template_Factory {
             return new $class_name($quick_ajax_id, $template_name, $config, $global_options);
         }
         //if the class doesn't exist
-        return new class($quick_ajax_id, $template_name, $config, $global_options) extends QAPL_Quick_Ajax_Template_Empty_Filters {};
+        return new class($quick_ajax_id, $template_name, $config, $global_options) extends QAPL_Template_Empty_Filters {};
     }
     
     private static function generate_class_name($template_name) {
         // Example conversions:
         // Input:  "post-item-qapl-full-background-image"
-        // Output: "QAPL_Quick_Ajax_Template_Post_Item_Qapl_Full_Background_Image"
+        // Output: "QAPL_Template_Post_Item_Qapl_Full_Background_Image"
 
         //replace dashes and underscores with spaces
         $formatted_name = str_replace('-', ' ', $template_name);

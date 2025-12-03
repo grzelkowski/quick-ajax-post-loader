@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 //this class helps build the field object step by step
 //it is useful if you don't want to pass all parameters in constructor
-class QAPL_Quick_Ajax_Form_Field_Builder {
+class QAPL_Form_Field_Builder {
     private string $name = '';
     private string $label = '';
     private string $type = 'text';
@@ -44,8 +44,8 @@ class QAPL_Quick_Ajax_Form_Field_Builder {
 
     //finally this method creates the final field object
     //using all the properties you set before
-    public function build(): QAPL_Quick_Ajax_Form_Field_Interface {
-        return new QAPL_Quick_Ajax_Form_Field(
+    public function build(): QAPL_Form_Field_Interface {
+        return new QAPL_Form_Field(
             $this->name,
             $this->label,
             $this->type,

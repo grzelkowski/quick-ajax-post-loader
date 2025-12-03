@@ -20,8 +20,8 @@ class QAPL_Creator_Editor {
             }
         }
 
-        if ($post_type === QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG) {
-            new QAPL_CPT_Creator_Form(QAPL_Quick_Ajax_Constants::SETTINGS_WRAPPER_ID, QAPL_Quick_Ajax_Constants::DB_POSTMETA_SHORTCODE_SETTINGS, $post_type);
+        if ($post_type === QAPL_Constants::CPT_SHORTCODE_SLUG) {
+            new QAPL_CPT_Creator_Form(QAPL_Constants::SETTINGS_WRAPPER_ID, QAPL_Constants::DB_POSTMETA_SHORTCODE_SETTINGS, $post_type);
         }
     }
 }

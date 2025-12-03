@@ -13,7 +13,9 @@ final class QAPL_Ajax_Query_Builder{
         // sanitize and normalize input
         $source_args = $this->normalize_args($source_args);
 
-        $this->generate_block_id($attributes);
+        if (!$this->quick_ajax_id) {
+            $this->generate_block_id($attributes);
+        }
 
         //normalize input args (sanitize selected_terms, post__not_in, etc.)
         //$this->input_args = $this->normalize_args($source_args);
@@ -22,7 +24,7 @@ final class QAPL_Ajax_Query_Builder{
         // generate query args (post_type, tax_query, etc.)
         $query_args = $this->initialize_query_args($source_args);
 
-        $query_args['post_status'] = QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POST_STATUS_DEFAULT;
+        $query_args['post_status'] = QAPL_Constants::QUERY_SETTING_SELECT_POST_STATUS_DEFAULT;
 
         /*
         if (isset($quick_ajax_args['post_type']) && !empty($quick_ajax_args['post_type'])) {
@@ -43,7 +45,7 @@ final class QAPL_Ajax_Query_Builder{
         $query_args = array_filter($query_args, function($value) {
             return !empty($value) || $value === 0 || $value === '0';
         });
-        $query_args = apply_filters(QAPL_Quick_Ajax_Constants::HOOK_MODIFY_POSTS_QUERY_ARGS, $query_args, $this->quick_ajax_id);
+        $query_args = apply_filters(QAPL_Constants::HOOK_MODIFY_POSTS_QUERY_ARGS, $query_args, $this->quick_ajax_id);
 
         if (empty($query_args)) {
             return false;
@@ -86,11 +88,11 @@ final class QAPL_Ajax_Query_Builder{
     private function query_args_base_query_args($source_args) {
         return [
             'post_type' => isset($source_args['post_type']) ? sanitize_text_field($source_args['post_type']) : null,
-            'posts_per_page' => isset($source_args['posts_per_page']) ? intval($source_args['posts_per_page']) : QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE_DEFAULT,
-            'orderby' => isset($source_args['orderby']) ? sanitize_text_field($source_args['orderby']) : QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDERBY_DEFAULT,
-            'order' => isset($source_args['order']) ? sanitize_text_field($source_args['order']) : QAPL_Quick_Ajax_Constants::QUERY_SETTING_SELECT_ORDER_DEFAULT,
+            'posts_per_page' => isset($source_args['posts_per_page']) ? intval($source_args['posts_per_page']) : QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE_DEFAULT,
+            'orderby' => isset($source_args['orderby']) ? sanitize_text_field($source_args['orderby']) : QAPL_Constants::QUERY_SETTING_SELECT_ORDERBY_DEFAULT,
+            'order' => isset($source_args['order']) ? sanitize_text_field($source_args['order']) : QAPL_Constants::QUERY_SETTING_SELECT_ORDER_DEFAULT,
             'post__not_in' => $source_args['post__not_in'] ?? [],
-            'ignore_sticky_posts' => isset($source_args['ignore_sticky_posts']) ? intval($source_args['ignore_sticky_posts']) : QAPL_Quick_Ajax_Constants::QUERY_SETTING_IGNORE_STICKY_POSTS_DEFAULT,
+            'ignore_sticky_posts' => isset($source_args['ignore_sticky_posts']) ? intval($source_args['ignore_sticky_posts']) : QAPL_Constants::QUERY_SETTING_IGNORE_STICKY_POSTS_DEFAULT,
             'paged' => isset($source_args['paged']) ? intval($source_args['paged']) : 1,
         ];
     }  
@@ -136,10 +138,10 @@ final class QAPL_Ajax_Query_Builder{
     }
     private function generate_block_id($attributes = false) {
         if (!is_array($attributes)) {
-            $attributes = [QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_ID => sanitize_text_field($attributes)];
+            $attributes = [QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID => sanitize_text_field($attributes)];
         }
-        if (isset($attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_ID])) {
-            $existing_id = sanitize_text_field($attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_ID]);
+        if (isset($attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID])) {
+            $existing_id = sanitize_text_field($attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID]);
             // if id already starts with 'p' or 'c', keep it untouched
             if (preg_match('/^[pc]\d+$/', $existing_id)) {
                 $this->quick_ajax_id = $existing_id;
@@ -147,11 +149,10 @@ final class QAPL_Ajax_Query_Builder{
             }
             // Prefix 'p' for 'shortcode' equal to true, otherwise 'c'
             $prefix = (isset($attributes['shortcode']) && $attributes['shortcode'] === true) ? 'p' : 'c';              
-            $this->quick_ajax_id = esc_attr($prefix . $attributes[QAPL_Quick_Ajax_Constants::ATTRIBUTE_QUICK_AJAX_ID]);
+            $this->quick_ajax_id = esc_attr($prefix . $attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID]);
             return;
         } else {
-            // Increment qapl_id if 'quick_ajax_id' is not set
-            $this->quick_ajax_id++;
+            $this->quick_ajax_id = uniqid('c', false);
         }
     }
 }

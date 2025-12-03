@@ -9,8 +9,8 @@ class QAPL_Creator_Shortcode_Box {
     }
     public static function render($post) {
         //check the post type
-        if ($post && $post->post_type === QAPL_Quick_Ajax_Constants::CPT_SHORTCODE_SLUG) {
-            $shortcode = QAPL_Quick_Ajax_Shortcode_Generator::generate_shortcode($post->ID);
+        if ($post && $post->post_type === QAPL_Constants::CPT_SHORTCODE_SLUG) {
+            $shortcode = QAPL_Shortcode_Generator::generate_shortcode($post->ID);
             echo '<div id="shortcode-box-wrap">';
             echo '<span class="shortcode-description">' . esc_html__('Copy and paste this shortcode on the page to display the posts list', 'quick-ajax-post-loader') . '</span>';
             echo '<div class="click-and-select-all">';

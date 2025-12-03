@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class QAPL_Quick_Ajax_Utilities {
+class QAPL_Utilities {
     public static function verify_classes_exist($class_names, string $context = ''): bool {
         if (is_string($class_names)) {
         $class_names = [$class_names];
@@ -28,7 +28,7 @@ class QAPL_Quick_Ajax_Utilities {
     public static function check_name_conflict(string $type, string $name) {
         $exists = false;
         $type_formatted = '';
-        $plugin_name = QAPL_Quick_Ajax_Constants::PLUGIN_NAME;
+        $plugin_name = QAPL_Constants::PLUGIN_NAME;
         if ($type === 'class' && class_exists($name)) {
             $exists = true;
             $type_formatted = 'class';

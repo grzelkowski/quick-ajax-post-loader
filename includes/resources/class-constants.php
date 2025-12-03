@@ -3,15 +3,15 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class QAPL_Quick_Ajax_Constants{
+class QAPL_Constants{
     // Plugin info
-    public const PLUGIN_VERSION = '1.8.5';
+    public const PLUGIN_VERSION = '1.8.6';
     public const PLUGIN_NAME = 'Quick Ajax Post Loader';
     public const PLUGIN_TEXT_DOMAIN = 'quick-ajax-post-loader';
     public const PLUGIN_SLUG = 'quick-ajax-post-loader';
     public const PLUGIN_MINIMUM_PHP_VERSION = '7.4';
     public const PLUGIN_MINIMUM_WP_VERSION = '5.6';
-    public const PLUGIN_TESTED_WP_VERSION = '6.8';
+    public const PLUGIN_TESTED_WP_VERSION = '6.9';
 
 
     // Menu and page slugs

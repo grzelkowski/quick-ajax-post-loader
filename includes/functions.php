@@ -2,10 +2,37 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+class QAPL_Controller_Registry {
+    private $controllers = [];
+    public function get_controller($args, $attributes): QAPL_Ajax_Controller {
+        if (!is_array($args) || !is_array($attributes)) {
+            //if no args
+            $key = 'default';
+        } else {
+            $key = md5(json_encode([$args, $attributes])); //key generation
+        }
+        if (!isset($this->controllers[$key])) {
+            $this->controllers[$key] = new QAPL_Ajax_Controller();
+        }
+        return $this->controllers[$key];
+    }
+}
+function qapl_get_controller_registry(): QAPL_Controller_Registry {
+    static $instance = null;
+    if ($instance === null) {
+        $instance = new QAPL_Controller_Registry();
+    }
+    return $instance;
+}
+
 //add get qapl_render_post_container - echo qapl_render_post_container()
 //add get qapl_render_taxonomy_filter
 function qapl_render_post_container($args, $attributes = null, $render_context = null, $meta_query = null) {
-    $controller = new QAPL_Ajax_Controller();
+    if (!is_array($args)) {
+        return;
+    }
+    $manager = qapl_get_controller_registry();
+    $controller = $manager->get_controller($args, $attributes);
     echo $controller->render_post_container($args, $attributes, $render_context, $meta_query);
 }
 //alias for backward compatibility
@@ -14,7 +41,11 @@ function qapl_quick_ajax_post_grid($args, $attributes) {
 }
 
 function qapl_render_taxonomy_filter($args, $attributes, $taxonomy = null) {
-    $controller = new QAPL_Ajax_Controller();
+    if (!is_array($args)) {
+        return;
+    }
+    $manager = qapl_get_controller_registry();
+    $controller = $manager->get_controller($args, $attributes);
     echo $controller->render_taxonomy_filter($args, $attributes, $taxonomy);
 }
 //alias for backward compatibility
@@ -23,7 +54,11 @@ function qapl_quick_ajax_term_filter($args, $attributes, $taxonomy) {
 }
 
 function qapl_render_sort_controls($args, $attributes, $sort_options) {
-    $controller = new QAPL_Ajax_Controller();
+    if (!is_array($args)) {
+        return;
+    }
+    $manager = qapl_get_controller_registry();
+    $controller = $manager->get_controller($args, $attributes);
     echo $controller->render_sort_controls($args, $attributes, $sort_options);
 }
 

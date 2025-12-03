@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-final class QAPL_Quick_Ajax_File_Manager implements QAPL_Quick_Ajax_File_Manager_Interface {
+final class QAPL_File_Manager implements QAPL_File_Manager_Interface {
     private $plugin_dir_path;
     private $plugin_dir_url;
 
@@ -139,12 +139,12 @@ final class QAPL_Quick_Ajax_File_Manager implements QAPL_Quick_Ajax_File_Manager
     }
     //template post item
      public function get_post_item_template(string $template_name = ''): string {
-        $default_name = QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE_DEFAULT;
+        $default_name = QAPL_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE_DEFAULT;
         return $this->get_templates_file_path($template_name, $default_name, '/post-items/');
     }
     //template loader icon
     public function get_loader_icon_template(string $template_name = ''): string {
-        $default_name = QAPL_Quick_Ajax_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON_DEFAULT;
+        $default_name = QAPL_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON_DEFAULT;
         return $this->get_templates_file_path($template_name, $default_name, '/loader-icon/');
     }
     //template for no posts found message

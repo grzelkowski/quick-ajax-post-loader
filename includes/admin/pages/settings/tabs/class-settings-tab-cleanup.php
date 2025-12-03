@@ -12,7 +12,7 @@ class QAPL_Settings_Tab_Cleanup{
 
     public function register_fields() {
         // remove old data checkbox
-        $field = QAPL_Quick_Ajax_Form_Field_Factory::build_global_remove_old_data_field();
+        $field = QAPL_Form_Field_Factory::build_global_remove_old_data_field();
         $this->settings_page->register_field($field);
     }
 

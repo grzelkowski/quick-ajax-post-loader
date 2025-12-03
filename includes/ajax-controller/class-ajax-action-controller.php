@@ -2,7 +2,7 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-final class QAPL_Quick_Ajax_Action_Controller {
+final class QAPL_Action_Controller {
 
     public static function register(): void {
         // load posts
@@ -24,12 +24,12 @@ final class QAPL_Quick_Ajax_Action_Controller {
         if (empty($_POST['args'])) {
             wp_send_json_error(['message' => 'Quick Ajax Post Loader: Invalid request, Missing arguments.']);
         } else {
-            $global_options     = get_option(QAPL_Quick_Ajax_Constants::GLOBAL_OPTIONS_NAME, []);
+            $global_options     = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME, []);
             $helper             = new QAPL_Ajax_Helper();
-            $file_manager       = new QAPL_Quick_Ajax_File_Manager();
+            $file_manager       = new QAPL_File_Manager();
             $ajax_builder       = new QAPL_Ajax_Query_Builder();
             $layout_builder     = new QAPL_Ajax_Layout_Builder($file_manager, $helper);
-            $ui_renderer        = new QAPL_Ajax_UI_Renderer($file_manager, $global_options, $helper);
+            $ui_renderer        = new QAPL_Ajax_UI_Renderer($file_manager, $helper, $global_options);
             $load_more_renderer = new QAPL_Ajax_Load_More_Renderer($file_manager,$ui_renderer, $helper);
             $end_posts_renderer = new QAPL_Ajax_End_Message_Renderer($file_manager);
             
@@ -67,13 +67,13 @@ final class QAPL_Quick_Ajax_Action_Controller {
             if ($query->have_posts()) {
                 $container_settings = [
                     'quick_ajax_id' => $quick_ajax_id,
-                    'template_name' => $attrs[QAPL_Quick_Ajax_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE],
+                    'template_name' => $attrs[QAPL_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE],
                 ];
                 $qapl_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
                 QAPL_Post_Template_Context::set_template($qapl_post_template);
                 while ($query->have_posts()) {
                     $query->the_post();
-                    $template_path = $layout[QAPL_Quick_Ajax_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE];
+                    $template_path = $layout[QAPL_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE];
                     if (!$template_path || !file_exists($template_path)) {
                         wp_send_json_error(['message' => 'Quick Ajax Post Loader: Template file not found']);
                     }
@@ -99,12 +99,12 @@ final class QAPL_Quick_Ajax_Action_Controller {
                 'max_num_pages'   => intval($query->max_num_pages),
                 'found_posts'     => intval($query->found_posts),
                 'post_count'      => intval($query->post_count),
-                'infinite_scroll' => intval($attrs[QAPL_Quick_Ajax_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL] ?? 0),
+                'infinite_scroll' => intval($attrs[QAPL_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL] ?? 0),
             ];
             $load_more_data = $load_more_renderer->build_load_more_button($attrs,$source_args,$query_data,$quick_ajax_id);            
             $load_more = $load_more_data ? $load_more_renderer->render_load_more_button($load_more_data) : false;
 
-            $show_end_message = $end_posts_renderer->build_end_of_posts_message($load_more, intval($query->max_num_pages), $quick_ajax_id, intval($attrs[QAPL_Quick_Ajax_Constants::ATTRIBUTE_SHOW_END_MESSAGE] ?? 0));
+            $show_end_message = $end_posts_renderer->build_end_of_posts_message($load_more, intval($query->max_num_pages), $quick_ajax_id, intval($attrs[QAPL_Constants::ATTRIBUTE_SHOW_END_MESSAGE] ?? 0));
             
             //$output = $ajax_class->replace_placeholders($output);
             wp_send_json_success([
@@ -157,7 +157,7 @@ final class QAPL_Quick_Ajax_Action_Controller {
         $saved_terms = [];
         if ($post_id > 0) {
             // get saved terms from post meta
-            $post_meta = get_post_meta($post_id, QAPL_Quick_Ajax_Constants::DB_POSTMETA_SHORTCODE_SETTINGS, true);
+            $post_meta = get_post_meta($post_id, QAPL_Constants::DB_POSTMETA_SHORTCODE_SETTINGS, true);
             $post_meta_values = maybe_unserialize($post_meta);
             // if terms exist in post meta
             if (is_array($post_meta_values) && isset($post_meta_values['qapl_manual_selected_terms'])) {
@@ -192,9 +192,9 @@ final class QAPL_Quick_Ajax_Action_Controller {
             wp_send_json_error(['message' => 'Quick Ajax Post Loader: Not an AJAX request']);
         }
         // nonce verification
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])),QAPL_Quick_Ajax_Constants::NONCE_FORM_QUICK_AJAX_ACTION)) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])),QAPL_Constants::NONCE_FORM_QUICK_AJAX_ACTION)) {
             wp_send_json_error(['message' => 'Quick Ajax Post Loader: Unauthorized request']);
         }
     }
 }
-QAPL_Quick_Ajax_Action_Controller::register();
+QAPL_Action_Controller::register();
