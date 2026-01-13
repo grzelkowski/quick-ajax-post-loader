@@ -161,13 +161,13 @@ class QAPL_Form_Field_Factory {
             ],
             [
                 'value' => 'title-asc',
-                'label' => isset($global_sort_labels['sort_option_title_desc_label'])
+                'label' => isset($global_sort_labels['sort_option_title_asc_label'])
                     ? $global_sort_labels['sort_option_title_asc_label']
                     : __('A → Z', 'quick-ajax-post-loader')
             ],
             [
                 'value' => 'title-desc',
-                'label' => isset($global_sort_labels['sort_option_title_asc_label'])
+                'label' => isset($global_sort_labels['sort_option_title_desc_label'])
                     ? $global_sort_labels['sort_option_title_desc_label']
                     : __('Z → A', 'quick-ajax-post-loader')
             ],
@@ -185,6 +185,13 @@ class QAPL_Form_Field_Factory {
         $builder->set_options($sort_options);
         $builder->set_default(QAPL_Constants::QUERY_SETTING_SELECT_SORT_BUTTON_OPTIONS_DEFAULT);
         $builder->set_description(__('Select which sorting options will be available to users.', 'quick-ajax-post-loader'));
+        $builder->set_tooltip([
+            'title'   => __('Custom labels for sorting options', 'quick-ajax-post-loader'),
+            'content' => __('Sorting option labels can be changed in plugin settings.', 'quick-ajax-post-loader') .
+                        ' <a href="/wp-admin/admin.php?page=qapl-settings" target="_blank" rel="noopener noreferrer">' .
+                        __('Open settings', 'quick-ajax-post-loader') .
+                        '</a>.'
+        ]);
         return $builder->build();
     }
     //Inline Filter & Sorting
@@ -287,6 +294,14 @@ class QAPL_Form_Field_Factory {
         $builder->set_type('checkbox');
         $builder->set_default(QAPL_Constants::QUERY_SETTING_SHOW_END_MESSAGE_DEFAULT);
         $builder->set_description(__('Display a message when there are no more posts to load via AJAX.', 'quick-ajax-post-loader'));
+        $builder->set_tooltip([
+            'title'   => __('End message content', 'quick-ajax-post-loader'),
+            'content' => __('The end message text can be changed in plugin settings.', 'quick-ajax-post-loader') .
+                ' <a href="/wp-admin/admin.php?page=qapl-settings" target="_blank" rel="noopener noreferrer">' .
+                __('Open settings', 'quick-ajax-post-loader') .
+                '</a>.'
+            ]);
+
         return $builder->build();
     }
     //apply quick ajax css style
@@ -335,6 +350,13 @@ class QAPL_Form_Field_Factory {
         $builder->set_options($options);
         $builder->set_default(QAPL_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE_DEFAULT);
         $builder->set_description(__('Choose a template for displaying post items.', 'quick-ajax-post-loader'));
+        $builder->set_tooltip([
+            'title'     => __('How to add a new post item template?', 'quick-ajax-post-loader'),
+            'content'   => __('To add a new post item template you need to create a new PHP file in your theme\'s folder.', 'quick-ajax-post-loader') .
+                        ' <a href="/wp-admin/admin.php?page=qapl-settings&tab=3#qapl_help_3_creating_custom_templates" target="_blank" rel="noopener noreferrer">' .
+                        __('View detailed guide', 'quick-ajax-post-loader') .
+                        '</a>.'
+        ]);
         return $builder->build();
     }
     //add custom class for taxonomy filter
@@ -421,6 +443,13 @@ class QAPL_Form_Field_Factory {
         $builder->set_options($options);
         $builder->set_default($default);
         $builder->set_description(__('Choose an icon to display as the loading indicator when the "Load More" button is clicked.', 'quick-ajax-post-loader'));
+        $builder->set_tooltip([
+            'title'   => __('How to add a new loader icon?', 'quick-ajax-post-loader'),
+            'content' => __('To add a new loader icon you need to create a new PHP file in your theme\'s folder.', 'quick-ajax-post-loader') .
+                    ' <a href="/wp-admin/admin.php?page=qapl-settings&tab=3#qapl_help_3_creating_custom_loader" target="_blank" rel="noopener noreferrer">' .
+                    __('View detailed guide', 'quick-ajax-post-loader') .
+                    '</a>.'
+        ]);
         return $builder->build();
     }
     //build global options set read more

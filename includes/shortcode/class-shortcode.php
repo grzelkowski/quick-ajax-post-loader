@@ -31,6 +31,7 @@ class QAPL_Shortcode {
         $manual_term_selection = $data_args->get_arg_value('manual_term_selection', QAPL_Constants::QUERY_SETTING_MANUAL_TERM_SELECTION);
         $manual_selected_terms = $data_args->get_arg_value('manual_selected_terms', QAPL_Constants::QUERY_SETTING_SELECTED_TERMS);
         // return query args if post type is defined
+        // phpcs:disable WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- intentional exclusion of rendered posts
         if(!empty($selected_post_type)){
             $args = array(
                 'post_type' => $selected_post_type,
@@ -73,6 +74,7 @@ class QAPL_Shortcode {
             }            
             */
         }
+        // phpcs:enable WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in
         if(!empty($args)){
             $this->query_args = $args;
         }
@@ -140,6 +142,5 @@ class QAPL_Shortcode {
         return $output;
     }
 }
-$quick_ajax_shortcode = new QAPL_Shortcode();
-add_shortcode('qapl-quick-ajax', array($quick_ajax_shortcode, 'render_quick_ajax_shortcode'));
+add_shortcode('qapl-quick-ajax', array(new QAPL_Shortcode(), 'render_quick_ajax_shortcode'));
 

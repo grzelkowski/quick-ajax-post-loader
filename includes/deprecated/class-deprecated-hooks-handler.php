@@ -14,6 +14,7 @@ class QAPL_Deprecated_Hooks_Handler {
     }
 
     public function handle_deprecated_hooks() {
+        // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound
         foreach ($this->deprecated_hooks as $old_hook => $new_hook) {
             // Check for deprecated actions
             if (has_action($old_hook)) {
@@ -29,6 +30,7 @@ class QAPL_Deprecated_Hooks_Handler {
                 }, 10, 99);
             }
         }
+        // phpcs:enable WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound
     }
 
     public function display_admin_notice() {
@@ -53,31 +55,30 @@ class QAPL_Deprecated_Hooks_Handler {
     }
 }
 
-// Example of instantiating the class with the list of deprecated hooks
-$deprecated_hooks = [
-    // Filter Wrapper Hooks
-    'qapl_filter_wrapper_pre' => QAPL_Constants::HOOK_FILTER_CONTAINER_BEFORE,
-    'qapl_filter_wrapper_open' => QAPL_Constants::HOOK_FILTER_CONTAINER_START,
-    'qapl_filter_wrapper_close' => QAPL_Constants::HOOK_FILTER_CONTAINER_END,
-    'qapl_filter_wrapper_complete' => QAPL_Constants::HOOK_FILTER_CONTAINER_AFTER,
+final class QAPL_Deprecated_Hooks_List {
+    public static function get_hooks(): array {
+        return [
+            // Filter Wrapper Hooks
+            'qapl_filter_wrapper_pre'      => QAPL_Constants::HOOK_FILTER_CONTAINER_BEFORE,
+            'qapl_filter_wrapper_open'    => QAPL_Constants::HOOK_FILTER_CONTAINER_START,
+            'qapl_filter_wrapper_close'   => QAPL_Constants::HOOK_FILTER_CONTAINER_END,
+            'qapl_filter_wrapper_complete'=> QAPL_Constants::HOOK_FILTER_CONTAINER_AFTER,
 
-    // Posts Wrapper Hooks
-    'qapl_posts_wrapper_pre' => QAPL_Constants::HOOK_POSTS_CONTAINER_BEFORE,
-    'qapl_posts_wrapper_open' => QAPL_Constants::HOOK_POSTS_CONTAINER_START,
-    'qapl_posts_wrapper_close' => QAPL_Constants::HOOK_POSTS_CONTAINER_END,
-    'qapl_posts_wrapper_complete' => QAPL_Constants::HOOK_POSTS_CONTAINER_AFTER,
+            // Posts Wrapper Hooks
+            'qapl_posts_wrapper_pre'      => QAPL_Constants::HOOK_POSTS_CONTAINER_BEFORE,
+            'qapl_posts_wrapper_open'    => QAPL_Constants::HOOK_POSTS_CONTAINER_START,
+            'qapl_posts_wrapper_close'   => QAPL_Constants::HOOK_POSTS_CONTAINER_END,
+            'qapl_posts_wrapper_complete'=> QAPL_Constants::HOOK_POSTS_CONTAINER_AFTER,
 
-    // Load More Button Hooks
-    //'qapl_load_more_button_pre' => QAPL_Constants::HOOK_LOAD_MORE_BEFORE,
-    //'qapl_load_more_button_complete' => QAPL_Constants::HOOK_LOAD_MORE_AFTER,
+            // Loader
+            'qapl_loader_icon_pre'        => QAPL_Constants::HOOK_LOADER_BEFORE,
+            'qapl_loader_icon_complete'   => QAPL_Constants::HOOK_LOADER_AFTER,
 
-    // Loader Icon Hooks
-    'qapl_loader_icon_pre' => QAPL_Constants::HOOK_LOADER_BEFORE,
-    'qapl_loader_icon_complete' => QAPL_Constants::HOOK_LOADER_AFTER,
+            // Filters
+            'qapl_modify_query'           => QAPL_Constants::HOOK_MODIFY_POSTS_QUERY_ARGS,
+            'qapl_modify_term_buttons'    => QAPL_Constants::HOOK_MODIFY_TAXONOMY_FILTER_BUTTONS,
+        ];
+    }
+}
 
-    // Filters
-    'qapl_modify_query' => QAPL_Constants::HOOK_MODIFY_POSTS_QUERY_ARGS,
-    'qapl_modify_term_buttons' => QAPL_Constants::HOOK_MODIFY_TAXONOMY_FILTER_BUTTONS
-];
-
-new QAPL_Deprecated_Hooks_Handler($deprecated_hooks);
+new QAPL_Deprecated_Hooks_Handler(QAPL_Deprecated_Hooks_List::get_hooks());

@@ -11,12 +11,13 @@ abstract class QAPL_Form_Content_Builder{
         if (!empty($field_properties['name'])) {
             $field = [
                 'name' => $field_properties['name'],
-                'label' => isset($field_properties['label']) ? $field_properties['label'] : null,
-                'type' => isset($field_properties['type']) ? $field_properties['type'] : null,
-                'options' => isset($field_properties['options']) ? $field_properties['options'] : null,
-                'default' => isset($field_properties['default']) ? $field_properties['default'] : null,
-                'placeholder' => isset($field_properties['placeholder']) ? $field_properties['placeholder'] : null,
-                'description' => isset($field_properties['description']) ? $field_properties['description'] : null,
+                'label' => $field_properties['label'] ?? null,
+                'type' => $field_properties['type'] ?? null,
+                'options' => $field_properties['options'] ?? null,
+                'default' => $field_properties['default'] ?? null,
+                'placeholder' => $field_properties['placeholder'] ?? null,
+                'description' => $field_properties['description'] ?? null,
+                'tooltip' => $field_properties['tooltip'] ?? [],
             ];
             $this->fields[$field_properties['name']] = $field;
         }
@@ -63,15 +64,14 @@ abstract class QAPL_Form_Content_Builder{
             
         $visibility = $this->show_hide_element($field_options);
         $field_container_class = $visibility['field_container_class'];
-        $field_container_data_item = $visibility['field_container_data_item']; 
-        
-        $field = '<div class="quick-ajax-field-container quick-ajax-select-field qa-inline-block' . $field_container_class . '"' . $field_container_data_item . '>';
-        $field .= '<label for="' . $this->fields[$field_name]['name'] . '">' . $this->fields[$field_name]['label'] . '</label>';
+        $field_container_data_item = $visibility['field_container_data_item'];        
+        $field = '<div class="quick-ajax-field-container quick-ajax-checkbox-field qa-inline-block' . $field_container_class . '"' . $field_container_data_item . '>';
+        $field .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>'. $this->render_tooltip($this->fields[$field_name]['tooltip']) .'</div>';
         $field .= '<div class="quick-ajax-field">';
         $field .= '<div class="switch-checkbox">';
         $field .= '<div class="switch-wrap">';
-        $field .= '<label for="' . $this->fields[$field_name]['name'] . '">';
-        $field .= '<input type="checkbox" name="' . $this->fields[$field_name]['name'] . '" id="' . $this->fields[$field_name]['name'] . '" value="1" ' . checked($checked, 1, false) . ' '. $is_required .' />';
+        $field .= '<label for="' . esc_attr($this->fields[$field_name]['name']) . '">';
+        $field .= '<input type="checkbox" name="' . esc_attr($this->fields[$field_name]['name']) . '" id="' . esc_attr($this->fields[$field_name]['name']) . '" value="1" ' . checked($checked, 1, false) . ' '. $is_required .' />';
         $field .= '<span class="switch"></span>';
         $field .= '</label>';
         $field .= '</div>';            
@@ -82,14 +82,13 @@ abstract class QAPL_Form_Content_Builder{
     
         return $field;
     }
-    
     private function add_select_field($field_name, $field_options = []){
         $current_value = $this->get_the_value_if_exist($field_name);
         $visibility = $this->show_hide_element($field_options);
         $field_container_class = $visibility['field_container_class'];
         $field_container_data_item = $visibility['field_container_data_item']; 
-        $field = '<div class="quick-ajax-field-container quick-ajax-checkbox-field' . $field_container_class . '"' . $field_container_data_item . '>';
-        $field .= '<label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>';
+        $field = '<div class="quick-ajax-field-container quick-ajax-select-field' . $field_container_class . '"' . $field_container_data_item . '>';
+        $field .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) .'</label>'. $this->render_tooltip($this->fields[$field_name]['tooltip']) .'</div>';
         $field .= '<div class="quick-ajax-field">';
         $field .= '<select name="' . esc_attr($this->fields[$field_name]['name']) . '" id="' . esc_attr($this->fields[$field_name]['name']) . '">';
         if(is_array($this->fields[$field_name]['options'])){
@@ -113,7 +112,7 @@ abstract class QAPL_Form_Content_Builder{
         $field_container_data_item = $show_hide_element['field_container_data_item'];
         $field_container_class = $show_hide_element['field_container_class'];
         $field = '<div class="quick-ajax-field-container quick-ajax-multiselect-field' . $field_container_class . '"' . $field_container_data_item . '>';
-        $field .= '<label>' . esc_html($this->fields[$field_name]['label']) . '</label>';
+        $field .= '<div class="quick-ajax-field-label"><label>' . esc_html($this->fields[$field_name]['label']) . '</label>'. $this->render_tooltip($this->fields[$field_name]['tooltip']) .'</div>';
         $field .= '<div class="quick-ajax-field">';
 
         $field .= '<div class="quick-ajax-field-options" id="' . esc_attr($this->fields[$field_name]['name']) . '">';
@@ -132,7 +131,7 @@ abstract class QAPL_Form_Content_Builder{
                 $field .= '</div>';
             }
         }elseif(is_string($this->fields[$field_name]['options'])){
-            $field .= '<div class="quick-ajax-multiselect-option">'.$this->fields[$field_name]['options'].'</div>';
+            $field .= '<div class="quick-ajax-multiselect-option">'.esc_html($this->fields[$field_name]['options']).'</div>';
         }
         $field .= '</div>';
         
@@ -141,8 +140,7 @@ abstract class QAPL_Form_Content_Builder{
         $field .= '</div>';
     
         return $field;
-    }
-    
+    }    
     private function add_number_field($field_name, $field_options = []){
         $current_value = $this->get_the_value_if_exist($field_name);
         $show_hide_element = $this->show_hide_element($field_options);
@@ -150,7 +148,7 @@ abstract class QAPL_Form_Content_Builder{
         $field_container_class = $show_hide_element['field_container_class'];
         
         $field = '<div class="quick-ajax-field-container quick-ajax-number-field' . $field_container_class . '"' . $field_container_data_item . '>';
-        $field .= '<label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>';
+        $field .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>'. $this->render_tooltip($this->fields[$field_name]['tooltip']) .'</div>';
         $field .= '<div class="quick-ajax-field">';
         $field .= '<input type="number" name="' . esc_attr($this->fields[$field_name]['name']) . '" id="' . esc_attr($this->fields[$field_name]['name']) . '" value="' . esc_attr($current_value) . '" />';
         $field .= $this->add_field_description($this->fields[$field_name]['description']);
@@ -167,7 +165,7 @@ abstract class QAPL_Form_Content_Builder{
         $placeholder = !empty($this->fields[$field_name]['placeholder']) ? ' placeholder="' . esc_attr($this->fields[$field_name]['placeholder']) . '"' : '';
         
         $field = '<div class="quick-ajax-field-container quick-ajax-text-input-field' . $field_container_class . '"' . $field_container_data_item . '>';
-        $field .= '<label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>';
+        $field .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>'. $this->render_tooltip($this->fields[$field_name]['tooltip']) .'</div>';
         $field .= '<div class="quick-ajax-field">';
         $field .= '<input type="text" name="' . esc_attr($this->fields[$field_name]['name']) . '" id="' . esc_attr($this->fields[$field_name]['name']) . '" value="' . esc_attr($current_value) . '"' . $placeholder . '/>';
         $field .= $this->add_field_description($this->fields[$field_name]['description']);
@@ -184,7 +182,7 @@ abstract class QAPL_Form_Content_Builder{
         $field_container_class = $show_hide_element['field_container_class'];
 
         $field = '<div class="quick-ajax-field-container quick-ajax-text-input-field' . $field_container_class . '"' . $field_container_data_item . '>';
-        $field .= '<label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>';
+        $field .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>'. $this->render_tooltip($this->fields[$field_name]['tooltip']) .'</div>';
         $field .= '<div class="quick-ajax-field">';
         $field .= '<input type="text" class="color-picker-field" name="' . esc_attr($this->fields[$field_name]['name']) . '" id="' . esc_attr($this->fields[$field_name]['name']) . '" value="' . esc_attr($current_value) . '"/>';
         $field .= $this->add_field_description($this->fields[$field_name]['description']);
@@ -216,7 +214,7 @@ abstract class QAPL_Form_Content_Builder{
         if (!empty($field_options['visible_if']) && is_array($field_options['visible_if'])) {
            
             $conditions = $field_options['visible_if'];
-            $element_data['field_container_data_item'] = ' data-conditional=\'' . json_encode($conditions) . '\'';
+            $element_data['field_container_data_item'] = ' data-conditional=\'' . esc_attr(wp_json_encode($conditions)) . '\'';
             
             foreach ($conditions as $field => $expected_value) {
                 $actual_value = $this->get_the_value_if_exist($field);
@@ -227,13 +225,25 @@ abstract class QAPL_Form_Content_Builder{
             }
         }
         return $element_data;
-    }
-    
+    }    
     private function add_field_description($field_description) {
         if (!empty($field_description)) {
             return '<p class="quick-ajax-field-desc">' . esc_html($field_description) . '</p>';
         }
         return '';
+    }
+    private function render_tooltip(array $tooltip): string {
+        if (empty($tooltip['content'])) {
+            return '';
+        }
+
+        $title = !empty($tooltip['title']) ? esc_attr($tooltip['title']) : '';
+        $content = $tooltip['content'];
+
+        return '<span class="qapl-tooltip" tabindex="0" role="tooltip" aria-label="' . $title . '">
+            <span class="qapl-tooltip-icon"><span class="qapl-tooltip-icon-inner">?</span></span>
+            <span class="qapl-tooltip-content"><span class="qapl-tooltip-content-inner">' . wp_kses_post($content) . '</span></span>
+        </span>';
     }
     protected function get_taxonomy_options_for_post_type(?string $post_type = null): array{
         if (empty($post_type)) {
@@ -305,17 +315,17 @@ abstract class QAPL_Form_Content_Builder{
         }
         return $options;
     }
-
-    protected function create_accordion_block($title, $content){
-        return '<div class="quick-ajax-accordion-wrapper">
+    protected function create_accordion_block($title, $content, $id){
+        $id_attr = $id ? ' id="'.esc_attr(sanitize_key($id)).'"' : '';
+        return '<div'.$id_attr.' class="quick-ajax-accordion-wrapper">
             <div class="quick-ajax-accordion-toggle" tabindex="0">
-                <h3 class="accordion-title">'.$title.'</h3>
+                <h3 class="accordion-title">'.esc_html($title).'</h3>
                 <span class="accordion-icon">
                     <span></span>
                 </span>
             </div>
             <div class="quick-ajax-accordion-content">
-                '.$content.'
+                '.wp_kses_post($content).'
             </div>
         </div>';
     }

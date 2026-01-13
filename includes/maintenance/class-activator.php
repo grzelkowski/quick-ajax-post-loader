@@ -19,6 +19,7 @@ if (!class_exists('QAPL_Quick_Ajax_Activator')) {
         
             if ($existing_option !== false) {
                 // Update autoload value if the option exists            
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- required to update autoload which wp api does not support
                 $updated = $wpdb->update(
                     $wpdb->options,
                     ['autoload' => $autoload], // Update autoload field

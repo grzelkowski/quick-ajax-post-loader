@@ -47,11 +47,11 @@ class QAPL_Settings_Tab_Help{
             return $content . '<p>' . esc_html('Invalid help file format or empty content.') . '</p>';
         }
 
-        foreach ($help_data as $section) {
+        foreach ($help_data as $key => $section) {
             if (empty($section['title']) || empty($section['content'])) {
                 continue;
             }
-
+            $section_id      = 'qapl_help_'.$key;
             $section_title   = esc_html(wp_strip_all_tags($section['title']));
             $section_content = wp_kses_post($section['content']);
 
@@ -60,7 +60,7 @@ class QAPL_Settings_Tab_Help{
             $accordion_content .= '<div class="quick-ajax-section-content">' . $section_content . '</div>';
             $accordion_content .= '</div>';
 
-            $content .= $this->settings_page->create_accordion_block_wrapper($section_title, $accordion_content);
+            $content .= $this->settings_page->create_accordion_block_wrapper($section_title, $accordion_content, $section_id);
         }
 
         return $content;

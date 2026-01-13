@@ -34,7 +34,6 @@ class QAPL_Resource_Manager implements QAPL_Resource_Manager_Interface {
     // constants for component files
     private const COMPONENT_FILES = [
         //form
-        'class-form-helper'                 => 'includes/form/class-form-helper.php', //form helper functions
         'interface-form-field'              => 'includes/form/interface-form-field.php', //interface for form field
         'class-form-field'                  => 'includes/form/class-form-field.php', //final form field object
         'class-form-field-builder'          => 'includes/form/class-form-field-builder.php', //builder for form fields
@@ -46,18 +45,21 @@ class QAPL_Resource_Manager implements QAPL_Resource_Manager_Interface {
         'class-shortcode-post-meta'         => 'includes/shortcode/handlers/class-shortcode-post-meta-handler.php',
         'class-shortcode-query-args'        => 'includes/shortcode/handlers/class-shortcode-query-args-provider.php',
         'class-shortcode'                   => 'includes/shortcode/class-shortcode.php',
-        'class-shortcode-generator'               => 'includes/shortcode/class-shortcode-generator.php',
+        'class-shortcode-generator'         => 'includes/shortcode/class-shortcode-generator.php',
         //AJAX render
         'class-ajax-helper'                 => 'includes/ajax-render/class-ajax-helper.php',
         'class-ajax-query-builder'          => 'includes/ajax-render/class-ajax-query-builder.php',
         'class-ajax-ui-renderer'            => 'includes/ajax-render/class-ajax-ui-renderer.php',
         'class-ajax-layout-builder'         => 'includes/ajax-render/class-ajax-layout-builder.php',
-        'class-ajax-end-message-renderer'   => 'includes/ajax-render/class-ajax-load-more-renderer.php',  
-        'class-ajax-load-more-renderer'     => 'includes/ajax-render/class-ajax-end-message-renderer.php',  
-        'class-ajax-layout-renderer'        => 'includes/ajax-render/class-ajax-layout-renderer.php',  
+        'class-ajax-load-more-renderer'     => 'includes/ajax-render/class-ajax-load-more-renderer.php',  
+        'class-ajax-end-message-renderer'   => 'includes/ajax-render/class-ajax-end-message-renderer.php',  
+        'class-ajax-layout-renderer'        => 'includes/ajax-render/class-ajax-layout-renderer.php',
+        'class-ajax-frontend-render'        => 'includes/ajax-render/class-ajax-frontend-render.php',
         //AJAX controller
-        'class-ajax-controller'             => 'includes/ajax-controller/class-ajax-controller.php',
-        'ajax-actions'                      => 'includes/ajax-controller/class-ajax-action-controller.php',
+        'trait-ajax-request-verifier'       => 'includes/ajax-controller/trait-ajax-request-verifier.php',
+        'class-ajax-admin-controller'       => 'includes/ajax-controller/class-ajax-admin-controller.php',
+        'class-ajax-frontend-controller'    => 'includes/ajax-controller/class-ajax-frontend-controller.php',
+        'class-controller-registry'         => 'includes/ajax-controller/class-controller-registry.php',
         //template-renderers
         'template-renderers'                => 'includes/template-renderers/class-template-hooks.php',
         //functions

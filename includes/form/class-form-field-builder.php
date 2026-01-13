@@ -12,6 +12,7 @@ class QAPL_Form_Field_Builder {
     private $default = '';
     private string $description = '';
     private string $placeholder = '';
+    private array $tooltip = [];
 
     public function set_name(string $name): self {
         $this->name = $name;
@@ -41,6 +42,11 @@ class QAPL_Form_Field_Builder {
         $this->placeholder = $placeholder;
         return $this;
     }
+    public function set_tooltip(array $tooltip): self {
+        $this->tooltip = $tooltip;
+        return $this;
+    }
+
 
     //finally this method creates the final field object
     //using all the properties you set before
@@ -52,7 +58,8 @@ class QAPL_Form_Field_Builder {
             $this->options,
             $this->default,
             $this->description,
-            $this->placeholder
+            $this->placeholder,
+            $this->tooltip
         );
     }
 }

@@ -75,5 +75,5 @@ if (!class_exists('QAPL_Admin_Menu')) {
         return $sanitized_value;
         }    
     }
-    $quick_ajax_admin_menu = new QAPL_Admin_Menu();
+    new QAPL_Admin_Menu();
 }

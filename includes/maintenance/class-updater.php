@@ -156,6 +156,7 @@ class QAPL_Data_Migrator {
     }
 
     public static function migrate_meta_for_all_posts($post_type, $old_key, $new_key) {
+        // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- one time migration during plugin update
         $args = array(
             'post_type'      => $post_type,
             'posts_per_page' => -1, // get all posts
@@ -167,6 +168,7 @@ class QAPL_Data_Migrator {
             )
         );
         $query = new WP_Query($args);
+        // phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_meta_query
         $migrated = array();
         if ($query->have_posts()) {
             foreach ($query->posts as $post) {
@@ -222,6 +224,7 @@ class QAPL_Data_Migrator {
         }
         $return = 1;
         global $wpdb;
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- required to update autoload which wp api does not support
         $updated = $wpdb->update(
             $wpdb->options,
             array( 'autoload' => $autoload ), // set autoload to the new value
@@ -256,7 +259,7 @@ class QAPL_Update_Validator {
         // 1 success, no changes, no records to remove
         // 2 migrated, old record exists
         // 3 no changes, old record exists
-        //error_log('migration ' . json_encode($version_flag)); 
+        //error_log('migration ' . wp_json_encode($version_flag)); 
         // if result == 3 no changes, old record exists
         if (in_array(3, $results, true)) {
             //error_log('result == no changes, old record exists ' . $version_flag);
@@ -293,7 +296,7 @@ class QAPL_Update_Validator {
     }
     public static function save_cleanup_flags() {
        self::$cleanup_flags = array_map('boolval', self::$cleanup_flags);
-       //error_log('QAPL_Cleaner: cleanup ' . json_encode(self::$cleanup_flags));
+       //error_log('QAPL_Cleaner: cleanup ' . wp_json_encode(self::$cleanup_flags));
         if (empty(self::$cleanup_flags)) {
             delete_option(QAPL_Constants::DB_OPTION_PLUGIN_CLEANUP_FLAGS);
         } else {
@@ -345,7 +348,7 @@ if (!class_exists('QAPL_Cleaner')) {
             }
             // save the flag if exists
             QAPL_Update_Validator::save_cleanup_flags();
-            wp_redirect(admin_url('admin.php?page=qapl-settings'));
+            wp_safe_redirect(admin_url('admin.php?page=qapl-settings'));
             exit;
         }
     }
@@ -358,12 +361,12 @@ if (!class_exists('QAPL_Cleaner')) {
         }
         // verify nonce for security
         if (!isset($_POST['qapl_purge_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['qapl_purge_nonce'])), 'qapl_purge_unused_data')) {
-            wp_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=invalid_nonce'));
+            wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=invalid_nonce'));
             exit;
         }
         // check the hidden input value
         if (!isset($_POST['qapl_purge_unused_data']) || sanitize_text_field(wp_unslash($_POST['qapl_purge_unused_data'])) !== '1') {
-            wp_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=invalid_request'));
+            wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=invalid_request'));
             exit;
         }
         // initialize cleanup strategies
@@ -376,7 +379,7 @@ if (!class_exists('QAPL_Cleaner')) {
         $cleaner->purge_unused_data();
     
         // redirect to success page
-        wp_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=success'));
+        wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=success'));
         exit;
     }
     
@@ -384,6 +387,7 @@ if (!class_exists('QAPL_Cleaner')) {
 
 class QAPL_Data_Cleaner {
     public static function remove_old_meta_for_all_posts($post_type, $meta_key_to_remove) {
+        // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- one time migration during plugin update
         $args = array(
             'post_type'      => $post_type,
             'posts_per_page' => -1,
@@ -395,6 +399,7 @@ class QAPL_Data_Cleaner {
             )
         );
         $query = new WP_Query($args);
+        // phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_meta_query
         $success = true;
 
         if ($query->have_posts()) {

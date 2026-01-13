@@ -12,5 +12,6 @@ interface QAPL_Form_Field_Interface {
     public function get_default();
     public function get_description(): string;
     public function get_placeholder(): string;
+    public function get_tooltip(): array;
     public function get_field(): array;
 }

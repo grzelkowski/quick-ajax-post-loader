@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class QAPL_Utilities {
+final class QAPL_Utilities {
     public static function verify_classes_exist($class_names, string $context = ''): bool {
         if (is_string($class_names)) {
         $class_names = [$class_names];
@@ -43,5 +43,35 @@ class QAPL_Utilities {
             return false;
         }   
         return true;
+    }
+
+    public static function check_page_type($values){
+        if (function_exists('get_current_screen')) {
+            $screen = get_current_screen();
+        }else{
+            $screen = null;
+        }
+        $page_type = null;
+
+        // check if the 'page' parameter exists in the URL and sanitize it
+        if ($page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS)) {
+            $page_type = sanitize_text_field($page);
+        }
+        // check if the 'post_type' parameter exists in the URL and sanitize it
+        elseif ($post_type = filter_input(INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS)) {
+            $page_type = sanitize_text_field($post_type);
+        }
+        // if neither 'page' nor 'post_type' is set, try to get the post type from the current screen
+        elseif (isset($screen->post_type)) {
+            $page_type = sanitize_text_field($screen->post_type);
+        }
+        if ($page_type) {
+            if (is_array($values)) {
+                return in_array($page_type, $values, true); // use strict comparison
+            } else {
+                return $page_type === $values;
+            }
+        }
+        return false;
     }
 }

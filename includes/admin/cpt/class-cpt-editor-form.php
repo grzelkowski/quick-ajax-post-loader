@@ -49,7 +49,8 @@ abstract class QAPL_CPT_Editor_Form extends QAPL_Form_Content_Builder {
         if ($post->post_type === $this->post_type) {
             $this->unserialize_data($post->ID);
             echo '<div class="quick-ajax-form-wrap '.esc_attr($this->get_quick_ajax_form_class()).'" id="' . esc_attr($this->form_id) . '">';
-            echo wp_kses($this->render_form(), QAPL_Form_Helper::wp_kses_allowed_tags());
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output already escaped
+            echo $this->render_form();
             wp_nonce_field(QAPL_Constants::NONCE_FORM_QUICK_AJAX_ACTION, QAPL_Constants::NONCE_FORM_QUICK_AJAX_FIELD);
             echo '</div>';
         }

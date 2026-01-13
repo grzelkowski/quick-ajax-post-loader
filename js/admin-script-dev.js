@@ -25,7 +25,7 @@
                         url: qapl_quick_ajax_admin_data.ajax_url,
                         type: 'POST',
                         data: {
-                        action: 'qapl_quick_ajax_get_taxonomies_by_post_type',
+                        action: 'qapl_action_get_taxonomies_by_post_type',
                         post_type: postType,
                         nonce: qapl_quick_ajax_admin_data.nonce
                         },
@@ -65,7 +65,7 @@
                         url: qapl_quick_ajax_admin_data.ajax_url,
                         type: 'POST',
                         data: {
-                            action: 'qapl_quick_ajax_get_terms_by_taxonomy',
+                            action: 'qapl_action_get_terms_by_taxonomy',
                             taxonomy: taxonomy,
                             post_id: post_id,
                             nonce: qapl_quick_ajax_admin_data.nonce
@@ -135,6 +135,11 @@
                 tabButtons.on("click", function (e) {
                     e.preventDefault();
                     const tabId = $(this).data("tab");
+                    const tabIndex = Number(tabId.split("-").pop());
+
+                    const url = new URL(window.location.href);
+                    url.searchParams.set("tab", tabIndex);
+                    history.replaceState(null, "", url.toString());
         
                     // deactivate all tabs and buttons
                     tabButtons.removeClass("active").attr("aria-selected", "false").attr("tabindex", "-1");
@@ -157,6 +162,17 @@
                     }        
                     tabButtons.eq(newIndex).focus().click(); // focus and activate the new tab
                 });
+
+                const params = new URLSearchParams(window.location.search);
+                const tabFromUrl = parseInt(params.get("tab"), 10);
+                if (!isNaN(tabFromUrl)) {
+                    const tabIdFromUrl = "quick-ajax-tab-" + tabFromUrl;
+                    const button = $('.quick-ajax-tab-button[data-tab="' + tabIdFromUrl + '"]');
+
+                    if (button.length) {
+                        button.trigger("click");
+                    }
+                }
             }
         },
         
@@ -532,17 +548,34 @@
                 self.quick_ajax_select_text(code);
             });
         },
-        accordion_block_toggle: function() {
+        accordion_block_toggle: function () {
             // Adjusts min-height of #wpbody-content to fix sticky sidebar issue.
-            var wpBodyContent = $('#wpbody-content');
-            if (wpBodyContent.find('.quick-ajax-tabs').length > 0) {
-                var adminMenuWrapHeight = $('#adminmenuwrap').outerHeight();
-                wpBodyContent.css('min-height', adminMenuWrapHeight);
+            var wpBodyContent = $("#wpbody-content");
+            if (wpBodyContent.find(".quick-ajax-tabs").length > 0) {
+                var adminMenuWrapHeight = $("#adminmenuwrap").outerHeight();
+                wpBodyContent.css("min-height", adminMenuWrapHeight);
             }
-            $('.quick-ajax-accordion-toggle').click(function() {
-                $(this).toggleClass('active').next('.quick-ajax-accordion-content').slideToggle(200);
+            // Toggle accordion content on header click
+            $(".quick-ajax-accordion-toggle").click(function () {
+                $(this).toggleClass("active").next(".quick-ajax-accordion-content").slideToggle(200);
             });
-        },
+
+            //open accordion block if hash is present in the URL
+            var hash = window.location.hash;
+            if (hash) {
+                var target = $(hash);
+                if (target.length) {
+                    var toggle = target.find(".quick-ajax-accordion-toggle").first();
+                    var content = toggle.next(".quick-ajax-accordion-content");
+                    toggle.addClass("active");
+                    content.show();
+                    //add gap from the top
+                    var offsetTop = target.offset().top - 110;
+                    if (offsetTop < 0) offsetTop = 0;
+                    $("html, body").scrollTop(offsetTop);
+                }
+            }
+        }
         // Define other functions here
     };
 

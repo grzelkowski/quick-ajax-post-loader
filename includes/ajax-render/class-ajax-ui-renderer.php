@@ -14,6 +14,8 @@ final class QAPL_Ajax_UI_Renderer{
         $this->global_options   = $global_options;
     }
     private function get_post_assigned_to_the_term($term, $post_type, $excluded_post_ids){
+        // phpcs:disable WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- intentional exclusion of rendered posts
+        // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- taxonomy filtering is required
         $query_args = array(
             'posts_per_page' => 1,
             'post_type' => $post_type,
@@ -28,6 +30,8 @@ final class QAPL_Ajax_UI_Renderer{
             'post__not_in' => $excluded_post_ids,
             'fields' => 'ids',
         );
+        // phpcs:enable WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in
+        // phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_tax_query
         $posts = get_posts($query_args);
 
         if (!empty($posts)) {

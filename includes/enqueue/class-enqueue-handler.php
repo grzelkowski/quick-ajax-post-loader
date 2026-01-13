@@ -36,7 +36,7 @@ class QAPL_Enqueue_Handler implements QAPL_Enqueue_Handler_Interface {
         }  
         // Check if the current page matches the plugin-related pages
         $plugin_pages = [QAPL_Constants::CPT_SHORTCODE_SLUG, QAPL_Constants::SETTINGS_PAGE_SLUG];
-        if (!qapl_quick_ajax_check_page_type($plugin_pages)) {
+        if (!QAPL_Utilities::check_page_type($plugin_pages)) {
             return; 
         }
         $style_suffix = $this->get_file_suffix('/css/', 'admin-style.css');

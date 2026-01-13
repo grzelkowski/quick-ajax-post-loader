@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 if (!class_exists('QAPL_Settings_Page')) {
     class QAPL_Settings_Page extends QAPL_Admin_Options_Page_Form {
-        private $tabIndex = 0;
+        private $tabIndex = 1;
 
         public function render_quick_ajax_page_heading() {
             return '<h1>'.esc_html__('Quick AJAX settings', 'quick-ajax-post-loader').'</h1>';

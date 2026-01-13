@@ -71,6 +71,7 @@ final class QAPL_Ajax_Query_Builder{
     private function normalize_args($source_args) {
         // convert comma-separated string to array of integers
         if (isset($source_args['post__not_in'])) {
+            // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- controlled input small dataset
             $source_args['post__not_in'] = $this->sanitize_to_int_array($source_args['post__not_in']);
         }        
         if (isset($source_args['selected_terms'])) {
@@ -86,6 +87,7 @@ final class QAPL_Ajax_Query_Builder{
         return $query_args;    
     }
     private function query_args_base_query_args($source_args) {
+        // phpcs:disable WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- intentional usage
         return [
             'post_type' => isset($source_args['post_type']) ? sanitize_text_field($source_args['post_type']) : null,
             'posts_per_page' => isset($source_args['posts_per_page']) ? intval($source_args['posts_per_page']) : QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE_DEFAULT,
@@ -95,6 +97,7 @@ final class QAPL_Ajax_Query_Builder{
             'ignore_sticky_posts' => isset($source_args['ignore_sticky_posts']) ? intval($source_args['ignore_sticky_posts']) : QAPL_Constants::QUERY_SETTING_IGNORE_STICKY_POSTS_DEFAULT,
             'paged' => isset($source_args['paged']) ? intval($source_args['paged']) : 1,
         ];
+        // phpcs:enable WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in
     }  
     private function query_args_apply_offset_or_paged($query_args, $source_args) {
         // Check if 'offset' is provided and use it instead of 'paged'
@@ -108,7 +111,7 @@ final class QAPL_Ajax_Query_Builder{
     private function query_args_add_tax_query($query_args, $source_args) {
         $taxonomy = isset($source_args['selected_taxonomy']) ? sanitize_text_field($source_args['selected_taxonomy']) : '';
         $terms = isset($source_args['selected_terms']) ? $source_args['selected_terms'] : [];
-    
+        // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- taxonomy filtering is required
         if ($taxonomy && !empty($terms)) {
             $query_args['tax_query'][] = [
                 'taxonomy' => $taxonomy,
@@ -121,11 +124,13 @@ final class QAPL_Ajax_Query_Builder{
                 'taxonomy' => $taxonomy,
                 'operator' => 'EXISTS',
             ];
-        }        
+        }
+        // phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_tax_query
         return $query_args;
     }
     public function generate_tax_query($base_args, $taxonomy, $term_id) {
         unset($base_args['paged'], $base_args['offset']);
+        // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- taxonomy filtering is required
         $base_args['tax_query'] = [
             [
                 'taxonomy' => $taxonomy,
@@ -134,6 +139,7 @@ final class QAPL_Ajax_Query_Builder{
                 'operator' => 'IN',
             ],
         ];
+        // phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_tax_query
         return $base_args;
     }
     private function generate_block_id($attributes = false) {

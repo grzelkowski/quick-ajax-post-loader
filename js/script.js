@@ -108,7 +108,7 @@
                 url: qapl_quick_ajax_data.ajax_url,
                 type: "POST",
                 data: {
-                    action: "qapl_quick_ajax_load_posts",
+                    action: "qapl_action_load_posts",
                     nonce: qapl_quick_ajax_data.nonce,
                     args: args,
                     attributes: attributes,

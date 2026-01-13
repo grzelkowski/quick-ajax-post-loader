@@ -1,5 +1,12 @@
 ## Changelog
 
+### 1.8.7 - 2026-01-13
+- Improved admin UI structure and visual consistency across settings screens.
+- Cleaned up form rendering logic and improved output escaping for better security and reliability.
+- Updated backend URLs and internal IDs used in Help tabs for better maintainability.
+- Fixed multiple minor admin-side issues and edge cases.
+- Performed small internal cleanups to improve overall stability.
+
 ### 1.8.6 - 2025-12-03
 - Improved how multiple AJAX containers work together on the same page to ensure they stay independent and conflict-free.
 - Enhanced consistency between sorting, filtering, and post loading for a smoother user experience.

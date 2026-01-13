@@ -12,9 +12,10 @@ class QAPL_Form_Field implements QAPL_Form_Field_Interface {
     private $default;
     private string $description;
     private string $placeholder;
+    private array $tooltip = [];
 
     //this constructor sets all properties for the field
-    public function __construct(string $name, string $label, string $type, array $options, $default, string $description, string $placeholder) {
+    public function __construct(string $name, string $label, string $type, array $options, $default, string $description, string $placeholder, array $tooltip = []) {
         $this->name = $name;
         $this->label = $label;
         $this->type = $type;
@@ -22,6 +23,7 @@ class QAPL_Form_Field implements QAPL_Form_Field_Interface {
         $this->default = $default;
         $this->description = $description;
         $this->placeholder = $placeholder;
+        $this->tooltip = $tooltip;
     }
     //simple get methods to return each property
     public function get_name(): string {
@@ -45,6 +47,9 @@ class QAPL_Form_Field implements QAPL_Form_Field_Interface {
     public function get_placeholder(): string {
         return $this->placeholder;
     }
+    public function get_tooltip(): array {
+        return $this->tooltip;
+    }
     //returns all field data in array format
     public function get_field(): array {
         return [
@@ -55,6 +60,7 @@ class QAPL_Form_Field implements QAPL_Form_Field_Interface {
             'default' => $this->default,
             'description' => $this->description,
             'placeholder' => $this->placeholder,
+            'tooltip' => $this->tooltip,
         ];
     }
 }

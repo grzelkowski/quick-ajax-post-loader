@@ -2,8 +2,7 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-
-final class QAPL_Ajax_Controller {
+final class QAPL_Ajax_Frontend_Render {
     private $global_options;
     private $file_manager;
     private $helper;
@@ -60,14 +59,17 @@ final class QAPL_Ajax_Controller {
             echo '<div class="quick-ajax-controls-container">';
         }
         if (!empty($render_context['sort_options'])) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             echo $this->ui_renderer->render_sort_options($render_context['sort_options'], $layout, $query_args, $attrs, $source_args, $quick_ajax_id);
         }
         if (!empty($render_context['show_taxonomy_filter']) && !empty($source_args['selected_taxonomy'])) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             echo $this->ui_renderer->render_taxonomy_terms_filter($source_args['selected_taxonomy'], $query_args, $source_args, $layout, $attrs, $quick_ajax_id);
         }
         if (!empty($render_context['controls_container'])) {
             echo '</div>';
         }
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->layout_renderer->render_layout($query_args, $source_args, $layout, $attrs, $ajax_initial_load, $quick_ajax_id);
         return ob_get_clean();
     }

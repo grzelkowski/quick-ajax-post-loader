@@ -178,11 +178,15 @@
     opacity:0;
     margin-bottom: 0;
 }
-.quick-ajax-form-wrap .quick-ajax-field-container > label{
+.quick-ajax-form-wrap .quick-ajax-field-container > .quick-ajax-field-label{
     -webkit-box-flex: 0;
         -ms-flex: 0 0 210px;
             flex: 0 0 210px;
     margin-top: 6px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    gap: 6px;
 }
 .quick-ajax-form-wrap .quick-ajax-field-container > .quick-ajax-field {
     max-width: 580px;
@@ -224,7 +228,7 @@
     font-style: italic;
 }
 @media (max-width: 782px) {
-    .quick-ajax-form-wrap .quick-ajax-field-container > label{
+    .quick-ajax-form-wrap .quick-ajax-field-container > .quick-ajax-field-label{
         -ms-flex-preferred-size:100%;
             flex-basis:100%;
         margin-top: 0;
@@ -236,6 +240,73 @@
         max-width: 100%;
     }    
  }
+ /* tooltip */
+.qapl-tooltip {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    cursor: help;
+    outline: none;
+}
+.qapl-tooltip .qapl-tooltip-icon {
+    position: relative;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+ .qapl-tooltip .qapl-tooltip-icon-inner {
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 13px;
+    height: 13px;
+    border: 2px solid var(--qapl-theme-color);
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1;
+    color: var(--qapl-theme-color);
+}
+ .qapl-tooltip .qapl-tooltip-content {
+    position: absolute;
+    bottom: 25px;
+    left: 0;
+    width: 340px;
+    max-width: 340px;
+    background-color: var(--qapl-bg);
+    color: var(--qapl-text-muted);
+    padding: 8px 10px;
+    border: 1px solid var(--qapl-border);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+ .qapl-tooltip .qapl-tooltip-content-inner {
+    display: block;
+    white-space: normal;
+}
+.qapl-tooltip:focus .qapl-tooltip-content,
+.qapl-tooltip:hover .qapl-tooltip-content {
+    opacity: 1;
+    visibility: visible;
+}
+
  /* tabs */
 .quick-ajax-tabs {
     display: -webkit-box;
