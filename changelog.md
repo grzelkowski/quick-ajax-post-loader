@@ -1,5 +1,10 @@
 ## Changelog
 
+### 1.8.8 - 2026-01-27
+- Internal code improvements and cleanup
+- UI improvements and visual refinements
+- Fixed translation and localization issues
+
 ### 1.8.7 - 2026-01-13
 - Improved admin UI structure and visual consistency across settings screens.
 - Cleaned up form rendering logic and improved output escaping for better security and reliability.

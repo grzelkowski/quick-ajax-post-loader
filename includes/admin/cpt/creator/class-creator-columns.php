@@ -30,7 +30,7 @@ class QAPL_Creator_Columns {
                 }
             }
         }
-        return array_merge($new, $columns);
+        return $new;
     }
     public static function render_shortcode_column($column, $post_id) {
         if ($column === 'qapl_shortcode') {
@@ -39,7 +39,7 @@ class QAPL_Creator_Columns {
         }
     }
     public static function make_shortcode_column_sortable($columns) {
-        $columns['qapl_shortcode'] = 'qapl_shortcode';
+        $columns['qapl_shortcode'] = 'ID';
         return $columns;
     }
     public static function shortcode_column_orderby($query) {
