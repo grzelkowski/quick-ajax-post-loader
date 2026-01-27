@@ -4,12 +4,14 @@
         data_available: typeof qapl_quick_ajax_admin_data !== 'undefined' && qapl_quick_ajax_admin_data,
         init: function() {
             this.click_and_select_shortcode();
-            this.click_and_select_all();
+            //this.click_and_select_all();
+            this.click_and_select();
             this.handle_post_type_change();
             this.handle_taxonomy_change();
             this.show_hide_element_on_change();
             this.quick_ajax_tabs();
             this.copy_code();
+            this.copy_input();
             this.quick_ajax_function_generator();
             this.accordion_block_toggle();
             // Any other functions you want to initialize
@@ -175,31 +177,72 @@
                 }
             }
         },
-        
         copy_code: function() {
-            $('.copy-button').on('click', function() {
-                var codeToCopy = $('#' + $(this).data('copy'));
-                // Create a temporary textarea
-                var tempTextarea = $('<textarea>').val(codeToCopy.text()).appendTo('body').select();
-                try {
-                    // Use the new clipboard API to copy the selected text
-                    navigator.clipboard.writeText(codeToCopy.text())
-                        .then(() => {
-                            //console.log('Text copied to clipboard');
-                        })
-                        .catch(error => {
-                            console.error('Quick Ajax - Unable to copy text to clipboard', error);
-                        });
-                } finally {
-                    // Clean up: remove the temporary textarea
-                    tempTextarea.remove();
-                    // Feedback to the user
-                    $(this).text('Code Copied');
-                    setTimeout(() => {
-                        $(this).text('Copy Code');
-                    }, 2000);
+            const self = this;
+            $('.copy-button-text').on('click', function() {
+                var button = $(this);
+                var code = $('#' + button.data('copy'));
+                if (!code.length) {
+                    return;
                 }
+
+                self.copy_to_clipboard(
+                    code.text(),
+                    button,
+                    button.data('label-copied'),
+                    button.text()
+                );
             });
+        },
+        copy_input: function() {
+            const self = this;
+            $('.copy-button-input').on('click', function () {
+                var button = $(this);
+                var input = document.getElementById(button.data('copy'));
+                if (!input) {
+                    return;
+                }
+                self.copy_to_clipboard(
+                    input.value,
+                    button,
+                    button.data('label-copied'),
+                    button.text()
+                );
+            });
+        },
+        copy_to_clipboard: function(text, button, copiedLabel, originalLabel, delay) {
+            var resetDelay = delay || 1000;
+            var errorMessage = 'Quick Ajax Post Loader - Unable to copy to clipboard';
+
+            var handleSuccess = function () {
+                button.text(copiedLabel);
+                setTimeout(function () {
+                    button.text(originalLabel);
+                }, resetDelay);
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(handleSuccess).catch(function () {
+                    console.error(errorMessage);
+                });
+                return;
+            }
+
+            var textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            try {
+                document.execCommand('copy');
+                handleSuccess();
+            } catch (e) {
+                console.error(errorMessage);
+            }
+
+            document.body.removeChild(textarea);
         },
         generateId: function(inputDataString) {
             let blockId = 0;    
@@ -473,7 +516,7 @@
                 const button = $(this);
                 const outputDiv = button.attr('data-output');
                 const targetDiv = $('#' + outputDiv);
-                const copyButton = $('.copy-button[data-copy="' + outputDiv+ '"]');
+                const copyButton = $('.copy-button-text[data-copy="' + outputDiv+ '"]');
                 
                 button.prop('disabled', true);
                 copyButton.prop('disabled', true);
@@ -546,6 +589,11 @@
             $('.click-and-select-all').on('click', function() {
                 var code = $(this).find('code').get(0);
                 self.quick_ajax_select_text(code);
+            });
+        },
+        click_and_select: function(element) {
+            $('.click-and-select').on('click', function() {
+                this.select();
             });
         },
         accordion_block_toggle: function () {

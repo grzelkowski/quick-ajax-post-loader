@@ -86,14 +86,20 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
     
     public function render_form() {
         $shortcode_page = '<div class="quick-ajax-layout-settings">';
+
+        // general query settings
+        // ==============================
         $shortcode_page .= '<h4>'.esc_html__('General Settings', 'quick-ajax-post-loader').'</h4>';
+
         //select post type
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE);
+
         //show taxonomy checkbox
         $field_options = $this->field_options([
             'is_trigger' => true,
         ]);   
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER, $field_options);
+
         //select taxonomy
         $this->fields[QAPL_Constants::QUERY_SETTING_SELECT_TAXONOMY]['options'] = $this->get_taxonomy_options_for_post_type();            
         $field_options = $this->field_options([
@@ -128,20 +134,34 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
         //end manual term selection checkbox 
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE);
         $shortcode_page .= '</div>';
+
+        // sorting settings
+        // ==============================
+
         $shortcode_page .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
         $shortcode_page .= '<h4>'.esc_html__('Sorting Settings', 'quick-ajax-post-loader').'</h4>';
+
+        // orderby field
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SELECT_ORDERBY);
+
+        // order direction
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SELECT_ORDER);
+
+        // toggle sort button
         $field_options = $this->field_options([
             'is_trigger' => true,
         ]);  
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SHOW_SORT_BUTTON, $field_options);
+
+        // sort button options
         $field_options = $this->field_options([
             'visible_if' => [
                 QAPL_Constants::QUERY_SETTING_SHOW_SORT_BUTTON => '1'
             ]
         ]);
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SELECT_SORT_BUTTON_OPTIONS, $field_options);
+
+        // inline filter and sorting
         $field_options = $this->field_options([
             'visible_if' => [
                 QAPL_Constants::QUERY_SETTING_SHOW_SORT_BUTTON => '1'
@@ -149,29 +169,52 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
         ]);
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SORTING, $field_options);
         $shortcode_page .= '</div>';
+
+        // advanced query settings
+        // ==============================
+
         $shortcode_page .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
         $shortcode_page .= '<h4>'.esc_html__('Additional Settings', 'quick-ajax-post-loader').'</h4>';
+
+        // exclude specific post ids
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SET_POST_NOT_IN);
+
+        // ignore sticky posts
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_IGNORE_STICKY_POSTS);
+
+         // ajax on initial load
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_AJAX_ON_INITIAL_LOAD);
+
+        // infinite scroll
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_AJAX_INFINITE_SCROLL);
+
+        // show end message
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SHOW_END_MESSAGE);
         $shortcode_page .= '</div>';
 
-        //layout Settings
+        // layout and ui settings
+        // ==============================
         $shortcode_page .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
         $shortcode_page .= '<h4>'.esc_html__('layout Settings', 'quick-ajax-post-loader').'</h4>';
+
+        // enable quick ajax css style
         $field_options = $this->field_options([
             'is_trigger' => true,
         ]); 
         $shortcode_page .= $this->add_field(QAPL_Constants::LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE, $field_options);
+
+        // select columns quantity
         $field_options = $this->field_options([
             'visible_if' => [
                 QAPL_Constants::LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE => '1'
             ]
         ]);
         $shortcode_page .= $this->add_field(QAPL_Constants::LAYOUT_SETTING_SELECT_COLUMNS_QTY, $field_options);
+
+        // post item template
         $shortcode_page .= $this->add_field(QAPL_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE);
+
+        // taxonomy filter custom class
         $field_options = $this->field_options([
             'is_trigger' => false,
             'visible_if' => [
@@ -179,11 +222,17 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
             ]
         ]);
         $shortcode_page .= $this->add_field(QAPL_Constants::LAYOUT_SETTING_TAXONOMY_FILTER_CLASS, $field_options);
+
+        // container custom class
         $shortcode_page .= $this->add_field(QAPL_Constants::LAYOUT_SETTING_CONTAINER_CLASS);
+
+        // toggle custom load more quantity
         $field_options = $this->field_options([
             'is_trigger' => true,
         ]); 
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SHOW_CUSTOM_LOAD_MORE_POST_QUANTITY, $field_options);
+
+        // select custom load more quantity
         $field_options = $this->field_options([
             'is_trigger' => false,
             'visible_if' => [
@@ -191,10 +240,14 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
             ]
         ]); 
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SELECT_CUSTOM_LOAD_MORE_POST_QUANTITY, $field_options);
+
+        // override global loader icon
         $field_options = $this->field_options([
             'is_trigger' => true,
         ]); 
         $shortcode_page .= $this->add_field(QAPL_Constants::LAYOUT_SETTING_OVERRIDE_GLOBAL_LOADER_ICON, $field_options);
+
+        // select loader icon
         $field_options = $this->field_options([
             'is_trigger' => false,
             'visible_if' => [

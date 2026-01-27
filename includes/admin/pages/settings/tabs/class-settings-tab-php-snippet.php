@@ -214,10 +214,10 @@ class QAPL_Settings_Tab_PHP_Snippet{
             //Function generation buttons
             $form_tab_function_generator .= '<div class="function-generator-result">';  
             $form_tab_function_generator .= '<div class="function-generator-buttons">
-                            <button class="generate-function-button button button-primary" data-output="code-snippet-2" type="button">'.__('Generate Function', 'quick-ajax-post-loader').'</button>
-                            <button class="copy-button button button-primary" data-copy="code-snippet-2" type="button">'.__('Copy Code', 'quick-ajax-post-loader').'</button>
+                            <button type="button" class="generate-function-button button button-primary" data-output="code-snippet-2">'.__('Generate Function', 'quick-ajax-post-loader').'</button>
+                            <button type="button" class="copy-button-text button button-primary" data-copy="code-snippet-2" data-label-copied="'.__('Copied', 'quick-ajax-post-loader').'">'.__('Copy Code', 'quick-ajax-post-loader').'</button>
                         </div>';  
-            $form_tab_function_generator .= '<pre id="code-snippet-2" style="margin-top:20px"></pre>';
+            $form_tab_function_generator .= '<pre id="code-snippet-2"></pre>';
             $form_tab_function_generator .= '</div>';
             $form_tab_function_generator .= '</div>';
             return $form_tab_function_generator;

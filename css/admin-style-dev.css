@@ -39,32 +39,29 @@
 #shortcode-box-wrap{
     display:flex;
     flex-direction:column;
-    margin-top:16px;
 }
 #shortcode-box-wrap .shortcode-description{
     padding: 0px 2px;
     margin-bottom:4px;
 }
-#shortcode-box-wrap .click-and-select-all{
+#shortcode-box-wrap .qapl-shortcode-display{
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    margin-right: auto;
+    gap: 10px;
+    align-items: center;
+    max-width:806px;
 }
-#shortcode-box-wrap pre{
-    margin:0;
-    padding: 10px 10px 11px;
-    border:1px solid #8c8f94;
-    border-radius: 3px;
-    background: var(--qapl-code-bg);
+#shortcode-box-wrap #qapl-shortcode-input{
+    width: 100%;
+    background: #fff;
+    padding: 8px;
+    font-family: monospace;
 }
-#shortcode-box-wrap code{
-    line-height: 1;
-    background: var(--qapl-code-bg);
-    white-space: pre-wrap;
-    word-break: break-word;
-    cursor:pointer;
+/* copy button */
+.copy-button-input,
+.copy-button-text{
+    min-width: 90px;
 }
+
 /* switch button */
 .quick-ajax-form-wrap .switch-checkbox{
     display: inline-block;
@@ -317,6 +314,11 @@
     width: auto;
     flex: 1;
     max-width: 480px;
+}
+.function-generator-buttons{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 .function-generator-result > pre{
     /* max-width: 420px; */
