@@ -1,5 +1,11 @@
 ## Changelog
 
+### 1.8.9 - 2026-02-10
+- Optimized post item image rendering to improve frontend performance.
+- Improved taxonomy filter behavior by automatically hiding navigation when only one option is available.
+- Minor admin UI usability improvements.
+- General internal code cleanup and small stability improvements.
+
 ### 1.8.8 - 2026-01-27
 - Internal code improvements and cleanup
 - UI improvements and visual refinements

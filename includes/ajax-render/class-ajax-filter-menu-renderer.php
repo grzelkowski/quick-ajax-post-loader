@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-final class QAPL_Ajax_UI_Renderer{
+final class QAPL_Ajax_Filter_Menu_Renderer{
     private $file_manager;
     private $helper;
     private $global_options;
@@ -65,7 +65,7 @@ final class QAPL_Ajax_UI_Renderer{
         // only include specific terms if selected_terms is not empty
         if (!empty($source_args['selected_terms']) && is_array($source_args['selected_terms'])) {
             $terms_args['include'] = $source_args['selected_terms'];
-        }            
+        }           
         $terms = get_terms($terms_args);            
 
         $block_id = 'quick-ajax-filter-'.$quick_ajax_id;
@@ -77,7 +77,9 @@ final class QAPL_Ajax_UI_Renderer{
             $class_container .= ' ' . $layout[QAPL_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS];
         }           
         $container_class = $this->helper->extract_classes_from_string($class_container);
-
+        if (!$this->should_render_filter_menu(count($terms))) {
+            return '';
+        }
         ob_start(); // Start output buffering
 
         do_action(QAPL_Constants::HOOK_FILTER_CONTAINER_BEFORE, $quick_ajax_id);
@@ -329,4 +331,9 @@ final class QAPL_Ajax_UI_Renderer{
         );
         return $modified_content;
     }
+    private function should_render_filter_menu(int $available_terms_count): bool {
+        // render menu only if there is real choice
+        return $available_terms_count > 1;
+    }
+
 }

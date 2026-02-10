@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 
 class QAPL_Constants{
     // Plugin info
-    public const PLUGIN_VERSION = '1.8.8';
+    public const PLUGIN_VERSION = '1.8.9';
     public const PLUGIN_NAME = 'Quick Ajax Post Loader';
     public const PLUGIN_TEXT_DOMAIN = 'quick-ajax-post-loader';
     public const PLUGIN_SLUG = 'quick-ajax-post-loader';

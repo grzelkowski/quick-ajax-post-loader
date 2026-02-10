@@ -49,7 +49,7 @@ class QAPL_Resource_Manager implements QAPL_Resource_Manager_Interface {
         //AJAX render
         'class-ajax-helper'                 => 'includes/ajax-render/class-ajax-helper.php',
         'class-ajax-query-builder'          => 'includes/ajax-render/class-ajax-query-builder.php',
-        'class-ajax-ui-renderer'            => 'includes/ajax-render/class-ajax-ui-renderer.php',
+        'class-ajax-filter-menu-renderer'   => 'includes/ajax-render/class-ajax-filter-menu-renderer.php',
         'class-ajax-layout-builder'         => 'includes/ajax-render/class-ajax-layout-builder.php',
         'class-ajax-load-more-renderer'     => 'includes/ajax-render/class-ajax-load-more-renderer.php',  
         'class-ajax-end-message-renderer'   => 'includes/ajax-render/class-ajax-end-message-renderer.php',  

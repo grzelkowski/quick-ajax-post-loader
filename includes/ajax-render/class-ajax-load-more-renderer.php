@@ -9,7 +9,7 @@ final class QAPL_Ajax_Load_More_Renderer {
     private $ui_renderer;
     private $helper;
 
-    public function __construct( QAPL_File_Manager $file_manager,QAPL_Ajax_UI_Renderer $ui_renderer, QAPL_Ajax_Helper $helper) {
+    public function __construct( QAPL_File_Manager $file_manager,QAPL_Ajax_Filter_Menu_Renderer $ui_renderer, QAPL_Ajax_Helper $helper) {
         $this->file_manager = $file_manager;
         $this->ui_renderer  = $ui_renderer;
         $this->helper       = $helper;

@@ -14,7 +14,7 @@ class QAPL_Creator_Shortcode_Box {
         <div id="shortcode-box-wrap">
             <p class="shortcode-description"><?php esc_html_e('Copy and paste this shortcode on the page to display the posts list', 'quick-ajax-post-loader'); ?></p>
             <div class="qapl-shortcode-display">
-                <input type="text" id="qapl-shortcode-input" class="click-and-select" value="<?php echo esc_attr($shortcode); ?>" readonly />
+                <input type="text" id="qapl-shortcode-input" class="click-and-select-input" value="<?php echo esc_attr($shortcode); ?>" readonly />
                 <button type="button" class="copy-button-input button button-primary button-large"
                     data-copy="qapl-shortcode-input" 
                     data-label-copied="<?php esc_html_e('Copied', 'quick-ajax-post-loader'); ?>">

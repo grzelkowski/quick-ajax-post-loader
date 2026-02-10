@@ -73,5 +73,6 @@ final class QAPL_Plugin_Starter{
         $this->resources->initialize_pages(); //init admin pages
         $this->verify_classes();
         $this->enqueue->register_hooks(); //enqueue scripts/styles
+        QAPL_Initializer::maybe_run_tests();
     }
 }

@@ -35,7 +35,7 @@ class QAPL_Creator_Columns {
     public static function render_shortcode_column($column, $post_id) {
         if ($column === 'qapl_shortcode') {
             $shortcode = QAPL_Shortcode_Generator::generate_shortcode($post_id);
-            echo '<div class="quick-ajax-shortcode">' . esc_html($shortcode)  . '</div>';
+            echo '<div class="quick-ajax-shortcode click-and-select-node">' . esc_html($shortcode)  . '</div>';
         }
     }
     public static function make_shortcode_column_sortable($columns) {

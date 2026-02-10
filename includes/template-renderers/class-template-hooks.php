@@ -39,49 +39,49 @@ interface QAPL_No_Post_Message_Interface {
 function qapl_output_template_post_date() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_date')) {
-        echo wp_kses_post($template->render_date());
+        echo $template->render_date();
     }
 }
 function qapl_output_template_post_image() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_image')) {
-        echo wp_kses_post($template->render_image());
+        echo $template->render_image();
     }
 }
 function qapl_output_template_post_title() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_title')) {
-        echo wp_kses_post($template->render_title());
+        echo $template->render_title();
     }
 }
 function qapl_output_template_post_excerpt() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_excerpt')) {
-        echo wp_kses_post($template->render_excerpt());
+        echo $template->render_excerpt();
     }
 }
 function qapl_output_template_post_read_more() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_read_more')) {
-        echo wp_kses_post($template->render_read_more());
+        echo $template->render_read_more();
     }
 }
 function qapl_output_template_button_load_more() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_load_more_button')) {
-        echo wp_kses_post($template->render_load_more_button());
+        echo $template->render_load_more_button();
     }
 }
 function qapl_output_template_no_post_message() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_no_post_message')) {
-        echo wp_kses_post($template->render_no_post_message());
+        echo $template->render_no_post_message();
     }
 }
 function qapl_output_template_end_post_message() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_end_post_message')) {
-        echo wp_kses_post($template->render_end_post_message());
+        echo $template->render_end_post_message();
     }
 }
 
@@ -161,11 +161,13 @@ class QAPL_Template_Post_Item extends QAPL_Template_Base
     }
 
     public function render_image() {
-        $output = has_post_thumbnail()
-            //? '<div class="qapl-post-image">' . get_the_post_thumbnail(get_the_ID(), 'large', ['loading' => 'lazy']) . '</div>'
-            ? '<div class="qapl-post-image">' . get_the_post_thumbnail(get_the_ID(), 'large', ['alt' => esc_attr(get_the_title()), 'loading' => 'lazy']) . '</div>'
-            : '<div class="qapl-post-image qapl-no-image"></div>';
-
+        $image_id = get_post_thumbnail_id();
+        if (!$image_id) {
+            return '<div class="qapl-post-image qapl-no-image"></div>';
+        }
+        $output = '<div class="qapl-post-image">';
+        $output .= wp_get_attachment_image($image_id, 'large', false, ['loading' => 'lazy', 'alt' => esc_attr(get_the_title())]);
+        $output .= '</div>';
         return apply_filters(QAPL_Constants::HOOK_TEMPLATE_POST_ITEM_IMAGE, $output, $this->template_name, $this->quick_ajax_id);
     }
 
@@ -207,11 +209,11 @@ class QAPL_Template_Post_Item_Qapl_Full_Background_Image extends QAPL_Template_B
     }
 
     public function render_image() {
-        $output = has_post_thumbnail()
-            //? '<img src="' . esc_url(get_the_post_thumbnail_url(null, "full")) . '" alt="' . esc_attr(get_the_title()) . '" class="qapl-post-image">'
-            ? get_the_post_thumbnail(get_the_ID(), 'large', array('alt' => esc_attr(get_the_title()), 'class'  => 'qapl-post-image', 'loading' => 'lazy'))
-            : '<span class="qapl-no-image"></span>';
-
+        $image_id = get_post_thumbnail_id();
+        if (!$image_id) {
+            return '<span class="qapl-no-image"></span>';
+        }
+        $output = wp_get_attachment_image($image_id, 'large', false, ['loading' => 'lazy', 'class' => 'qapl-post-image', 'alt' => esc_attr(get_the_title())]);
         return apply_filters(QAPL_Constants::HOOK_TEMPLATE_POST_ITEM_IMAGE, $output, $this->template_name, $this->quick_ajax_id);
     }
 

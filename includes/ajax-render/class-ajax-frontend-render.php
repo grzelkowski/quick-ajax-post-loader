@@ -18,7 +18,7 @@ final class QAPL_Ajax_Frontend_Render {
         $this->file_manager         = new QAPL_File_Manager();
         $this->helper               = new QAPL_Ajax_Helper();
         $this->query_builder        = new QAPL_Ajax_Query_Builder();
-        $this->ui_renderer          = new QAPL_Ajax_UI_Renderer($this->file_manager, $this->helper, $this->global_options);
+        $this->ui_renderer          = new QAPL_Ajax_Filter_Menu_Renderer($this->file_manager, $this->helper, $this->global_options);
         $this->layout_builder       = new QAPL_Ajax_Layout_Builder($this->file_manager, $this->helper);
         $this->load_more_renderer   = new QAPL_Ajax_Load_More_Renderer($this->file_manager, $this->ui_renderer, $this->helper);
         $this->layout_renderer      = new QAPL_Ajax_Layout_Renderer($this->file_manager, $this->load_more_renderer, $this->helper);

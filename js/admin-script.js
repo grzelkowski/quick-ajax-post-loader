@@ -553,8 +553,16 @@
         quick_ajax_color_picker: function () {
             $(".color-picker-field").wpColorPicker();
         },
-        quick_ajax_select_text: function (element) {
-            var range, selection;
+        quick_ajax_select_text_by_type: function (element, type) {
+            if (!element) {
+                return;
+            }
+            if (type === "input") {
+                element.focus();
+                element.select();
+                return;
+            }
+            let range, selection;
             if (document.body.createTextRange) {
                 range = document.body.createTextRange();
                 range.moveToElementText(element);
@@ -569,20 +577,14 @@
         },
         click_and_select_shortcode: function () {
             const self = this;
-            $(".quick-ajax-shortcode").on("click", function () {
-                self.quick_ajax_select_text(this);
+            $(".click-and-select-node").on("click", function () {
+                self.quick_ajax_select_text_by_type(this, "node");
             });
         },
-        click_and_select_all: function () {
+        click_and_select: function () {
             const self = this;
-            $(".click-and-select-all").on("click", function () {
-                var code = $(this).find("code").get(0);
-                self.quick_ajax_select_text(code);
-            });
-        },
-        click_and_select: function (element) {
-            $(".click-and-select").on("click", function () {
-                this.select();
+            $(".click-and-select-input").on("click", function () {
+                self.quick_ajax_select_text_by_type(this, "input");
             });
         },
         accordion_block_toggle: function () {

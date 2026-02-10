@@ -70,4 +70,10 @@ final class QAPL_Initializer {
             require_once $dev_tools_path;
         }
     }
+    public static function maybe_run_tests(): void {
+        $tests_loader = self::$plugin_dir_path . 'tests/load-tests.php';
+        if (file_exists($tests_loader)) {
+            require_once $tests_loader;
+        }
+    }
 }
