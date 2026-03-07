@@ -23,7 +23,7 @@ final class QAPL_Ajax_Frontend_Controller {
             $ajax_builder       = new QAPL_Ajax_Query_Builder();
             $layout_builder     = new QAPL_Ajax_Layout_Builder($file_manager, $helper);
             $ui_renderer        = new QAPL_Ajax_Filter_Menu_Renderer($file_manager, $helper, $global_options);
-            $load_more_renderer = new QAPL_Ajax_Load_More_Renderer($file_manager,$ui_renderer, $helper);
+            $load_more_renderer = new QAPL_Ajax_Load_More_Renderer($file_manager, $ui_renderer, $helper);
             $end_posts_renderer = new QAPL_Ajax_End_Message_Renderer($file_manager);
             
             // Sanitize 'args'

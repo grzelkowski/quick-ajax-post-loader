@@ -358,6 +358,9 @@
             let quickAjaxAttributes = {};
             let formattedItem = "";
             quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.quick_ajax_id] = quick_ajax_id;
+            if (inputData.qapl_show_select_taxonomy === 1) {
+                quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.display_show_all_button] = inputData.qapl_display_show_all_button;
+            }
             if (inputData.qapl_layout_quick_ajax_css_style === 1) {
                 quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.quick_ajax_css_style] = inputData.qapl_layout_quick_ajax_css_style;
                 quickAjaxAttributes[qapl_quick_ajax_admin_data.constants.grid_num_columns] = inputData.qapl_layout_select_columns_qty;

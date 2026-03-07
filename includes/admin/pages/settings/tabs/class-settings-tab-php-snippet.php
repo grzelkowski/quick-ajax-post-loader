@@ -20,6 +20,9 @@ class QAPL_Settings_Tab_PHP_Snippet{
         //select taxonomy
         $field = QAPL_Form_Field_Factory::build_select_taxonomy_field();
         $this->settings_page->register_field($field);
+        //display show all button
+        $field = QAPL_Form_Field_Factory::build_display_show_all_button_field();
+        $this->settings_page->register_field($field);
         //manual term selection checkbox
         $field = QAPL_Form_Field_Factory::build_manual_term_selection_field();
         $this->settings_page->register_field($field);
@@ -103,11 +106,13 @@ class QAPL_Settings_Tab_PHP_Snippet{
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings">';
             $form_tab_function_generator .= '<h4>'.__('General Settings', 'quick-ajax-post-loader').'</h4>';
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE);
+
             //show taxonomy checkbox
             $field_options = $this->settings_page->field_options_wrapper([
                 'is_trigger' => true,
             ]); 
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER, $field_options);
+            
             //taxonomy select option
             $this->settings_page->update_field_options(QAPL_Constants::QUERY_SETTING_SELECT_TAXONOMY,$this->settings_page->get_taxonomy_options());
             $field_options = $this->settings_page->field_options_wrapper([
@@ -117,6 +122,16 @@ class QAPL_Settings_Tab_PHP_Snippet{
                 ]
             ]); 
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SELECT_TAXONOMY, $field_options);
+
+            //display show all button
+            $field_options = $this->settings_page->field_options_wrapper([
+                'is_trigger' => true,
+                'visible_if' => [
+                    QAPL_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
+                ]
+            ]);
+            $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON, $field_options);
+
             // manual term selection checkbox
             $field_options = $this->settings_page->field_options_wrapper([
                 'is_trigger' => true,

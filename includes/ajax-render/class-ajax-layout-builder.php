@@ -56,7 +56,10 @@ final class QAPL_Ajax_Layout_Builder {
             $attrs[QAPL_Constants::ATTRIBUTE_SHOW_END_MESSAGE] = intval($attributes[QAPL_Constants::ATTRIBUTE_SHOW_END_MESSAGE]);
         }
         $ajax_initial_load = isset($attributes[QAPL_Constants::AJAX_SETTING_AJAX_INITIAL_LOAD]) ? intval($attributes[QAPL_Constants::AJAX_SETTING_AJAX_INITIAL_LOAD]) : QAPL_Constants::QUERY_SETTING_AJAX_ON_INITIAL_LOAD_DEFAULT;
-        
+        // display show all button
+        if(isset($attributes[QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON])){
+            $attrs[QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON] = intval($attributes[QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON]);
+        }  
         return [
             'layout' => $layout,
             'attributes' => $attrs,

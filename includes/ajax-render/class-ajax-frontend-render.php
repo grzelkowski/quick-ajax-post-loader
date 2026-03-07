@@ -12,7 +12,6 @@ final class QAPL_Ajax_Frontend_Render {
     private $load_more_renderer;
     private $layout_builder;
 
-
     public function __construct() {
         $this->global_options       = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME, []);
         $this->file_manager         = new QAPL_File_Manager();
@@ -22,23 +21,6 @@ final class QAPL_Ajax_Frontend_Render {
         $this->layout_builder       = new QAPL_Ajax_Layout_Builder($this->file_manager, $this->helper);
         $this->load_more_renderer   = new QAPL_Ajax_Load_More_Renderer($this->file_manager, $this->ui_renderer, $this->helper);
         $this->layout_renderer      = new QAPL_Ajax_Layout_Renderer($this->file_manager, $this->load_more_renderer, $this->helper);
-    }
-    private function build_render_context($source_args, $attributes) {
-        // build query args
-        $query_args = $this->query_builder->wp_query_args($source_args, $attributes);
-        if (!$query_args) {
-            return false;
-        }
-        // build layout
-        $layout_data = $this->layout_builder->layout_customization($attributes, $this->global_options);
-        $context = [
-            'query_args'    => $query_args,
-            'layout'        => $layout_data['layout'],
-            'attrs'         => $layout_data['attributes'],
-            'ajax_initial'  => $layout_data['ajax_initial_load'] ?? null,
-            'quick_ajax_id' => $this->query_builder->get_quick_ajax_id(),
-        ];
-        return $context;
     }
 
     public function render_post_container($source_args, $attributes = [], $render_context = [], $meta_query = null) {
@@ -51,7 +33,6 @@ final class QAPL_Ajax_Frontend_Render {
         $attrs              = $context['attrs'];
         $ajax_initial_load  = $context['ajax_initial'];
         $quick_ajax_id      = $context['quick_ajax_id'];
-
 
         ob_start();
         // optional filter + sort wrappers
@@ -104,5 +85,22 @@ final class QAPL_Ajax_Frontend_Render {
         $attrs              = $context['attrs'];
         $quick_ajax_id      = $context['quick_ajax_id'];
         return $this->ui_renderer->render_sort_options($sort_options, $layout, $query_args, $attrs, $source_args, $quick_ajax_id);
+    }
+    private function build_render_context($source_args, $attributes) {
+        // build query args
+        $query_args = $this->query_builder->wp_query_args($source_args, $attributes);
+        if (!$query_args) {
+            return false;
+        }
+        // build layout
+        $layout_data = $this->layout_builder->layout_customization($attributes, $this->global_options);
+        $context = [
+            'query_args'    => $query_args,
+            'layout'        => $layout_data['layout'],
+            'attrs'         => $layout_data['attributes'],
+            'ajax_initial'  => $layout_data['ajax_initial_load'] ?? null,
+            'quick_ajax_id' => $this->query_builder->get_quick_ajax_id(),
+        ];
+        return $context;
     }
 }

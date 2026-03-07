@@ -77,10 +77,15 @@ class QAPL_Shortcode_Attributes_Provider {
             'shortcode_key' => QAPL_Constants::ATTRIBUTE_SHOW_END_MESSAGE,
             'postmeta_key' => QAPL_Constants::QUERY_SETTING_SHOW_END_MESSAGE,
             'type' => 'bool',
-        ]);  
-        return !empty($attributes) ? $attributes : false;
+        ]);
+        $attributes[QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON,
+            'postmeta_key' => QAPL_Constants::LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON,
+            'type' => 'bool',
+            'default' => QAPL_Constants::LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON_DEFAULT,
+        ]);
+        return $attributes;
     }
-
     private function get_sanitized_attribute(array $config) {
         /**
          * - try to get value from shortcode args first
@@ -96,16 +101,17 @@ class QAPL_Shortcode_Attributes_Provider {
         $shortcode_key = $config['shortcode_key'] ?? null;
         $meta_key = $config['postmeta_key'] ?? null;
         $type = $config['type'] ?? 'string';
+        $default = $config['default'] ?? null;
         $only_if_meta_key_true = $config['only_if_meta_key_true'] ?? null;
         $value = null;
         
         // try to get value from shortcode args
-        if (!empty($this->shortcode_params[$shortcode_key])) {
+        if ($shortcode_key !== null && array_key_exists($shortcode_key, $this->shortcode_params)) {
             $value = $this->shortcode_params[$shortcode_key];
         // if not found try to get value from shortcode settings
-        } elseif (!empty($meta_key) && isset($this->shortcode_postmeta[$meta_key])) {
+        } elseif ($meta_key !== null && array_key_exists($meta_key, $this->shortcode_postmeta)) {
             // check if additional meta key condition is required
-            if (!empty($only_if_meta_key_true)) {
+            if ($only_if_meta_key_true !== null) {
                 if (!empty($this->shortcode_postmeta[$only_if_meta_key_true])) {
                     $value = $this->shortcode_postmeta[$meta_key];
                 } else {
@@ -117,7 +123,11 @@ class QAPL_Shortcode_Attributes_Provider {
         }
         // return default empty value if value is still null
         if ($value === null) {
-            return ($type === 'number' || $type === 'bool') ? 0 : '';
+            if ($default !== null) {
+                $value = $default;
+            } else {
+                return ($type === 'number' || $type === 'bool') ? 0 : '';
+            }
         }
         // sanitize value based on type
         switch ($type) {

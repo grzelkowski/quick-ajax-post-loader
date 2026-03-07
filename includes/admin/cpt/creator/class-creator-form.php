@@ -14,6 +14,9 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
         //select taxonomy
         $field = QAPL_Form_Field_Factory::build_select_taxonomy_field();
         $this->create_field($field);
+        //display show all button
+        $field = QAPL_Form_Field_Factory::build_display_show_all_button_field();
+        $this->create_field($field);
         //manual term selection checkbox
         $field = QAPL_Form_Field_Factory::build_manual_term_selection_field();
         $this->create_field($field);
@@ -109,6 +112,15 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
             ]
         ]);            
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SELECT_TAXONOMY, $field_options);
+
+        //display show all button
+        $field_options = $this->field_options([
+            'is_trigger' => true,
+            'visible_if' => [
+                QAPL_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER => '1'
+            ]
+        ]);
+        $shortcode_page .= $this->add_field(QAPL_Constants::LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON, $field_options);
 
         // manual term selection checkbox
         $field_options = $this->field_options([

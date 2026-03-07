@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 
 class QAPL_Constants{
     // Plugin info
-    public const PLUGIN_VERSION = '1.8.9';
+    public const PLUGIN_VERSION = '1.8.10';
     public const PLUGIN_NAME = 'Quick Ajax Post Loader';
     public const PLUGIN_TEXT_DOMAIN = 'quick-ajax-post-loader';
     public const PLUGIN_SLUG = 'quick-ajax-post-loader';
@@ -114,6 +114,9 @@ class QAPL_Constants{
     public const LAYOUT_SETTING_SELECT_LOADER_ICON = 'qapl_loader_icon';
     public const LAYOUT_SETTING_SELECT_LOADER_ICON_DEFAULT = 'loader-icon';
 
+    public const LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON = 'qapl_display_show_all_button';
+    public const LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON_DEFAULT = 1;
+
     // Ajax settings
     public const AJAX_SETTING_AJAX_INITIAL_LOAD = 'ajax_initial_load';
 
@@ -128,6 +131,7 @@ class QAPL_Constants{
     public const ATTRIBUTE_LOADER_ICON = 'loader_icon';
     public const ATTRIBUTE_AJAX_INFINITE_SCROLL = 'infinite_scroll';
     public const ATTRIBUTE_SHOW_END_MESSAGE = 'show_end_message';
+    public const ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON = 'display_show_all_button';
 
     // Quick AJAX settings
     public const ADMIN_PAGE_SETTINGS_GROUP = 'qapl_settings_group'; // used by register_setting to group fields for shared validation and security in admin forms

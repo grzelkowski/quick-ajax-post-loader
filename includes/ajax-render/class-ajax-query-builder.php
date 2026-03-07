@@ -45,6 +45,9 @@ final class QAPL_Ajax_Query_Builder{
         $query_args = array_filter($query_args, function($value) {
             return !empty($value) || $value === 0 || $value === '0';
         });
+        $display_show_all_button = isset($attributes[QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON]) ? $attributes[QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON] : QAPL_Constants::LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON_DEFAULT;
+
+        $query_args = $this->adjust_tax_query_for_initial_state($query_args, $display_show_all_button);
         $query_args = apply_filters(QAPL_Constants::HOOK_MODIFY_POSTS_QUERY_ARGS, $query_args, $this->quick_ajax_id);
 
         if (empty($query_args)) {
@@ -52,6 +55,43 @@ final class QAPL_Ajax_Query_Builder{
         }else{
             return $query_args; 
         }
+    }
+    private function adjust_tax_query_for_initial_state($query_args, $display_show_all_button): array {
+        // if show all enabled - do nothing
+        if ($display_show_all_button !== 0) {
+            return $query_args;
+        }
+        // if no tax query
+        if (empty($query_args['tax_query']) || !is_array($query_args['tax_query'])) {
+            return $query_args;
+        }
+        // if no terms defined get first taxonomy term
+        if (empty($query_args['tax_query'][0]['terms']) || !is_array($query_args['tax_query'][0]['terms'])) {
+            // if no taxonomy
+            if (empty($query_args['tax_query'][0]['taxonomy'])) {
+                return $query_args;
+            }
+            $taxonomy = $query_args['tax_query'][0]['taxonomy'];
+            $terms = get_terms([
+                'taxonomy' => $taxonomy,
+                'hide_empty' => true,
+                'number' => 1,
+                'fields' => 'ids',
+            ]);
+            if (!is_wp_error($terms) && !empty($terms)) {
+                $query_args['tax_query'][0]['terms'] = [$terms[0]];
+                $query_args['tax_query'][0]['field'] = 'term_id';
+                // remove exists operator
+                if (isset($query_args['tax_query'][0]['operator'])) {
+                    unset($query_args['tax_query'][0]['operator']);
+                }
+            }
+            return $query_args;
+        }
+        //if show all button not visible show only first term posts on initial load
+        $first_term = $query_args['tax_query'][0]['terms'][0];
+        $query_args['tax_query'][0]['terms'] = [$first_term];
+        return $query_args;
     }
     private function sanitize_to_int_array($value) {
         // if it's a string (e.g. "1,2,3"), split it by comma or whitespace

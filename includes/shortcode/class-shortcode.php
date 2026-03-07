@@ -3,8 +3,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-
-
 class QAPL_Shortcode {
     private $shortcode_params = array();
     private $shortcode_postmeta = array();

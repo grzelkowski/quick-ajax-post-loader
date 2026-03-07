@@ -4,7 +4,7 @@ Contributors: grzelkowski
 Tags: ajax-load-more, infinite-scroll, ajax-filter, post-grid, category-filter
 Requires at least: 5.6
 Tested up to: 6.9
-Stable tag: 1.8.9
+Stable tag: 1.8.10
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -104,6 +104,13 @@ Yes, you can create multiple AJAX grids with different configurations.
 Yes, developers can use available WordPress hooks and filters to fully customize functionality.
 
 == Changelog ==
+
+
+= 1.8.10 - 2026-03-07 =
+- Added a new "Display Show All" option, allowing you to enable or disable the "Show All" button in taxonomy filters.
+- Improved overall shortcode configuration handling for more consistent behavior.
+- Enhanced reliability when combining shortcode attributes with saved settings.
+- General internal refinements for improved stability and maintainability.
 
 = 1.8.9 - 2026-02-10 =
 - Optimized post item image rendering to improve frontend performance.

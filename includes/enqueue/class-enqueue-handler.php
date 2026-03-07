@@ -105,6 +105,7 @@ class QAPL_Enqueue_Handler implements QAPL_Enqueue_Handler_Interface {
                 'quick_ajax_post_type' => QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE,
                 'quick_ajax_taxonomy' => QAPL_Constants::QUERY_SETTING_SELECT_TAXONOMY,
                 'quick_ajax_manual_selected_terms' => QAPL_Constants::QUERY_SETTING_SELECTED_TERMS,
+                'display_show_all_button' => QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON,
                 'quick_ajax_css_style' => QAPL_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE,
                 'grid_num_columns' => QAPL_Constants::ATTRIBUTE_GRID_NUM_COLUMNS,
                 'post_item_template' => QAPL_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE,

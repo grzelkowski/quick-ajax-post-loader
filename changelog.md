@@ -1,5 +1,12 @@
 ## Changelog
 
+
+### 1.8.10 - 2026-03-07
+- Added a new "Display Show All" option, allowing you to enable or disable the "Show All" button in taxonomy filters.
+- Improved overall shortcode configuration handling for more consistent behavior.
+- Enhanced reliability when combining shortcode attributes with saved settings.
+- General internal refinements for improved stability and maintainability.
+
 ### 1.8.9 - 2026-02-10
 - Optimized post item image rendering to improve frontend performance.
 - Improved taxonomy filter behavior by automatically hiding navigation when only one option is available.

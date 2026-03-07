@@ -66,7 +66,11 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
         if (!empty($source_args['selected_terms']) && is_array($source_args['selected_terms'])) {
             $terms_args['include'] = $source_args['selected_terms'];
         }           
-        $terms = get_terms($terms_args);            
+        $terms = get_terms($terms_args);      
+        $terms_count = is_array($terms) ? count($terms) : 0;
+        if (is_wp_error($terms) || !$this->should_render_filter_menu($terms_count)) {
+            return '';
+        }
 
         $block_id = 'quick-ajax-filter-'.$quick_ajax_id;
         $class_container = 'quick-ajax-filter-container';
@@ -77,23 +81,22 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
             $class_container .= ' ' . $layout[QAPL_Constants::ATTRIBUTE_TAXONOMY_FILTER_CLASS];
         }           
         $container_class = $this->helper->extract_classes_from_string($class_container);
-        if (!$this->should_render_filter_menu(count($terms))) {
-            return '';
-        }
         ob_start(); // Start output buffering
 
         do_action(QAPL_Constants::HOOK_FILTER_CONTAINER_BEFORE, $quick_ajax_id);
         echo '<div id="'.esc_attr($block_id).'" class="'.esc_attr($container_class).'">';
         do_action(QAPL_Constants::HOOK_FILTER_CONTAINER_START, $quick_ajax_id);
-        if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-            $attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $quick_ajax_id;
-            
-            $navigation_buttons = [];                
-            $button_base = [
-                'data-button' => QAPL_Constants::TERM_FILTER_BUTTON_DATA_BUTTON,
-                'template' => $this->file_manager->get_taxonomy_filter_button_template(),
-                'data-attributes' => $attributes,
-            ];
+        
+        $attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $quick_ajax_id;            
+        $navigation_buttons = [];                
+        $button_base = [
+            'data-button' => QAPL_Constants::TERM_FILTER_BUTTON_DATA_BUTTON,
+            'template' => $this->file_manager->get_taxonomy_filter_button_template(),
+            'data-attributes' => $attributes,
+        ];
+        $display_show_all_button = isset($attributes[QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON]) ? $attributes[QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON] : QAPL_Constants::LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON_DEFAULT;
+        $has_active_button = false;
+        if($display_show_all_button == 1){
             $show_all_label = $this->global_options['show_all_label'] ?? __('Show All', 'quick-ajax-post-loader');    
             $show_all_button = [                    
                 'term_id' => 'none',
@@ -103,35 +106,43 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
                 'data-button' => $button_base['data-button'],
                 'data-action' => $source_args,
                 'data-attributes' => $button_base['data-attributes'],
+                'is_active' => true,
             ];
-            $show_all_button['is_active'] = true;
             $navigation_buttons[] = $show_all_button;
-            $exclude_ids = (isset($query_args['post__not_in'])) ? $query_args['post__not_in'] : '';
-            foreach ( $terms as $term ) { 
-                $not_empty = $this->get_post_assigned_to_the_term($term, $query_args['post_type'], $exclude_ids);
-                if($not_empty == true){
-                    $data_action = $source_args;
-                    $data_action['selected_terms'] = [$term->term_id];
-                    $term_button_data = [                        
-                        'term_id' => $term->term_id,
-                        'taxonomy' => $term->taxonomy,
-                        'template' => $button_base['template'],
-                        'button_label' => $term->name,
-                        'data-button' => $button_base['data-button'],
-                        'data-action' => $data_action,
-                        'data-attributes' => $button_base['data-attributes'],
-                    ];
-                    $navigation_buttons[] = $term_button_data;
-                }
-            }
-            
-            $navigation_buttons = apply_filters(QAPL_Constants::HOOK_MODIFY_TAXONOMY_FILTER_BUTTONS, $navigation_buttons, $quick_ajax_id);
-            $filter_buttons='';
-            foreach ( $navigation_buttons as $button ) {
-                $filter_buttons .= $this->update_button_template($button);
-            }
-            echo wp_kses_post($filter_buttons);
+            $has_active_button = true;
         }
+        $exclude_ids = (isset($query_args['post__not_in'])) ? $query_args['post__not_in'] : '';
+        foreach ( $terms as $term ) { 
+            $not_empty = $this->get_post_assigned_to_the_term($term, $query_args['post_type'], $exclude_ids);
+            if($not_empty == true){
+                $data_action = $source_args;
+                $data_action['selected_terms'] = [$term->term_id];
+                $term_button_data = [                        
+                    'term_id' => $term->term_id,
+                    'taxonomy' => $term->taxonomy,
+                    'template' => $button_base['template'],
+                    'button_label' => $term->name,
+                    'data-button' => $button_base['data-button'],
+                    'data-action' => $data_action,
+                    'data-attributes' => $button_base['data-attributes'],
+                    'is_active' => false,
+                ];
+                //if "show all" disabled and no active yet make first term active
+                if (!$has_active_button) {
+                    $term_button_data['is_active'] = true;
+                    $has_active_button = true;
+                }
+                $navigation_buttons[] = $term_button_data;
+            }
+        }
+        
+        $navigation_buttons = apply_filters(QAPL_Constants::HOOK_MODIFY_TAXONOMY_FILTER_BUTTONS, $navigation_buttons, $quick_ajax_id);
+        $filter_buttons='';
+        foreach ( $navigation_buttons as $button ) {
+            $filter_buttons .= $this->update_button_template($button);
+        }
+        echo wp_kses_post($filter_buttons);
+        
         do_action(QAPL_Constants::HOOK_FILTER_CONTAINER_END, $quick_ajax_id);
         echo '</div>';
         do_action(QAPL_Constants::HOOK_FILTER_CONTAINER_AFTER, $quick_ajax_id);

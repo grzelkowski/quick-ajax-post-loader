@@ -56,6 +56,19 @@ class QAPL_Form_Field_Factory {
         $builder->set_description(__('Enable manual selection of taxonomy terms to be used for filtering.', 'quick-ajax-post-loader'));
         return $builder->build();
     }
+    //show "show all" filter button
+    public static function build_display_show_all_button_field(): QAPL_Form_Field_Interface {
+        $builder = new QAPL_Form_Field_Builder();
+        $global_sort_labels = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME, []);
+        $global_label = ($global_sort_labels['show_all_label']) ? $global_sort_labels['show_all_label'] : __('Show All', 'quick-ajax-post-loader');
+        $builder->set_name(QAPL_Constants::LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON);
+        $builder->set_label(__('Display "Show All" Button', 'quick-ajax-post-loader'));
+        $builder->set_type('checkbox');
+        $builder->set_default(QAPL_Constants::LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON_DEFAULT);
+        $description = sprintf(__('Display the "%s" button in the taxonomy filter to reset the filter and show all posts.', 'quick-ajax-post-loader'), $global_label);
+        $builder->set_description($description);
+        return $builder->build();
+    }
     //manual selected terms multiselect
     public static function build_manual_selected_terms_field(): QAPL_Form_Field_Interface {
         $builder = new QAPL_Form_Field_Builder();
