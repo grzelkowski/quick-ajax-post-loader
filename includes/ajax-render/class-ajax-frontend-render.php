@@ -13,7 +13,10 @@ final class QAPL_Ajax_Frontend_Render {
     private $layout_builder;
 
     public function __construct() {
-        $this->global_options       = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME, []);
+        $this->global_options = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME);
+        if (!is_array($this->global_options)) {
+            $this->global_options = [];
+        }
         $this->file_manager         = new QAPL_File_Manager();
         $this->helper               = new QAPL_Ajax_Helper();
         $this->query_builder        = new QAPL_Ajax_Query_Builder();

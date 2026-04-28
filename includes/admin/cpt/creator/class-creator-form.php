@@ -5,86 +5,61 @@ if (!defined('ABSPATH')) {
 
 class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
     public function init_post_fields(){
-        //select post type   
-        $field = QAPL_Form_Field_Factory::build_select_post_type_field();
-        $this->create_field($field);
-        //show taxonomy checkbox
-        $field = QAPL_Form_Field_Factory::build_show_taxonomy_filter_field();
-        $this->create_field($field);
-        //select taxonomy
-        $field = QAPL_Form_Field_Factory::build_select_taxonomy_field();
-        $this->create_field($field);
-        //display show all button
-        $field = QAPL_Form_Field_Factory::build_display_show_all_button_field();
-        $this->create_field($field);
-        //manual term selection checkbox
-        $field = QAPL_Form_Field_Factory::build_manual_term_selection_field();
-        $this->create_field($field);
-        //manual selected terms multiselect
-        $field = QAPL_Form_Field_Factory::build_manual_selected_terms_field();
-        $this->create_field($field);
-        //post per page number
-        $field = QAPL_Form_Field_Factory::build_posts_per_page_field();
-        $this->create_field($field);
-        //select post order
-        $field = QAPL_Form_Field_Factory::build_select_order_field();
-        $this->create_field($field);
-        //select post orderby
-        $field = QAPL_Form_Field_Factory::build_select_orderby_field();
-        $this->create_field($field);
-
-        //show sort button
-        $field = QAPL_Form_Field_Factory::build_show_sort_button_field();
-        $this->create_field($field);
-        //select sort options
-        $field = QAPL_Form_Field_Factory::build_select_sort_button_options_field();
-        $this->create_field($field);
-        //inline Filter & Sorting
-        $field = QAPL_Form_Field_Factory::build_show_inline_filter_sorting_field();
-        $this->create_field($field);
-
-        //add Excluded Post IDs
-        $field = QAPL_Form_Field_Factory::build_excluded_post_ids_field();
-        $this->create_field($field);
-        //set ignore sticky
-        $field = QAPL_Form_Field_Factory::build_ignore_sticky_posts_field();
-        $this->create_field($field);
-        //load posts via AJAX on initial load
-        $field = QAPL_Form_Field_Factory::build_ajax_on_initial_load_field();
-        $this->create_field($field);
-        //Infinite Scroll
-        $field = QAPL_Form_Field_Factory::build_ajax_infinite_scroll_field();
-        $this->create_field($field);
-        //Show end message
-        $field = QAPL_Form_Field_Factory::build_show_end_message_field();
-        $this->create_field($field);
-        //apply quick ajax css style
-        $field = QAPL_Form_Field_Factory::build_quick_ajax_css_style_field();
-        $this->create_field($field);
-        //select number of columns
-        $field = QAPL_Form_Field_Factory::build_select_columns_qty_field();
-        $this->create_field($field);
-        //select post item template
-        $field = QAPL_Form_Field_Factory::build_post_item_template_field();
-        $this->create_field($field);
-        //add custom class for taxonomy filter
-        $field = QAPL_Form_Field_Factory::build_taxonomy_filter_class_field();
-        $this->create_field($field);
-        //add custom class for container
-        $field = QAPL_Form_Field_Factory::build_container_class_field();
-        $this->create_field($field);
-        //show custom load more post quantity
-        $field = QAPL_Form_Field_Factory::build_show_custom_load_more_post_quantity_field();
-        $this->create_field($field);
-        //select custom load more post quantity
-        $field = QAPL_Form_Field_Factory::build_select_custom_load_more_post_quantity_field();
-        $this->create_field($field);
-        //override loader icon
-        $field = QAPL_Form_Field_Factory::build_override_global_loader_icon_field();
-        $this->create_field($field);
-        //select loader icon
-        $field = QAPL_Form_Field_Factory::build_select_loader_icon();
-        $this->create_field($field);
+        // register all fields for cpt creator form
+        $this->register_fields_batch([
+            //select post type   
+            QAPL_Form_Field_Factory::build_select_post_type_field(),
+            //show taxonomy checkbox
+            QAPL_Form_Field_Factory::build_show_taxonomy_filter_field(),
+            //select taxonomy
+            QAPL_Form_Field_Factory::build_select_taxonomy_field(),
+            //display show all button
+            QAPL_Form_Field_Factory::build_display_show_all_button_field(),
+            //manual term selection checkbox
+            QAPL_Form_Field_Factory::build_manual_term_selection_field(),
+            //manual selected terms multiselect
+            QAPL_Form_Field_Factory::build_manual_selected_terms_field(),
+            //post per page number
+            QAPL_Form_Field_Factory::build_posts_per_page_field(),
+            //select post order
+            QAPL_Form_Field_Factory::build_select_order_field(),
+            //select post orderby
+            QAPL_Form_Field_Factory::build_select_orderby_field(),
+            //show sort button
+            QAPL_Form_Field_Factory::build_show_sort_button_field(),
+            //select sort options
+            QAPL_Form_Field_Factory::build_select_sort_button_options_field(),
+            //inline Filter & Sorting
+            QAPL_Form_Field_Factory::build_show_inline_filter_sorting_field(),
+            //add Excluded Post IDs
+            QAPL_Form_Field_Factory::build_excluded_post_ids_field(),
+            //set ignore sticky
+            QAPL_Form_Field_Factory::build_ignore_sticky_posts_field(),
+            //load posts via AJAX on initial load
+            QAPL_Form_Field_Factory::build_ajax_on_initial_load_field(),
+            //Infinite Scroll
+            QAPL_Form_Field_Factory::build_ajax_infinite_scroll_field(),
+            //Show end message
+            QAPL_Form_Field_Factory::build_show_end_message_field(),
+            //apply quick ajax css style
+            QAPL_Form_Field_Factory::build_quick_ajax_css_style_field(),
+            //select number of columns
+            QAPL_Form_Field_Factory::build_select_columns_qty_field(),
+            //select post item template
+            QAPL_Form_Field_Factory::build_post_item_template_field(),
+            //add custom class for taxonomy filter
+            QAPL_Form_Field_Factory::build_taxonomy_filter_class_field(),
+            //add custom class for container
+            QAPL_Form_Field_Factory::build_container_class_field(),
+            //show custom load more post quantity
+            QAPL_Form_Field_Factory::build_show_custom_load_more_post_quantity_field(),
+            //select custom load more post quantity
+            QAPL_Form_Field_Factory::build_select_custom_load_more_post_quantity_field(),
+            //override loader icon
+            QAPL_Form_Field_Factory::build_override_global_loader_icon_field(),
+            //select loader icon
+            QAPL_Form_Field_Factory::build_select_loader_icon(),
+        ]);
     }
     
     public function render_form() {
@@ -104,7 +79,8 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SHOW_TAXONOMY_FILTER, $field_options);
 
         //select taxonomy
-        $this->fields[QAPL_Constants::QUERY_SETTING_SELECT_TAXONOMY]['options'] = $this->get_taxonomy_options_for_post_type();            
+        $taxonomy_options = $this->get_taxonomy_options_for_post_type();
+        $this->update_field_options(QAPL_Constants::QUERY_SETTING_SELECT_TAXONOMY, $taxonomy_options);
         $field_options = $this->field_options([
             'is_trigger' => false,
             'visible_if' => [
@@ -132,8 +108,8 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_MANUAL_TERM_SELECTION, $field_options);
         
         // assign term options to field
-        $this->fields[QAPL_Constants::QUERY_SETTING_SELECTED_TERMS]['options'] = $this->get_term_options_for_taxonomy();
-
+        $term_options = $this->get_term_options_for_taxonomy();
+        $this->update_field_options(QAPL_Constants::QUERY_SETTING_SELECTED_TERMS, $term_options);
         // render field with multiple conditions
         $field_options = $this->field_options([
             'visible_if' => [

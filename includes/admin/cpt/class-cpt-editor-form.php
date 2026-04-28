@@ -10,6 +10,7 @@ abstract class QAPL_CPT_Editor_Form extends QAPL_Form_Content_Builder {
     private $is_initialized = false;
 
     public function __construct($form_id, $meta_key, $post_type) {
+        parent::__construct(); 
         $this->form_id = $form_id;
         $this->meta_key = $meta_key;
         $this->post_type = $post_type;
@@ -22,7 +23,7 @@ abstract class QAPL_CPT_Editor_Form extends QAPL_Form_Content_Builder {
     }
     protected function ensure_fields_initialized() {
         // lazy init to avoid rebuilding fields
-        if ($this->is_initialized || !empty($this->fields)) {
+        if ($this->is_initialized) {
             return;
         }
         $this->init_post_fields();
@@ -31,32 +32,14 @@ abstract class QAPL_CPT_Editor_Form extends QAPL_Form_Content_Builder {
     abstract public function init_post_fields();
     abstract public function render_form();
 
-    private function load_existing_values($post_id) {
-        $form_data = get_post_meta($post_id, $this->meta_key, true);
-        // handle legacy serialized data
-        if (is_string($form_data)) {
-            $form_data = maybe_unserialize($form_data);
-            if (is_array($form_data)) {
-                update_post_meta($post_id, $this->meta_key, $form_data);
-            }
-        }
-        if (!is_array($form_data)) {
-            return;
-        }
-        foreach ($form_data as $field_name => $field_value) {
-            $this->existing_values[$field_name] = [
-                'name'  => $field_name,
-                'value' => $field_value,
-            ];
-        }
-    }
-    
     public function add_quick_ajax_form($post){ 
         if ($post->post_type !== $this->post_type) {
             return;
         }
         $this->ensure_fields_initialized();
-        $this->load_existing_values($post->ID);
+        $this->set_value_provider(
+            new QAPL_Post_Meta_Value_Provider($post->ID, $this->meta_key)
+        );
         echo '<div class="quick-ajax-form-wrap '.esc_attr($this->get_quick_ajax_form_class()).'" id="' . esc_attr($this->form_id) . '">';
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output already escaped
         echo $this->render_form();
@@ -66,6 +49,7 @@ abstract class QAPL_CPT_Editor_Form extends QAPL_Form_Content_Builder {
     }   
     
     public function save_quick_ajax_form($post_id) {
+        $sanitizer = new QAPL_Field_Sanitizer();
         if (get_post_type($post_id) !== $this->post_type) {
             return;
         }
@@ -86,22 +70,20 @@ abstract class QAPL_CPT_Editor_Form extends QAPL_Form_Content_Builder {
         }
         //ensure field definitions exist for validation
         $this->ensure_fields_initialized();
-        if (empty($this->fields)) {
+        if (empty($this->field_registry->all())) {
             return;
         }
         $form_data = array();
-        foreach ($this->fields as $field) {
-            if (($field['type'] == 'checkbox') && !isset($_POST[$field['name']])) {
-                $form_data[$field['name']] = 0;
-            } elseif (isset($_POST[$field['name']])) {
-                if (is_array($_POST[$field['name']])) {
-                    $field_value = array_map('sanitize_text_field', wp_unslash($_POST[$field['name']]));
-                    $form_data[$field['name']] = $field_value;
-                }else{
-                    $field_value = sanitize_text_field(wp_unslash($_POST[$field['name']]));
-                    $form_data[$field['name']] = $field_value;
-                }
+        $fields_all = $this->field_registry->all();
+        foreach ($fields_all as $field) {
+            $name = $field->get_name();
+            $raw_value = $_POST[$name] ?? null;
+            if (is_array($raw_value) || is_string($raw_value)) {
+                $raw_value = wp_unslash($raw_value);
             }
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized via $sanitizer->sanitize_field
+            $value = $sanitizer->sanitize_field($field, $raw_value);
+            $form_data[$name] = $value;
         }
         update_post_meta($post_id, $this->meta_key, $form_data);
     }

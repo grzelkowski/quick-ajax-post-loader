@@ -10,6 +10,7 @@ if (!class_exists('QAPL_Settings_Page')) {
             return '<h1>'.esc_html__('Quick AJAX settings', 'quick-ajax-post-loader').'</h1>';
         }
         private function settings_page_tabs(){
+            $tabs = [];
             $tabs[] = new QAPL_Settings_Tab_Options($this);
             $tabs[] = new QAPL_Settings_Tab_PHP_Snippet($this);
             $tabs[] = new QAPL_Settings_Tab_Help($this);
@@ -21,16 +22,12 @@ if (!class_exists('QAPL_Settings_Page')) {
         }
         public function init_option_page_fields() {
             foreach ($this->settings_page_tabs() as $tab) {
-                if (method_exists($tab, 'register_fields')) {
-                    $tab->register_fields();
-                }
+                $tab->define_fields();
             }
         }
         public function init_option_page_content() {
             foreach ($this->settings_page_tabs() as $tab) {
-                if (method_exists($tab, 'register_content')) {
-                    $tab->register_content($this->tabIndex++);
-                }
+                $tab->register_content($this->tabIndex++);
             }
         }
     }

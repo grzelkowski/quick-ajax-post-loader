@@ -2,6 +2,8 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+//OLD interface-form-field.php
+
 //interface for form field data
 //it defines the methods that must exist in any field class
 interface QAPL_Form_Field_Interface {
@@ -13,5 +15,6 @@ interface QAPL_Form_Field_Interface {
     public function get_description(): string;
     public function get_placeholder(): string;
     public function get_tooltip(): array;
-    public function get_field(): array;
+    public function set_options(array $options): void;
+    public function prepare_value($value);
 }

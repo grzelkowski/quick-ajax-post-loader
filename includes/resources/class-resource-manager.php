@@ -23,6 +23,7 @@ class QAPL_Resource_Manager implements QAPL_Resource_Manager_Interface {
         //admin pages
         'class-options-form'                => 'includes/admin/pages/class-admin-options-page-form.php', //abstract form for option page
         // settings page
+        'interface-settings-tab'            => 'includes/admin/pages/settings/tabs/interface-settings-tab.php',
         'class-settings-tab-options'        => 'includes/admin/pages/settings/tabs/class-settings-tab-options.php',
         'class-settings-tab-php-snippet'    => 'includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php',
         'class-settings-tab-help'           => 'includes/admin/pages/settings/tabs/class-settings-tab-help.php',
@@ -35,8 +36,13 @@ class QAPL_Resource_Manager implements QAPL_Resource_Manager_Interface {
     private const COMPONENT_FILES = [
         //form
         'interface-form-field'              => 'includes/form/interface-form-field.php', //interface for form field
+        'interface-value-provider'          => 'includes/form/interface-value-provider.php', //interface for providing form field values
+        'class-taxonomy-options-provider'   => 'includes/form/class-taxonomy-options-provider.php', //class for providing taxonomy terms as options for form fields
+        'class-global-option-value-provider'=> 'includes/form/class-global-option-value-provider.php', //class for providing form field values
+        'class-post-meta-value-provider'    => 'includes/form/class-post-meta-value-provider.php', //class for providing form field values
+        'class-field-sanitizer'             => 'includes/form/class-field-sanitizer.php',
         'class-form-field'                  => 'includes/form/class-form-field.php', //final form field object
-        'class-form-field-builder'          => 'includes/form/class-form-field-builder.php', //builder for form fields
+        'class-field-registry'              => 'includes/form/class-field-registry.php',
         'class-form-field-factory'          => 'includes/form/class-form-field-factory.php', //factory to create form fields
         'class-content-builder'             => 'includes/form/class-form-content-builder.php', //base class to build form fields html
         //shortcode
@@ -67,7 +73,6 @@ class QAPL_Resource_Manager implements QAPL_Resource_Manager_Interface {
         //maintenance / compatibility
         'updater'                           => 'includes/maintenance/class-updater.php',
         'deprecated-hooks-handler'          => 'includes/deprecated/class-deprecated-hooks-handler.php',
-        'dev-hooks'                         => 'dev-tools/dev-hooks.php',
     ];
     
 

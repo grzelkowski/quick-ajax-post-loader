@@ -9,11 +9,14 @@ abstract class QAPL_Admin_Options_Page_Form extends QAPL_Form_Content_Builder {
     protected $tabs = [];
     
     public function __construct($option_group, $option_name) {
+        parent::__construct(); 
         $this->option_group = $option_group;
         $this->option_name = $option_name;
+        $this->set_value_provider(
+            new QAPL_Global_Option_Value_Provider($this->option_name)
+        );
     }
     public function init() {
-        $this->unserialize_data();
         $this->init_option_page_fields();
         $this->init_option_page_content();
     }
@@ -24,33 +27,11 @@ abstract class QAPL_Admin_Options_Page_Form extends QAPL_Form_Content_Builder {
     public function add_quick_ajax_page_content($id, $title, $content) {
         $this->tabs[$id] = ['title' => $title, 'content' => $content];
     }
-    private function unserialize_data(){ 
-        $data = get_option($this->option_name);
-        if (is_array($data)) {
-            foreach ($data as $field_name => $field_value) {
-                $field_key = $this->option_name . '[' . $field_name . ']';
-                $this->existing_values[$field_key]=array(
-                    'name' => $field_key,
-                    'value' => $field_value
-                );
-            }
-        }
-    }
-    public function register_field($field) {
-        $this->create_field($field);
-    }
     public function render_field($field_name, $options = [], $required = false) {
         return $this->add_field($field_name, $options, $required);
     }
     public function get_field($field_name) {
-        return $this->fields[$field_name] ?? null;
-    }
-    public function update_field_options($field_name, array $options) {
-        if (!isset($this->fields[$field_name])) {
-            return false;
-        }
-        $this->fields[$field_name]['options'] = $options;
-        return true;
+        return $this->field_registry->get($field_name);
     }
     public function get_option_group() {
         return $this->option_group;
@@ -77,13 +58,10 @@ abstract class QAPL_Admin_Options_Page_Form extends QAPL_Form_Content_Builder {
         echo $this->render_quick_ajax_page_heading();
         echo '</div>';
         echo '<div class="quick-ajax-form-wrap ' . esc_attr($this->get_quick_ajax_form_class()) . '" id="form-' . esc_attr($this->option_group) . '">';
-        //echo '<form method="post" action="options.php">';
-        //settings_fields($this->option_group); // Output security fields for the registered settings
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output already escaped
         echo $this->render_quick_ajax_tabs_navigation();
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output already escaped
         echo $this->render_quick_ajax_tabs_content();
-        //echo '</form>';
         echo '</div>';
     }
 

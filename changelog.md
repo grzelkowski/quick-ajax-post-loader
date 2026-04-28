@@ -1,6 +1,11 @@
 ## Changelog
 
 
+### 1.8.11 - 2026-04-28
+- Fixed an issue where multi-select field values in global plugin settings could be lost when saving.
+- Minor internal improvements and refinements to enhance stability and consistency.
+- Minor improvements and refinements to translations.
+
 ### 1.8.10 - 2026-03-07
 - Added a new "Display Show All" option, allowing you to enable or disable the "Show All" button in taxonomy filters.
 - Improved overall shortcode configuration handling for more consistent behavior.

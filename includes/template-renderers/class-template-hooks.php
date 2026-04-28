@@ -39,48 +39,56 @@ interface QAPL_No_Post_Message_Interface {
 function qapl_output_template_post_date() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_date')) {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- template method returns prepared html
         echo $template->render_date();
     }
 }
 function qapl_output_template_post_image() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_image')) {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- template method returns prepared html
         echo $template->render_image();
     }
 }
 function qapl_output_template_post_title() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_title')) {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- template method returns prepared html
         echo $template->render_title();
     }
 }
 function qapl_output_template_post_excerpt() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_excerpt')) {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- template method returns prepared html
         echo $template->render_excerpt();
     }
 }
 function qapl_output_template_post_read_more() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_read_more')) {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- template method returns prepared html
         echo $template->render_read_more();
     }
 }
 function qapl_output_template_button_load_more() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_load_more_button')) {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- template method returns prepared html
         echo $template->render_load_more_button();
     }
 }
 function qapl_output_template_no_post_message() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_no_post_message')) {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- template method returns prepared html
         echo $template->render_no_post_message();
     }
 }
 function qapl_output_template_end_post_message() {
     $template = QAPL_Post_Template_Context::get_template();
     if ($template && method_exists($template, 'render_end_post_message')) {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- template method returns prepared html
         echo $template->render_end_post_message();
     }
 }
@@ -287,7 +295,10 @@ class QAPL_Post_Template_Factory {
         $template_name = $container_settings['template_name'] ?? '';
         $quick_ajax_id = $container_settings['quick_ajax_id'] ?? '';
         $config_array = $container_settings['config'] ?? [];
-        $global_options = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME, []);
+        $global_options = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME);
+        if (!is_array($global_options)) {
+            $global_options = [];
+        }
         $config = new QAPL_Template_Config($config_array);
 
         /*

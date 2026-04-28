@@ -17,7 +17,10 @@ final class QAPL_Ajax_Frontend_Controller {
         if (empty($_POST['args'])) {
             wp_send_json_error(['message' => 'Quick Ajax Post Loader: Invalid request, Missing arguments.']);
         } else {
-            $global_options     = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME, []);
+            $global_options = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME);
+            if (!is_array($global_options)) {
+                $global_options = [];
+            }
             $helper             = new QAPL_Ajax_Helper();
             $file_manager       = new QAPL_File_Manager();
             $ajax_builder       = new QAPL_Ajax_Query_Builder();

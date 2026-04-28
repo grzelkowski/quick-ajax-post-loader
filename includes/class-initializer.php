@@ -69,6 +69,10 @@ final class QAPL_Initializer {
         if (file_exists($dev_tools_path)) {
             require_once $dev_tools_path;
         }
+        $dev_hooks = self::$plugin_dir_path . 'dev-tools/dev-hooks.php';
+        if (file_exists($dev_hooks)) {
+            require_once $dev_hooks;
+        }
     }
     public static function maybe_run_tests(): void {
         $tests_loader = self::$plugin_dir_path . 'tests/load-tests.php';

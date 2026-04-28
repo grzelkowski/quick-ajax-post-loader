@@ -1,15 +1,15 @@
 === Quick Ajax Post Loader ===
 
 Contributors: grzelkowski
-Tags: ajax-load-more, infinite-scroll, ajax-filter, post-grid, category-filter
+Tags: ajax, load-more, infinite-scroll, filter, post-grid
 Requires at least: 5.6
 Tested up to: 6.9
-Stable tag: 1.8.10
+Stable tag: 1.8.11
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Load WordPress posts dynamically with AJAX for faster browsing, infinite scroll, and category filtering - no page reloads.
+Display posts with AJAX load more, infinite scroll, and taxonomy filtering - fast, no page reloads.
 
 == Description ==
 
@@ -103,8 +103,25 @@ Yes, you can create multiple AJAX grids with different configurations.
 = Can I extend the plugin via hooks and filters? =
 Yes, developers can use available WordPress hooks and filters to fully customize functionality.
 
+= Does it work with the Gutenberg Block Editor? =
+Yes, you can use the plugin shortcode in any Gutenberg block that supports shortcodes.
+
+= Is it compatible with WooCommerce? =
+Yes, it supports custom post types, so it can display WooCommerce products with AJAX filtering and load more.
+
+= Does it work with caching plugins? =
+Yes, the plugin supports loading the initial posts via AJAX, which ensures fresh content even when using caching plugins.
+
+= Does it work with Elementor or other page builders? =
+Yes, you can paste the shortcode into any page builder that supports shortcode widgets.
+
 == Changelog ==
 
+
+= 1.8.11 - 2026-04-28 =
+- Fixed an issue where multi-select field values in global plugin settings could be lost when saving.
+- Minor internal improvements and refinements to enhance stability and consistency.
+- Minor improvements and refinements to translations.
 
 = 1.8.10 - 2026-03-07 =
 - Added a new "Display Show All" option, allowing you to enable or disable the "Show All" button in taxonomy filters.

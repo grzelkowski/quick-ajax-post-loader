@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 
 class QAPL_Constants{
     // Plugin info
-    public const PLUGIN_VERSION = '1.8.10';
+    public const PLUGIN_VERSION = '1.8.11';
     public const PLUGIN_NAME = 'Quick Ajax Post Loader';
     public const PLUGIN_TEXT_DOMAIN = 'quick-ajax-post-loader';
     public const PLUGIN_SLUG = 'quick-ajax-post-loader';
@@ -63,7 +63,7 @@ class QAPL_Constants{
     public const QUERY_SETTING_SHOW_SORT_BUTTON_DEFAULT = 0;
     
     public const QUERY_SETTING_SELECT_SORT_BUTTON_OPTIONS = 'qapl_select_orderby_button_options';
-    public const QUERY_SETTING_SELECT_SORT_BUTTON_OPTIONS_DEFAULT = 1;
+    public const QUERY_SETTING_SELECT_SORT_BUTTON_OPTIONS_DEFAULT = [];
 
     public const QUERY_SETTING_SHOW_INLINE_FILTER_SORTING = 'qapl_show_inline_filter_sorting';
     public const QUERY_SETTING_SHOW_INLINE_FILTER_SORTING_DEFAULT = 1;
@@ -72,19 +72,19 @@ class QAPL_Constants{
     public const QUERY_SETTING_SELECT_POST_STATUS_DEFAULT = 'publish';
 
     public const QUERY_SETTING_IGNORE_STICKY_POSTS = 'qapl_ignore_sticky_posts';
-    public const QUERY_SETTING_IGNORE_STICKY_POSTS_DEFAULT = false;
+    public const QUERY_SETTING_IGNORE_STICKY_POSTS_DEFAULT = 0;
 
     public const QUERY_SETTING_AJAX_ON_INITIAL_LOAD = 'qapl_ajax_on_initial_load';
-    public const QUERY_SETTING_AJAX_ON_INITIAL_LOAD_DEFAULT = false;
+    public const QUERY_SETTING_AJAX_ON_INITIAL_LOAD_DEFAULT = 0;
 
     public const QUERY_SETTING_AJAX_INFINITE_SCROLL = 'qapl_ajax_infinite_scroll';
-    public const QUERY_SETTING_AJAX_INFINITE_SCROLL_DEFAULT = false;
+    public const QUERY_SETTING_AJAX_INFINITE_SCROLL_DEFAULT = 0;
 
     public const QUERY_SETTING_SHOW_END_MESSAGE = 'qapl_show_end_post_message';
-    public const QUERY_SETTING_SHOW_END_MESSAGE_DEFAULT = false;
+    public const QUERY_SETTING_SHOW_END_MESSAGE_DEFAULT = 0;
 
     public const QUERY_SETTING_SET_POST_NOT_IN = 'qapl_select_post_not_in';
-    public const QUERY_SETTING_SET_POST_NOT_IN_DEFAULT = false;
+    public const QUERY_SETTING_SET_POST_NOT_IN_DEFAULT = '';
 
     public const QUERY_SETTING_SHOW_CUSTOM_LOAD_MORE_POST_QUANTITY = 'qapl_show_custom_load_more_post_quantity';
     public const QUERY_SETTING_SHOW_CUSTOM_LOAD_MORE_POST_QUANTITY_DEFAULT = 0;
@@ -97,10 +97,10 @@ class QAPL_Constants{
     public const LAYOUT_SETTING_SELECT_COLUMNS_QTY_DEFAULT = 3;
 
     public const LAYOUT_SETTING_TAXONOMY_FILTER_CLASS = 'qapl_layout_add_taxonomy_filter_class';
-    public const LAYOUT_SETTING_TAXONOMY_FILTER_CLASS_DEFAULT = false;
+    public const LAYOUT_SETTING_TAXONOMY_FILTER_CLASS_DEFAULT = '';
 
     public const LAYOUT_SETTING_CONTAINER_CLASS = 'qapl_layout_add_container_class';
-    public const LAYOUT_SETTING_CONTAINER_CLASS_DEFAULT = false;
+    public const LAYOUT_SETTING_CONTAINER_CLASS_DEFAULT = '';
 
     public const LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE = 'qapl_layout_quick_ajax_css_style';
     public const LAYOUT_SETTING_QUICK_AJAX_CSS_STYLE_DEFAULT = 1;

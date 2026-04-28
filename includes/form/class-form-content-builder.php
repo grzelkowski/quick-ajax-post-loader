@@ -4,192 +4,250 @@ if (!defined('ABSPATH')) {
 }
 
 abstract class QAPL_Form_Content_Builder{
-    protected $fields = array();
-    protected $existing_values = array();
-    protected function create_field(QAPL_Form_Field_Interface $field) {
-        $field_properties = $field->get_field();
-        if (!empty($field_properties['name'])) {
-            $field = [
-                'name' => $field_properties['name'],
-                'label' => $field_properties['label'] ?? null,
-                'type' => $field_properties['type'] ?? null,
-                'options' => $field_properties['options'] ?? null,
-                'default' => $field_properties['default'] ?? null,
-                'placeholder' => $field_properties['placeholder'] ?? null,
-                'description' => $field_properties['description'] ?? null,
-                'tooltip' => $field_properties['tooltip'] ?? [],
-            ];
-            $this->fields[$field_properties['name']] = $field;
+    protected QAPL_Field_Registry $field_registry;
+    protected ?QAPL_Value_Provider_Interface $value_provider = null;
+    protected QAPL_Taxonomy_Options_Provider $taxonomy_options_provider;
+
+    public function __construct() {
+        $this->field_registry = new QAPL_Field_Registry();
+        $this->taxonomy_options_provider = new QAPL_Taxonomy_Options_Provider();
+    }
+    public function set_value_provider(QAPL_Value_Provider_Interface $provider): void {
+        $this->value_provider = $provider;
+    }
+    public function update_field_options(string $field_name, array $options): bool {
+        return $this->field_registry->update_options($field_name, $options);
+    }
+    public function register_field(QAPL_Form_Field_Interface $field): void {
+        $this->field_registry->register($field);
+    }
+    public function register_fields_batch(array $fields): void {
+        foreach ($fields as $field) {
+            $this->register_field($field);
         }
     }
-    protected function add_field($field_name, $show_hide_element_id = false, $required = false){
-        if($this->fields[$field_name]['type'] == 'checkbox'){
-            return $this->add_checkbox_field($field_name, $show_hide_element_id, $required);
+    protected function add_field($field_name, $field_args = [], $required = false){
+        $field = $this->field_registry->get($field_name);
+        if (!$field) {
+            return '';
         }
-        elseif($this->fields[$field_name]['type'] == 'select'){
-            return $this->add_select_field($field_name, $show_hide_element_id);
-        }
-        elseif($this->fields[$field_name]['type'] == 'multiselect'){
-            return $this->add_multiselect_field($field_name, $show_hide_element_id);
-        }
-        elseif($this->fields[$field_name]['type'] == 'number'){
-            return $this->add_number_field($field_name, $show_hide_element_id);
-        }
-        elseif($this->fields[$field_name]['type'] == 'text'){
-            return $this->add_text_input_field($field_name, $show_hide_element_id);
-        }
-        elseif($this->fields[$field_name]['type'] == 'color_picker'){
-            return $this->add_color_picker_field($field_name, $show_hide_element_id);
-        }
-        return '';        
-    }
-    protected function get_the_value_if_exist($field_name){
-        if(isset($this->existing_values[$field_name]['value'])){
-            return $this->existing_values[$field_name]['value'];
-        }
-        elseif(isset($this->fields[$field_name]['default'])){
-            return $this->fields[$field_name]['default'];
-        }else{
-            return false;
+        switch ($field->get_type()) {
+            case 'checkbox':
+                return $this->add_checkbox_field($field_name, $field_args, $required);
+            case 'select':
+                return $this->add_select_field($field_name, $field_args);
+            case 'multiselect':
+                return $this->add_multiselect_field($field_name, $field_args);
+            case 'number':
+                return $this->add_number_field($field_name, $field_args);
+            case 'text':
+                return $this->add_text_input_field($field_name, $field_args);
+            case 'color_picker':
+                return $this->add_color_picker_field($field_name, $field_args);
+            default:
+                return '';
         }
     }
+    protected function get_value(string $field_name) {
+        $field = $this->field_registry->get($field_name);
+        if (!$field) {
+            return null;
+        }
+        $value = null;
+        if ($this->value_provider) {
+            $value = $this->value_provider->get($field_name);
+        }
+        return $field->prepare_value($value);
+    }
+    
     protected function get_quick_ajax_form_class() {
         $current_user = wp_get_current_user();
         $scheme = get_user_option('admin_color', $current_user->ID);
         return $scheme . '-style';
     }
-    private function add_checkbox_field($field_name, $field_options = [], $required = false) {
-        $checked = $this->get_the_value_if_exist($field_name);
+    private function add_checkbox_field($field_name, $field_args = [], $required = false) {
+        $field = $this->field_registry->get($field_name);
+        if (!$field) {
+            return '';
+        }
+        $name = $field->get_name();
+        $label = $field->get_label();
+        $description = $field->get_description();
+        $tooltip = $field->get_tooltip();
+
+        $checked = $this->get_value($name);
         $is_required = $required ? 'required' : '';
             
-        $visibility = $this->show_hide_element($field_options);
+        $visibility = $this->show_hide_element($field_args);
         $field_container_class = $visibility['field_container_class'];
-        $field_container_data_item = $visibility['field_container_data_item'];        
-        $field = '<div class="quick-ajax-field-container quick-ajax-checkbox-field qa-inline-block' . $field_container_class . '"' . $field_container_data_item . '>';
-        $field .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>'. $this->render_tooltip($this->fields[$field_name]['tooltip']) .'</div>';
-        $field .= '<div class="quick-ajax-field">';
-        $field .= '<div class="switch-checkbox">';
-        $field .= '<div class="switch-wrap">';
-        $field .= '<label for="' . esc_attr($this->fields[$field_name]['name']) . '">';
-        $field .= '<input type="checkbox" name="' . esc_attr($this->fields[$field_name]['name']) . '" id="' . esc_attr($this->fields[$field_name]['name']) . '" value="1" ' . checked($checked, 1, false) . ' '. $is_required .' />';
-        $field .= '<span class="switch"></span>';
-        $field .= '</label>';
-        $field .= '</div>';            
-        $field .= '</div>';
-        $field .= $this->add_field_description($this->fields[$field_name]['description']);
-        $field .= '</div>';            
-        $field .= '</div>';
+        $field_container_data_item = $visibility['field_container_data_item'];
+
+        $field_output = '<div class="quick-ajax-field-container quick-ajax-checkbox-field qa-inline-block' . $field_container_class . '"' . $field_container_data_item . '>';
+        $field_output .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($name) . '">' . esc_html($label) . '</label>'. $this->render_tooltip($tooltip) .'</div>';
+        $field_output .= '<div class="quick-ajax-field">';
+        $field_output .= '<div class="switch-checkbox">';
+        $field_output .= '<div class="switch-wrap">';
+        $field_output .= '<label for="' . esc_attr($name) . '">';
+        $field_output .= '<input type="checkbox" name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" value="1" ' . checked($checked, 1, false) . ' '. $is_required .' />';
+        $field_output .= '<span class="switch"></span>';
+        $field_output .= '</label>';
+        $field_output .= '</div>';            
+        $field_output .= '</div>';
+        $field_output .= $this->add_field_description($description);
+        $field_output .= '</div>';            
+        $field_output .= '</div>';
     
-        return $field;
+        return $field_output;
     }
-    private function add_select_field($field_name, $field_options = []){
-        $current_value = $this->get_the_value_if_exist($field_name);
-        $visibility = $this->show_hide_element($field_options);
+    private function add_select_field($field_name, $field_args = []){
+        $field = $this->field_registry->get($field_name);
+        if (!$field) {
+            return '';
+        }
+        $name = $field->get_name();
+        $label = $field->get_label();
+        $description = $field->get_description();
+        $tooltip = $field->get_tooltip();
+        $options_list = $field->get_options();
+
+        $current_value = $this->get_value($name);
+        $visibility = $this->show_hide_element($field_args);
         $field_container_class = $visibility['field_container_class'];
         $field_container_data_item = $visibility['field_container_data_item']; 
-        $field = '<div class="quick-ajax-field-container quick-ajax-select-field' . $field_container_class . '"' . $field_container_data_item . '>';
-        $field .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) .'</label>'. $this->render_tooltip($this->fields[$field_name]['tooltip']) .'</div>';
-        $field .= '<div class="quick-ajax-field">';
-        $field .= '<select name="' . esc_attr($this->fields[$field_name]['name']) . '" id="' . esc_attr($this->fields[$field_name]['name']) . '">';
-        if(is_array($this->fields[$field_name]['options'])){
-            foreach ($this->fields[$field_name]['options'] as $option) {
-                $field .= '<option value="' . esc_attr($option['value']) . '"' . selected($current_value, $option['value'], false) . '>';
-                $field .= esc_html($option['label']);
-                $field .= '</option>';
+        $field_output = '<div class="quick-ajax-field-container quick-ajax-select-field' . $field_container_class . '"' . $field_container_data_item . '>';
+        $field_output .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($name) . '">' . esc_html($label) .'</label>'. $this->render_tooltip($tooltip) .'</div>';
+        $field_output .= '<div class="quick-ajax-field">';
+        $field_output .= '<select name="' . esc_attr($name) . '" id="' . esc_attr($name) . '">';
+        if (is_array($options_list)) {
+            foreach ($options_list as $option) {
+                $field_output .= '<option value="' . esc_attr($option['value']) . '"' . selected($current_value, $option['value'], false) . '>';
+                $field_output .= esc_html($option['label']);
+                $field_output .= '</option>';
             }
         }
 
-        $field .= '</select>';
-        $field .= $this->add_field_description($this->fields[$field_name]['description']);
-        $field .= '</div>';
-        $field .= '</div>';
+        $field_output .= '</select>';
+        $field_output .= $this->add_field_description($description);
+        $field_output .= '</div>';
+        $field_output .= '</div>';
 
-        return $field;
+        return $field_output;
     }
-    private function add_multiselect_field($field_name, $field_options = []) {
-        $current_values = $this->get_the_value_if_exist($field_name);
-        $show_hide_element = $this->show_hide_element($field_options);
-        $field_container_data_item = $show_hide_element['field_container_data_item'];
-        $field_container_class = $show_hide_element['field_container_class'];
-        $field = '<div class="quick-ajax-field-container quick-ajax-multiselect-field' . $field_container_class . '"' . $field_container_data_item . '>';
-        $field .= '<div class="quick-ajax-field-label"><label>' . esc_html($this->fields[$field_name]['label']) . '</label>'. $this->render_tooltip($this->fields[$field_name]['tooltip']) .'</div>';
-        $field .= '<div class="quick-ajax-field">';
-
-        $field .= '<div class="quick-ajax-field-options" id="' . esc_attr($this->fields[$field_name]['name']) . '">';
-        if(is_array($this->fields[$field_name]['options'])){
-            foreach ($this->fields[$field_name]['options'] as $option) {
-                if (is_array($current_values)) {
-                    $checked = checked(in_array($option['value'], $current_values), true, false);
-                } else {
-                    $checked = checked($option['value'], true, false);
-                }
-                $field .= '<div class="quick-ajax-multiselect-option">';         
-                $field .= '<label class="quick-ajax-checkbox">';
-                $field .= '<input type="checkbox" name="' . esc_attr($this->fields[$field_name]['name']) . '[]" value="' . esc_attr($option['value']) . '" ' . $checked . '>';
-                $field .= esc_html($option['label']);
-                $field .= '</label>';
-                $field .= '</div>';
-            }
-        }elseif(is_string($this->fields[$field_name]['options'])){
-            $field .= '<div class="quick-ajax-multiselect-option">'.esc_html($this->fields[$field_name]['options']).'</div>';
+    private function add_multiselect_field($field_name, $field_args = []) {
+        $field = $this->field_registry->get($field_name);
+        if (!$field) {
+            return '';
         }
-        $field .= '</div>';
+        $name = $field->get_name();
+        $label = $field->get_label();
+        $description = $field->get_description();
+        $tooltip = $field->get_tooltip();
+        $options_list = $field->get_options();
+
+        $current_values = $this->get_value($name);
+        $visibility = $this->show_hide_element($field_args);
+        $field_container_data_item = $visibility['field_container_data_item'];
+        $field_container_class = $visibility['field_container_class'];
+        $field_output = '<div class="quick-ajax-field-container quick-ajax-multiselect-field' . $field_container_class . '"' . $field_container_data_item . '>';
+        $field_output .= '<div class="quick-ajax-field-label"><label>' . esc_html($label) . '</label>'. $this->render_tooltip($tooltip) .'</div>';
+        $field_output .= '<div class="quick-ajax-field">';
+
+        $field_output .= '<div class="quick-ajax-field-options" id="' . esc_attr($name) . '">';
+        if (is_array($options_list)) {
+            foreach ($options_list as $option) {
+                $checked = in_array((string) $option['value'], array_map('strval', (array) $current_values), true) ? 'checked' : '';
+                $field_output .= '<div class="quick-ajax-multiselect-option">';
+                $field_output .= '<label class="quick-ajax-checkbox">';
+                $field_output .= '<input type="checkbox" name="' . esc_attr($name) . '[]" value="' . esc_attr($option['value']) . '" ' . $checked . '>';
+                $field_output .= esc_html($option['label']);
+                $field_output .= '</label>';
+                $field_output .= '</div>';
+            }
+        }
+        $field_output .= '</div>';
         
-        $field .= $this->add_field_description($this->fields[$field_name]['description']);
-        $field .= '</div>';
-        $field .= '</div>';
+        $field_output .= $this->add_field_description($description);
+        $field_output .= '</div>';
+        $field_output .= '</div>';
     
-        return $field;
+        return $field_output;
     }    
-    private function add_number_field($field_name, $field_options = []){
-        $current_value = $this->get_the_value_if_exist($field_name);
-        $show_hide_element = $this->show_hide_element($field_options);
-        $field_container_data_item = $show_hide_element['field_container_data_item'];
-        $field_container_class = $show_hide_element['field_container_class'];
-        
-        $field = '<div class="quick-ajax-field-container quick-ajax-number-field' . $field_container_class . '"' . $field_container_data_item . '>';
-        $field .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>'. $this->render_tooltip($this->fields[$field_name]['tooltip']) .'</div>';
-        $field .= '<div class="quick-ajax-field">';
-        $field .= '<input type="number" name="' . esc_attr($this->fields[$field_name]['name']) . '" id="' . esc_attr($this->fields[$field_name]['name']) . '" value="' . esc_attr($current_value) . '" />';
-        $field .= $this->add_field_description($this->fields[$field_name]['description']);
-        $field .= '</div>';
-        $field .= '</div>';
+    private function add_number_field($field_name, $field_args = []){
+        $field = $this->field_registry->get($field_name);
+        if (!$field) {
+            return '';
+        }
+        $name = $field->get_name();
+        $label = $field->get_label();
+        $description = $field->get_description();
+        $tooltip = $field->get_tooltip();
 
-        return $field;
-    }
-    private function add_text_input_field($field_name, $field_options = []){
-        $current_value = $this->get_the_value_if_exist($field_name);
-        $show_hide_element = $this->show_hide_element($field_options);
-        $field_container_data_item = $show_hide_element['field_container_data_item'];
-        $field_container_class = $show_hide_element['field_container_class'];
-        $placeholder = !empty($this->fields[$field_name]['placeholder']) ? ' placeholder="' . esc_attr($this->fields[$field_name]['placeholder']) . '"' : '';
+        $current_value = $this->get_value($name);
+        $visibility = $this->show_hide_element($field_args);
+        $field_container_data_item = $visibility['field_container_data_item'];
+        $field_container_class = $visibility['field_container_class'];
         
-        $field = '<div class="quick-ajax-field-container quick-ajax-text-input-field' . $field_container_class . '"' . $field_container_data_item . '>';
-        $field .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>'. $this->render_tooltip($this->fields[$field_name]['tooltip']) .'</div>';
-        $field .= '<div class="quick-ajax-field">';
-        $field .= '<input type="text" name="' . esc_attr($this->fields[$field_name]['name']) . '" id="' . esc_attr($this->fields[$field_name]['name']) . '" value="' . esc_attr($current_value) . '"' . $placeholder . '/>';
-        $field .= $this->add_field_description($this->fields[$field_name]['description']);
-        $field .= '</div>';
-        $field .= '</div>';
-    
-        return $field;
-    }
-    private function add_color_picker_field($field_name, $field_options = []){
-        ob_start();
-        $current_value = $this->get_the_value_if_exist($field_name);
-        $show_hide_element = $this->show_hide_element($field_options);
-        $field_container_data_item = $show_hide_element['field_container_data_item'];
-        $field_container_class = $show_hide_element['field_container_class'];
+        $field_output = '<div class="quick-ajax-field-container quick-ajax-number-field' . $field_container_class . '"' . $field_container_data_item . '>';
+        $field_output .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($name) . '">' . esc_html($label) . '</label>'. $this->render_tooltip($tooltip) .'</div>';
+        $field_output .= '<div class="quick-ajax-field">';
+        $field_output .= '<input type="number" name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" value="' . esc_attr($current_value) . '" />';
+        $field_output .= $this->add_field_description($description);
+        $field_output .= '</div>';
+        $field_output .= '</div>';
 
-        $field = '<div class="quick-ajax-field-container quick-ajax-text-input-field' . $field_container_class . '"' . $field_container_data_item . '>';
-        $field .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($this->fields[$field_name]['name']) . '">' . esc_html($this->fields[$field_name]['label']) . '</label>'. $this->render_tooltip($this->fields[$field_name]['tooltip']) .'</div>';
-        $field .= '<div class="quick-ajax-field">';
-        $field .= '<input type="text" class="color-picker-field" name="' . esc_attr($this->fields[$field_name]['name']) . '" id="' . esc_attr($this->fields[$field_name]['name']) . '" value="' . esc_attr($current_value) . '"/>';
-        $field .= $this->add_field_description($this->fields[$field_name]['description']);
-        $field .= '</div>';
-        $field .= '</div>';
+        return $field_output;
+    }
+    private function add_text_input_field($field_name, $field_args = []){
+        $field = $this->field_registry->get($field_name);
+        if (!$field) {
+            return '';
+        }
+        $name = $field->get_name();
+        $label = $field->get_label();
+        $description = $field->get_description();
+        $tooltip = $field->get_tooltip();
+        $placeholder = $field->get_placeholder();
+
+        $current_value = $this->get_value($name);
+        $visibility = $this->show_hide_element($field_args);
+        $field_container_data_item = $visibility['field_container_data_item'];
+        $field_container_class = $visibility['field_container_class'];
+        $placeholder = !empty($placeholder) ? ' placeholder="' . esc_attr($placeholder) . '"' : '';
+        
+        $field_output = '<div class="quick-ajax-field-container quick-ajax-text-input-field' . $field_container_class . '"' . $field_container_data_item . '>';
+        $field_output .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($name) . '">' . esc_html($label) . '</label>'. $this->render_tooltip($tooltip) .'</div>';
+        $field_output .= '<div class="quick-ajax-field">';
+        $field_output .= '<input type="text" name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" value="' . esc_attr($current_value) . '"' . $placeholder . '/>';
+        $field_output .= $this->add_field_description($description);
+        $field_output .= '</div>';
+        $field_output .= '</div>';
     
-        return $field;
+        return $field_output;
+    }
+    private function add_color_picker_field($field_name, $field_args = []){
+        $field = $this->field_registry->get($field_name);
+        if (!$field) {
+            return '';
+        }
+        $name = $field->get_name();
+        $label = $field->get_label();
+        $description = $field->get_description();
+        $tooltip = $field->get_tooltip();
+
+        $current_value = $this->get_value($name);
+        $visibility = $this->show_hide_element($field_args);
+        $field_container_data_item = $visibility['field_container_data_item'];
+        $field_container_class = $visibility['field_container_class'];
+
+        $field_output = '<div class="quick-ajax-field-container quick-ajax-text-input-field' . $field_container_class . '"' . $field_container_data_item . '>';
+        $field_output .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($name) . '">' . esc_html($label) . '</label>'. $this->render_tooltip($tooltip) .'</div>';
+        $field_output .= '<div class="quick-ajax-field">';
+        $field_output .= '<input type="text" class="color-picker-field" name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" value="' . esc_attr($current_value) . '"/>';
+        $field_output .= $this->add_field_description($description);
+        $field_output .= '</div>';
+        $field_output .= '</div>';
+    
+        return $field_output;
     }
     protected function field_options(array $overrides = []): array {
         $defaults = [
@@ -199,25 +257,25 @@ abstract class QAPL_Form_Content_Builder{
     
         return array_merge($defaults, $overrides);
     }    
-    private function show_hide_element($field_options) {
+    private function show_hide_element($field_args) {
         $element_data = [
             'field_container_data_item' => '',
             'field_container_class'     => ''
         ];
     
         // check if field is trigger
-        if (!empty($field_options['is_trigger']) && $field_options['is_trigger'] === true) {
+        if (!empty($field_args['is_trigger']) && $field_args['is_trigger'] === true) {
             $element_data['field_container_class'] .= ' show-hide-trigger';
         }
     
         // check if field has visibility conditions
-        if (!empty($field_options['visible_if']) && is_array($field_options['visible_if'])) {
+        if (!empty($field_args['visible_if']) && is_array($field_args['visible_if'])) {
            
-            $conditions = $field_options['visible_if'];
+            $conditions = $field_args['visible_if'];
             $element_data['field_container_data_item'] = ' data-conditional=\'' . esc_attr(wp_json_encode($conditions)) . '\'';
             
             foreach ($conditions as $field => $expected_value) {
-                $actual_value = $this->get_the_value_if_exist($field);
+                $actual_value = $this->get_value($field);
                 if ((string)$actual_value !== (string)$expected_value) {
                     $element_data['field_container_class'] .= ' inactive';
                     break;
@@ -226,9 +284,9 @@ abstract class QAPL_Form_Content_Builder{
         }
         return $element_data;
     }    
-    private function add_field_description($field_description) {
-        if (!empty($field_description)) {
-            return '<p class="quick-ajax-field-desc">' . esc_html($field_description) . '</p>';
+    private function add_field_description($description) {
+        if (!empty($description)) {
+            return '<p class="quick-ajax-field-desc">' . esc_html($description) . '</p>';
         }
         return '';
     }
@@ -245,75 +303,38 @@ abstract class QAPL_Form_Content_Builder{
             <span class="qapl-tooltip-content"><span class="qapl-tooltip-content-inner">' . wp_kses_post($content) . '</span></span>
         </span>';
     }
-    protected function get_taxonomy_options_for_post_type(?string $post_type = null): array{
+    protected function get_taxonomy_options_for_post_type(?string $post_type = null): array {
         if (empty($post_type)) {
-            $post_type = $this->get_the_value_if_exist(QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE);
+            $post_type = $this->get_value(QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE);
             if (empty($post_type)) {
                 $post_type = QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE_DEFAULT;
             }
         }
-        $taxonomy_options = [];
-        $post_type_object = get_post_type_object($post_type);
-        if ($post_type_object) {
-            $taxonomies = get_object_taxonomies($post_type);
-            if (!empty($taxonomies)) {
-                foreach ($taxonomies as $taxonomy) {
-                    $taxonomy_object = get_taxonomy($taxonomy);
-                    if ($taxonomy_object) {
-                        $taxonomy_options[] = [
-                            'label' => esc_html($taxonomy_object->label),
-                            'value' => $taxonomy
-                        ];
-                    }
-                }
-            }
-        }
-        if (empty($taxonomy_options)) {
-            $taxonomy_options[] = [
-                'label' => esc_html__('No taxonomy found', 'quick-ajax-post-loader'),
-                'value' => 0
-            ];
-        }
-        return $taxonomy_options;
+        return $this->taxonomy_options_provider->get_taxonomy_options_for_post_type($post_type);
     }
-    protected function get_term_options_for_taxonomy(?string $taxonomy = null){
+    protected function get_term_options_for_taxonomy(?string $taxonomy = null): array {
         if (empty($taxonomy)) {
-            // try to get taxonomy from saved shortcode value
-            $taxonomy = $this->get_the_value_if_exist(QAPL_Constants::QUERY_SETTING_SELECT_TAXONOMY);
+            $taxonomy = $this->get_value(QAPL_Constants::QUERY_SETTING_SELECT_TAXONOMY);
         }
         if (empty($taxonomy)) {
-            // try to get first available taxonomy based on post type
-            $post_type = $this->get_the_value_if_exist(QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE);
+            $post_type = $this->get_value(QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE);
             if (empty($post_type)) {
-                // fallback to default post type
                 $post_type = QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE_DEFAULT;
             }
-            if (!empty($post_type)) {
-                $taxonomies = get_object_taxonomies($post_type);
-                if (!empty($taxonomies)) {
-                    $taxonomy = $taxonomies[0]; // use first found taxonomy
-                }
+            $taxonomy_options = $this->taxonomy_options_provider->get_taxonomy_options_for_post_type($post_type);
+            if (!empty($taxonomy_options[0]['value'])) {
+                $taxonomy = $taxonomy_options[0]['value'];
             }
         }
-    
         if (empty($taxonomy)) {
-            return '<span class="no-options">'.esc_html__('No taxonomy available', 'quick-ajax-post-loader').'</span>';
-        }
-        $terms = get_terms([
-            'taxonomy'   => $taxonomy,
-            'hide_empty' => false,
-        ]);
-        if (empty($terms) || is_wp_error($terms)) {
-            return '<span class="no-options">'.esc_html__('No terms found', 'quick-ajax-post-loader').'</span>';
-        }
-        $options = [];
-        foreach ($terms as $term) {
-            $options[] = [
-                'label' => esc_html($term->name),
-                'value' => $term->term_id
+            return [
+                [
+                    'label' => esc_html__('No taxonomy available', 'quick-ajax-post-loader'),
+                    'value' => ''
+                ]
             ];
         }
-        return $options;
+        return $this->taxonomy_options_provider->get_term_options_for_taxonomy($taxonomy);
     }
     protected function create_accordion_block($title, $content, $id){
         $id_attr = $id ? ' id="'.esc_attr(sanitize_key($id)).'"' : '';

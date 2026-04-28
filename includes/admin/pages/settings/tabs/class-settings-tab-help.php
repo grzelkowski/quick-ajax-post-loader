@@ -2,18 +2,18 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-class QAPL_Settings_Tab_Help{
+class QAPL_Settings_Tab_Help implements QAPL_Settings_Tab_Interface {
     private $settings_page;
 
     public function __construct($settings_page) {
         $this->settings_page = $settings_page;
     }
 
-    public function register_fields() {
+    public function define_fields(): void {
         // help tab does not use form fields
     }
 
-    public function register_content($tabIndex) {
+    public function register_content(int $tabIndex): void {
         $tab_title = esc_html__('Help', 'quick-ajax-post-loader');
         $content   = $this->build_content();
         $this->settings_page->add_quick_ajax_page_content($tabIndex, $tab_title, $content);

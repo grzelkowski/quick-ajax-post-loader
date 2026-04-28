@@ -99,6 +99,18 @@ Yes, you can create multiple AJAX grids with different configurations.
 ### Can I extend the plugin via hooks and filters?
 Yes, developers can use available WordPress hooks and filters to fully customize functionality.
 
+### Does it work with the Gutenberg Block Editor?
+Yes, you can use the plugin shortcode in any Gutenberg block that supports shortcodes.
+
+### Is it compatible with WooCommerce?
+Yes, it supports custom post types, so it can display WooCommerce products with AJAX filtering and load more.
+
+### Does it work with caching plugins?
+Yes, the plugin supports loading the initial posts via AJAX, which ensures fresh content even when using caching plugins.
+
+### Does it work with Elementor or other page builders?
+Yes, you can paste the shortcode into any page builder that supports shortcode widgets.
+
 ## Additional Links
 
 - [Developer Guide](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/DEVELOPER_GUIDE.md)  

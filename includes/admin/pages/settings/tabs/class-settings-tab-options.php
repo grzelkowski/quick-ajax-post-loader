@@ -3,44 +3,35 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class QAPL_Settings_Tab_Options{
+class QAPL_Settings_Tab_Options implements QAPL_Settings_Tab_Interface {
     private $settings_page;
 
     public function __construct($settings_page) {
         $this->settings_page = $settings_page;
     }
 
-    public function register_fields() {
-        //select loader icon
-        $field = QAPL_Form_Field_Factory::build_global_select_loader_icon();
-        $this->settings_page->register_field($field);
-        $field = QAPL_Form_Field_Factory::build_global_read_more_text_field();
-        $this->settings_page->register_field($field);
-        $field = QAPL_Form_Field_Factory::build_global_show_all_label_field();
-        $this->settings_page->register_field($field);
-        $field = QAPL_Form_Field_Factory::build_global_load_more_label_field();
-        $this->settings_page->register_field($field);
-        $field = QAPL_Form_Field_Factory::build_global_no_post_message_field();
-        $this->settings_page->register_field($field);
-        $field = QAPL_Form_Field_Factory::build_global_end_post_message_field();
-        $this->settings_page->register_field($field);
+    public function define_fields(): void {
+        // register all fields for global options tab
+        $this->settings_page->register_fields_batch([
+            //select loader icon
+            QAPL_Form_Field_Factory::build_global_select_loader_icon(),
+            QAPL_Form_Field_Factory::build_global_read_more_text_field(),
+            QAPL_Form_Field_Factory::build_global_show_all_label_field(),
+            QAPL_Form_Field_Factory::build_global_load_more_label_field(),
+            QAPL_Form_Field_Factory::build_global_no_post_message_field(),
+            QAPL_Form_Field_Factory::build_global_end_post_message_field(),
 
-        //Sorting Options
-        $field = QAPL_Form_Field_Factory::build_global_sort_option_date_desc_label_field();
-        $this->settings_page->register_field($field);
-        $field = QAPL_Form_Field_Factory::build_global_sort_option_date_asc_label_field();
-        $this->settings_page->register_field($field);
-        $field = QAPL_Form_Field_Factory::build_global_sort_option_comment_count_desc_label_field();
-        $this->settings_page->register_field($field);
-        $field = QAPL_Form_Field_Factory::build_global_sort_option_title_desc_label_field();
-        $this->settings_page->register_field($field);
-        $field = QAPL_Form_Field_Factory::build_global_sort_option_title_asc_label_field();
-        $this->settings_page->register_field($field);
-        $field = QAPL_Form_Field_Factory::build_global_sort_option_rand_label_field();
-        $this->settings_page->register_field($field);
+            //Sorting Options
+            QAPL_Form_Field_Factory::build_global_sort_option_date_desc_label_field(),
+            QAPL_Form_Field_Factory::build_global_sort_option_date_asc_label_field(),
+            QAPL_Form_Field_Factory::build_global_sort_option_comment_count_desc_label_field(),
+            QAPL_Form_Field_Factory::build_global_sort_option_title_desc_label_field(),
+            QAPL_Form_Field_Factory::build_global_sort_option_title_asc_label_field(),
+            QAPL_Form_Field_Factory::build_global_sort_option_rand_label_field(),
+        ]);
     }
 
-    public function register_content($tabIndex) {
+    public function register_content(int $tabIndex): void {
         $tab_title = esc_html__('Global Options', 'quick-ajax-post-loader');
         $content = $this->build_content();
         $this->settings_page->add_quick_ajax_page_content($tabIndex, $tab_title, $content);

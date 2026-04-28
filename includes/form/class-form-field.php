@@ -2,6 +2,8 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+//OLD class-field-field.php
+
 //this class holds all field data,
 //it is the final field object
 class QAPL_Form_Field implements QAPL_Form_Field_Interface {
@@ -38,6 +40,9 @@ class QAPL_Form_Field implements QAPL_Form_Field_Interface {
     public function get_options(): array {
         return $this->options;
     }
+    public function set_options(array $options): void {
+        $this->options = $options;
+    }
     public function get_default() {
         return $this->default;
     }
@@ -50,17 +55,31 @@ class QAPL_Form_Field implements QAPL_Form_Field_Interface {
     public function get_tooltip(): array {
         return $this->tooltip;
     }
-    //returns all field data in array format
-    public function get_field(): array {
-        return [
-            'name' => $this->name,
-            'label' => $this->label,
-            'type' => $this->type,
-            'options' => $this->options,
-            'default' => $this->default,
-            'description' => $this->description,
-            'placeholder' => $this->placeholder,
-            'tooltip' => $this->tooltip,
-        ];
+    public function prepare_value($value) {
+        if ($value === null) {
+            return $this->default;
+        }
+        return $value;
+    }
+    private static function get_default_by_type(string $type) {
+        switch ($type) {
+            case 'multiselect':
+                return [];
+            case 'checkbox':
+                return 0;
+            default:
+                return '';
+        }
+    }
+    public static function create_from_definition(array $config): self {
+        $name        = $config['name'] ?? '';
+        $label       = $config['label'] ?? '';
+        $type        = $config['type'] ?? '';
+        $options     = $config['options'] ?? [];
+        $default     = $config['default'] ?? self::get_default_by_type($type);
+        $description = $config['description'] ?? '';
+        $placeholder = $config['placeholder'] ?? '';
+        $tooltip     = $config['tooltip'] ?? [];
+        return new self($name, $label, $type, $options, $default, $description, $placeholder, $tooltip);
     }
 }

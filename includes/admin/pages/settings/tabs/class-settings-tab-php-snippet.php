@@ -3,97 +3,74 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class QAPL_Settings_Tab_PHP_Snippet{
+class QAPL_Settings_Tab_PHP_Snippet implements QAPL_Settings_Tab_Interface{
     private $settings_page;
 
     public function __construct($settings_page) {
         $this->settings_page = $settings_page;
     }
     // init fields for PHP Snippet Generator
-    public function register_fields() {
-        //select post type
-        $field = QAPL_Form_Field_Factory::build_select_post_type_field();
-        $this->settings_page->register_field($field);
-        //show taxonomy checkbox
-        $field = QAPL_Form_Field_Factory::build_show_taxonomy_filter_field();
-        $this->settings_page->register_field($field);
-        //select taxonomy
-        $field = QAPL_Form_Field_Factory::build_select_taxonomy_field();
-        $this->settings_page->register_field($field);
-        //display show all button
-        $field = QAPL_Form_Field_Factory::build_display_show_all_button_field();
-        $this->settings_page->register_field($field);
-        //manual term selection checkbox
-        $field = QAPL_Form_Field_Factory::build_manual_term_selection_field();
-        $this->settings_page->register_field($field);
-        //manual selected terms multiselect
-        $field = QAPL_Form_Field_Factory::build_manual_selected_terms_field();
-        $this->settings_page->register_field($field);
-        //post per page number
-        $field = QAPL_Form_Field_Factory::build_posts_per_page_field();
-        $this->settings_page->register_field($field);
-        //select post order
-        $field = QAPL_Form_Field_Factory::build_select_order_field();
-        $this->settings_page->register_field($field);
-        //select post orderby
-        $field = QAPL_Form_Field_Factory::build_select_orderby_field();
-        $this->settings_page->register_field($field);
-        
-        //Sorting Settings
-        $field = QAPL_Form_Field_Factory::build_show_sort_button_field();
-        $this->settings_page->register_field($field);
-        //select sort options
-        $field = QAPL_Form_Field_Factory::build_select_sort_button_options_field();
-        $this->settings_page->register_field($field);
-        //Additional Settings
+    public function define_fields(): void {
+        // register all fields for php snippet generator
+        $this->settings_page->register_fields_batch([
+            //select post type
+            QAPL_Form_Field_Factory::build_select_post_type_field(),            
+            //show taxonomy checkbox
+            QAPL_Form_Field_Factory::build_show_taxonomy_filter_field(),
+            //select taxonomy
+            QAPL_Form_Field_Factory::build_select_taxonomy_field(),
+            //display show all button
+            QAPL_Form_Field_Factory::build_display_show_all_button_field(),
+            //manual term selection checkbox
+            QAPL_Form_Field_Factory::build_manual_term_selection_field(),
+            //manual selected terms multiselect
+            QAPL_Form_Field_Factory::build_manual_selected_terms_field(),
+            //post per page number
+            QAPL_Form_Field_Factory::build_posts_per_page_field(),
+            //select post order
+            QAPL_Form_Field_Factory::build_select_order_field(),
+            //select post orderby
+            QAPL_Form_Field_Factory::build_select_orderby_field(),
+            
+            //Sorting Settings
+            QAPL_Form_Field_Factory::build_show_sort_button_field(),
+            //select sort options
+            QAPL_Form_Field_Factory::build_select_sort_button_options_field(),
 
-        //add Excluded Post IDs
-        $field = QAPL_Form_Field_Factory::build_excluded_post_ids_field();
-        $this->settings_page->register_field($field);
-        //set ignore sticky
-        $field = QAPL_Form_Field_Factory::build_ignore_sticky_posts_field();
-        $this->settings_page->register_field($field);
-        //load posts via AJAX on initial load
-        $field = QAPL_Form_Field_Factory::build_ajax_on_initial_load_field();
-        $this->settings_page->register_field($field);
-        //Infinite Scroll
-        $field = QAPL_Form_Field_Factory::build_ajax_infinite_scroll_field();
-        $this->settings_page->register_field($field);
-        //Show end message
-        $field = QAPL_Form_Field_Factory::build_show_end_message_field();
-        $this->settings_page->register_field($field);
+            //Additional Settings
+            //add Excluded Post IDs
+            QAPL_Form_Field_Factory::build_excluded_post_ids_field(),
+            //set ignore sticky
+            QAPL_Form_Field_Factory::build_ignore_sticky_posts_field(),
+            //load posts via AJAX on initial load
+            QAPL_Form_Field_Factory::build_ajax_on_initial_load_field(),
+            //Infinite Scroll
+            QAPL_Form_Field_Factory::build_ajax_infinite_scroll_field(),
+            //Show end message
+            QAPL_Form_Field_Factory::build_show_end_message_field(),
 
-        //Additional Settings
-        //apply quick ajax css style
-        $field = QAPL_Form_Field_Factory::build_quick_ajax_css_style_field();
-        $field_properties['default'] = 0;
-        $this->settings_page->register_field($field);
-        //select number of columns
-        $field = QAPL_Form_Field_Factory::build_select_columns_qty_field();
-        $this->settings_page->register_field($field);
-        //select post item template
-        $field = QAPL_Form_Field_Factory::build_post_item_template_field();
-        $this->settings_page->register_field($field);
-        //add custom class for taxonomy filter
-        $field = QAPL_Form_Field_Factory::build_taxonomy_filter_class_field();
-        $this->settings_page->register_field($field);
-        //add custom class for container
-        $field = QAPL_Form_Field_Factory::build_container_class_field();
-        $this->settings_page->register_field($field);
-        //show custom load more post quantity
-        $field = QAPL_Form_Field_Factory::build_show_custom_load_more_post_quantity_field();
-        $this->settings_page->register_field($field);
-        //select custom load more post quantity
-        $field = QAPL_Form_Field_Factory::build_select_custom_load_more_post_quantity_field();
-        $this->settings_page->register_field($field);
-        //override loader icon
-        $field = QAPL_Form_Field_Factory::build_override_global_loader_icon_field();
-        $this->settings_page->register_field($field);
-        //select loader icon
-        $field = QAPL_Form_Field_Factory::build_select_loader_icon();
-        $this->settings_page->register_field($field);
+            //Additional Settings
+            //apply quick ajax css style
+            QAPL_Form_Field_Factory::build_quick_ajax_css_style_field(),
+            //select number of columns
+            QAPL_Form_Field_Factory::build_select_columns_qty_field(),
+            //select post item template
+            QAPL_Form_Field_Factory::build_post_item_template_field(),
+            //add custom class for taxonomy filter
+            QAPL_Form_Field_Factory::build_taxonomy_filter_class_field(),
+            //add custom class for container
+            QAPL_Form_Field_Factory::build_container_class_field(),
+            //show custom load more post quantity
+            QAPL_Form_Field_Factory::build_show_custom_load_more_post_quantity_field(),
+            //select custom load more post quantity
+            QAPL_Form_Field_Factory::build_select_custom_load_more_post_quantity_field(),
+            //override loader icon
+            QAPL_Form_Field_Factory::build_override_global_loader_icon_field(),
+            //select loader icon
+            QAPL_Form_Field_Factory::build_select_loader_icon(),
+        ]);
     }
-    public function register_content($tabIndex) {
+    public function register_content(int $tabIndex): void {
         $tab_title = esc_html__('PHP Snippet Generator', 'quick-ajax-post-loader');
         $content = $this->build_content();
         $this->settings_page->add_quick_ajax_page_content($tabIndex, $tab_title, $content);

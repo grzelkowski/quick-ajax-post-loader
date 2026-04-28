@@ -3,20 +3,20 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class QAPL_Settings_Tab_Cleanup{
+class QAPL_Settings_Tab_Cleanup implements QAPL_Settings_Tab_Interface{
     private $settings_page;
 
     public function __construct($settings_page) {
         $this->settings_page = $settings_page;
     }
 
-    public function register_fields() {
+    public function define_fields(): void {
         // remove old data checkbox
         $field = QAPL_Form_Field_Factory::build_global_remove_old_data_field();
         $this->settings_page->register_field($field);
     }
 
-    public function register_content($tabIndex) {
+    public function register_content(int $tabIndex): void {
         $tab_title = esc_html__('Purge Old Data', 'quick-ajax-post-loader');
         $content = $this->build_content();
         $this->settings_page->add_quick_ajax_page_content($tabIndex, $tab_title, $content);
@@ -27,7 +27,7 @@ class QAPL_Settings_Tab_Cleanup{
         $content = '<div id="quick-ajax-clear-data">';
         $content .= '<h3>' . esc_html__('Purge Old Data', 'quick-ajax-post-loader') . '</h3>';
         $content .= '<form method="post" action="' . $action_url . '">';
-        $content .= $this->settings_page->render_field('qapl_remove_old_meta', false, true); // add additional form field
+        $content .= $this->settings_page->render_field('qapl_remove_old_meta', [], true); // add additional form field
         $content .= '<input type="hidden" name="action" value="qapl_purge_unused_data" />';
         $content .= '<input type="hidden" name="qapl_purge_unused_data" value="1" />'; // set value to "1" for consistency
         $content .= wp_nonce_field('qapl_purge_unused_data', 'qapl_purge_nonce', true, false); // create nonce field for security

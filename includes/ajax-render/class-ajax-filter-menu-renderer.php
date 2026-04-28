@@ -97,7 +97,7 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
         $display_show_all_button = isset($attributes[QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON]) ? $attributes[QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON] : QAPL_Constants::LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON_DEFAULT;
         $has_active_button = false;
         if($display_show_all_button == 1){
-            $show_all_label = $this->global_options['show_all_label'] ?? __('Show All', 'quick-ajax-post-loader');    
+            $show_all_label = !empty($this->global_options['show_all_label']) ? $this->global_options['show_all_label'] : __('Show All', 'quick-ajax-post-loader');
             $show_all_button = [                    
                 'term_id' => 'none',
                 'taxonomy' => $taxonomy,
