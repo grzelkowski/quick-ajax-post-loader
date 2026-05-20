@@ -30,8 +30,8 @@ if (!class_exists('QAPL_Admin_Menu')) {
                 'Quick AJAX',
                 'Quick AJAX',
                 'manage_options',
-                QAPL_Constants::PLUGIN_MENU_SLUG,
-                array($this, 'options_page_content'),
+                QAPL_Constants::PLUGIN_MENU_SLUG,               
+                '', // array($this, 'options_page_content'),
                 'dashicons-editor-code',
                 80
             );
@@ -94,5 +94,4 @@ if (!class_exists('QAPL_Admin_Menu')) {
             return $sanitized;
         }
     }
-    new QAPL_Admin_Menu();
 }

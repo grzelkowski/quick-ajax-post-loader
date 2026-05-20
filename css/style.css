@@ -54,6 +54,9 @@
     display: flex;
     gap: 0.625rem;
 }
+.quick-ajax-posts-container .qapl-hidden {
+    display: none;
+}
 .quick-ajax-controls-container .quick-ajax-filter-container{
     -webkit-box-ordinal-group:2;
         -ms-flex-order:1;

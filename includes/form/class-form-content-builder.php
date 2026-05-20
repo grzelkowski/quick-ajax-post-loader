@@ -190,7 +190,9 @@ abstract class QAPL_Form_Content_Builder{
         $field_output = '<div class="quick-ajax-field-container quick-ajax-number-field' . $field_container_class . '"' . $field_container_data_item . '>';
         $field_output .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($name) . '">' . esc_html($label) . '</label>'. $this->render_tooltip($tooltip) .'</div>';
         $field_output .= '<div class="quick-ajax-field">';
-        $field_output .= '<input type="number" name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" value="' . esc_attr($current_value) . '" />';
+        $min_attr = $field->get_min() !== null ? ' min="' . $field->get_min() . '"' : '';
+        $max_attr = $field->get_max() !== null ? ' max="' . $field->get_max() . '"' : '';
+        $field_output .= '<input type="number" name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" value="' . esc_attr($current_value) . '"' . $min_attr . $max_attr . ' />';
         $field_output .= $this->add_field_description($description);
         $field_output .= '</div>';
         $field_output .= '</div>';
@@ -239,7 +241,7 @@ abstract class QAPL_Form_Content_Builder{
         $field_container_data_item = $visibility['field_container_data_item'];
         $field_container_class = $visibility['field_container_class'];
 
-        $field_output = '<div class="quick-ajax-field-container quick-ajax-text-input-field' . $field_container_class . '"' . $field_container_data_item . '>';
+        $field_output = '<div class="quick-ajax-field-container quick-ajax-color-picker-field' . $field_container_class . '"' . $field_container_data_item . '>';
         $field_output .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($name) . '">' . esc_html($label) . '</label>'. $this->render_tooltip($tooltip) .'</div>';
         $field_output .= '<div class="quick-ajax-field">';
         $field_output .= '<input type="text" class="color-picker-field" name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" value="' . esc_attr($current_value) . '"/>';

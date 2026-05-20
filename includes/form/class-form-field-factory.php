@@ -64,12 +64,8 @@ class QAPL_Form_Field_Factory {
         return self::create_field($field_config);
     }
     //show "show all" filter button
-    public static function build_display_show_all_button_field(): QAPL_Form_Field_Interface {
-        $global_sort_labels = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME);
-        if (!is_array($global_sort_labels)) {
-            $global_sort_labels = [];
-        }
-        $global_label = $global_sort_labels['show_all_label'] ?? __('Show All', 'quick-ajax-post-loader');
+    public static function build_display_show_all_button_field(array $global_options = []): QAPL_Form_Field_Interface {
+        $global_label = $global_options['show_all_label'] ?? __('Show All', 'quick-ajax-post-loader');
         /* translators: %s: show all button label */
         $description = sprintf(__('Display the "%s" button in the taxonomy filter to reset the filter and show all posts.', 'quick-ajax-post-loader'), $global_label);
         $field_config = [
@@ -99,6 +95,7 @@ class QAPL_Form_Field_Factory {
             'type' => 'number',
             'default' => QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE_DEFAULT,
             'description' => __('Determine the number of posts to be loaded per AJAX request.', 'quick-ajax-post-loader'),
+            'min' => 1,
         ];
         return self::create_field($field_config);
     }
@@ -166,53 +163,49 @@ class QAPL_Form_Field_Factory {
         return self::create_field($field_config);
     }
     //select sort button
-    public static function build_select_sort_button_options_field(): QAPL_Form_Field_Interface {
-        $global_sort_labels = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME);
-        if (!is_array($global_sort_labels)) {
-            $global_sort_labels = [];
-        }
+    public static function build_select_sort_button_options_field(array $global_options = []): QAPL_Form_Field_Interface {
         $sort_options = [
             [
                 'value' => 'date-desc',
-                'label' => isset($global_sort_labels['sort_option_date_desc_label'])
-                    ? $global_sort_labels['sort_option_date_desc_label']
+                'label' => isset($global_options['sort_option_date_desc_label'])
+                    ? $global_options['sort_option_date_desc_label']
                     : __('Newest', 'quick-ajax-post-loader')
             ],
             [
                 'value' => 'date-asc',
-                'label' => isset($global_sort_labels['sort_option_date_asc_label'])
-                    ? $global_sort_labels['sort_option_date_asc_label']
+                'label' => isset($global_options['sort_option_date_asc_label'])
+                    ? $global_options['sort_option_date_asc_label']
                     : __('Oldest', 'quick-ajax-post-loader')
             ],
             [
                 'value' => 'comment_count-desc',
-                'label' => isset($global_sort_labels['sort_option_comment_count_desc_label'])
-                    ? $global_sort_labels['sort_option_comment_count_desc_label']
+                'label' => isset($global_options['sort_option_comment_count_desc_label'])
+                    ? $global_options['sort_option_comment_count_desc_label']
                     : __('Popular', 'quick-ajax-post-loader')
             ],
             [
                 'value' => 'title-asc',
-                'label' => isset($global_sort_labels['sort_option_title_asc_label'])
-                    ? $global_sort_labels['sort_option_title_asc_label']
+                'label' => isset($global_options['sort_option_title_asc_label'])
+                    ? $global_options['sort_option_title_asc_label']
                     : __('A → Z', 'quick-ajax-post-loader')
             ],
             [
                 'value' => 'title-desc',
-                'label' => isset($global_sort_labels['sort_option_title_desc_label'])
-                    ? $global_sort_labels['sort_option_title_desc_label']
+                'label' => isset($global_options['sort_option_title_desc_label'])
+                    ? $global_options['sort_option_title_desc_label']
                     : __('Z → A', 'quick-ajax-post-loader')
             ],
             [
                 'value' => 'rand',
-                'label' => isset($global_sort_labels['sort_option_rand_label'])
-                    ? $global_sort_labels['sort_option_rand_label']
+                'label' => isset($global_options['sort_option_rand_label'])
+                    ? $global_options['sort_option_rand_label']
                     : __('Random', 'quick-ajax-post-loader')
             ],
         ];
         $tooltip = [
             'title'   => __('Custom labels for sorting options', 'quick-ajax-post-loader'),
             'content' => __('Sorting option labels can be changed in plugin settings.', 'quick-ajax-post-loader') .
-                        ' <a href="/wp-admin/admin.php?page=qapl-settings" target="_blank" rel="noopener noreferrer">' .
+                        ' <a href="' . esc_url(admin_url('admin.php?page=qapl-settings')) . '" target="_blank" rel="noopener noreferrer">' .
                         __('Open settings', 'quick-ajax-post-loader') .
                         '</a>.'
         ];
@@ -295,7 +288,7 @@ class QAPL_Form_Field_Factory {
             'tooltip' => [
                 'title'   => __('End message content', 'quick-ajax-post-loader'),
                 'content' => __('The end message text can be changed in plugin settings.', 'quick-ajax-post-loader') .
-                    ' <a href="/wp-admin/admin.php?page=qapl-settings" target="_blank" rel="noopener noreferrer">' .
+                    ' <a href="' . esc_url(admin_url('admin.php?page=qapl-settings')) . '" target="_blank" rel="noopener noreferrer">' .
                     __('Open settings', 'quick-ajax-post-loader') .
                     '</a>.'
             ],
@@ -356,7 +349,7 @@ public static function build_post_item_template_field(): QAPL_Form_Field_Interfa
         'tooltip' => [
             'title' => __('How to add a new post item template?', 'quick-ajax-post-loader'),
             'content' => __('To add a new post item template you need to create a new PHP file in your theme\'s folder.', 'quick-ajax-post-loader') .
-                        ' <a href="/wp-admin/admin.php?page=qapl-settings&tab=3#qapl_help_3_creating_custom_templates" target="_blank" rel="noopener noreferrer">' .
+                        ' <a href="' . esc_url(admin_url('admin.php?page=qapl-settings&tab=3#qapl_help_3_creating_custom_templates')) . '" target="_blank" rel="noopener noreferrer">' .
                         __('View detailed guide', 'quick-ajax-post-loader') .
                         '</a>.',
         ],
@@ -407,6 +400,7 @@ public static function build_post_item_template_field(): QAPL_Form_Field_Interfa
             'type' => 'number',
             'default' => QAPL_Constants::QUERY_SETTING_SELECT_CUSTOM_LOAD_MORE_POST_QUANTITY_DEFAULT,
             'description' => __('Set how many posts to load each time the "Load More" button is clicked.', 'quick-ajax-post-loader'),
+            'min' => 1,
         ];
         return self::create_field($field_config);
     }
@@ -456,7 +450,7 @@ public static function build_post_item_template_field(): QAPL_Form_Field_Interfa
             'tooltip' => [
                 'title'   => __('How to add a new loader icon?', 'quick-ajax-post-loader'),
                 'content' => __('To add a new loader icon you need to create a new PHP file in your theme\'s folder.', 'quick-ajax-post-loader') .
-                    ' <a href="/wp-admin/admin.php?page=qapl-settings&tab=3#qapl_help_3_creating_custom_loader" target="_blank" rel="noopener noreferrer">' .
+                    ' <a href="' . esc_url(admin_url('admin.php?page=qapl-settings&tab=3#qapl_help_3_creating_custom_loader')) . '" target="_blank" rel="noopener noreferrer">' .
                     __('View detailed guide', 'quick-ajax-post-loader') .
                     '</a>.'
             ],

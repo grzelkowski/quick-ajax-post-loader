@@ -5,6 +5,8 @@ if (!defined('ABSPATH')) {
 
 class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
     public function init_post_fields(){
+        $global_options = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME);
+        $global_options = is_array($global_options) ? $global_options : [];
         // register all fields for cpt creator form
         $this->register_fields_batch([
             //select post type   
@@ -14,7 +16,7 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
             //select taxonomy
             QAPL_Form_Field_Factory::build_select_taxonomy_field(),
             //display show all button
-            QAPL_Form_Field_Factory::build_display_show_all_button_field(),
+            QAPL_Form_Field_Factory::build_display_show_all_button_field($global_options),
             //manual term selection checkbox
             QAPL_Form_Field_Factory::build_manual_term_selection_field(),
             //manual selected terms multiselect
@@ -28,7 +30,7 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
             //show sort button
             QAPL_Form_Field_Factory::build_show_sort_button_field(),
             //select sort options
-            QAPL_Form_Field_Factory::build_select_sort_button_options_field(),
+            QAPL_Form_Field_Factory::build_select_sort_button_options_field($global_options),
             //inline Filter & Sorting
             QAPL_Form_Field_Factory::build_show_inline_filter_sorting_field(),
             //add Excluded Post IDs
@@ -126,7 +128,7 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
         // sorting settings
         // ==============================
 
-        $shortcode_page .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
+        $shortcode_page .= '<div class="quick-ajax-layout-settings quick-ajax-mt-20">';
         $shortcode_page .= '<h4>'.esc_html__('Sorting Settings', 'quick-ajax-post-loader').'</h4>';
 
         // orderby field
@@ -161,7 +163,7 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
         // advanced query settings
         // ==============================
 
-        $shortcode_page .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
+        $shortcode_page .= '<div class="quick-ajax-layout-settings quick-ajax-mt-20">';
         $shortcode_page .= '<h4>'.esc_html__('Additional Settings', 'quick-ajax-post-loader').'</h4>';
 
         // exclude specific post ids
@@ -182,8 +184,8 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
 
         // layout and ui settings
         // ==============================
-        $shortcode_page .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
-        $shortcode_page .= '<h4>'.esc_html__('layout Settings', 'quick-ajax-post-loader').'</h4>';
+        $shortcode_page .= '<div class="quick-ajax-layout-settings quick-ajax-mt-20">';
+        $shortcode_page .= '<h4>'.esc_html__('Layout Settings', 'quick-ajax-post-loader').'</h4>';
 
         // enable quick ajax css style
         $field_options = $this->field_options([

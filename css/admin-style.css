@@ -144,6 +144,18 @@
         -ms-flex-direction: column;
             flex-direction: column;
 }
+.quick-ajax-form-wrap .quick-ajax-mt-0{
+    margin-top: 0;
+}
+.quick-ajax-form-wrap .quick-ajax-mt-20{
+    margin-top: 20px;
+}
+.quick-ajax-form-wrap .quick-ajax-mb-0{
+    margin-bottom: 0;
+}
+.quick-ajax-form-wrap .quick-ajax-mb-20{
+    margin-bottom: 20px;
+}
 .quick-ajax-form-wrap select:focus {
     border-color: var(--qapl-theme-color);
     -webkit-box-shadow: 0 0 0 1px var(--qapl-theme-color);

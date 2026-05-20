@@ -75,6 +75,9 @@ final class QAPL_Plugin_Starter{
     public function start():void{
         $this->resources->initialize_components(); //init components
         $this->resources->initialize_pages(); //init admin pages
+        if (is_admin()) {
+            new QAPL_Admin_Menu();
+        } 
         $this->verify_classes();
         $this->enqueue->register_hooks(); //enqueue scripts/styles
         QAPL_Initializer::maybe_run_tests();

@@ -3,14 +3,19 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+
 class QAPL_Field_Sanitizer {
     public function sanitize_field(QAPL_Form_Field_Interface $field, $value) {
         switch ($field->get_type()) {
             case 'checkbox':
                 return (int) !empty($value);
             case 'number':
-                return is_numeric($value) ? (int) $value : (int) $field->get_default();
-
+                $value = is_numeric($value) ? $value + 0 : $field->get_default();
+                $min = $field->get_min();
+                $max = $field->get_max();
+                if ($min !== null && $value < $min) return $field->get_default();
+                if ($max !== null && $value > $max) return $field->get_default();
+                return $value;
             case 'multiselect':
                 return is_array($value) ? array_map('sanitize_text_field', $value) : [];
 

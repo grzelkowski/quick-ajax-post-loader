@@ -57,7 +57,7 @@ final class QAPL_Ajax_Layout_Renderer{
                     $attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $quick_ajax_id;
                 }
                 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                echo '<div class="qapl-initial-loader" data-button="'.QAPL_Constants::TERM_FILTER_BUTTON_DATA_BUTTON.'" style="display:none;" data-action="' . esc_attr(wp_json_encode($source_args)) . '" data-attributes="' . esc_attr(wp_json_encode($attributes)) . '"></div>';
+                echo '<div class="qapl-initial-loader qapl-hidden" data-button="'.QAPL_Constants::TERM_FILTER_BUTTON_DATA_BUTTON.'" data-action="' . esc_attr(wp_json_encode($source_args)) . '" data-attributes="' . esc_attr(wp_json_encode($attributes)) . '"></div>';
             } else {
                 while ($query->have_posts()) {
                     $query->the_post();                        

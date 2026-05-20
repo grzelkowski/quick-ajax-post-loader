@@ -79,9 +79,9 @@ class QAPL_Settings_Tab_PHP_Snippet implements QAPL_Settings_Tab_Interface{
             $form_tab_function_generator = '<h3>'.esc_html__('PHP Snippet Generator', 'quick-ajax-post-loader').'</h3>
             <div class="function-generator-wrap">
                 <div class="function-generator-options" id="'.QAPL_Constants::SETTINGS_WRAPPER_ID.'">';
-            $form_tab_function_generator .= '<p style="margin-top:0; margin-bottom:20px;">'.__('Generate a fully functional PHP snippet to embed your custom AJAX post loader into your template. No shortcode needed.', 'quick-ajax-post-loader').'</p>'; 
+            $form_tab_function_generator .= '<p class="quick-ajax-mt-0 quick-ajax-mb-20">'.esc_html__('Generate a fully functional PHP snippet to embed your custom AJAX post loader into your template. No shortcode needed.', 'quick-ajax-post-loader').'</p>'; 
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings">';
-            $form_tab_function_generator .= '<h4>'.__('General Settings', 'quick-ajax-post-loader').'</h4>';
+            $form_tab_function_generator .= '<h4>'.esc_html__('General Settings', 'quick-ajax-post-loader').'</h4>';
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SELECT_POST_TYPE);
 
             //show taxonomy checkbox
@@ -134,8 +134,8 @@ class QAPL_Settings_Tab_PHP_Snippet implements QAPL_Settings_Tab_Interface{
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE);
             $form_tab_function_generator .= '</div>';
             //post settings
-            $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
-            $form_tab_function_generator .= '<h4>'.__('Sorting Settings', 'quick-ajax-post-loader').'</h4>';
+            $form_tab_function_generator .= '<div class="quick-ajax-layout-settings quick-ajax-mt-20">';
+            $form_tab_function_generator .= '<h4>'.esc_html__('Sorting Settings', 'quick-ajax-post-loader').'</h4>';
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SELECT_ORDERBY);
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SELECT_ORDER);
             $field_options = $this->settings_page->field_options_wrapper([
@@ -149,7 +149,7 @@ class QAPL_Settings_Tab_PHP_Snippet implements QAPL_Settings_Tab_Interface{
             ]);
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SELECT_SORT_BUTTON_OPTIONS, $field_options);
             $form_tab_function_generator .= '</div>';
-            $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
+            $form_tab_function_generator .= '<div class="quick-ajax-layout-settings quick-ajax-mt-20">';
             $form_tab_function_generator .= '<h4>'.esc_html__('Additional Settings', 'quick-ajax-post-loader').'</h4>';
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SET_POST_NOT_IN);
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_IGNORE_STICKY_POSTS);
@@ -157,8 +157,8 @@ class QAPL_Settings_Tab_PHP_Snippet implements QAPL_Settings_Tab_Interface{
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_AJAX_INFINITE_SCROLL);
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SHOW_END_MESSAGE);
             $form_tab_function_generator .= '</div>';
-            $form_tab_function_generator .= '<div class="quick-ajax-layout-settings" style="margin-top:20px">';
-            $form_tab_function_generator .= '<h4>'.__('Layout Settings', 'quick-ajax-post-loader').'</h4>';
+            $form_tab_function_generator .= '<div class="quick-ajax-layout-settings quick-ajax-mt-20">';
+            $form_tab_function_generator .= '<h4>'.esc_html__('Layout Settings', 'quick-ajax-post-loader').'</h4>';
             //Layout Settings
             $field_options = $this->settings_page->field_options_wrapper([
                 'is_trigger' => true,
@@ -206,8 +206,8 @@ class QAPL_Settings_Tab_PHP_Snippet implements QAPL_Settings_Tab_Interface{
             //Function generation buttons
             $form_tab_function_generator .= '<div class="function-generator-result">';  
             $form_tab_function_generator .= '<div class="function-generator-buttons">
-                            <button type="button" class="generate-function-button button button-primary" data-output="code-snippet-2">'.__('Generate Function', 'quick-ajax-post-loader').'</button>
-                            <button type="button" class="copy-button-text button button-primary" data-copy="code-snippet-2" data-label-copied="'.__('Copied', 'quick-ajax-post-loader').'">'.__('Copy Code', 'quick-ajax-post-loader').'</button>
+                            <button type="button" class="generate-function-button button button-primary" data-output="code-snippet-2">'.esc_html__('Generate Function', 'quick-ajax-post-loader').'</button>
+                            <button type="button" class="copy-button-text button button-primary" data-copy="code-snippet-2" data-label-copied="'.esc_html__('Copied', 'quick-ajax-post-loader').'">'.esc_html__('Copy Code', 'quick-ajax-post-loader').'</button>
                         </div>';  
             $form_tab_function_generator .= '<pre id="code-snippet-2"></pre>';
             $form_tab_function_generator .= '</div>';

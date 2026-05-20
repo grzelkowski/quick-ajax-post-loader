@@ -14,8 +14,7 @@ class QAPL_Creator_Editor {
         if (!$screen || $screen->post_type !== QAPL_Constants::CPT_SHORTCODE_SLUG) {
             return;
         }
-        new QAPL_CPT_Creator_Form(QAPL_Constants::SETTINGS_WRAPPER_ID, QAPL_Constants::DB_POSTMETA_SHORTCODE_SETTINGS, $screen->post_type
-    );
+        new QAPL_CPT_Creator_Form(QAPL_Constants::SETTINGS_WRAPPER_ID, QAPL_Constants::DB_POSTMETA_SHORTCODE_SETTINGS, $screen->post_type);
     }
 }
 QAPL_Creator_Editor::init();

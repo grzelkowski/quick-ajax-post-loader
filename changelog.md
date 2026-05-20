@@ -1,5 +1,11 @@
 ## Changelog
 
+### 1.8.12 - 2026-05-20
+- Updated admin URL handling in tooltip links to ensure proper compatibility across different WordPress setups.
+- Added min/max constraint support for number fields, with both browser-side and server-side validation.
+- Replaced inline display style with a dedicated CSS class for cleaner markup and better compatibility.
+- Minor improvements and refinements to code consistency and standards compliance.
+- Tested and confirmed compatibility with WordPress 7.0.
 
 ### 1.8.11 - 2026-04-28
 - Fixed an issue where multi-select field values in global plugin settings could be lost when saving.
@@ -283,6 +289,10 @@
 - Initial release.
 
 ## Upgrade Notice
+
+### 1.8.12
+Improves admin URL handling, adds min/max validation for number fields, and replaces inline styles with dedicated CSS classes.
+Tested and confirmed compatible with WordPress 7.0.
 
 ### 1.8.0
 Includes major internal improvements, bug fixes, and performance optimizations.  

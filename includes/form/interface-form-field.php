@@ -11,6 +11,8 @@ interface QAPL_Form_Field_Interface {
     public function get_label(): string;
     public function get_type(): string;
     public function get_options(): array;
+    public function get_min(): ?int;
+    public function get_max(): ?int;
     public function get_default();
     public function get_description(): string;
     public function get_placeholder(): string;
