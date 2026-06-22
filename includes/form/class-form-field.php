@@ -11,21 +11,24 @@ class QAPL_Form_Field implements QAPL_Form_Field_Interface {
     private string $label;
     private string $type;
     private array $options;
-    private ?int $min;
-    private ?int $max;
+    private ?float $min;
+    private ?float $max;
+    private $step;
     private $default;
     private string $description;
     private string $placeholder;
     private array $tooltip = [];
 
+
     //this constructor sets all properties for the field
-    public function __construct(string $name, string $label, string $type, array $options, ?int $min, ?int $max, $default, string $description, string $placeholder, array $tooltip = []) {
+    public function __construct(string $name, string $label, string $type, array $options, ?float $min, ?float $max, $step, $default, string $description, string $placeholder, array $tooltip = []) {
         $this->name = $name;
         $this->label = $label;
         $this->type = $type;
         $this->options = $options;
         $this->min = $min;
         $this->max = $max;
+        $this->step = $step;
         $this->default = $default;
         $this->description = $description;
         $this->placeholder = $placeholder;
@@ -47,11 +50,14 @@ class QAPL_Form_Field implements QAPL_Form_Field_Interface {
     public function set_options(array $options): void {
         $this->options = $options;
     }
-    public function get_min(): ?int {
+    public function get_min(): ?float {
         return $this->min;
     }
-    public function get_max(): ?int {
+    public function get_max(): ?float {
         return $this->max;
+    }
+    public function get_step() {
+        return $this->step;
     }
     public function get_default() {
         return $this->default;
@@ -77,6 +83,8 @@ class QAPL_Form_Field implements QAPL_Form_Field_Interface {
                 return [];
             case 'checkbox':
                 return 0;
+            case 'number': 
+                return 0;
             default:
                 return '';
         }
@@ -92,6 +100,7 @@ class QAPL_Form_Field implements QAPL_Form_Field_Interface {
         $tooltip     = $config['tooltip'] ?? [];
         $min         = $config['min'] ?? null;
         $max         = $config['max'] ?? null;
-        return new self($name, $label, $type, $options, $min, $max, $default, $description, $placeholder, $tooltip);
+        $step        = $config['step'] ?? null;
+        return new self($name, $label, $type, $options, $min, $max, $step, $default, $description, $placeholder, $tooltip);
     }
 }

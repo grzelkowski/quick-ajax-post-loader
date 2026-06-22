@@ -30,11 +30,9 @@ final class QAPL_Ajax_Frontend_Controller {
             $end_posts_renderer = new QAPL_Ajax_End_Message_Renderer($file_manager);
             
             // Sanitize 'args'
-            $post_args = [];
-            if (isset($_POST['args'])) {
-                // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized in sanitize_json_to_array()
-                $post_args = $helper->sanitize_json_to_array(wp_unslash($_POST['args'])); // Sanitize JSON to array
-            }
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized in sanitize_json_to_array()
+            $post_args = $helper->sanitize_json_to_array(wp_unslash($_POST['args'])); // Sanitize JSON to array
+            
 
             // Sanitize 'attributes'
             $post_attributes = [];
@@ -43,8 +41,7 @@ final class QAPL_Ajax_Frontend_Controller {
                 $post_attributes = $helper->sanitize_json_to_array(wp_unslash($_POST['attributes'])); // Sanitize JSON to array
             }
 
-            $source_args = $post_args;
-            $query_args = $ajax_builder->wp_query_args($source_args, $post_attributes);
+            $query_args = $ajax_builder->wp_query_args($post_args, $post_attributes);
             if (!$query_args) {
                 wp_send_json_error(['message' => 'Quick Ajax Post Loader: Invalid query arguments.']);
             }
@@ -71,6 +68,9 @@ final class QAPL_Ajax_Frontend_Controller {
                     $query->the_post();
                     $template_path = $layout[QAPL_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE];
                     if (!$template_path || !file_exists($template_path)) {
+                        QAPL_Post_Template_Context::clear_template();
+                        wp_reset_postdata();
+                        ob_end_clean();
                         wp_send_json_error(['message' => 'Quick Ajax Post Loader: Template file not found']);
                     }
                     include $template_path;
@@ -97,12 +97,11 @@ final class QAPL_Ajax_Frontend_Controller {
                 'post_count'      => intval($query->post_count),
                 'infinite_scroll' => intval($attrs[QAPL_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL] ?? 0),
             ];
-            $load_more_data = $load_more_renderer->build_load_more_button($attrs,$source_args,$query_data,$quick_ajax_id);            
+            $load_more_data = $load_more_renderer->build_load_more_button($attrs,$post_args,$query_data,$quick_ajax_id);            
             $load_more = $load_more_data ? $load_more_renderer->render_load_more_button($load_more_data) : false;
 
             $show_end_message = $end_posts_renderer->build_end_of_posts_message($load_more, intval($query->max_num_pages), $quick_ajax_id, intval($attrs[QAPL_Constants::ATTRIBUTE_SHOW_END_MESSAGE] ?? 0));
             
-            //$output = $ajax_class->replace_placeholders($output);
             wp_send_json_success([
                 'output' => $output,
                 'args' => $query_args,
@@ -110,7 +109,6 @@ final class QAPL_Ajax_Frontend_Controller {
                 'show_end_message' => $show_end_message,
             ]);
         }
-        wp_die();
     }
 }
 // phpcs:enable WordPress.Security.NonceVerification.Missing

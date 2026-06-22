@@ -49,8 +49,6 @@ abstract class QAPL_Admin_Options_Page_Form extends QAPL_Form_Content_Builder {
         return $this->create_accordion_block($title, $content, $id);
     }
 
-
-
     public function render_quick_ajax_page(){ 
         echo '<div class="wrap">';
         echo '<div class="quick-ajax-heading">';
@@ -86,8 +84,9 @@ abstract class QAPL_Admin_Options_Page_Form extends QAPL_Form_Content_Builder {
         $firstTab = true;
         foreach ($this->tabs as $id => $tab) {
             $class = $firstTab ? 'quick-ajax-tab-content active' : 'quick-ajax-tab-content';
-            $aria_class = $firstTab ? '' : 'hidden';
-            $html .= '<div id="quick-ajax-tab-' . esc_attr($id) . '" class="' . $class . '" role="tabpanel" tabindex="0" '.$aria_class.'>';
+            $aria_hidden = $firstTab ? 'false' : 'true';
+            $tabindex = $firstTab ? '0' : '-1';
+            $html .= '<div id="quick-ajax-tab-' . esc_attr($id) . '" class="' . esc_attr($class) . '" role="tabpanel" tabindex="' . $tabindex . '" aria-hidden="' . $aria_hidden . '">';
             $html .= $tab['content'];            
             $html .= '</div>';
             $firstTab = false;

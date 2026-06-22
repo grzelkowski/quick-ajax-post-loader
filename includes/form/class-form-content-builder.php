@@ -33,17 +33,17 @@ abstract class QAPL_Form_Content_Builder{
         }
         switch ($field->get_type()) {
             case 'checkbox':
-                return $this->add_checkbox_field($field_name, $field_args, $required);
+                return $this->add_checkbox_field($field, $field_args, $required);
             case 'select':
-                return $this->add_select_field($field_name, $field_args);
+                return $this->add_select_field($field, $field_args, $required);
             case 'multiselect':
-                return $this->add_multiselect_field($field_name, $field_args);
+                return $this->add_multiselect_field($field, $field_args);
             case 'number':
-                return $this->add_number_field($field_name, $field_args);
+                return $this->add_number_field($field, $field_args, $required);
             case 'text':
-                return $this->add_text_input_field($field_name, $field_args);
+                return $this->add_text_input_field($field, $field_args, $required);
             case 'color_picker':
-                return $this->add_color_picker_field($field_name, $field_args);
+                return $this->add_color_picker_field($field, $field_args);
             default:
                 return '';
         }
@@ -65,11 +65,7 @@ abstract class QAPL_Form_Content_Builder{
         $scheme = get_user_option('admin_color', $current_user->ID);
         return $scheme . '-style';
     }
-    private function add_checkbox_field($field_name, $field_args = [], $required = false) {
-        $field = $this->field_registry->get($field_name);
-        if (!$field) {
-            return '';
-        }
+    private function add_checkbox_field(QAPL_Form_Field_Interface $field, $field_args = [], $required = false) {
         $name = $field->get_name();
         $label = $field->get_label();
         $description = $field->get_description();
@@ -99,17 +95,13 @@ abstract class QAPL_Form_Content_Builder{
     
         return $field_output;
     }
-    private function add_select_field($field_name, $field_args = []){
-        $field = $this->field_registry->get($field_name);
-        if (!$field) {
-            return '';
-        }
+    private function add_select_field(QAPL_Form_Field_Interface $field, $field_args = [], $required = false){
         $name = $field->get_name();
         $label = $field->get_label();
         $description = $field->get_description();
         $tooltip = $field->get_tooltip();
         $options_list = $field->get_options();
-
+        $is_required = $required ? 'required' : '';
         $current_value = $this->get_value($name);
         $visibility = $this->show_hide_element($field_args);
         $field_container_class = $visibility['field_container_class'];
@@ -117,7 +109,7 @@ abstract class QAPL_Form_Content_Builder{
         $field_output = '<div class="quick-ajax-field-container quick-ajax-select-field' . $field_container_class . '"' . $field_container_data_item . '>';
         $field_output .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($name) . '">' . esc_html($label) .'</label>'. $this->render_tooltip($tooltip) .'</div>';
         $field_output .= '<div class="quick-ajax-field">';
-        $field_output .= '<select name="' . esc_attr($name) . '" id="' . esc_attr($name) . '">';
+        $field_output .= '<select name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" ' . $is_required . '>';
         if (is_array($options_list)) {
             foreach ($options_list as $option) {
                 $field_output .= '<option value="' . esc_attr($option['value']) . '"' . selected($current_value, $option['value'], false) . '>';
@@ -133,11 +125,7 @@ abstract class QAPL_Form_Content_Builder{
 
         return $field_output;
     }
-    private function add_multiselect_field($field_name, $field_args = []) {
-        $field = $this->field_registry->get($field_name);
-        if (!$field) {
-            return '';
-        }
+    private function add_multiselect_field(QAPL_Form_Field_Interface $field, $field_args = []) {
         $name = $field->get_name();
         $label = $field->get_label();
         $description = $field->get_description();
@@ -172,16 +160,12 @@ abstract class QAPL_Form_Content_Builder{
     
         return $field_output;
     }    
-    private function add_number_field($field_name, $field_args = []){
-        $field = $this->field_registry->get($field_name);
-        if (!$field) {
-            return '';
-        }
+    private function add_number_field(QAPL_Form_Field_Interface $field, $field_args = [], $required = false){
         $name = $field->get_name();
         $label = $field->get_label();
         $description = $field->get_description();
         $tooltip = $field->get_tooltip();
-
+        $is_required = $required ? 'required' : '';
         $current_value = $this->get_value($name);
         $visibility = $this->show_hide_element($field_args);
         $field_container_data_item = $visibility['field_container_data_item'];
@@ -190,26 +174,23 @@ abstract class QAPL_Form_Content_Builder{
         $field_output = '<div class="quick-ajax-field-container quick-ajax-number-field' . $field_container_class . '"' . $field_container_data_item . '>';
         $field_output .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($name) . '">' . esc_html($label) . '</label>'. $this->render_tooltip($tooltip) .'</div>';
         $field_output .= '<div class="quick-ajax-field">';
-        $min_attr = $field->get_min() !== null ? ' min="' . $field->get_min() . '"' : '';
-        $max_attr = $field->get_max() !== null ? ' max="' . $field->get_max() . '"' : '';
-        $field_output .= '<input type="number" name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" value="' . esc_attr($current_value) . '"' . $min_attr . $max_attr . ' />';
+        $min_attr = $field->get_min() !== null ? ' min="' . esc_attr($field->get_min()) . '"' : '';
+        $max_attr = $field->get_max() !== null ? ' max="' . esc_attr($field->get_max()) . '"' : '';
+        $step_attr = $field->get_step() !== null ? ' step="' . esc_attr($field->get_step()) . '"' : '';
+        $field_output .= '<input type="number" name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" value="' . esc_attr($current_value) . '"' . $min_attr . $max_attr . $step_attr . ' ' . $is_required . '/>';
         $field_output .= $this->add_field_description($description);
         $field_output .= '</div>';
         $field_output .= '</div>';
 
         return $field_output;
     }
-    private function add_text_input_field($field_name, $field_args = []){
-        $field = $this->field_registry->get($field_name);
-        if (!$field) {
-            return '';
-        }
+    private function add_text_input_field(QAPL_Form_Field_Interface $field, $field_args = [], $required = false){
         $name = $field->get_name();
         $label = $field->get_label();
         $description = $field->get_description();
         $tooltip = $field->get_tooltip();
         $placeholder = $field->get_placeholder();
-
+        $is_required = $required ? 'required' : '';
         $current_value = $this->get_value($name);
         $visibility = $this->show_hide_element($field_args);
         $field_container_data_item = $visibility['field_container_data_item'];
@@ -219,18 +200,14 @@ abstract class QAPL_Form_Content_Builder{
         $field_output = '<div class="quick-ajax-field-container quick-ajax-text-input-field' . $field_container_class . '"' . $field_container_data_item . '>';
         $field_output .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($name) . '">' . esc_html($label) . '</label>'. $this->render_tooltip($tooltip) .'</div>';
         $field_output .= '<div class="quick-ajax-field">';
-        $field_output .= '<input type="text" name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" value="' . esc_attr($current_value) . '"' . $placeholder . '/>';
+        $field_output .= '<input type="text" name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" value="' . esc_attr($current_value) . '"' . $placeholder . ' ' . $is_required . '/>';
         $field_output .= $this->add_field_description($description);
         $field_output .= '</div>';
         $field_output .= '</div>';
     
         return $field_output;
     }
-    private function add_color_picker_field($field_name, $field_args = []){
-        $field = $this->field_registry->get($field_name);
-        if (!$field) {
-            return '';
-        }
+    private function add_color_picker_field(QAPL_Form_Field_Interface $field, $field_args = []) {
         $name = $field->get_name();
         $label = $field->get_label();
         $description = $field->get_description();
@@ -244,7 +221,7 @@ abstract class QAPL_Form_Content_Builder{
         $field_output = '<div class="quick-ajax-field-container quick-ajax-color-picker-field' . $field_container_class . '"' . $field_container_data_item . '>';
         $field_output .= '<div class="quick-ajax-field-label"><label for="' . esc_attr($name) . '">' . esc_html($label) . '</label>'. $this->render_tooltip($tooltip) .'</div>';
         $field_output .= '<div class="quick-ajax-field">';
-        $field_output .= '<input type="text" class="color-picker-field" name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" value="' . esc_attr($current_value) . '"/>';
+        $field_output .= '<input type="color" class="color-picker-field" name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" value="' . esc_attr($current_value) . '"/>';
         $field_output .= $this->add_field_description($description);
         $field_output .= '</div>';
         $field_output .= '</div>';
@@ -274,7 +251,7 @@ abstract class QAPL_Form_Content_Builder{
         if (!empty($field_args['visible_if']) && is_array($field_args['visible_if'])) {
            
             $conditions = $field_args['visible_if'];
-            $element_data['field_container_data_item'] = ' data-conditional=\'' . esc_attr(wp_json_encode($conditions)) . '\'';
+            $element_data['field_container_data_item'] = ' data-conditional="' . esc_attr(wp_json_encode($conditions)) . '"';
             
             foreach ($conditions as $field => $expected_value) {
                 $actual_value = $this->get_value($field);

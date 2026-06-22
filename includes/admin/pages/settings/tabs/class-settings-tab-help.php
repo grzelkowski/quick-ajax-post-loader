@@ -2,6 +2,7 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+
 class QAPL_Settings_Tab_Help implements QAPL_Settings_Tab_Interface {
     private $settings_page;
 

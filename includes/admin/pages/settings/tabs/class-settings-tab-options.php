@@ -44,14 +44,14 @@ class QAPL_Settings_Tab_Options implements QAPL_Settings_Tab_Interface {
 
         $content = '<div id="quick-ajax-example-code">';
         $content .= '<form method="post" action="options.php">';            
-        $content .= '<h3>'.__('Global Options', 'quick-ajax-post-loader').'</h3>';
+        $content .= '<h3>'.esc_html__('Global Options', 'quick-ajax-post-loader').'</h3>';
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_LOADER_ICON_FIELD);
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_READ_MORE_LABEL_FIELD);
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_SHOW_ALL_LABEL_FIELD);
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_LOAD_MORE_LABEL_FIELD);
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_NO_POST_MESSAGE_FIELD);
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_END_POST_MESSAGE_FIELD);
-        $content .= '<h4>'.__('Sorting Option Labels', 'quick-ajax-post-loader').'</h4>';
+        $content .= '<h4>'.esc_html__('Sorting Option Labels', 'quick-ajax-post-loader').'</h4>';
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_SORT_OPTION_DATE_DESC_LABEL_FIELD);
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_SORT_OPTION_DATE_ASC_LABEL_FIELD);
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_SORT_OPTION_COMMENT_COUNT_DESC_LABEL_FIELD);

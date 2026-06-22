@@ -62,7 +62,7 @@ abstract class QAPL_CPT_Editor_Form extends QAPL_Form_Content_Builder {
             return;
         }
         //verify nonce to prevent unauthorized save
-        if (!isset($_POST[QAPL_Constants::NONCE_FORM_QUICK_AJAX_FIELD]) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST[QAPL_Constants::NONCE_FORM_QUICK_AJAX_FIELD])), QAPL_Constants::NONCE_FORM_QUICK_AJAX_ACTION)) {
+        if (!isset($_POST[QAPL_Constants::NONCE_FORM_QUICK_AJAX_FIELD]) || !wp_verify_nonce(wp_unslash($_POST[QAPL_Constants::NONCE_FORM_QUICK_AJAX_FIELD]), QAPL_Constants::NONCE_FORM_QUICK_AJAX_ACTION)) {
             return;
         }       
         if (!current_user_can('edit_post', $post_id)) {
@@ -77,6 +77,7 @@ abstract class QAPL_CPT_Editor_Form extends QAPL_Form_Content_Builder {
         $fields_all = $this->field_registry->all();
         foreach ($fields_all as $field) {
             $name = $field->get_name();
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- unslashed below, sanitized via $sanitizer
             $raw_value = $_POST[$name] ?? null;
             if (is_array($raw_value) || is_string($raw_value)) {
                 $raw_value = wp_unslash($raw_value);

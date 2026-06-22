@@ -4,7 +4,6 @@ if (!defined('ABSPATH')) {
 }
 if (!class_exists('QAPL_Settings_Page')) {
     class QAPL_Settings_Page extends QAPL_Admin_Options_Page_Form {
-        private $tabIndex = 1;
         private $cached_tabs = null;
 
         public function render_quick_ajax_page_heading() {
@@ -31,8 +30,9 @@ if (!class_exists('QAPL_Settings_Page')) {
             }
         }
         public function init_option_page_content() {
+            $tabIndex = 1;
             foreach ($this->settings_page_tabs() as $tab) {
-                $tab->register_content($this->tabIndex++);
+                $tab->register_content($tabIndex++);
             }
         }
     }

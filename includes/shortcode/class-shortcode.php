@@ -36,8 +36,6 @@ class QAPL_Shortcode {
                 'orderby' => $post_orderby, 
                 'order' => $post_order,
                 'posts_per_page' => $post_per_page,
-                //'post__not_in' => $post_not_in,
-                //'ignore_sticky_posts' => $ignore_sticky_posts,
             );
             if (!empty($post_not_in)) {
                 $args['post__not_in'] = $post_not_in;
@@ -51,26 +49,6 @@ class QAPL_Shortcode {
             if($select_taxonomy && $manual_term_selection && $manual_selected_terms){
                 $args['selected_terms'] = $manual_selected_terms;
             }
-            /*
-            if ($show_taxonomy && $manual_term_selection && !empty($manual_selected_terms)) {
-                $args['tax_query'] = array(
-                    array(
-                        'taxonomy' => $select_taxonomy,
-                        'field' => 'term_id',
-                        'terms' => $manual_selected_terms,
-                        'operator' => 'IN',
-                    )
-                );
-            }
-            elseif ($show_taxonomy && !$manual_term_selection) {
-                $args['tax_query'] = array(
-                    array(
-                        'taxonomy' => $select_taxonomy,
-                        'operator' => 'EXISTS',
-                    )
-                );
-            }            
-            */
         }
         // phpcs:enable WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in
         if(!empty($args)){
@@ -97,7 +75,7 @@ class QAPL_Shortcode {
     private function create_shortcode_controls_container(){
         if(!empty($this->shortcode_params['id'])){
             $show_sort_orderby_button = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_SORT_BUTTON]) ? $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_SORT_BUTTON] : null;
-            if($show_sort_orderby_button==1){
+            if($show_sort_orderby_button === 1){
                 $add_wrapper = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SORTING]) ? $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SORTING] : null;
                 return $add_wrapper;
             }
@@ -107,7 +85,7 @@ class QAPL_Shortcode {
     private function create_shortcode_sort_button(){
         if(!empty($this->shortcode_params['id'])){
             $show_sort_orderby_button = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_SORT_BUTTON]) ? $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_SORT_BUTTON] : null;
-            if($show_sort_orderby_button==1){
+            if($show_sort_orderby_button === 1){
                 $sort_orderby = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SELECT_SORT_BUTTON_OPTIONS]) ? $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SELECT_SORT_BUTTON_OPTIONS] : null;
                 if (is_array($sort_orderby)) {
                     $sort_orderby = array_map('esc_attr', $sort_orderby);

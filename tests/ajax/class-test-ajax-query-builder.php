@@ -1,6 +1,7 @@
 <?php
 final class QAPL_Test_Ajax_Query_Builder {
     public static function run_all(): void {
+        // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- test runner logging
         error_log('[QAPL TEST]['.__CLASS__ .'] START');
         self::test_normalization();
         self::test_offset();
@@ -8,6 +9,7 @@ final class QAPL_Test_Ajax_Query_Builder {
         self::test_tax_exists();
         self::test_generate_tax_query();
         self::test_quick_ajax_id();
+        // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- test runner logging
         error_log('[QAPL TEST]['.__CLASS__ .'] FINISHED');
     }
     public static function test_normalization(): void {
@@ -18,6 +20,7 @@ final class QAPL_Test_Ajax_Query_Builder {
             'post_type'      => 'post',
             'posts_per_page' => '10',
             'paged'          => '2',
+            // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- test input data not a real query
             'post__not_in'   => '5,6,6,foo',
         ];
         $result = $builder->wp_query_args($args, [QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID => '123']);

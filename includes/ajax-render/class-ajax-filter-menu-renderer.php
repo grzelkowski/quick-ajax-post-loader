@@ -96,7 +96,7 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
         ];
         $display_show_all_button = isset($attributes[QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON]) ? $attributes[QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON] : QAPL_Constants::LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON_DEFAULT;
         $has_active_button = false;
-        if($display_show_all_button == 1){
+        if($display_show_all_button === 1){
             $show_all_label = !empty($this->global_options['show_all_label']) ? $this->global_options['show_all_label'] : __('Show All', 'quick-ajax-post-loader');
             $show_all_button = [                    
                 'term_id' => 'none',
@@ -111,10 +111,10 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
             $navigation_buttons[] = $show_all_button;
             $has_active_button = true;
         }
-        $exclude_ids = (isset($query_args['post__not_in'])) ? $query_args['post__not_in'] : '';
+        $exclude_ids = (isset($query_args['post__not_in'])) ? $query_args['post__not_in'] : [];
         foreach ( $terms as $term ) { 
             $not_empty = $this->get_post_assigned_to_the_term($term, $query_args['post_type'], $exclude_ids);
-            if($not_empty == true){
+            if($not_empty === true){
                 $data_action = $source_args;
                 $data_action['selected_terms'] = [$term->term_id];
                 $term_button_data = [                        

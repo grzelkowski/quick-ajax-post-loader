@@ -22,7 +22,7 @@ final class QAPL_Ajax_Helper{
             if (is_array($value)) {
                 $data[$key] = $this->sanitize_json_to_array($value);
             } elseif (is_numeric($value)) {
-                $data[$key] = absint($value);
+                $data[$key] = intval($value);
             } else {
                 $data[$key] = sanitize_text_field($value);
             }

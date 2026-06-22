@@ -31,15 +31,15 @@ if (!class_exists('QAPL_Admin_Menu')) {
                 'Quick AJAX',
                 'manage_options',
                 QAPL_Constants::PLUGIN_MENU_SLUG,               
-                '', // array($this, 'options_page_content'),
+                '',
                 'dashicons-editor-code',
                 80
             );
             // "Add New"
             add_submenu_page(
                 QAPL_Constants::PLUGIN_MENU_SLUG,
-                __('Add New', 'quick-ajax-post-loader'),
-                __('Add New', 'quick-ajax-post-loader'),
+                esc_html__('Add New', 'quick-ajax-post-loader'),
+                esc_html__('Add New', 'quick-ajax-post-loader'),
                 'edit_posts',
                 'post-new.php?post_type=' . QAPL_Constants::CPT_SHORTCODE_SLUG
             );
@@ -48,8 +48,8 @@ if (!class_exists('QAPL_Admin_Menu')) {
             // "settings"
             add_submenu_page(
                 QAPL_Constants::PLUGIN_MENU_SLUG,
-                __('Settings & Features', 'quick-ajax-post-loader'),
-                __('Settings & Features', 'quick-ajax-post-loader'),
+                esc_html__('Settings & Features', 'quick-ajax-post-loader'),
+                esc_html__('Settings & Features', 'quick-ajax-post-loader'),
                 'manage_options',
                 QAPL_Constants::SETTINGS_PAGE_SLUG,
                 array($this, 'render_quick_ajax_settings_page')

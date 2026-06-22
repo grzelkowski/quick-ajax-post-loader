@@ -9,14 +9,17 @@ final class QAPL_Ajax_Admin_Controller {
     public static function register(): void {
         // get taxonomies
         add_action('wp_ajax_qapl_action_get_taxonomies_by_post_type', [self::class, 'get_taxonomies_by_post_type']);
-        add_action('wp_ajax_nopriv_qapl_action_get_taxonomies_by_post_type', [self::class, 'get_taxonomies_by_post_type']);
+        //add_action('wp_ajax_nopriv_qapl_action_get_taxonomies_by_post_type', [self::class, 'get_taxonomies_by_post_type']);
 
         // get terms
         add_action('wp_ajax_qapl_action_get_terms_by_taxonomy', [self::class, 'get_terms_by_taxonomy']);
-        add_action('wp_ajax_nopriv_qapl_action_get_terms_by_taxonomy', [self::class, 'get_terms_by_taxonomy']);
+        //add_action('wp_ajax_nopriv_qapl_action_get_terms_by_taxonomy', [self::class, 'get_terms_by_taxonomy']);
     }
     public static function get_taxonomies_by_post_type(): void {
         self::verify_request();
+        if (!current_user_can('edit_posts')) {
+            wp_send_json_error(['message' => 'Quick Ajax Post Loader: Insufficient permissions.']);
+        }
         if (empty($_POST['post_type'])) {
             wp_send_json_error(['message' => 'Quick Ajax Post Loader: Invalid request, missing post type.']);
         }
@@ -34,17 +37,18 @@ final class QAPL_Ajax_Admin_Controller {
         $output = ob_get_clean();
 
         wp_send_json_success($output);
-        wp_die();
     }
     public static function get_terms_by_taxonomy(): void {
         self::verify_request();
+        if (!current_user_can('edit_posts')) {
+            wp_send_json_error(['message' => 'Quick Ajax Post Loader: Insufficient permissions.']);
+        }
         //return info if No taxonomy
         if (empty($_POST['taxonomy']) || $_POST['taxonomy'] === '0') {
             ob_start();
             echo '<div class="quick-ajax-multiselect-option"><span class="no-options">' . esc_html__('No taxonomy available', 'quick-ajax-post-loader') . '</span></div>';
             $output = ob_get_clean();
             wp_send_json_success($output);
-            wp_die();
         }
         $taxonomy = sanitize_text_field(wp_unslash($_POST['taxonomy']));
         $terms = get_terms([
@@ -69,7 +73,7 @@ final class QAPL_Ajax_Admin_Controller {
                 ?>
                 <div class="quick-ajax-multiselect-option">
                     <label>
-                        <input type="checkbox" name="qapl_manual_selected_terms[]" value="<?php echo esc_attr($term->term_id); ?>" <?php checked(in_array($term->term_id, $saved_terms)); ?>>
+                        <input type="checkbox" name="qapl_manual_selected_terms[]" value="<?php echo esc_attr($term->term_id); ?>" <?php checked(in_array($term->term_id, $saved_terms, true)); ?>>
                         <?php echo esc_html($term->name); ?>
                     </label>
                 </div>
@@ -84,7 +88,6 @@ final class QAPL_Ajax_Admin_Controller {
         }
         $output = ob_get_clean();
         wp_send_json_success($output);
-        wp_die();
     }
 }
 // phpcs:enable WordPress.Security.NonceVerification.Missing

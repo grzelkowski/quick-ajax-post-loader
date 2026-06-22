@@ -93,9 +93,11 @@ class QAPL_Form_Field_Factory {
             'name' => QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE,
             'label' => __('Posts Per Page', 'quick-ajax-post-loader'),
             'type' => 'number',
+            'min'  => -1,
+            'max'  => 1000,
+            'step' => 1,
             'default' => QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE_DEFAULT,
-            'description' => __('Determine the number of posts to be loaded per AJAX request.', 'quick-ajax-post-loader'),
-            'min' => 1,
+            'description' => __('Determine the number of posts to be loaded per AJAX request.', 'quick-ajax-post-loader')
         ];
         return self::create_field($field_config);
     }
@@ -167,39 +169,27 @@ class QAPL_Form_Field_Factory {
         $sort_options = [
             [
                 'value' => 'date-desc',
-                'label' => isset($global_options['sort_option_date_desc_label'])
-                    ? $global_options['sort_option_date_desc_label']
-                    : __('Newest', 'quick-ajax-post-loader')
+                'label' => $global_options['sort_option_date_desc_label'] ?? __('Newest', 'quick-ajax-post-loader'),
             ],
             [
                 'value' => 'date-asc',
-                'label' => isset($global_options['sort_option_date_asc_label'])
-                    ? $global_options['sort_option_date_asc_label']
-                    : __('Oldest', 'quick-ajax-post-loader')
+                'label' => $global_options['sort_option_date_asc_label'] ?? __('Oldest', 'quick-ajax-post-loader'),
             ],
             [
                 'value' => 'comment_count-desc',
-                'label' => isset($global_options['sort_option_comment_count_desc_label'])
-                    ? $global_options['sort_option_comment_count_desc_label']
-                    : __('Popular', 'quick-ajax-post-loader')
+                'label' => $global_options['sort_option_comment_count_desc_label'] ?? __('Popular', 'quick-ajax-post-loader'),
             ],
             [
                 'value' => 'title-asc',
-                'label' => isset($global_options['sort_option_title_asc_label'])
-                    ? $global_options['sort_option_title_asc_label']
-                    : __('A → Z', 'quick-ajax-post-loader')
+                'label' => $global_options['sort_option_title_asc_label'] ?? __('A → Z', 'quick-ajax-post-loader'),
             ],
             [
                 'value' => 'title-desc',
-                'label' => isset($global_options['sort_option_title_desc_label'])
-                    ? $global_options['sort_option_title_desc_label']
-                    : __('Z → A', 'quick-ajax-post-loader')
+                'label' => $global_options['sort_option_title_desc_label'] ?? __('Z → A', 'quick-ajax-post-loader'),
             ],
             [
                 'value' => 'rand',
-                'label' => isset($global_options['sort_option_rand_label'])
-                    ? $global_options['sort_option_rand_label']
-                    : __('Random', 'quick-ajax-post-loader')
+                'label' => $global_options['sort_option_rand_label'] ?? __('Random', 'quick-ajax-post-loader'),
             ],
         ];
         $tooltip = [
@@ -329,34 +319,34 @@ class QAPL_Form_Field_Factory {
         return self::create_field($field_config);
     }
     //select post item template
-public static function build_post_item_template_field(): QAPL_Form_Field_Interface {
-    $file_manager = new QAPL_File_Manager();
-    $templates = $file_manager->get_templates_items_array('post-items/post-item*.php', 'Post Item Name:', QAPL_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE_DEFAULT);
-    $options = [];
-    foreach ($templates as $template) {
-        $options[] = [
-            'label' => $template['template_name'],
-            'value' => $template['file_name'],
+    public static function build_post_item_template_field(): QAPL_Form_Field_Interface {
+        $file_manager = new QAPL_File_Manager();
+        $templates = $file_manager->get_templates_items_array('post-items/post-item*.php', 'Post Item Name:', QAPL_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE_DEFAULT);
+        $options = [];
+        foreach ($templates as $template) {
+            $options[] = [
+                'label' => $template['template_name'],
+                'value' => $template['file_name'],
+            ];
+        }
+        $field_config = [
+            'name' => QAPL_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE,
+            'label' => __('Select Post Item Template', 'quick-ajax-post-loader'),
+            'type' => 'select',
+            'options' => $options,
+            'default' => QAPL_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE_DEFAULT,
+            'description' => __('Choose a template for displaying post items.', 'quick-ajax-post-loader'),
+            'tooltip' => [
+                'title' => __('How to add a new post item template?', 'quick-ajax-post-loader'),
+                'content' => __('To add a new post item template you need to create a new PHP file in your theme\'s folder.', 'quick-ajax-post-loader') .
+                            ' <a href="' . esc_url(admin_url('admin.php?page=qapl-settings&tab=3#qapl_help_3_creating_custom_templates')) . '" target="_blank" rel="noopener noreferrer">' .
+                            __('View detailed guide', 'quick-ajax-post-loader') .
+                            '</a>.',
+            ],
         ];
-    }
-    $field_config = [
-        'name' => QAPL_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE,
-        'label' => __('Select Post Item Template', 'quick-ajax-post-loader'),
-        'type' => 'select',
-        'options' => $options,
-        'default' => QAPL_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE_DEFAULT,
-        'description' => __('Choose a template for displaying post items.', 'quick-ajax-post-loader'),
-        'tooltip' => [
-            'title' => __('How to add a new post item template?', 'quick-ajax-post-loader'),
-            'content' => __('To add a new post item template you need to create a new PHP file in your theme\'s folder.', 'quick-ajax-post-loader') .
-                        ' <a href="' . esc_url(admin_url('admin.php?page=qapl-settings&tab=3#qapl_help_3_creating_custom_templates')) . '" target="_blank" rel="noopener noreferrer">' .
-                        __('View detailed guide', 'quick-ajax-post-loader') .
-                        '</a>.',
-        ],
-    ];
 
-    return self::create_field($field_config);
-}
+        return self::create_field($field_config);
+    }
     //add custom class for taxonomy filter
     public static function build_taxonomy_filter_class_field(): QAPL_Form_Field_Interface {
         $field_config = [
@@ -400,7 +390,9 @@ public static function build_post_item_template_field(): QAPL_Form_Field_Interfa
             'type' => 'number',
             'default' => QAPL_Constants::QUERY_SETTING_SELECT_CUSTOM_LOAD_MORE_POST_QUANTITY_DEFAULT,
             'description' => __('Set how many posts to load each time the "Load More" button is clicked.', 'quick-ajax-post-loader'),
-            'min' => 1,
+            'min'  => 1,
+            'max'  => 1000,
+            'step' => 1,
         ];
         return self::create_field($field_config);
     }

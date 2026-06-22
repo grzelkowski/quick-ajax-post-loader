@@ -195,9 +195,9 @@ class QAPL_Data_Migrator {
 
     public static function migrate_single_post_meta($post_id, $old_key, $new_key) {
         // check if new meta key already exists
-        $existing_data = sanitize_text_field(get_post_meta($post_id, $new_key, true));
-        // get existing data from the old meta key (sanitize it for safety)
-        $old_data = sanitize_text_field(get_post_meta($post_id, $old_key, true));
+        $existing_data = get_post_meta($post_id, $new_key, true);
+        // get existing data from the old meta key
+        $old_data = get_post_meta($post_id, $old_key, true);
         $return = 1;
         if ($old_data !== '') {
             $return = 3; // old key still exists
@@ -360,7 +360,7 @@ if (!class_exists('QAPL_Cleaner')) {
             wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'quick-ajax-post-loader'));
         }
         // verify nonce for security
-        if (!isset($_POST['qapl_purge_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['qapl_purge_nonce'])), 'qapl_purge_unused_data')) {
+        if (!isset($_POST['qapl_purge_nonce']) || !wp_verify_nonce(wp_unslash($_POST['qapl_purge_nonce']), 'qapl_purge_unused_data')) {
             wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=invalid_nonce'));
             exit;
         }

@@ -4,7 +4,7 @@ Contributors: grzelkowski
 Tags: ajax, load-more, infinite-scroll, filter, post-grid
 Requires at least: 5.6
 Tested up to: 7.0
-Stable tag: 1.8.12
+Stable tag: 1.8.13
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -116,6 +116,14 @@ Yes, the plugin supports loading the initial posts via AJAX, which ensures fresh
 Yes, you can paste the shortcode into any page builder that supports shortcode widgets.
 
 == Changelog ==
+
+= 1.8.13 - 2026-06-22 =
+- Improved number field handling for more accurate and consistent value processing.
+- Enhanced required field support across select, number, and text input fields.
+- Minor improvements and refinements to code consistency and standards compliance.
+- Improved support for negative numeric values in query parameters for more flexible post display options.
+- Improved AJAX response handling for more reliable and consistent frontend behavior.
+- Improved internal term selection handling for more reliable and consistent behavior.
 
 = 1.8.12 - 2026-05-20 =
 - Updated admin URL handling in tooltip links to ensure proper compatibility across different WordPress setups.

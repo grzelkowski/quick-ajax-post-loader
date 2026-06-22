@@ -9,7 +9,7 @@ final class QAPL_Ajax_Query_Builder{
     public function get_quick_ajax_id() {
         return $this->quick_ajax_id;
     }
-    public function wp_query_args($source_args, $attributes = false){
+    public function wp_query_args($source_args, $attributes = []){
         // sanitize and normalize input
         $source_args = $this->normalize_args($source_args);
 
@@ -17,10 +17,6 @@ final class QAPL_Ajax_Query_Builder{
             $this->generate_block_id($attributes);
         }
 
-        //normalize input args (sanitize selected_terms, post__not_in, etc.)
-        //$this->input_args = $this->normalize_args($source_args);
-        //$this->action_args = $this->input_args;
-        
         // generate query args (post_type, tax_query, etc.)
         $query_args = $this->initialize_query_args($source_args);
 
@@ -52,9 +48,8 @@ final class QAPL_Ajax_Query_Builder{
 
         if (empty($query_args)) {
             return false;
-        }else{
-            return $query_args; 
         }
+        return $query_args;        
     }
     private function adjust_tax_query_for_initial_state($query_args, $display_show_all_button): array {
         // if show all enabled - do nothing
@@ -198,7 +193,7 @@ final class QAPL_Ajax_Query_Builder{
             $this->quick_ajax_id = esc_attr($prefix . $attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID]);
             return;
         } else {
-            $this->quick_ajax_id = uniqid('c', false);
+            $this->quick_ajax_id = uniqid('c', true);
         }
     }
 }
