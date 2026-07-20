@@ -2,7 +2,6 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-//OLD class-field-field.php
 
 //this class holds all field data,
 //it is the final field object

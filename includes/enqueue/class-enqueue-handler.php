@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class QAPL_Enqueue_Handler implements QAPL_Enqueue_Handler_Interface {
+final class QAPL_Enqueue_Handler implements QAPL_Enqueue_Handler_Interface {
     private QAPL_File_Manager_Interface $file_manager;
 
     public function __construct(QAPL_File_Manager_Interface $file_manager) {
@@ -14,10 +14,7 @@ class QAPL_Enqueue_Handler implements QAPL_Enqueue_Handler_Interface {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_styles_and_scripts'], 10, 1);
 
     }
-    public function enqueue_frontend_styles_and_scripts(): void {
-        if (is_admin()){
-             return; 
-        }          
+    public function enqueue_frontend_styles_and_scripts(): void {        
         $style_suffix = $this->get_file_suffix('/css/', 'style.css');
         $script_suffix = $this->get_file_suffix('/js/', 'script.js');
         $version = $this->get_version();
@@ -25,15 +22,44 @@ class QAPL_Enqueue_Handler implements QAPL_Enqueue_Handler_Interface {
         $style_url = $this->file_manager->get_plugin_css_directory() . 'style' . $style_suffix . '.css';
         $script_url = $this->file_manager->get_plugin_js_directory() . 'script' . $script_suffix . '.js';
 
-        wp_enqueue_style('qapl-quick-ajax-style', $style_url, [], $version);        
+        wp_register_style('qapl-quick-ajax-style', $style_url, [], $version);
         wp_register_script('qapl-quick-ajax-script', $script_url, ['jquery'], $version, true);
         wp_localize_script('qapl-quick-ajax-script', 'qapl_quick_ajax_data', $this->get_localized_data());
-        wp_enqueue_script('qapl-quick-ajax-script');        
+
+        // enqueue early when the shortcode is detectable in the current view
+        if ($this->current_view_has_shortcode()) {
+            self::enqueue_frontend_assets();
+        }
     }
+    private function current_view_has_shortcode(): bool {
+        if (is_singular()) {
+            $post = get_post();
+            return $post && has_shortcode($post->post_content, 'qapl-quick-ajax');
+        }
+        // archives: main query posts are already in memory
+        global $wp_query;
+        if (!empty($wp_query->posts)) {
+            foreach ($wp_query->posts as $queried_post) {
+                if (!empty($queried_post->post_content) && has_shortcode($queried_post->post_content, 'qapl-quick-ajax')) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public static function enqueue_frontend_assets(): void {
+        if (wp_style_is('qapl-quick-ajax-style', 'registered')) {
+            wp_enqueue_style('qapl-quick-ajax-style');
+            wp_enqueue_script('qapl-quick-ajax-script');
+            return;
+        }
+        // shortcode executed before wp_enqueue_scripts
+        if (!did_action('wp_enqueue_scripts')) {
+            add_action('wp_enqueue_scripts', [self::class, 'enqueue_frontend_assets'], 20);
+        }
+    }
+
     public function enqueue_admin_styles_and_scripts(): void {
-        if (!is_admin()){
-             return; 
-        }  
         // Check if the current page matches the plugin-related pages
         $plugin_pages = [QAPL_Constants::CPT_SHORTCODE_SLUG, QAPL_Constants::SETTINGS_PAGE_SLUG];
         if (!QAPL_Utilities::check_page_type($plugin_pages)) {
@@ -82,9 +108,6 @@ class QAPL_Enqueue_Handler implements QAPL_Enqueue_Handler_Interface {
     
     private function get_localized_data() {
         $nonce = wp_create_nonce(QAPL_Constants::NONCE_FORM_QUICK_AJAX_ACTION);
-        if (!$nonce) {
-            return [];
-        }
         return [
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' =>  $nonce,

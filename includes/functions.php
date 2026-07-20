@@ -13,6 +13,7 @@ function qapl_get_controller_registry(): QAPL_Controller_Registry {
 //add get qapl_render_post_container - echo qapl_render_post_container()
 //add get qapl_render_taxonomy_filter
 function qapl_render_post_container($args, $attributes = null, $render_context = null, $meta_query = null) {
+    QAPL_Enqueue_Handler::enqueue_frontend_assets();
     if (!is_array($args)) {
         return;
     }
@@ -27,6 +28,7 @@ function qapl_quick_ajax_post_grid($args, $attributes) {
 }
 
 function qapl_render_taxonomy_filter($args, $attributes, $taxonomy = null) {
+    QAPL_Enqueue_Handler::enqueue_frontend_assets();
     if (!is_array($args)) {
         return;
     }
@@ -41,6 +43,7 @@ function qapl_quick_ajax_term_filter($args, $attributes, $taxonomy) {
 }
 
 function qapl_render_sort_controls($args, $attributes, $sort_options) {
+    QAPL_Enqueue_Handler::enqueue_frontend_assets();
     if (!is_array($args)) {
         return;
     }

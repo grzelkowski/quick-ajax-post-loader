@@ -77,11 +77,7 @@ abstract class QAPL_CPT_Editor_Form extends QAPL_Form_Content_Builder {
         $fields_all = $this->field_registry->all();
         foreach ($fields_all as $field) {
             $name = $field->get_name();
-            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- unslashed below, sanitized via $sanitizer
-            $raw_value = $_POST[$name] ?? null;
-            if (is_array($raw_value) || is_string($raw_value)) {
-                $raw_value = wp_unslash($raw_value);
-            }
+            $raw_value = isset($_POST[$name]) ? wp_unslash($_POST[$name]) : null;
             // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized via $sanitizer->sanitize_field
             $value = $sanitizer->sanitize_field($field, $raw_value);
             $form_data[$name] = $value;

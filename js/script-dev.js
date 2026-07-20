@@ -47,9 +47,8 @@
                     entries.forEach(function(entry) {
                         if (entry.isIntersecting) {
                             const button = $(entry.target).find('button[data-button="' + qapl_quick_ajax_data.constants.load_more_data_button + '"]');
-                            if (button.length && !button.hasClass('loading')) {
-                                button.addClass('loading');
-                                button.trigger('click');
+                            if (button.length && !button.hasClass("loading")) {
+                                button.trigger("click");
                             }
                         }
                     });
@@ -63,6 +62,9 @@
             });
         },        
         qapl_quick_ajax_handle_ajax: function(button) {
+            if (button.hasClass("loading")) {
+                return;
+            }
             const self = this;
             let args = {};
             let attributes = {};
@@ -88,6 +90,7 @@
             // remove existing end message if any
             container.find('.quick-ajax-end-message-container').remove();
             container.addClass('loading');
+            button.addClass("loading");
             //set container height to first item height to prevent layout shift
             if (container.hasClass('quick-ajax-theme')) {
                 const firstItem = container_inner.find('.qapl-post-item:first');
@@ -111,31 +114,33 @@
                     attributes: attributes,
                     button_type: button_type,
                 },
-                success: function(response) {
-                    if (response && response.data) {
-                        if(button_type === qapl_quick_ajax_data.constants.load_more_data_button){
+                success: function (response) {
+                    if (response && response.success && response.data) {
+                        if (button_type === qapl_quick_ajax_data.constants.load_more_data_button) {
                             self.qapl_quick_ajax_load_more_add_posts(container_inner, button, response.data.output);
-                            
-                        } else if((button_type === qapl_quick_ajax_data.constants.filter_data_button) || (button_type === qapl_quick_ajax_data.constants.sort_button)){
+                        } else if (button_type === qapl_quick_ajax_data.constants.filter_data_button || button_type === qapl_quick_ajax_data.constants.sort_button) {
                             self.qapl_quick_ajax_taxonomy_filter_show_posts(container_inner, button, response.data.output, containerId);
                         }
                         self.qapl_quick_ajax_append_load_more_button(container_inner, response.data.load_more);
+                        self.qapl_quick_ajax_append_end_message(container, response.data.show_end_message);
                     } else {
-                        console.error('Quick Ajax Post Loader: Error:', response.data.output);
+                        const errorMessage = response && response.data && response.data.message ? response.data.message : "Unexpected response";
+                        console.error("Quick Ajax Post Loader: Error:", errorMessage);
                     }
-                    container.removeClass('loading');
-                    setTimeout(function() {
-                        container.removeClass('filter-update');
+                    container.removeClass("loading");
+                    setTimeout(function () {
+                        container.removeClass("filter-update");
                     }, 200);
-                    
-                    self.qapl_quick_ajax_append_end_message(container, response.data.show_end_message);
                 },
                 error: function(xhr, status, error) {
                     console.error('Quick Ajax Post Loader: Error:', error);
-                    container.removeClass('loading');
+                    container.removeClass('loading');                    
                     setTimeout(function() {
                             container.removeClass('filter-update');
                     }, 200);
+                },
+                complete: function () {
+                    button.removeClass('loading');
                 }
             });
         },

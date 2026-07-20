@@ -3,9 +3,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class QAPL_Constants{
+final class QAPL_Constants{
     // Plugin info
-    public const PLUGIN_VERSION = '1.8.13';
+    public const PLUGIN_VERSION = '1.8.14';
     public const PLUGIN_NAME = 'Quick Ajax Post Loader';
     public const PLUGIN_TEXT_DOMAIN = 'quick-ajax-post-loader';
     public const PLUGIN_SLUG = 'quick-ajax-post-loader';
@@ -35,6 +35,7 @@ class QAPL_Constants{
     // Nonce fields
     public const NONCE_FORM_QUICK_AJAX_FIELD = 'qapl_quick_ajax_nonce';
     public const NONCE_FORM_QUICK_AJAX_ACTION = 'qapl_quick_ajax_nonce_action';
+    public const NONCE_PURGE_UNUSED_DATA_ACTION = 'qapl_purge_unused_data_nonce_action';
 
     // Query settings field names
     public const QUERY_SETTING_SELECT_POST_TYPE = 'qapl_select_post_type';
@@ -151,7 +152,8 @@ class QAPL_Constants{
     public const GLOBAL_SORT_OPTION_TITLE_ASC_LABEL_FIELD = self::GLOBAL_OPTIONS_NAME . '[sort_option_title_asc_label]';
     public const GLOBAL_SORT_OPTION_TITLE_DESC_LABEL_FIELD = self::GLOBAL_OPTIONS_NAME . '[sort_option_title_desc_label]';
     public const GLOBAL_SORT_OPTION_RAND_LABEL_FIELD = self::GLOBAL_OPTIONS_NAME . '[sort_option_rand_label]';
-    
+    public const GLOBAL_DELETE_DATA_ON_UNINSTALL_FIELD = self::GLOBAL_OPTIONS_NAME . '[delete_data_on_uninstall]';
+
     //Settings Page
     public const REMOVE_OLD_DATA_FIELD = 'qapl_remove_old_meta';
     public const REMOVE_OLD_DATA_FIELD_DEFAULT = 0;

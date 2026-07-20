@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class QAPL_Resource_Manager implements QAPL_Resource_Manager_Interface {
+final class QAPL_Resource_Manager implements QAPL_Resource_Manager_Interface {
 
     private QAPL_File_Manager_Interface $file_manager;
 

@@ -11,6 +11,7 @@ final class QAPL_Ajax_Frontend_Render {
     private $layout_renderer;
     private $load_more_renderer;
     private $layout_builder;
+    private $end_posts_renderer;
 
     public function __construct() {
         $this->global_options = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME);
@@ -24,6 +25,7 @@ final class QAPL_Ajax_Frontend_Render {
         $this->layout_builder       = new QAPL_Ajax_Layout_Builder($this->file_manager, $this->helper);
         $this->load_more_renderer   = new QAPL_Ajax_Load_More_Renderer($this->file_manager, $this->ui_renderer, $this->helper);
         $this->layout_renderer      = new QAPL_Ajax_Layout_Renderer($this->file_manager, $this->load_more_renderer, $this->helper);
+        $this->end_posts_renderer   = new QAPL_Ajax_End_Message_Renderer($this->file_manager);
     }
 
     public function render_post_container($source_args, $attributes = [], $render_context = [], $meta_query = null) {
@@ -88,6 +90,72 @@ final class QAPL_Ajax_Frontend_Render {
         $attrs              = $context['attrs'];
         $quick_ajax_id      = $context['quick_ajax_id'];
         return $this->ui_renderer->render_sort_options($sort_options, $layout, $query_args, $attrs, $source_args, $quick_ajax_id);
+    }
+    public function render_ajax_response(array $post_args, array $post_attributes) {
+        $query_args = $this->query_builder->wp_query_args($post_args, $post_attributes);
+        if (!$query_args) {
+            return false;
+        }
+        $layout_data   = $this->layout_builder->layout_customization($post_attributes, $this->global_options);
+        $layout        = $layout_data['layout'];
+        $attrs         = $layout_data['attributes'];
+        $quick_ajax_id = $this->query_builder->get_quick_ajax_id();
+
+        $query = new WP_Query($query_args);
+        ob_start();
+        if ($query->have_posts()) {
+            $container_settings = [
+                'quick_ajax_id' => $quick_ajax_id,
+                'template_name' => $attrs[QAPL_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE],
+            ];
+            $qapl_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
+            QAPL_Post_Template_Context::set_template($qapl_post_template);
+            while ($query->have_posts()) {
+                $query->the_post();
+                $template_path = $layout[QAPL_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE];
+                if (!$template_path || !file_exists($template_path)) {
+                    QAPL_Post_Template_Context::clear_template();
+                    wp_reset_postdata();
+                    ob_end_clean();
+                    wp_send_json_error(['message' => 'Quick Ajax Post Loader: Template file not found']);
+                }
+                include $template_path;
+            }
+            QAPL_Post_Template_Context::clear_template();
+        } else {
+            $container_settings = [
+                'quick_ajax_id' => $quick_ajax_id,
+                'template_name' => 'no-post-message',
+            ];
+            $qapl_no_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
+            QAPL_Post_Template_Context::set_template($qapl_no_post_template);
+            include $this->file_manager->get_no_posts_template();
+            QAPL_Post_Template_Context::clear_template();
+        }
+        wp_reset_postdata();
+        $output = ob_get_clean();
+
+        $query_data = [
+            'paged'           => intval($query->get('paged')),
+            'max_num_pages'   => intval($query->max_num_pages),
+            'found_posts'     => intval($query->found_posts),
+            'post_count'      => intval($query->post_count),
+            'infinite_scroll' => intval($attrs[QAPL_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL] ?? 0),
+        ];
+        $load_more_data   = $this->load_more_renderer->build_load_more_button($attrs, $post_args, $query_data, $quick_ajax_id);
+        $load_more        = $load_more_data ? $this->load_more_renderer->render_load_more_button($load_more_data) : false;
+        $show_end_message = $this->end_posts_renderer->build_end_of_posts_message(
+            $load_more,
+            intval($query->max_num_pages),
+            $quick_ajax_id,
+            intval($attrs[QAPL_Constants::ATTRIBUTE_SHOW_END_MESSAGE] ?? 0)
+        );
+        return [
+            'output'           => $output,
+            'args'             => $query_args,
+            'load_more'        => $load_more,
+            'show_end_message' => $show_end_message,
+        ];
     }
     private function build_render_context($source_args, $attributes) {
         // build query args

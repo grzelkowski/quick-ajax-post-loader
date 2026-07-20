@@ -1,4 +1,11 @@
 <?php
+if (!defined('ABSPATH')) {
+    exit;
+}
+if (!defined('WP_DEBUG') || !WP_DEBUG) {
+    return;
+}
+
 final class QAPL_Test_Ajax_Query_Builder {
     public static function run_all(): void {
         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- test runner logging

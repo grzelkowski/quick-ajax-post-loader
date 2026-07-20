@@ -30,7 +30,7 @@ class QAPL_Settings_Tab_Cleanup implements QAPL_Settings_Tab_Interface{
         $content .= $this->settings_page->render_field('qapl_remove_old_meta', [], true); // add additional form field
         $content .= '<input type="hidden" name="action" value="qapl_purge_unused_data" />';
         $content .= '<input type="hidden" name="qapl_purge_unused_data" value="1" />'; // set value to "1" for consistency
-        $content .= wp_nonce_field('qapl_purge_unused_data', 'qapl_purge_nonce', true, false); // create nonce field for security
+        $content .= wp_nonce_field(QAPL_Constants::NONCE_PURGE_UNUSED_DATA_ACTION, 'qapl_purge_nonce', true, false); // create nonce field for security
         $content .= get_submit_button(esc_html__('Purge Unused Data', 'quick-ajax-post-loader'), 'primary', 'purge_data_button', false); // generate submit button
         $content .= '</form>';
         $content .= '</div>';

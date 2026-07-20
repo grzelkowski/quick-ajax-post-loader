@@ -3,14 +3,17 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class QAPL_Deprecated_Hooks_Handler {
+final class QAPL_Deprecated_Hooks_Handler {
     private $deprecated_hooks = [];
 
     public function __construct(array $deprecated_hooks) {
         $this->deprecated_hooks = $deprecated_hooks;
+    }
 
-        add_action('init', [$this, 'handle_deprecated_hooks']);
-        add_action('admin_notices', [$this, 'display_admin_notice']);
+    public static function register(): void {
+        $instance = new self(QAPL_Deprecated_Hooks_List::get_hooks());
+        add_action('init', [$instance, 'handle_deprecated_hooks']);
+        add_action('admin_notices', [$instance, 'display_admin_notice']);
     }
 
     public function handle_deprecated_hooks() {
@@ -44,7 +47,7 @@ class QAPL_Deprecated_Hooks_Handler {
 
         if (!empty($used_hooks)) {
             echo '<div class="notice notice-warning">';
-            echo '<p><strong>Quick AJAX Post Loader:</strong> Some hooks have been renamed. Please update your code:</p>';
+            echo '<p><strong>' . esc_html__('Quick AJAX Post Loader:', 'quick-ajax-post-loader') . '</strong> ' . esc_html__('Some hooks have been renamed. Please update your code:', 'quick-ajax-post-loader') . '</p>';
             echo '<ul>';
             foreach ($used_hooks as $old_hook => $new_hook) {
                 echo '<li><code>' . esc_html($old_hook) . '</code> → <code>' . esc_html($new_hook) . '</code></li>';
@@ -60,15 +63,15 @@ final class QAPL_Deprecated_Hooks_List {
         return [
             // Filter Wrapper Hooks
             'qapl_filter_wrapper_pre'      => QAPL_Constants::HOOK_FILTER_CONTAINER_BEFORE,
-            'qapl_filter_wrapper_open'    => QAPL_Constants::HOOK_FILTER_CONTAINER_START,
-            'qapl_filter_wrapper_close'   => QAPL_Constants::HOOK_FILTER_CONTAINER_END,
-            'qapl_filter_wrapper_complete'=> QAPL_Constants::HOOK_FILTER_CONTAINER_AFTER,
+            'qapl_filter_wrapper_open'     => QAPL_Constants::HOOK_FILTER_CONTAINER_START,
+            'qapl_filter_wrapper_close'    => QAPL_Constants::HOOK_FILTER_CONTAINER_END,
+            'qapl_filter_wrapper_complete' => QAPL_Constants::HOOK_FILTER_CONTAINER_AFTER,
 
             // Posts Wrapper Hooks
             'qapl_posts_wrapper_pre'      => QAPL_Constants::HOOK_POSTS_CONTAINER_BEFORE,
-            'qapl_posts_wrapper_open'    => QAPL_Constants::HOOK_POSTS_CONTAINER_START,
-            'qapl_posts_wrapper_close'   => QAPL_Constants::HOOK_POSTS_CONTAINER_END,
-            'qapl_posts_wrapper_complete'=> QAPL_Constants::HOOK_POSTS_CONTAINER_AFTER,
+            'qapl_posts_wrapper_open'     => QAPL_Constants::HOOK_POSTS_CONTAINER_START,
+            'qapl_posts_wrapper_close'    => QAPL_Constants::HOOK_POSTS_CONTAINER_END,
+            'qapl_posts_wrapper_complete' => QAPL_Constants::HOOK_POSTS_CONTAINER_AFTER,
 
             // Loader
             'qapl_loader_icon_pre'        => QAPL_Constants::HOOK_LOADER_BEFORE,
@@ -81,4 +84,4 @@ final class QAPL_Deprecated_Hooks_List {
     }
 }
 
-new QAPL_Deprecated_Hooks_Handler(QAPL_Deprecated_Hooks_List::get_hooks());
+QAPL_Deprecated_Hooks_Handler::register();

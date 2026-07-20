@@ -11,6 +11,8 @@ class QAPL_Settings_Tab_PHP_Snippet implements QAPL_Settings_Tab_Interface{
     }
     // init fields for PHP Snippet Generator
     public function define_fields(): void {
+        $global_options = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME);
+        $global_options = is_array($global_options) ? $global_options : [];
         // register all fields for php snippet generator
         $this->settings_page->register_fields_batch([
             //select post type
@@ -20,7 +22,7 @@ class QAPL_Settings_Tab_PHP_Snippet implements QAPL_Settings_Tab_Interface{
             //select taxonomy
             QAPL_Form_Field_Factory::build_select_taxonomy_field(),
             //display show all button
-            QAPL_Form_Field_Factory::build_display_show_all_button_field(),
+            QAPL_Form_Field_Factory::build_display_show_all_button_field($global_options),
             //manual term selection checkbox
             QAPL_Form_Field_Factory::build_manual_term_selection_field(),
             //manual selected terms multiselect
@@ -35,7 +37,7 @@ class QAPL_Settings_Tab_PHP_Snippet implements QAPL_Settings_Tab_Interface{
             //Sorting Settings
             QAPL_Form_Field_Factory::build_show_sort_button_field(),
             //select sort options
-            QAPL_Form_Field_Factory::build_select_sort_button_options_field(),
+            QAPL_Form_Field_Factory::build_select_sort_button_options_field($global_options),
 
             //Additional Settings
             //add Excluded Post IDs

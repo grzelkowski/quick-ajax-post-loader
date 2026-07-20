@@ -123,9 +123,23 @@ final class QAPL_Ajax_Query_Builder{
     }
     private function query_args_base_query_args($source_args) {
         // phpcs:disable WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- intentional usage
+        $post_type = isset($source_args['post_type']) ? sanitize_text_field($source_args['post_type']) : null;
+        // reject post types that are not public / publicly queryable - blocks probing of internal CPTs via the nopriv AJAX endpoint
+        if ($post_type !== null) {
+            $post_type_object = get_post_type_object($post_type);
+            if (!$post_type_object || (!$post_type_object->public && !$post_type_object->publicly_queryable)) {
+                $post_type = null;
+            }
+        }
+        $posts_per_page = isset($source_args['posts_per_page']) ? intval($source_args['posts_per_page']) : QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE_DEFAULT;
+        // hard cap matching the admin field's own limit (see build_posts_per_page_field, max => 1000);
+        // rejects -1/huge values sent directly to the AJAX endpoint
+        if ($posts_per_page < 1 || $posts_per_page > 1000) {
+            $posts_per_page = QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE_DEFAULT;
+        }
         return [
-            'post_type' => isset($source_args['post_type']) ? sanitize_text_field($source_args['post_type']) : null,
-            'posts_per_page' => isset($source_args['posts_per_page']) ? intval($source_args['posts_per_page']) : QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE_DEFAULT,
+            'post_type' => $post_type,
+            'posts_per_page' => $posts_per_page,
             'orderby' => isset($source_args['orderby']) ? sanitize_text_field($source_args['orderby']) : QAPL_Constants::QUERY_SETTING_SELECT_ORDERBY_DEFAULT,
             'order' => isset($source_args['order']) ? sanitize_text_field($source_args['order']) : QAPL_Constants::QUERY_SETTING_SELECT_ORDER_DEFAULT,
             'post__not_in' => $source_args['post__not_in'] ?? [],
@@ -193,7 +207,7 @@ final class QAPL_Ajax_Query_Builder{
             $this->quick_ajax_id = esc_attr($prefix . $attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID]);
             return;
         } else {
-            $this->quick_ajax_id = uniqid('c', true);
+            $this->quick_ajax_id = uniqid('c');
         }
     }
 }

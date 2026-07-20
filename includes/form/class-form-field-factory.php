@@ -93,7 +93,7 @@ class QAPL_Form_Field_Factory {
             'name' => QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE,
             'label' => __('Posts Per Page', 'quick-ajax-post-loader'),
             'type' => 'number',
-            'min'  => -1,
+            'min'  => 1,
             'max'  => 1000,
             'step' => 1,
             'default' => QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE_DEFAULT,
@@ -304,7 +304,7 @@ class QAPL_Form_Field_Factory {
         for ($i = 1; $i <= 12; $i++) {
             $columns_options[] = [
                 'label' => (string) $i,
-                'value' => $i,
+                'value' => (string) $i,
             ];
         }
         $field_config = [
@@ -321,7 +321,7 @@ class QAPL_Form_Field_Factory {
     //select post item template
     public static function build_post_item_template_field(): QAPL_Form_Field_Interface {
         $file_manager = new QAPL_File_Manager();
-        $templates = $file_manager->get_templates_items_array('post-items/post-item*.php', 'Post Item Name:', QAPL_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE_DEFAULT);
+        $templates = $file_manager->get_templates_items_array('post-items/post-item*.php', 'Post Item Name', QAPL_Constants::LAYOUT_SETTING_POST_ITEM_TEMPLATE_DEFAULT);
         $options = [];
         foreach ($templates as $template) {
             $options[] = [
@@ -424,7 +424,7 @@ class QAPL_Form_Field_Factory {
     //build loader icon select field
     private static function loader_icon_get_field(string $name, string $default): QAPL_Form_Field_Interface {
         $file_manager = new QAPL_File_Manager();
-        $templates = $file_manager->get_templates_items_array('loader-icon/*.php', 'Loader Icon Name:', $default);
+        $templates = $file_manager->get_templates_items_array('loader-icon/*.php', 'Loader Icon Name', $default);
         $options = [];
         foreach ($templates as $item) {
             $options[] = [
@@ -593,6 +593,16 @@ class QAPL_Form_Field_Factory {
             'default' => __('Random', 'quick-ajax-post-loader'),
             'placeholder' => __('Random', 'quick-ajax-post-loader'),
             'description' => __('Set the label for sorting posts in a random order. Examples: "Shuffle", "Random", "Surprise Me".', 'quick-ajax-post-loader'),
+        ];
+        return self::create_field($field_config);
+    }
+    public static function build_global_delete_data_on_uninstall_field(): QAPL_Form_Field_Interface {
+        $field_config = [
+            'name' => QAPL_Constants::GLOBAL_DELETE_DATA_ON_UNINSTALL_FIELD,
+            'label' => __('Delete All Data on Uninstall', 'quick-ajax-post-loader'),
+            'type' => 'checkbox',
+            'default' => 0,
+            'description' => __('When enabled, deleting the plugin will permanently remove all its data: global settings and all created shortcodes. Leave disabled to keep your configuration in case you reinstall the plugin later.', 'quick-ajax-post-loader'),
         ];
         return self::create_field($field_config);
     }

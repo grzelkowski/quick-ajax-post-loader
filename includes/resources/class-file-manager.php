@@ -18,18 +18,18 @@ final class QAPL_File_Manager implements QAPL_File_Manager_Interface {
         }
         return $full_path;
     }
-    public function get_plugin_directory() {
-        return $this->plugin_dir_url;
+    public function get_plugin_directory(): string {
+    return $this->plugin_dir_url;
     }
-    public function get_plugin_js_directory() {
+    public function get_plugin_js_directory(): string {
         return $this->plugin_dir_url . 'js/';
     }
-    public function get_plugin_css_directory() {
+    public function get_plugin_css_directory(): string {
         return $this->plugin_dir_url . 'css/';
     }
     
     //template dir path
-    public function get_templates_dir_path(string $file) {
+    public function get_templates_dir_path(string $file): string {
         // Path to the template in the child theme (or the theme itself if not using a child theme)
         $child_theme_template_path = get_stylesheet_directory() . '/quick-ajax-post-loader/templates' . $file;
         // Check if the template exists in the child theme
@@ -50,10 +50,10 @@ final class QAPL_File_Manager implements QAPL_File_Manager_Interface {
         }
         // Template was not found
         qapl_log('Template file not found: '.$file, 'warning');
-        return false;
+        return '';
     }    
     //template file path
-    public function get_templates_file_path($template_name, $default_name, $base_path) {
+    public function get_templates_file_path($template_name, $default_name, $base_path): string {
         // Use the provided template name if given; otherwise, use the default name.
         $template_name = sanitize_file_name(empty($template_name) ? $default_name : $template_name);
         $file_path = $this->get_templates_dir_path($base_path . $template_name . '.php');
@@ -69,7 +69,11 @@ final class QAPL_File_Manager implements QAPL_File_Manager_Interface {
 
     private static function find_template_files($path) {
         $files = [];
-        foreach (glob($path) as $file) {
+        $found = glob($path);
+        if ($found === false) {
+            return $files;
+        }
+        foreach ($found as $file) {
             if (is_file($file)) {
                 $files[] = $file;
             }
@@ -78,25 +82,8 @@ final class QAPL_File_Manager implements QAPL_File_Manager_Interface {
     }
 
     private static function get_template_name_from_file($file_path, $template_name) {
-        require_once(ABSPATH . 'wp-admin/includes/file.php');
-        WP_Filesystem();
-        global $wp_filesystem;
-
-        if (!$wp_filesystem || !$wp_filesystem->exists($file_path)) {
-            return basename(sanitize_file_name($file_path), '.php');
-        }
-
-        $file_contents = $wp_filesystem->get_contents($file_path);
-        $lines = explode("\n", $file_contents);
-    
-        foreach ($lines as $line) {
-            if (stripos($line, $template_name) !== false) {
-                $line = str_replace(['/* ', $template_name, '*/'], '', $line);
-                $line = trim($line);
-                return !empty($line) ? $line : basename($file_path, '.php');
-            }
-        }    
-        return basename($file_path, '.php');
+        $data = get_file_data($file_path, ['name' => $template_name]);
+        return !empty($data['name']) ? $data['name'] : basename($file_path, '.php');
     }
 
     public function get_templates_items_array($template_file_location, $template_name, $default_file = false) {
@@ -113,7 +100,7 @@ final class QAPL_File_Manager implements QAPL_File_Manager_Interface {
         foreach ([$plugin_template_files, $parent_template_files, $child_template_files] as $files) {
             foreach ($files as $file_path) {
                 $file_name = sanitize_file_name(basename($file_path, '.php'));
-                $template_files_map[$file_name] = sanitize_text_field($file_path);
+                $template_files_map[$file_name] = $file_path;
             }
         }
         $file_names = [];

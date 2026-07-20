@@ -28,6 +28,9 @@ class QAPL_Settings_Tab_Options implements QAPL_Settings_Tab_Interface {
             QAPL_Form_Field_Factory::build_global_sort_option_title_desc_label_field(),
             QAPL_Form_Field_Factory::build_global_sort_option_title_asc_label_field(),
             QAPL_Form_Field_Factory::build_global_sort_option_rand_label_field(),
+
+            //uninstall
+            QAPL_Form_Field_Factory::build_global_delete_data_on_uninstall_field(),
         ]);
     }
 
@@ -58,6 +61,8 @@ class QAPL_Settings_Tab_Options implements QAPL_Settings_Tab_Interface {
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_SORT_OPTION_TITLE_ASC_LABEL_FIELD);
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_SORT_OPTION_TITLE_DESC_LABEL_FIELD);
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_SORT_OPTION_RAND_LABEL_FIELD);
+        $content .= '<h4>'.esc_html__('Uninstall', 'quick-ajax-post-loader').'</h4>';
+        $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_DELETE_DATA_ON_UNINSTALL_FIELD);
         $content .= $settings_fields_html;
         $content .= get_submit_button(esc_html__('Save Settings', 'quick-ajax-post-loader'), 'primary', 'save_settings_button', false);
         $content .= '</form>';

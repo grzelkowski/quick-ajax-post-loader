@@ -10,8 +10,12 @@ class QAPL_Field_Sanitizer {
             case 'checkbox':
                 return (int) !empty($value);
             case 'number':
-                $step  = $field->get_step();
-                                $value = is_numeric($value) ? ($step === null || floor((float)$step) === (float)$step ? (int) $value : (float) $value) : $field->get_default();
+                if (!is_numeric($value)) {
+                    return $field->get_default();
+                }
+                $step = $field->get_step();
+                $has_integer_step = ($step === null) || (floor((float) $step) === (float) $step);
+                $value = $has_integer_step ? (int) $value : (float) $value;
                 $min = $field->get_min();
                 $max = $field->get_max();
                 if ($min !== null && $value < $min) return $field->get_default();

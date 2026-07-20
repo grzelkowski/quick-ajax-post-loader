@@ -32,14 +32,14 @@
                         nonce: qapl_quick_ajax_admin_data.nonce
                         },
                         success: function (response) {
-                            if (response && response.data) {
-                                const taxonomySelect = $('#'+qapl_quick_ajax_admin_data.constants.quick_ajax_settings_wrapper+' #'+qapl_quick_ajax_admin_data.constants.quick_ajax_taxonomy);
+                            if (response && response.success && response.data) {
+                                const taxonomySelect = $("#" + qapl_quick_ajax_admin_data.constants.quick_ajax_settings_wrapper + " #" + qapl_quick_ajax_admin_data.constants.quick_ajax_taxonomy);
                                 taxonomySelect.empty();
                                 taxonomySelect.append(response.data);
                                 self.trigger_taxonomy_change();
-                            }
-                            else {
-                                console.error('Quick Ajax Post Loader: Invalid response structure');
+                            } else {
+                                const errorMessage = response && response.data && response.data.message ? response.data.message : "Invalid response structure";
+                                console.error("Quick Ajax Post Loader:", errorMessage);
                             }
                         },
                         error: function (xhr, status, error) {
@@ -73,14 +73,15 @@
                             nonce: qapl_quick_ajax_admin_data.nonce
                         },
                         success: function (response) {
-                            if (response && response.data) {
-                                termsContainer.fadeOut(100, function() {
-                                termsContainer.empty();
-                                termsContainer.append(response.data);
-                                termsContainer.fadeIn(100);
+                            if (response && response.success && response.data) {
+                                termsContainer.fadeOut(100, function () {
+                                    termsContainer.empty();
+                                    termsContainer.append(response.data);
+                                    termsContainer.fadeIn(100);
                                 });
                             } else {
-                                console.error('Quick Ajax Post Loader: Invalid response structure for terms');
+                                const errorMessage = response && response.data && response.data.message ? response.data.message : "Invalid response structure for terms";
+                                console.error("Quick Ajax Post Loader:", errorMessage);
                             }
                         },  
                         error: function (xhr, status, error) {

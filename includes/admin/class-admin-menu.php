@@ -40,7 +40,7 @@ if (!class_exists('QAPL_Admin_Menu')) {
                 QAPL_Constants::PLUGIN_MENU_SLUG,
                 esc_html__('Add New', 'quick-ajax-post-loader'),
                 esc_html__('Add New', 'quick-ajax-post-loader'),
-                'edit_posts',
+                'manage_options',
                 'post-new.php?post_type=' . QAPL_Constants::CPT_SHORTCODE_SLUG
             );
         }

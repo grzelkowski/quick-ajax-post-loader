@@ -2,7 +2,6 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-//OLD interface-form-field.php
 
 //interface for form field data
 //it defines the methods that must exist in any field class

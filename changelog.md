@@ -1,5 +1,17 @@
 ## Changelog
 
+### 1.8.14 - 2026-07-20
+- Security: hardened capability checks for admin menu access.
+- Security: improved sanitization and validation of form inputs and AJAX parameters.
+- Added an optional setting to remove all plugin data on uninstall (disabled by default).
+- More reliable post loading, filtering, and taxonomy selection thanks to better AJAX error handling.
+- Faster rendering of taxonomy filters with many terms (fewer database queries).
+- Faster front-end page loads - admin-only files are no longer loaded on the site front end.
+- Custom sorting option labels from global settings are now correctly applied on the front end.
+- Improved the Purge Old Data tool with required confirmation and clearer status handling.
+- Minor code cleanup and coding standards improvements.
+- Plugin styles and scripts are now loaded only on pages that actually use Quick Ajax, improving performance across the rest of the site.
+
 ### 1.8.13 - 2026-06-22
 - Improved number field handling for more accurate and consistent value processing.
 - Enhanced required field support across select, number, and text input fields.
@@ -297,6 +309,9 @@
 - Initial release.
 
 ## Upgrade Notice
+
+### 1.8.14
+Security release: hardened capability checks and improved input sanitization. Also improves performance by loading plugin assets only where needed. Update recommended for all users.
 
 ### 1.8.12
 Improves admin URL handling, adds min/max validation for number fields, and replaces inline styles with dedicated CSS classes.

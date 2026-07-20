@@ -13,31 +13,38 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
         $this->helper           = $helper;
         $this->global_options   = $global_options;
     }
-    private function get_post_assigned_to_the_term($term, $post_type, $excluded_post_ids){
+
+    private function get_term_ids_with_posts(array $term_ids, string $taxonomy, string $post_type, array $excluded_post_ids): array {
+        if (empty($term_ids)) {
+            return [];
+        }
         // phpcs:disable WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- intentional exclusion of rendered posts
         // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- taxonomy filtering is required
-        $query_args = array(
-            'posts_per_page' => 1,
-            'post_type' => $post_type,
-            'tax_query' => array(
-                array(
-                    'taxonomy' => $term->taxonomy,
-                    'field'    => 'term_id',
-                    'terms'    => $term->term_id,
-                    'operator' => 'IN',
-                ),
-            ),
-            'post__not_in' => $excluded_post_ids,
-            'fields' => 'ids',
-        );
+        $matching_post_ids = get_posts([
+            'post_type'      => $post_type,
+            'post_status'    => 'publish',
+            'post__not_in'   => $excluded_post_ids,
+            'posts_per_page' => -1,
+            'no_found_rows'  => true,
+            'fields'         => 'ids',
+            'tax_query'      => [
+                [
+                    'taxonomy'         => $taxonomy,
+                    'field'            => 'term_id',
+                    'terms'            => $term_ids,
+                    'operator'         => 'IN',
+                    'include_children' => false, // caller already expanded children into $term_ids
+                ],
+            ],
+        ]);
         // phpcs:enable WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in
         // phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-        $posts = get_posts($query_args);
 
-        if (!empty($posts)) {
-            return true;
+        if (empty($matching_post_ids)) {
+            return [];
         }
-        return false;
+        $terms = wp_get_object_terms($matching_post_ids, $taxonomy, ['fields' => 'ids']);
+        return is_wp_error($terms) ? [] : array_map('intval', $terms);
     }
     /**
      * Render taxonomy terms filter if conditions are met.
@@ -112,9 +119,26 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
             $has_active_button = true;
         }
         $exclude_ids = (isset($query_args['post__not_in'])) ? $query_args['post__not_in'] : [];
-        foreach ( $terms as $term ) { 
-            $not_empty = $this->get_post_assigned_to_the_term($term, $query_args['post_type'], $exclude_ids);
-            if($not_empty === true){
+        // build check-list per term: term itself + its children for hierarchical taxonomies
+        // (mirrors WP_Query's default include_children => true behavior for tax_query)
+        $term_check_map = [];
+        $all_check_ids  = [];
+        foreach ($terms as $term) {
+            $check_ids = [(int) $term->term_id];
+            if (is_taxonomy_hierarchical($term->taxonomy)) {
+                $children = get_term_children($term->term_id, $term->taxonomy); // cached term hierarchy, no extra query
+                if (!is_wp_error($children)) {
+                    $check_ids = array_merge($check_ids, array_map('intval', $children));
+                }
+            }
+            $term_check_map[$term->term_id] = $check_ids;
+            $all_check_ids = array_merge($all_check_ids, $check_ids);
+        }
+        $term_ids_with_posts = $this->get_term_ids_with_posts(array_unique($all_check_ids), $taxonomy, $query_args['post_type'], $exclude_ids);
+
+        foreach ( $terms as $term ) {
+            $not_empty = (bool) array_intersect($term_check_map[$term->term_id], $term_ids_with_posts);
+            if($not_empty){
                 $data_action = $source_args;
                 $data_action['selected_terms'] = [$term->term_id];
                 $term_button_data = [                        
@@ -194,7 +218,7 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
 
         echo '<div id="'.esc_attr($block_id).'" class="'.esc_attr($container_class).'">';
         if(isset($sort_options) && is_array($sort_options)){
-            $field = QAPL_Form_Field_Factory::build_select_sort_button_options_field();
+            $field = QAPL_Form_Field_Factory::build_select_sort_button_options_field($this->global_options);
             $default_sort_options = $field->get_options();
             $label_map = [];
             foreach ($default_sort_options as $option) {

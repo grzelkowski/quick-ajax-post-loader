@@ -18,8 +18,6 @@ final class QAPL_Ajax_Layout_Renderer{
         if (empty($query_args)) {
             return '';
         }
-        $query_args['selected_taxonomy'] = sanitize_text_field($source_args['selected_taxonomy'] ?? '');
-        $query_args['selected_terms'] = array_map('absint', $source_args['selected_terms'] ?? []);
 
         $query = new WP_Query($query_args);
         //$this->attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $this->quick_ajax_id;

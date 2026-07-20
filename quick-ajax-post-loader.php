@@ -4,11 +4,12 @@
 * Plugin URI: https://wordpress.org/plugins/quick-ajax-post-loader/
 * Text Domain: quick-ajax-post-loader
 * Domain Path: /languages
-* Version: 1.8.13
-* Description: Load WordPress posts with AJAX load more, infinite scroll, and taxonomy filtering. No page reloads — perfect for blogs, portfolios, and custom post types.
+* Version: 1.8.14
+* Description: Load posts with AJAX load more, infinite scroll, and taxonomy filtering. No page reloads. Great for blogs, portfolios, and custom post types.
 * Author: Pawel Grzelkowski
 * Author URI: https://grzelkowski.com
 * License: GPLv2 or later
+* License URI: https://www.gnu.org/licenses/gpl-2.0.html
 * Requires PHP: 7.4
 * Requires at least: 5.6
 * Tested up to: 7.0

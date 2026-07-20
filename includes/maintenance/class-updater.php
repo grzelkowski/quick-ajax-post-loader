@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class QAPL_Updater {
+final class QAPL_Updater {
     private $current_version;
     private $new_version;
     private $update_strategies = array();
@@ -80,7 +80,7 @@ interface QAPL_Update_Interface {
     public function run_update(): bool;
 }
 
-class QAPL_Update_Version_1_3_2 implements QAPL_Update_Interface {
+final class QAPL_Update_Version_1_3_2 implements QAPL_Update_Interface {
     public function run_update(): bool {
         $results = array();
         $results[] = QAPL_Data_Migrator::migrate_meta_for_all_posts(QAPL_Constants::CPT_SHORTCODE_SLUG, 'qapl_quick_ajax_meta_box_shortcode_shortcode', 'qapl_quick_ajax_shortcode_code');
@@ -89,25 +89,23 @@ class QAPL_Update_Version_1_3_2 implements QAPL_Update_Interface {
     }
 }
 
-class QAPL_Update_Version_1_3_3 implements QAPL_Update_Interface {
+final class QAPL_Update_Version_1_3_3 implements QAPL_Update_Interface {
     public function run_update(): bool {
         $results = array();
         $results[] = QAPL_Data_Migrator::migrate_option('qapl-global-options', QAPL_Constants::GLOBAL_OPTIONS_NAME);
         $results[] = QAPL_Data_Migrator::migrate_meta_for_all_posts(QAPL_Constants::CPT_SHORTCODE_SLUG, 'qapl_quick_ajax_shortcode_settings', QAPL_Constants::DB_POSTMETA_SHORTCODE_SETTINGS);
-        $return = QAPL_Update_Validator::check_migration_results($results, '1.3.3');
-        return $return;
+        return QAPL_Update_Validator::check_migration_results($results, '1.3.3');
     }    
 }
-class QAPL_Update_Version_1_3_4 implements QAPL_Update_Interface {
+final class QAPL_Update_Version_1_3_4 implements QAPL_Update_Interface {
     public function run_update(): bool {
         $results = array();
         $results[] = QAPL_Data_Migrator::update_autoload_for_option(QAPL_Constants::GLOBAL_OPTIONS_NAME,'off');
         $results[] = QAPL_Data_Migrator::update_autoload_for_option(QAPL_Constants::DB_OPTION_PLUGIN_VERSION,'off');
-        $return = QAPL_Update_Validator::check_migration_results($results, '1.3.4');
-        return $return;
+        return QAPL_Update_Validator::check_migration_results($results, '1.3.4');
     }    
 }
-class QAPL_Update_Version_1_7_4 implements QAPL_Update_Interface {
+final class QAPL_Update_Version_1_7_4 implements QAPL_Update_Interface {
     // fix wrong label assignment for title ASC and DESC sort options due to naming issue
     public function run_update(): bool {
         $option_name = QAPL_Constants::GLOBAL_OPTIONS_NAME;
@@ -130,7 +128,7 @@ class QAPL_Update_Version_1_7_4 implements QAPL_Update_Interface {
 
 
 
-class QAPL_Data_Migrator {
+final class QAPL_Data_Migrator {
     public static function migrate_option($old_key, $new_key, $autoload = 'auto') {
         // get the old option value
         $old_value = get_option($old_key);
@@ -148,8 +146,9 @@ class QAPL_Data_Migrator {
                     // log the failure and return 0
                     //error_log('QAPL_Data_Migrator: Failed to migrate option from ' . $old_key . ' to ' . $new_key);
                     $return = 0; // migration failed
+                }else {                    
+                    $return = 2; // migrated successfully
                 }
-                $return = 2; // migrated successfully
             }
         }
         return $return;
@@ -242,7 +241,7 @@ class QAPL_Data_Migrator {
     }
 }
 
-class QAPL_Update_Validator {
+final class QAPL_Update_Validator {
     private static $cleanup_flags = array();
 
     public static function init() {
@@ -311,81 +310,85 @@ class QAPL_Update_Validator {
 }
 
 /* CLEAN */
-if (!class_exists('QAPL_Cleaner')) {
-    class QAPL_Cleaner {
-        private $cleanup_flags;
-        private $cleanup_strategies = [];
+final class QAPL_Cleaner {
+    private $cleanup_flags;
+    private $cleanup_strategies = [];
 
-        public function __construct($cleanup_strategies) {
-            $this->cleanup_flags = get_option(QAPL_Constants::DB_OPTION_PLUGIN_CLEANUP_FLAGS, []);
-            if (!is_array($this->cleanup_flags)) {
-                $this->cleanup_flags = [];
-            }
-
-            //add strategies class
-            $this->cleanup_strategies = $cleanup_strategies;
+    public function __construct($cleanup_strategies) {
+        $this->cleanup_flags = get_option(QAPL_Constants::DB_OPTION_PLUGIN_CLEANUP_FLAGS, []);
+        if (!is_array($this->cleanup_flags)) {
+            $this->cleanup_flags = [];
         }
 
-        public function purge_unused_data() {
-            if (!current_user_can('manage_options')) {
-                wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'quick-ajax-post-loader'));
-            }
-
-            foreach ($this->cleanup_flags as $version => $status) {
-                if ($status && isset($this->cleanup_strategies[$version])) {
-                    $strategy = $this->cleanup_strategies[$version];
-                    try {
-                        $result = $strategy->run_cleanup();
-                        if ($result !== true) {
-                            throw new Exception('QAPL_Cleaner: Cleanup for version '.$version.' failed.');
-                        }
-                        unset($this->cleanup_flags[$version]);
-                    } catch (Exception $e) {
-                        //error_log('QAPL_Cleaner: ' . $e->getMessage());
-                        break;
-                    }
-                }
-            }
-            // save the flag if exists
-            QAPL_Update_Validator::save_cleanup_flags();
-            wp_safe_redirect(admin_url('admin.php?page=qapl-settings'));
-            exit;
-        }
+        //add strategies class
+        $this->cleanup_strategies = $cleanup_strategies;
     }
-    add_action('admin_post_qapl_purge_unused_data', 'qapl_action_quick_ajax_handle_purge_unused_data_request');
-    function qapl_action_quick_ajax_handle_purge_unused_data_request() {
-        
-        // check for required capabilities
+
+    public function purge_unused_data() {
         if (!current_user_can('manage_options')) {
             wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'quick-ajax-post-loader'));
         }
-        // verify nonce for security
-        if (!isset($_POST['qapl_purge_nonce']) || !wp_verify_nonce(wp_unslash($_POST['qapl_purge_nonce']), 'qapl_purge_unused_data')) {
-            wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=invalid_nonce'));
-            exit;
+
+        foreach ($this->cleanup_flags as $version => $status) {
+            if ($status && isset($this->cleanup_strategies[$version])) {
+                $strategy = $this->cleanup_strategies[$version];
+                try {
+                    $result = $strategy->run_cleanup();
+                    if ($result !== true) {
+                        throw new Exception('QAPL_Cleaner: Cleanup for version '.$version.' failed.');
+                    }
+                    unset($this->cleanup_flags[$version]);
+                } catch (Exception $e) {
+                    //error_log('QAPL_Cleaner: ' . $e->getMessage());
+                    break;
+                }
+            }
         }
-        // check the hidden input value
-        if (!isset($_POST['qapl_purge_unused_data']) || sanitize_text_field(wp_unslash($_POST['qapl_purge_unused_data'])) !== '1') {
-            wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=invalid_request'));
-            exit;
-        }
-        // initialize cleanup strategies
-        $cleanup_strategies = array(
-            '1.3.2' => new QAPL_Cleanup_Version_1_3_2(),
-            '1.3.3' => new QAPL_Cleanup_Version_1_3_3()
-        );
-        // create cleaner instance and perform cleanup
-        $cleaner = new QAPL_Cleaner($cleanup_strategies);
-        $cleaner->purge_unused_data();
-    
-        // redirect to success page
-        wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=success'));
-        exit;
+        // save the flag if exists
+        QAPL_Update_Validator::save_cleanup_flags();
     }
-    
 }
 
-class QAPL_Data_Cleaner {
+add_action('admin_post_qapl_purge_unused_data', 'qapl_action_quick_ajax_handle_purge_unused_data_request');
+function qapl_action_quick_ajax_handle_purge_unused_data_request() {
+    
+    // check for required capabilities
+    if (!current_user_can('manage_options')) {
+        wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'quick-ajax-post-loader'));
+    }
+    // verify nonce for security
+    if (!isset($_POST['qapl_purge_nonce']) || !wp_verify_nonce(wp_unslash($_POST['qapl_purge_nonce']), QAPL_Constants::NONCE_PURGE_UNUSED_DATA_ACTION)) {
+        wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=invalid_nonce'));
+        exit;
+    }
+    // require the explicit confirmation checkbox before purging
+    if (empty($_POST[QAPL_Constants::REMOVE_OLD_DATA_FIELD])) {
+        wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=not_confirmed'));
+        exit;
+    }
+    // check the hidden input value
+    if (!isset($_POST['qapl_purge_unused_data']) || sanitize_text_field(wp_unslash($_POST['qapl_purge_unused_data'])) !== '1') {
+        wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=invalid_request'));
+        exit;
+    }
+    // initialize cleanup strategies
+    $cleanup_strategies = array(
+        '1.3.2' => new QAPL_Cleanup_Version_1_3_2(),
+        '1.3.3' => new QAPL_Cleanup_Version_1_3_3()
+    );
+    // create cleaner instance and perform cleanup
+    $cleaner = new QAPL_Cleaner($cleanup_strategies);
+    $cleaner->purge_unused_data();
+
+    // redirect to success page
+    wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=success'));
+    exit;
+}
+    
+
+
+
+final class QAPL_Data_Cleaner {
     public static function remove_old_meta_for_all_posts($post_type, $meta_key_to_remove) {
         // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- one time migration during plugin update
         $args = array(
@@ -423,7 +426,7 @@ interface QAPL_Data_Clean_Interface {
     public function run_cleanup(): bool;
 }
 
-class QAPL_Cleanup_Version_1_3_2 implements QAPL_Data_Clean_Interface {
+final class QAPL_Cleanup_Version_1_3_2 implements QAPL_Data_Clean_Interface {
     public function run_cleanup(): bool {
         $results = [];
         $results[] = QAPL_Data_Cleaner::remove_old_meta_for_all_posts(QAPL_Constants::CPT_SHORTCODE_SLUG, 'qapl_quick_ajax_meta_box_shortcode_shortcode');
@@ -432,7 +435,7 @@ class QAPL_Cleanup_Version_1_3_2 implements QAPL_Data_Clean_Interface {
     }
 }
 
-class QAPL_Cleanup_Version_1_3_3 implements QAPL_Data_Clean_Interface {
+final class QAPL_Cleanup_Version_1_3_3 implements QAPL_Data_Clean_Interface {
     public function run_cleanup(): bool {
         $results = [];
         $deleted = delete_option('qapl-global-options');
