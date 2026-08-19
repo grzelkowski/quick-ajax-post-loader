@@ -8,7 +8,6 @@ if (!class_exists('QAPL_Admin_Menu')) {
         private ?QAPL_Settings_Page $settings_page = null;
 
         public function __construct() {
-            add_action('admin_menu', array($this, 'add_menu'));
             add_action('admin_menu', array($this, 'add_settings_page'));
             add_action('admin_init', array($this, 'register_settings'));
         }
@@ -24,26 +23,6 @@ if (!class_exists('QAPL_Admin_Menu')) {
             return $this->settings_page;
         }
 
-        public function add_menu(){
-            // Quick Ajax Menu
-            add_menu_page(
-                'Quick AJAX',
-                'Quick AJAX',
-                'manage_options',
-                QAPL_Constants::PLUGIN_MENU_SLUG,               
-                '',
-                'dashicons-editor-code',
-                80
-            );
-            // "Add New"
-            add_submenu_page(
-                QAPL_Constants::PLUGIN_MENU_SLUG,
-                esc_html__('Add New', 'quick-ajax-post-loader'),
-                esc_html__('Add New', 'quick-ajax-post-loader'),
-                'manage_options',
-                'post-new.php?post_type=' . QAPL_Constants::CPT_SHORTCODE_SLUG
-            );
-        }
         public function add_settings_page() {
             // "settings"
             add_submenu_page(

@@ -8,7 +8,7 @@ final class QAPL_Ajax_Layout_Renderer{
     private $load_more_renderer;
     private $helper;
 
-    public function __construct(QAPL_File_Manager $file_manager, QAPL_Ajax_Load_More_Renderer $load_more_renderer, QAPL_Ajax_Helper $helper) {
+    public function __construct(QAPL_Template_Locator_Interface $file_manager, QAPL_Ajax_Load_More_Renderer $load_more_renderer, QAPL_Ajax_Helper $helper) {
         $this->file_manager         = $file_manager;
         $this->load_more_renderer   = $load_more_renderer;
         $this->helper               = $helper;

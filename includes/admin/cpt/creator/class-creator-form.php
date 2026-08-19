@@ -33,6 +33,12 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
             QAPL_Form_Field_Factory::build_select_sort_button_options_field($global_options),
             //inline Filter & Sorting
             QAPL_Form_Field_Factory::build_show_inline_filter_sorting_field(),
+            //show search field
+            QAPL_Form_Field_Factory::build_show_search_field(),
+            //search field position
+            QAPL_Form_Field_Factory::build_search_field_position_field(),
+            //inline Filter & Search
+            QAPL_Form_Field_Factory::build_show_inline_filter_search_field(),
             //add Excluded Post IDs
             QAPL_Form_Field_Factory::build_excluded_post_ids_field(),
             //set ignore sticky
@@ -121,8 +127,30 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
         ]);
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SELECTED_TERMS, $field_options);
 
-        //end manual term selection checkbox 
+        //end manual term selection checkbox
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE);
+
+        // toggle search field
+        $field_options = $this->field_options([
+            'is_trigger' => true,
+        ]);
+        $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD, $field_options);
+
+        // search field position
+        $field_options = $this->field_options([
+            'visible_if' => [
+                QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD => '1'
+            ]
+        ]);
+        $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION, $field_options);
+
+        // inline filter and search
+        $field_options = $this->field_options([
+            'visible_if' => [
+                QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD => '1'
+            ]
+        ]);
+        $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SEARCH, $field_options);
         $shortcode_page .= '</div>';
 
         // sorting settings

@@ -5,19 +5,22 @@ if (!defined('ABSPATH')) {
 
 final class QAPL_Constants{
     // Plugin info
-    public const PLUGIN_VERSION = '1.8.14';
+    public const PLUGIN_VERSION = '1.9.0';
     public const PLUGIN_NAME = 'Quick Ajax Post Loader';
     public const PLUGIN_TEXT_DOMAIN = 'quick-ajax-post-loader';
     public const PLUGIN_SLUG = 'quick-ajax-post-loader';
     public const PLUGIN_MINIMUM_PHP_VERSION = '7.4';
-    public const PLUGIN_MINIMUM_WP_VERSION = '5.6';
+    public const PLUGIN_MINIMUM_WP_VERSION = '6.2';
     public const PLUGIN_TESTED_WP_VERSION = '7.0';
 
 
     // Menu and page slugs
-    public const PLUGIN_MENU_SLUG = 'qapl-menu';
+    //public const PLUGIN_MENU_SLUG = 'qapl-menu';
     public const CPT_SHORTCODE_SLUG = 'qapl-creator';
+    public const PLUGIN_MENU_SLUG = 'edit.php?post_type=' . self::CPT_SHORTCODE_SLUG;
     public const SETTINGS_PAGE_SLUG = 'qapl-settings';
+
+
 
     // Quick AJAX Creator shortcode field names
     public const DB_POSTMETA_SHORTCODE_SETTINGS = '_qapl_quick_ajax_shortcode_settings';
@@ -68,6 +71,16 @@ final class QAPL_Constants{
 
     public const QUERY_SETTING_SHOW_INLINE_FILTER_SORTING = 'qapl_show_inline_filter_sorting';
     public const QUERY_SETTING_SHOW_INLINE_FILTER_SORTING_DEFAULT = 1;
+
+    public const QUERY_SETTING_SHOW_SEARCH_FIELD = 'qapl_show_search_field';
+    public const QUERY_SETTING_SHOW_SEARCH_FIELD_DEFAULT = 0;
+
+    public const QUERY_SETTING_SHOW_INLINE_FILTER_SEARCH = 'qapl_show_inline_filter_search';
+    public const QUERY_SETTING_SHOW_INLINE_FILTER_SEARCH_DEFAULT = 1;
+
+    public const QUERY_SETTING_SEARCH_FIELD_POSITION = 'qapl_search_field_position';
+    public const QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT = 'after_filters';
+    public const QUERY_SETTING_SEARCH_FIELD_POSITION_BEFORE_FILTERS = 'before_filters';
 
     public const QUERY_SETTING_SELECT_POST_STATUS = 'qapl_select_post_status';
     public const QUERY_SETTING_SELECT_POST_STATUS_DEFAULT = 'publish';
@@ -144,6 +157,8 @@ final class QAPL_Constants{
     //public const GLOBAL_POST_DATE_FORMAT_FIELD = self::GLOBAL_OPTIONS_NAME . '[post_date_format]';
     public const GLOBAL_SHOW_ALL_LABEL_FIELD = self::GLOBAL_OPTIONS_NAME . '[show_all_label]';
     public const GLOBAL_LOAD_MORE_LABEL_FIELD = self::GLOBAL_OPTIONS_NAME . '[load_more_label]';
+    public const GLOBAL_SEARCH_PLACEHOLDER_FIELD = self::GLOBAL_OPTIONS_NAME . '[search_placeholder]';
+    public const GLOBAL_SEARCH_BUTTON_LABEL_FIELD = self::GLOBAL_OPTIONS_NAME . '[search_button_label]';
     public const GLOBAL_NO_POST_MESSAGE_FIELD = self::GLOBAL_OPTIONS_NAME . '[no_post_message]';
     public const GLOBAL_END_POST_MESSAGE_FIELD = self::GLOBAL_OPTIONS_NAME . '[end_post_message]';
     public const GLOBAL_SORT_OPTION_DATE_DESC_LABEL_FIELD = self::GLOBAL_OPTIONS_NAME . '[sort_option_date_desc_label]';
@@ -160,6 +175,7 @@ final class QAPL_Constants{
     // Buttons
     public const TERM_FILTER_BUTTON_DATA_BUTTON = 'quick-ajax-filter-button';
     public const SORT_OPTION_BUTTON_DATA_BUTTON = 'quick-ajax-sort-option-button';
+    public const SEARCH_FIELD_BUTTON_DATA_BUTTON = 'quick-ajax-search-field';
     public const LOAD_MORE_BUTTON_DATA_BUTTON = 'quick-ajax-load-more-button';
 
     // Hooks

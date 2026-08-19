@@ -195,7 +195,7 @@ class QAPL_Form_Field_Factory {
         $tooltip = [
             'title'   => __('Custom labels for sorting options', 'quick-ajax-post-loader'),
             'content' => __('Sorting option labels can be changed in plugin settings.', 'quick-ajax-post-loader') .
-                        ' <a href="' . esc_url(admin_url('admin.php?page=qapl-settings')) . '" target="_blank" rel="noopener noreferrer">' .
+                        ' <a href="' . esc_url(admin_url(QAPL_Constants::PLUGIN_MENU_SLUG . '&page=' . QAPL_Constants::SETTINGS_PAGE_SLUG)) . '" target="_blank" rel="noopener noreferrer">' .
                         __('Open settings', 'quick-ajax-post-loader') .
                         '</a>.'
         ];
@@ -218,6 +218,50 @@ class QAPL_Form_Field_Factory {
             'type' => 'checkbox',
             'default' => QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SORTING_DEFAULT,
             'description' => __('Display taxonomy filter and sorting options in a single row to save space and improve layout.', 'quick-ajax-post-loader'),
+        ];
+        return self::create_field($field_config);
+    }
+    //show search field
+    public static function build_show_search_field(): QAPL_Form_Field_Interface {
+        $field_config = [
+            'name' => QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD,
+            'label' => __('Show Search Field', 'quick-ajax-post-loader'),
+            'type' => 'checkbox',
+            'default' => QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD_DEFAULT,
+            'description' => __('Enable a search field that lets visitors find posts by title.', 'quick-ajax-post-loader'),
+        ];
+        return self::create_field($field_config);
+    }
+    //Inline Filter & Search
+    public static function build_show_inline_filter_search_field(): QAPL_Form_Field_Interface {
+        $field_config = [
+            'name' => QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SEARCH,
+            'label' => __('Inline Filter & Search', 'quick-ajax-post-loader'),
+            'type' => 'checkbox',
+            'default' => QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SEARCH_DEFAULT,
+            'description' => __('Display the search field in the same row as the filter and sorting controls. When disabled, the search field is placed on its own line.', 'quick-ajax-post-loader'),
+        ];
+        return self::create_field($field_config);
+    }
+    //search field position
+    public static function build_search_field_position_field(): QAPL_Form_Field_Interface {
+        $position_options = [
+            [
+                'value' => QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT,
+                'label' => __('After the filter buttons', 'quick-ajax-post-loader'),
+            ],
+            [
+                'value' => QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_BEFORE_FILTERS,
+                'label' => __('Before the filter buttons', 'quick-ajax-post-loader'),
+            ],
+        ];
+        $field_config = [
+            'name' => QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION,
+            'label' => __('Search Field Position', 'quick-ajax-post-loader'),
+            'type' => 'select',
+            'options' => $position_options,
+            'default' => QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT,
+            'description' => __('Choose where the search field appears when filter or sorting controls are displayed.', 'quick-ajax-post-loader'),
         ];
         return self::create_field($field_config);
     }
@@ -278,7 +322,7 @@ class QAPL_Form_Field_Factory {
             'tooltip' => [
                 'title'   => __('End message content', 'quick-ajax-post-loader'),
                 'content' => __('The end message text can be changed in plugin settings.', 'quick-ajax-post-loader') .
-                    ' <a href="' . esc_url(admin_url('admin.php?page=qapl-settings')) . '" target="_blank" rel="noopener noreferrer">' .
+                    ' <a href="' . esc_url(admin_url(QAPL_Constants::PLUGIN_MENU_SLUG . '&page=' . QAPL_Constants::SETTINGS_PAGE_SLUG)) . '" target="_blank" rel="noopener noreferrer">' .
                     __('Open settings', 'quick-ajax-post-loader') .
                     '</a>.'
             ],
@@ -339,7 +383,7 @@ class QAPL_Form_Field_Factory {
             'tooltip' => [
                 'title' => __('How to add a new post item template?', 'quick-ajax-post-loader'),
                 'content' => __('To add a new post item template you need to create a new PHP file in your theme\'s folder.', 'quick-ajax-post-loader') .
-                            ' <a href="' . esc_url(admin_url('admin.php?page=qapl-settings&tab=3#qapl_help_3_creating_custom_templates')) . '" target="_blank" rel="noopener noreferrer">' .
+                            ' <a href="' . esc_url(admin_url(QAPL_Constants::PLUGIN_MENU_SLUG . '&page=' . QAPL_Constants::SETTINGS_PAGE_SLUG . '&tab=3#qapl_help_3_creating_custom_templates')) . '" target="_blank" rel="noopener noreferrer">' .
                             __('View detailed guide', 'quick-ajax-post-loader') .
                             '</a>.',
             ],
@@ -442,7 +486,7 @@ class QAPL_Form_Field_Factory {
             'tooltip' => [
                 'title'   => __('How to add a new loader icon?', 'quick-ajax-post-loader'),
                 'content' => __('To add a new loader icon you need to create a new PHP file in your theme\'s folder.', 'quick-ajax-post-loader') .
-                    ' <a href="' . esc_url(admin_url('admin.php?page=qapl-settings&tab=3#qapl_help_3_creating_custom_loader')) . '" target="_blank" rel="noopener noreferrer">' .
+                    ' <a href="' . esc_url(admin_url(QAPL_Constants::PLUGIN_MENU_SLUG . '&page=' . QAPL_Constants::SETTINGS_PAGE_SLUG . '&tab=3#qapl_help_3_creating_custom_loader')) . '" target="_blank" rel="noopener noreferrer">' .
                     __('View detailed guide', 'quick-ajax-post-loader') .
                     '</a>.'
             ],
@@ -483,6 +527,30 @@ class QAPL_Form_Field_Factory {
             'default' => __('Load More', 'quick-ajax-post-loader'),
             'placeholder' => __('Enter custom label for Load More', 'quick-ajax-post-loader'),
             'description' => __('Customize the "Load More" button text. This label will appear on the button used to load additional posts dynamically. Examples: "Load More", "Show More", or "View More".', 'quick-ajax-post-loader'),
+        ];
+        return self::create_field($field_config);
+    }
+    //build global options set search placeholder
+    public static function build_global_search_placeholder_field(): QAPL_Form_Field_Interface {
+        $field_config = [
+            'name' => QAPL_Constants::GLOBAL_SEARCH_PLACEHOLDER_FIELD,
+            'label' => __('Set Search Field Placeholder', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'default' => __('Search', 'quick-ajax-post-loader'),
+            'placeholder' => __('Enter custom placeholder for the search field', 'quick-ajax-post-loader'),
+            'description' => __('Customize the text shown inside the empty search field. It is also used as the field label for screen readers. Match it to the content you display, for example "Search posts", "Find a product", or "Search news".', 'quick-ajax-post-loader'),
+        ];
+        return self::create_field($field_config);
+    }
+    //build global options set search button label
+    public static function build_global_search_button_label_field(): QAPL_Form_Field_Interface {
+        $field_config = [
+            'name' => QAPL_Constants::GLOBAL_SEARCH_BUTTON_LABEL_FIELD,
+            'label' => __('Set Search Button Label', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'default' => __('Search', 'quick-ajax-post-loader'),
+            'placeholder' => __('Enter custom label for the search button', 'quick-ajax-post-loader'),
+            'description' => __('The default search button shows a magnifier icon, so this text is not displayed on screen - it is the name announced by screen readers. It becomes visible text only in a custom button template that prints the label instead of the icon.', 'quick-ajax-post-loader'),
         ];
         return self::create_field($field_config);
     }

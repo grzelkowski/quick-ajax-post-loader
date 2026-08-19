@@ -14,8 +14,17 @@
                     });
                 }
                 if (qapl_quick_ajax_data.constants.filter_data_button) {
+                    // remember the term selected on page load, to return to it when the search field is cleared
+                    $('.quick-ajax-filter-container').each(function() {
+                        const container = $(this);
+                        const buttons = container.find('.qapl-filter-button');
+                        container.data('qaplDefaultActive', buttons.index(buttons.filter('.active')));
+                    });
                     $('.quick-ajax-filter-container').on('click', `[data-button="${qapl_quick_ajax_data.constants.filter_data_button}"]`, function() {
-                        self.qapl_quick_ajax_handle_ajax($(this));
+                        const button = $(this);
+                        // taxonomy and search exclude each other - picking a term drops the phrase
+                        self.qapl_quick_ajax_clear_search(button);
+                        self.qapl_quick_ajax_handle_ajax(button);
                     });
                 }
                 if (qapl_quick_ajax_data.constants.sort_button) {
@@ -23,9 +32,38 @@
                         self.qapl_quick_ajax_handle_ajax($(this));
                     });
                 }
+                if (qapl_quick_ajax_data.constants.search_button) {
+                    $('.quick-ajax-search-container').on('click', `[data-button="${qapl_quick_ajax_data.constants.search_button}"]`, function() {
+                        self.qapl_quick_ajax_handle_ajax($(this));
+                    });
+                }
                 // event listener for sorting
                 $('body').on('change', 'select[name="quick_ajax_sort_option"]', function() {
                     self.qapl_quick_ajax_handle_sort($(this));
+                });
+
+                // event listeners for search
+                $('body').on('keyup', '.qapl-search-input', function(e) {
+                    const input = $(this);
+                    clearTimeout(input.data('qaplSearchTimer'));
+                    // enter - search immediately
+                    if (e.key === 'Enter') {
+                        self.qapl_quick_ajax_handle_search(input);
+                        return;
+                    }
+                    const phrase = (input.val() || '').trim();
+                    // auto search from 4 characters, or when the field is cleared
+                    if (phrase.length > 0 && phrase.length <= 3) {
+                        return;
+                    }
+                    input.data('qaplSearchTimer', setTimeout(function() {
+                        self.qapl_quick_ajax_handle_search(input);
+                    }, 400));
+                });
+                $('body').on('click', '.qapl-search-submit', function() {
+                    const input = $(this).closest('.quick-ajax-search-wrapper').find('.qapl-search-input');
+                    clearTimeout(input.data('qaplSearchTimer'));
+                    self.qapl_quick_ajax_handle_search(input);
                 });
             }
         },
@@ -98,7 +136,7 @@
                     container.css('min-height', firstItem.outerHeight() + 'px');
                 }
             }
-            if((button_type === qapl_quick_ajax_data.constants.filter_data_button) || (button_type === qapl_quick_ajax_data.constants.sort_button)){
+            if((button_type === qapl_quick_ajax_data.constants.filter_data_button) || (button_type === qapl_quick_ajax_data.constants.sort_button) || (button_type === qapl_quick_ajax_data.constants.search_button)){
                 container.addClass('filter-update');
                 container_inner.fadeOut(100, function() {
                     $(this).empty().fadeIn(100);
@@ -118,7 +156,7 @@
                     if (response && response.success && response.data) {
                         if (button_type === qapl_quick_ajax_data.constants.load_more_data_button) {
                             self.qapl_quick_ajax_load_more_add_posts(container_inner, button, response.data.output);
-                        } else if (button_type === qapl_quick_ajax_data.constants.filter_data_button || button_type === qapl_quick_ajax_data.constants.sort_button) {
+                        } else if (button_type === qapl_quick_ajax_data.constants.filter_data_button || button_type === qapl_quick_ajax_data.constants.sort_button || button_type === qapl_quick_ajax_data.constants.search_button) {
                             self.qapl_quick_ajax_taxonomy_filter_show_posts(container_inner, button, response.data.output, containerId);
                         }
                         self.qapl_quick_ajax_append_load_more_button(container_inner, response.data.load_more);
@@ -183,6 +221,65 @@
                 container.append(end_message);
             }
         },        
+        qapl_quick_ajax_parse_action_data: function(element) {
+            let actionData = element.data('action');
+            if (typeof actionData === 'string') {
+                try {
+                    actionData = JSON.parse(actionData);
+                } catch (e) {
+                    console.error('Quick Ajax Post Loader: Invalid JSON in data-action');
+                    return null;
+                }
+            }
+            return (actionData && typeof actionData === 'object') ? actionData : null;
+        },
+        qapl_quick_ajax_sync_action_data: function(quickAjaxId, patch) {
+            // every control of the same instance carries its own copy of the query args,
+            // so a change made in one control has to be written to all of them
+            const self = this;
+            const carriers = $('#quick-ajax-sort-options-' + quickAjaxId + ' .quick-ajax-settings')
+                .add('#quick-ajax-search-' + quickAjaxId + ' .quick-ajax-settings')
+                .add('#quick-ajax-filter-' + quickAjaxId + ' .qapl-filter-button');
+            carriers.each(function() {
+                const carrier = $(this);
+                const actionData = self.qapl_quick_ajax_parse_action_data(carrier);
+                if (!actionData) {
+                    return;
+                }
+                $.extend(actionData, patch);
+                carrier.attr('data-action', JSON.stringify(actionData));
+            });
+        },
+        qapl_quick_ajax_trigger_reload: function(quickAjaxId, fallbackSettings) {
+            const activeButton = $('#quick-ajax-filter-' + quickAjaxId).find('.qapl-filter-button.active');
+            if (activeButton.length) {
+                activeButton.trigger('click');
+                return;
+            }
+            if (fallbackSettings.is('[data-action]')) {
+                fallbackSettings.trigger('click');
+            }
+        },
+        qapl_quick_ajax_reset_taxonomy_filter: function(quickAjaxId) {
+            // a search phrase returns posts from the whole post type, so no term stays selected
+            $('#quick-ajax-filter-' + quickAjaxId).find('.qapl-filter-button').removeClass('active');
+        },
+        qapl_quick_ajax_clear_search: function(button) {
+            // called when a term is picked - the phrase is dropped before the request is built
+            const settingsData = button.data('attributes');
+            if (!settingsData || !settingsData.quick_ajax_id) {
+                return;
+            }
+            const quickAjaxId = settingsData.quick_ajax_id;
+            const searchInput = $('#quick-ajax-search-' + quickAjaxId).find('.qapl-search-input');
+            if (!searchInput.length || (searchInput.val() || '') === '') {
+                return;
+            }
+            // drop a pending debounce, otherwise the cleared phrase would come back
+            clearTimeout(searchInput.data('qaplSearchTimer'));
+            searchInput.val('');
+            this.qapl_quick_ajax_sync_action_data(quickAjaxId, { s: '' });
+        },
         qapl_quick_ajax_handle_sort: function(selectButton) {
             const sortContainer = selectButton.closest('.quick-ajax-sort-options-container');
             const querySettings = sortContainer.find('.quick-ajax-settings');
@@ -194,60 +291,54 @@
             }
 
             const quickAjaxId = settingsData.quick_ajax_id;
-            const filterContainer = $('#quick-ajax-filter-' + quickAjaxId);
             // get selected value
             const selectedValue = selectButton.val();
             const [orderby = '', order = ''] = selectedValue.split('-');
-            // update quick-ajax-settings in the same sort container
-            let actionData = querySettings.data('action');
-            // convert to object if needed
-            if (typeof actionData === 'string') {
-                try {
-                    actionData = JSON.parse(actionData);
-                } catch (e) {
-                    console.error('Quick Ajax Post Loader: Invalid JSON in sort settings');
-                    return;
-                }
+
+            this.qapl_quick_ajax_sync_action_data(quickAjaxId, { orderby: orderby, order: order });
+            this.qapl_quick_ajax_trigger_reload(quickAjaxId, querySettings);
+        },
+        qapl_quick_ajax_handle_search: function(searchInput) {
+            const searchContainer = searchInput.closest('.quick-ajax-search-container');
+            const querySettings = searchContainer.find('.quick-ajax-settings');
+            const settingsData = querySettings.data('attributes');
+
+            // check if quick_ajax_id exists
+            if (!settingsData || !settingsData.quick_ajax_id) {
+                return; // stop if quick_ajax_id is missing
             }
-            // change orderby and order
-            actionData.orderby = orderby;
-            actionData.order = order;
-            //update data-action
-            querySettings.attr('data-action', JSON.stringify(actionData));
-            // if filter container does not exist, trigger only settings span click
-            if (!filterContainer.length) {
+
+            const quickAjaxId = settingsData.quick_ajax_id;
+            // get search phrase
+            const phrase = (searchInput.val() || '').trim();
+            const currentData = this.qapl_quick_ajax_parse_action_data(querySettings);
+            if (!currentData) {
+                return;
+            }
+            // skip if the phrase has not changed
+            if ((currentData.s || '') === phrase) {
+                return;
+            }
+
+            this.qapl_quick_ajax_sync_action_data(quickAjaxId, { s: phrase });
+            this.qapl_quick_ajax_reset_taxonomy_filter(quickAjaxId);
+
+            if (phrase !== '') {
+                // taxonomy is reset, so the search settings span drives the request
                 if (querySettings.is('[data-action]')) {
                     querySettings.trigger('click');
                 }
                 return;
             }
-            // update all filter buttons in the matching filter container
-            filterContainer.find('.qapl-filter-button').each(function () {
-                const button = $(this);
-                let actionData = button.data('action');
-                // get action data
-                if (typeof actionData === 'string') {
-                    try {
-                        actionData = JSON.parse(actionData);
-                    } catch (e) {
-                        console.error('Quick Ajax Post Loader: Invalid JSON in filter button');
-                        return;
-                    }
-                }
-                // convert to object if needed
-                actionData.orderby = orderby;
-                actionData.order = order;
-                button.attr('data-action', JSON.stringify(actionData));
-            });
-            // find the active button
-            const activeButton = filterContainer.find('.qapl-filter-button.active');
-
-            if (activeButton.length) {
-                // click active button if exists
-                activeButton.trigger('click');
+            // empty field - back to the term selected on page load ("Show All" when it is displayed)
+            const filterContainer = $('#quick-ajax-filter-' + quickAjaxId);
+            const filterButtons = filterContainer.find('.qapl-filter-button');
+            const defaultIndex = filterContainer.data('qaplDefaultActive');
+            if (typeof defaultIndex === 'number' && defaultIndex >= 0 && filterButtons.length) {
+                filterButtons.eq(defaultIndex).trigger('click');
+                return;
             }
-            else if (querySettings.is('[data-action]')) {
-                //click settings span
+            if (querySettings.is('[data-action]')) {
                 querySettings.trigger('click');
             }
         }

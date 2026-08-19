@@ -117,7 +117,8 @@ final class QAPL_Ajax_Query_Builder{
     private function initialize_query_args($source_args) {
         // Set default query arguments
         $query_args = $this->query_args_base_query_args($source_args);
-        $query_args = $this->query_args_add_tax_query($query_args, $source_args);            
+        $query_args = $this->query_args_add_tax_query($query_args, $source_args);
+        $query_args = $this->query_args_add_search($query_args, $source_args);
         $query_args = $this->query_args_apply_offset_or_paged($query_args, $source_args);
         return $query_args;    
     }
@@ -175,6 +176,19 @@ final class QAPL_Ajax_Query_Builder{
             ];
         }
         // phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+        return $query_args;
+    }
+    private function query_args_add_search($query_args, $source_args) {
+        $search_phrase = isset($source_args['s']) ? trim(sanitize_text_field($source_args['s'])) : '';
+        if ($search_phrase === '') {
+            return $query_args;
+        }
+        // hard cap - rejects oversized phrases sent directly to the AJAX endpoint
+        $query_args['s'] = mb_substr($search_phrase, 0, 200);
+        // search post titles only - matching content is not part of this feature
+        $query_args['search_columns'] = ['post_title'];
+        // a search phrase replaces taxonomy filtering - results come from the whole post type
+        unset($query_args['tax_query']);
         return $query_args;
     }
     public function generate_tax_query($base_args, $taxonomy, $term_id) {

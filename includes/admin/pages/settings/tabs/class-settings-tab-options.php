@@ -20,6 +20,8 @@ class QAPL_Settings_Tab_Options implements QAPL_Settings_Tab_Interface {
             QAPL_Form_Field_Factory::build_global_load_more_label_field(),
             QAPL_Form_Field_Factory::build_global_no_post_message_field(),
             QAPL_Form_Field_Factory::build_global_end_post_message_field(),
+            QAPL_Form_Field_Factory::build_global_search_placeholder_field(),
+            QAPL_Form_Field_Factory::build_global_search_button_label_field(),
 
             //Sorting Options
             QAPL_Form_Field_Factory::build_global_sort_option_date_desc_label_field(),
@@ -54,6 +56,9 @@ class QAPL_Settings_Tab_Options implements QAPL_Settings_Tab_Interface {
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_LOAD_MORE_LABEL_FIELD);
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_NO_POST_MESSAGE_FIELD);
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_END_POST_MESSAGE_FIELD);
+        $content .= '<h4>'.esc_html__('Search Labels', 'quick-ajax-post-loader').'</h4>';
+        $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_SEARCH_PLACEHOLDER_FIELD);
+        $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_SEARCH_BUTTON_LABEL_FIELD);
         $content .= '<h4>'.esc_html__('Sorting Option Labels', 'quick-ajax-post-loader').'</h4>';
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_SORT_OPTION_DATE_DESC_LABEL_FIELD);
         $content .= $this->settings_page->render_field(QAPL_Constants::GLOBAL_SORT_OPTION_DATE_ASC_LABEL_FIELD);

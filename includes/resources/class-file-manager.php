@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-final class QAPL_File_Manager implements QAPL_File_Manager_Interface {
+final class QAPL_File_Manager implements QAPL_File_Manager_Interface, QAPL_Template_Locator_Interface {
     private $plugin_dir_path;
     private $plugin_dir_url;
 
@@ -149,5 +149,9 @@ final class QAPL_File_Manager implements QAPL_File_Manager_Interface {
     //template for load more button
     public function get_load_more_button_template(): string {
         return $this->get_templates_dir_path('/load-more-button.php');
+    }
+    //template for search button
+    public function get_search_button_template(): string {
+        return $this->get_templates_dir_path('/search-button/search-button.php');
     }
 }

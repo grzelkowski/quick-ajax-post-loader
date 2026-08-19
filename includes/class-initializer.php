@@ -50,6 +50,7 @@ final class QAPL_Initializer {
         $base = self::$includes_dir_path . 'resources/';
         require_once $base . 'functions-helpers.php';
         require_once $base . 'interface-file-manager.php';
+        require_once $base . 'interface-template-locator.php';
         require_once $base . 'class-file-manager.php';
         require_once $base . 'interface-resource-manager.php';
         require_once $base . 'class-resource-manager.php';

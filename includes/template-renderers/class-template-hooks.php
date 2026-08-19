@@ -295,7 +295,8 @@ class QAPL_Post_Template_Factory {
         $template_name = $container_settings['template_name'] ?? '';
         $quick_ajax_id = $container_settings['quick_ajax_id'] ?? '';
         $config_array = $container_settings['config'] ?? [];
-        $global_options = get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME);
+        //injected options; fall back to get_option() for callers not yet migrated
+        $global_options = $container_settings['global_options'] ?? get_option(QAPL_Constants::GLOBAL_OPTIONS_NAME);
         if (!is_array($global_options)) {
             $global_options = [];
         }

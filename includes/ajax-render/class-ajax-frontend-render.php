@@ -40,20 +40,59 @@ final class QAPL_Ajax_Frontend_Render {
         $quick_ajax_id      = $context['quick_ajax_id'];
 
         ob_start();
+        // build the search field once - its position decides where it is printed
+        $search_position = !empty($render_context['search_position'])
+            ? $render_context['search_position']
+            : QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT;
+        $search_field = '';
+        if (!empty($render_context['show_search'])) {
+            $search_field = $this->ui_renderer->render_search_field($layout, $attrs, $source_args, $quick_ajax_id, $search_position);
+        }
+        // each control can share the controls row or sit on its own line
+        $search_inline = !isset($render_context['search_inline']) || !empty($render_context['search_inline']);
+        $sort_inline   = !isset($render_context['sort_inline']) || !empty($render_context['sort_inline']);
+        $search_before = ($search_position === QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_BEFORE_FILTERS);
+        $inline_search_field = $search_inline ? $search_field : '';
+        $standalone_search_field = $search_inline ? '' : $search_field;
+
+        $sort_options_field = '';
+        if (!empty($render_context['sort_options'])) {
+            $sort_options_field = $this->ui_renderer->render_sort_options($render_context['sort_options'], $layout, $query_args, $attrs, $source_args, $quick_ajax_id);
+        }
+        if (!$sort_inline) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            echo $sort_options_field;
+        }
+        if (!$search_inline && $search_before) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            echo $standalone_search_field;
+        }
         // optional filter + sort wrappers
         if (!empty($render_context['controls_container'])) {
             echo '<div class="quick-ajax-controls-container">';
         }
-        if (!empty($render_context['sort_options'])) {
+        if ($sort_inline) {
             // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-            echo $this->ui_renderer->render_sort_options($render_context['sort_options'], $layout, $query_args, $attrs, $source_args, $quick_ajax_id);
+            echo $sort_options_field;
+        }
+        if ($search_before) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            echo $inline_search_field;
         }
         if (!empty($render_context['show_taxonomy_filter']) && !empty($source_args['selected_taxonomy'])) {
             // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             echo $this->ui_renderer->render_taxonomy_terms_filter($source_args['selected_taxonomy'], $query_args, $source_args, $layout, $attrs, $quick_ajax_id);
         }
+        if (!$search_before) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            echo $inline_search_field;
+        }
         if (!empty($render_context['controls_container'])) {
             echo '</div>';
+        }
+        if (!$search_inline && !$search_before) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            echo $standalone_search_field;
         }
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->layout_renderer->render_layout($query_args, $source_args, $layout, $attrs, $ajax_initial_load, $quick_ajax_id);
@@ -91,6 +130,16 @@ final class QAPL_Ajax_Frontend_Render {
         $quick_ajax_id      = $context['quick_ajax_id'];
         return $this->ui_renderer->render_sort_options($sort_options, $layout, $query_args, $attrs, $source_args, $quick_ajax_id);
     }
+    public function render_search_controls($source_args, $attributes, $position = QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT) {
+        $context = $this->build_render_context($source_args, $attributes);
+        if (!$context) {
+            return '';
+        }
+        $layout             = $context['layout'];
+        $attrs              = $context['attrs'];
+        $quick_ajax_id      = $context['quick_ajax_id'];
+        return $this->ui_renderer->render_search_field($layout, $attrs, $source_args, $quick_ajax_id, $position);
+    }
     public function render_ajax_response(array $post_args, array $post_attributes) {
         $query_args = $this->query_builder->wp_query_args($post_args, $post_attributes);
         if (!$query_args) {
@@ -107,6 +156,7 @@ final class QAPL_Ajax_Frontend_Render {
             $container_settings = [
                 'quick_ajax_id' => $quick_ajax_id,
                 'template_name' => $attrs[QAPL_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE],
+                'global_options' => $this->global_options,
             ];
             $qapl_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
             QAPL_Post_Template_Context::set_template($qapl_post_template);
@@ -126,6 +176,7 @@ final class QAPL_Ajax_Frontend_Render {
             $container_settings = [
                 'quick_ajax_id' => $quick_ajax_id,
                 'template_name' => 'no-post-message',
+                'global_options' => $this->global_options,
             ];
             $qapl_no_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
             QAPL_Post_Template_Context::set_template($qapl_no_post_template);

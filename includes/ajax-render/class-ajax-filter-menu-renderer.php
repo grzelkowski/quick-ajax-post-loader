@@ -8,7 +8,7 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
     private $helper;
     private $global_options;
 
-    public function __construct(QAPL_File_Manager $file_manager, QAPL_Ajax_Helper $helper, array $global_options = []) {
+    public function __construct(QAPL_Template_Locator_Interface $file_manager, QAPL_Ajax_Helper $helper, array $global_options = []) {
         $this->file_manager     = $file_manager;
         $this->helper           = $helper;
         $this->global_options   = $global_options;
@@ -279,6 +279,74 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
         $sort_option .= '<span class="quick-ajax-settings" data-button="'.QAPL_Constants::SORT_OPTION_BUTTON_DATA_BUTTON.'" data-attributes="' . esc_attr(wp_json_encode($attributes)) . '" data-action="' . esc_attr(wp_json_encode($source_args)) . '"></span>';
         $sort_option .= '</div>';                      
         return $sort_option;
+    }
+    public function render_search_field($layout, $attributes, $source_args, $quick_ajax_id, $position = QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT) {
+        $block_id = 'quick-ajax-search-'.$quick_ajax_id;
+        $class_container = 'quick-ajax-search-container';
+        // position modifier - needed inside the inline controls container, where flex order decides the layout
+        $class_container .= ($position === QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_BEFORE_FILTERS)
+            ? ' search-before-filters'
+            : ' search-after-filters';
+        if (!empty($layout[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE])) {
+            $class_container .= ' quick-ajax-theme';
+        }
+        $container_class = $this->helper->extract_classes_from_string($class_container);
+        $allowed_search_html = [
+            'div' => ['id' => [], 'class' => []],
+            'input' => [
+                'type' => [], 'id' => [], 'class' => [], 'name' => [],
+                'value' => [], 'placeholder' => [], 'aria-label' => [], 'autocomplete' => [],
+            ],
+            'button' => ['type' => [], 'id' => [], 'class' => [], 'aria-label' => []],
+            'span' => [
+                'id' => [], 'class' => [],
+                'data-button' => [], 'data-attributes' => [], 'data-action' => [],
+            ],
+            // inline icon - wp_kses strips svg markup unless every tag and attribute is listed
+            'svg' => [
+                'class' => [], 'xmlns' => [], 'viewbox' => [], 'width' => [], 'height' => [],
+                'fill' => [], 'aria-hidden' => [], 'focusable' => [],
+            ],
+            'g' => ['fill' => [], 'stroke' => [], 'stroke-width' => [], 'stroke-linecap' => []],
+            'circle' => ['cx' => [], 'cy' => [], 'r' => []],
+            'path' => ['d' => []],
+        ];
+        ob_start();
+        echo '<div id="'.esc_attr($block_id).'" class="'.esc_attr($container_class).'">';
+        echo wp_kses($this->create_search_input($attributes, $source_args, $quick_ajax_id), $allowed_search_html);
+        echo '</div>';
+        return ob_get_clean();
+    }
+    private function create_search_input($attributes, $source_args, $quick_ajax_id) {
+        $attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $quick_ajax_id;
+        $input_id = 'quick-ajax-search-input-'.$quick_ajax_id;
+        $current_phrase = isset($source_args['s']) ? sanitize_text_field($source_args['s']) : '';
+        // labels come from global options, with the translated defaults as fallback
+        $label = !empty($this->global_options['search_placeholder']) ? $this->global_options['search_placeholder'] : __('Search', 'quick-ajax-post-loader');
+
+        $search_field = '<div class="quick-ajax-search-wrapper">';
+        $search_field .= '<input type="search" id="'.esc_attr($input_id).'" class="qapl-search-input"'
+            .' name="quick_ajax_search_option" value="'.esc_attr($current_phrase).'"'
+            .' placeholder="'.esc_attr($label).'" aria-label="'.esc_attr($label).'" autocomplete="off" />';
+        $search_field .= $this->create_search_button();
+        $search_field .= '<span class="quick-ajax-settings" data-button="'.QAPL_Constants::SEARCH_FIELD_BUTTON_DATA_BUTTON.'"'
+            .' data-attributes="'.esc_attr(wp_json_encode($attributes)).'"'
+            .' data-action="'.esc_attr(wp_json_encode($source_args)).'"></span>';
+        $search_field .= '</div>';
+        return $search_field;
+    }
+    private function create_search_button() {
+        $button_template = $this->file_manager->get_search_button_template();
+        //skip the button if the template is missing or was removed by a theme override
+        if (empty($button_template) || !file_exists($button_template)) {
+            return '';
+        }
+        ob_start();
+        include($button_template);
+        $button = ob_get_clean();
+        $button_label = !empty($this->global_options['search_button_label']) ? $this->global_options['search_button_label'] : __('Search', 'quick-ajax-post-loader');
+        //same token as the taxonomy filter button - screen reader name of the icon button, visible text in a text-only template
+        return str_replace('QUICK_AJAX_LABEL', esc_attr($button_label), $button);
     }
     public function update_button_template($button_data) {
         $button_label = isset($button_data['button_label']) ? esc_html($button_data['button_label']) : '';

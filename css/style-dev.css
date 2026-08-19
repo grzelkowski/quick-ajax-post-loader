@@ -45,7 +45,7 @@
     order:1;
 }
 .quick-ajax-controls-container .quick-ajax-sort-options-container{
-    order:2;
+    order:3;
 }
 .quick-ajax-controls-container .quick-ajax-filter-container.quick-ajax-theme{
     text-align: left;
@@ -106,6 +106,94 @@
     font-weight: 500;
     padding: 0.625rem;
     text-align: center;
+}
+/* Search Field */
+.quick-ajax-search-container .quick-ajax-settings{
+    display: none;
+}
+.quick-ajax-search-container.quick-ajax-theme{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+.quick-ajax-search-container.quick-ajax-theme .quick-ajax-search-wrapper{
+    display: inline-flex;
+    position: relative;
+    max-width: 100%;
+}
+.quick-ajax-search-container.quick-ajax-theme .qapl-search-input{
+    /* fixed height keeps the field aligned with filter buttons and the sort select,
+       regardless of the font size and line height inherited from the theme */
+    padding: 0 3.25rem 0 1.25rem;
+    height: 40px;
+    min-height: 40px;
+    font-size: 1rem;
+    line-height: 1;
+    box-sizing: border-box;
+    border: 2px solid #1e1e1e;
+    background-color: #ffffff;
+    color: #1e1e1e;
+    box-shadow: 0 0 22px rgba(0,0,0,0.2);
+    border-radius: 22px;
+    outline: unset;
+    transition: box-shadow 0.3s ease;
+}
+.quick-ajax-search-container.quick-ajax-theme .qapl-search-input:focus{
+    outline: none;
+    box-shadow: 0 0 14px rgba(0,0,0,0.5);
+    transition: box-shadow 0.3s ease;
+}
+/* themes style bare "button" with high specificity (Twenty Twenty-One uses :not() chains),
+   so the icon button needs the full path to win without !important */
+.quick-ajax-search-container.quick-ajax-theme .quick-ajax-search-wrapper button.qapl-search-submit{
+    position: absolute;
+    top: 0;
+    /* inset from the rounded edge, so the icon does not sit on the pill curve */
+    right: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 2.75rem;
+    height: 100%;
+    min-height: 0;
+    padding: 0 0.75rem;
+    border: none;
+    border-radius: 0;
+    background: none;
+    background-image: none;
+    background-color: transparent;
+    box-shadow: none;
+    appearance: none;
+    color: #1e1e1e;
+    cursor: pointer;
+    outline: unset;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+.quick-ajax-search-container.quick-ajax-theme .quick-ajax-search-wrapper button.qapl-search-submit:hover,
+.quick-ajax-search-container.quick-ajax-theme .quick-ajax-search-wrapper button.qapl-search-submit:focus{
+    background: none;
+    background-color: transparent;
+    box-shadow: none;
+    color: #1e1e1e;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+.quick-ajax-search-container .qapl-search-icon{
+    display: block;
+    width: 1rem;
+    height: 1rem;
+}
+/* Search Field inside the inline controls container */
+.quick-ajax-controls-container .quick-ajax-search-container.search-before-filters{
+    order:0;
+}
+.quick-ajax-controls-container .quick-ajax-search-container.search-after-filters{
+    order:2;
+}
+.quick-ajax-controls-container .quick-ajax-search-container.quick-ajax-theme{
+    justify-content: flex-start;
 }
 /* Post Container */
 .quick-ajax-posts-container.quick-ajax-theme{

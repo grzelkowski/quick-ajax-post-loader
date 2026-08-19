@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 // fresh instance is correct here: one render per AJAX request, quick_ajax_id comes from request attributes
 
-// phpcs:disable WordPress.Security.NonceVerification.Missing -- nonce verified in verify_request
+// phpcs:disable WordPress.Security.NonceVerification.Missing -- public read-only endpoint, nonce intentionally not required (cache-safe)
 final class QAPL_Ajax_Frontend_Controller {
     use QAPL_Ajax_Request_Verifier;
     
@@ -14,7 +14,8 @@ final class QAPL_Ajax_Frontend_Controller {
         add_action('wp_ajax_nopriv_qapl_action_load_posts', [self::class, 'load_posts']);
     }
     public static function load_posts(): void {
-        self::verify_request();
+        // no nonce here on purpose - public read-only data, and nonce breaks with page cache
+        self::verify_ajax_context();
         if (empty($_POST['args'])) {
             wp_send_json_error(['message' => 'Quick Ajax Post Loader: Invalid request, Missing arguments.']);
         }

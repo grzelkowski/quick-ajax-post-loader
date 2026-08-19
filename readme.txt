@@ -2,9 +2,9 @@
 
 Contributors: grzelkowski
 Tags: ajax, load more, infinite scroll, filter, post grid
-Requires at least: 5.6
+Requires at least: 6.2
 Tested up to: 7.0
-Stable tag: 1.8.14
+Stable tag: 1.9.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -15,7 +15,7 @@ AJAX Load More button, infinite scroll and taxonomy filters for posts, pages and
 
 **Quick Ajax Post Loader** lets you build fast, filterable post grids in WordPress with an AJAX **Load More button** or **infinite scroll** - no page reloads, no coding required.
 
-Display posts, pages, or any custom post type (CPT) in a responsive grid with **AJAX taxonomy filtering** (categories, tags, custom taxonomies), **AJAX sorting**, and dynamic pagination. Build your grid in the visual shortcode generator, paste the shortcode anywhere, and you're done.
+Display posts, pages, or any custom post type (CPT) in a responsive grid with **AJAX taxonomy filtering** (categories, tags, custom taxonomies), **AJAX search**, **AJAX sorting**, and dynamic pagination. Build your grid in the visual shortcode generator, paste the shortcode anywhere, and you're done.
 
 Perfect for blogs, news sites, portfolios, directories, and content catalogs.
 
@@ -27,6 +27,7 @@ Most plugins do just one thing - only infinite scroll, or only a filter. Quick A
 * **Infinite scroll** - posts load automatically as visitors scroll down
 * **AJAX taxonomy filter** - filter posts by category, tag, or any custom taxonomy without reloading the page
 * **AJAX sorting** - let visitors sort posts by date, title, comment count, or randomly
+* **AJAX search** - a search field that finds posts by phrase, without reloading the page
 * **Any post type** - posts, pages, and any registered custom post type
 * **Responsive post grid** - control the number of columns, templates, and CSS classes
 * **Shortcode generator & PHP function generator** - point-and-click configuration, no code needed
@@ -50,6 +51,7 @@ Most plugins do just one thing - only infinite scroll, or only a filter. Quick A
 * Manually select which taxonomy terms appear in the filter
 * Optional "Show All" button in the taxonomy filter
 * Sort dropdown: date, title, comments, random - ascending or descending
+* Search field so visitors can find posts by phrase, inline with the filters or on its own line
 * Multiple independent AJAX grids on the same page
 * Grid layout control: columns, item templates, custom CSS classes
 * Exclude specific posts by ID, ignore sticky posts
@@ -109,6 +111,9 @@ Yes. You can display posts, pages, and any registered custom post type, each wit
 = How do I filter posts by category or tag without reloading the page? =
 Enable the taxonomy filter in your shortcode settings and choose a taxonomy (categories, tags, or a custom taxonomy). Filter buttons appear above the grid and update the posts via AJAX.
 
+= Can visitors search posts? =
+Yes. Enable the search field in your shortcode settings. Visitors can then find posts by phrase - results update via AJAX, work together with sorting, and the field can be placed next to the taxonomy filter or on its own line.
+
 = Can I customize the post templates? =
 Yes. Copy a template to the `/quick-ajax-post-loader/templates/` folder in your theme or child theme and edit it freely. You can also modify individual elements (title, image, excerpt, buttons) via filter hooks.
 
@@ -142,6 +147,14 @@ Yes. The plugin follows WordPress internationalization standards and can be tran
 
 == Changelog ==
 
+= 1.9.0 - 2026-08-19 =
+- Added a search option - the AJAX loader can now show a search field, so visitors can find posts by phrase alongside the existing filters and sorting.
+- Improved the plugin's admin menu - the main "Quick AJAX" item now opens your shortcodes list directly.
+- Improved reliability of AJAX post loading and filtering on sites using full-page caching or a CDN.
+- Improved the Purge Old Data tool with clear status messages after each action.
+- Minor code cleanup and coding standards improvements.
+- Minimum required WordPress version raised from 5.6 to 6.2.
+
 = 1.8.14 - 2026-07-20 =
 - Security: hardened capability checks for admin menu access.
 - Security: improved sanitization and validation of form inputs and AJAX parameters.
@@ -174,15 +187,12 @@ Yes. The plugin follows WordPress internationalization standards and can be tran
 - Minor internal improvements and refinements to enhance stability and consistency.
 - Minor improvements and refinements to translations.
 
-= 1.8.10 - 2026-03-07 =
-- Added a new "Display Show All" option, allowing you to enable or disable the "Show All" button in taxonomy filters.
-- Improved overall shortcode configuration handling for more consistent behavior.
-- Enhanced reliability when combining shortcode attributes with saved settings.
-- General internal refinements for improved stability and maintainability.
-
 For the full changelog of earlier versions, see the CHANGELOG.md file included with the plugin or the [GitHub repository](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/CHANGELOG.md).
 
 == Upgrade Notice ==
+
+= 1.9.0 =
+Adds a search option that lets visitors find posts by phrase directly in the AJAX loader. Requires WordPress 6.2 or newer. Recommended for all users.
 
 = 1.8.14 =
 Security release: hardened capability checks and improved input sanitization. Also improves performance by loading plugin assets only where needed. Update recommended for all users.

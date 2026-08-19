@@ -47,7 +47,14 @@ final class QAPL_Deprecated_Hooks_Handler {
 
         if (!empty($used_hooks)) {
             echo '<div class="notice notice-warning">';
-            echo '<p><strong>' . esc_html__('Quick AJAX Post Loader:', 'quick-ajax-post-loader') . '</strong> ' . esc_html__('Some hooks have been renamed. Please update your code:', 'quick-ajax-post-loader') . '</p>';
+            // the whole sentence is one string, so the separator after the plugin name can follow
+            // the typography rules of each language (French adds a space before the colon, CJK uses a full-width one)
+            $notice = sprintf(
+                /* translators: %s: plugin name */
+                __('%s: Some hooks have been renamed. Please update your code:', 'quick-ajax-post-loader'),
+                '<strong>' . esc_html(QAPL_Constants::PLUGIN_NAME) . '</strong>'
+            );
+            echo '<p>' . wp_kses_post($notice) . '</p>';
             echo '<ul>';
             foreach ($used_hooks as $old_hook => $new_hook) {
                 echo '<li><code>' . esc_html($old_hook) . '</code> → <code>' . esc_html($new_hook) . '</code></li>';

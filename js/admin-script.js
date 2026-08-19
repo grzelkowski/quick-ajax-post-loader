@@ -459,6 +459,27 @@
             }
             return formattedText;
         },
+        qapl_generate_search_field: function (inputData) {
+            let formattedItem = "";
+            let quickAjaxSearchFieldText = "";
+
+            if (inputData.qapl_show_search_field !== 1) {
+                return formattedItem;
+            }
+            //qapl_render_search_field
+            quickAjaxSearchFieldText += "if(function_exists('qapl_render_search_field')){\n";
+            quickAjaxSearchFieldText += "    qapl_render_search_field(\n";
+            quickAjaxSearchFieldText += "        $quick_ajax_args,\n";
+            quickAjaxSearchFieldText += "        $quick_ajax_attributes\n";
+            quickAjaxSearchFieldText += "    );\n";
+            quickAjaxSearchFieldText += "}";
+
+            if (quickAjaxSearchFieldText.trim() !== "") {
+                formattedItem += "\n// Render the search field for '" + inputData.qapl_select_post_type + "' type posts.\n";
+                formattedItem += quickAjaxSearchFieldText.trim() + "\n";
+            }
+            return formattedItem;
+        },
         qapl_generate_taxonomy_filter: function (inputData) {
             let quickAjaxTaxonomy = null;
             let formattedItem = "";
@@ -529,9 +550,10 @@
                 const quickAjaxAttributesText = self.qapl_generate_attributes(inputData, quick_ajax_id);
                 const quickAjaxSortControlText = self.qapl_generate_sort_controls(inputData);
                 const quickAjaxTaxonomyFilterText = self.qapl_generate_taxonomy_filter(inputData);
+                const quickAjaxSearchFieldText = self.qapl_generate_search_field(inputData);
                 const quick_ajax_post_containerText = self.qapl_generate_post_container(inputData, quickAjaxAttributesText);
 
-                const formattedSections = [quickAjaxArgsText, quickAjaxAttributesText, quickAjaxSortControlText, quickAjaxTaxonomyFilterText, quick_ajax_post_containerText];
+                const formattedSections = [quickAjaxArgsText, quickAjaxAttributesText, quickAjaxSortControlText, quickAjaxTaxonomyFilterText, quickAjaxSearchFieldText, quick_ajax_post_containerText];
 
                 const formattedText = formattedSections.filter(Boolean).join("");
 

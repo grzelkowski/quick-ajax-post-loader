@@ -38,6 +38,8 @@ class QAPL_Settings_Tab_PHP_Snippet implements QAPL_Settings_Tab_Interface{
             QAPL_Form_Field_Factory::build_show_sort_button_field(),
             //select sort options
             QAPL_Form_Field_Factory::build_select_sort_button_options_field($global_options),
+            //show search field
+            QAPL_Form_Field_Factory::build_show_search_field(),
 
             //Additional Settings
             //add Excluded Post IDs
@@ -132,8 +134,11 @@ class QAPL_Settings_Tab_PHP_Snippet implements QAPL_Settings_Tab_Interface{
             ]);
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SELECTED_TERMS, $field_options);
 
-            //end manual term selection checkbox 
+            //end manual term selection checkbox
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE);
+
+            //toggle search field - no position field here, the snippet order decides where the field is printed
+            $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD);
             $form_tab_function_generator .= '</div>';
             //post settings
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings quick-ajax-mt-20">';

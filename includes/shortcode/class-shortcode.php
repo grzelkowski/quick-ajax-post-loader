@@ -73,14 +73,29 @@ class QAPL_Shortcode {
         return null;
     }*/
     private function create_shortcode_controls_container(){
-        if(!empty($this->shortcode_params['id'])){
-            $show_sort_orderby_button = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_SORT_BUTTON]) ? $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_SORT_BUTTON] : null;
-            if($show_sort_orderby_button === 1){
-                $add_wrapper = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SORTING]) ? $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SORTING] : null;
-                return $add_wrapper;
-            }
+        if(empty($this->shortcode_params['id'])){
+            return null;
+        }
+        // the wrapper is needed when sorting or the search field is set to share a row with the filter
+        if($this->create_shortcode_sort_inline()){
+            return 1;
+        }
+        if($this->create_shortcode_search_field() && $this->create_shortcode_search_inline()){
+            return 1;
         }
         return null;
+    }
+    private function create_shortcode_sort_inline(){
+        $show_sort_orderby_button = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_SORT_BUTTON]) ? $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_SORT_BUTTON] : null;
+        if($show_sort_orderby_button !== 1){
+            return false;
+        }
+        $inline_sorting = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SORTING]) ? $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SORTING] : QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SORTING_DEFAULT;
+        return !empty($inline_sorting);
+    }
+    private function create_shortcode_search_inline(){
+        $inline_search = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SEARCH]) ? $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SEARCH] : QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SEARCH_DEFAULT;
+        return !empty($inline_search);
     }
     private function create_shortcode_sort_button(){
         if(!empty($this->shortcode_params['id'])){
@@ -98,6 +113,24 @@ class QAPL_Shortcode {
         return null;
     }
 
+    private function create_shortcode_search_field(){
+        if(!empty($this->shortcode_params['id'])){
+            $show_search_field = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD]) ? $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD] : null;
+            if($show_search_field === 1){
+                return true;
+            }
+        }
+        return false;
+    }
+    private function create_shortcode_search_position(){
+        $search_position = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION]) ? $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION] : null;
+        // fall back to the default position for any unknown value
+        if($search_position === QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_BEFORE_FILTERS){
+            return QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_BEFORE_FILTERS;
+        }
+        return QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT;
+    }
+
     public function render_quick_ajax_shortcode($params) {
         $this->get_shortcode_params($params);
         if (!empty($this->shortcode_params['id'])) {
@@ -110,6 +143,10 @@ class QAPL_Shortcode {
         $render_context['show_taxonomy_filter'] = !empty($this->query_args['selected_taxonomy']);
         $render_context['sort_options'] = $this->create_shortcode_sort_button();
         $render_context['controls_container'] = $this->create_shortcode_controls_container();
+        $render_context['sort_inline'] = $this->create_shortcode_sort_inline();
+        $render_context['show_search'] = $this->create_shortcode_search_field();
+        $render_context['search_position'] = $this->create_shortcode_search_position();
+        $render_context['search_inline'] = $this->create_shortcode_search_inline();
         ob_start();
         if (!empty($this->query_args) && function_exists('qapl_render_post_container')) {
             qapl_render_post_container($this->query_args, $attributes, $render_context);

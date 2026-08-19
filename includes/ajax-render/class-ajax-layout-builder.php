@@ -7,7 +7,7 @@ final class QAPL_Ajax_Layout_Builder {
     private $file_manager;
     private $helper;
 
-    public function __construct(QAPL_File_Manager $file_manager, QAPL_Ajax_Helper $helper) {
+    public function __construct(QAPL_Template_Locator_Interface $file_manager, QAPL_Ajax_Helper $helper) {
         $this->file_manager = $file_manager;
         $this->helper = $helper;
     }

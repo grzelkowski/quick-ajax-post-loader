@@ -358,17 +358,17 @@ function qapl_action_quick_ajax_handle_purge_unused_data_request() {
     }
     // verify nonce for security
     if (!isset($_POST['qapl_purge_nonce']) || !wp_verify_nonce(wp_unslash($_POST['qapl_purge_nonce']), QAPL_Constants::NONCE_PURGE_UNUSED_DATA_ACTION)) {
-        wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=invalid_nonce'));
+        wp_safe_redirect(admin_url(QAPL_Constants::PLUGIN_MENU_SLUG . '&page=' . QAPL_Constants::SETTINGS_PAGE_SLUG . '&tab=clear_old_data&status=invalid_nonce'));
         exit;
     }
     // require the explicit confirmation checkbox before purging
     if (empty($_POST[QAPL_Constants::REMOVE_OLD_DATA_FIELD])) {
-        wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=not_confirmed'));
+        wp_safe_redirect(admin_url(QAPL_Constants::PLUGIN_MENU_SLUG . '&page=' . QAPL_Constants::SETTINGS_PAGE_SLUG . '&tab=clear_old_data&status=not_confirmed'));
         exit;
     }
     // check the hidden input value
     if (!isset($_POST['qapl_purge_unused_data']) || sanitize_text_field(wp_unslash($_POST['qapl_purge_unused_data'])) !== '1') {
-        wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=invalid_request'));
+        wp_safe_redirect(admin_url(QAPL_Constants::PLUGIN_MENU_SLUG . '&page=' . QAPL_Constants::SETTINGS_PAGE_SLUG . '&tab=clear_old_data&status=invalid_request'));
         exit;
     }
     // initialize cleanup strategies
@@ -381,10 +381,36 @@ function qapl_action_quick_ajax_handle_purge_unused_data_request() {
     $cleaner->purge_unused_data();
 
     // redirect to success page
-    wp_safe_redirect(admin_url('admin.php?page=qapl-settings&tab=clear_old_data&status=success'));
+    wp_safe_redirect(admin_url(QAPL_Constants::PLUGIN_MENU_SLUG . '&page=' . QAPL_Constants::SETTINGS_PAGE_SLUG . '&tab=clear_old_data&status=success'));
     exit;
 }
-    
+add_action('admin_notices', 'qapl_action_quick_ajax_display_purge_notice');
+function qapl_action_quick_ajax_display_purge_notice() {
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+    // only on the plugin settings page
+    if (filter_input(INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== QAPL_Constants::SETTINGS_PAGE_SLUG) {
+        return;
+    }
+    $status = filter_input(INPUT_GET, 'status', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    if (!$status) {
+        return;
+    }
+    // whitelist: known status => [css type, message]; raw value is never echoed
+    $notices = [
+        'success'         => ['success', __('Unused data has been purged successfully.', 'quick-ajax-post-loader')],
+        'not_confirmed'   => ['warning', __('Please confirm the purge by selecting the checkbox before submitting.', 'quick-ajax-post-loader')],
+        'invalid_nonce'   => ['error',   __('Security check failed. Please reload the page and try again.', 'quick-ajax-post-loader')],
+        'invalid_request' => ['error',   __('Invalid request. The purge was not performed.', 'quick-ajax-post-loader')],
+    ];
+    if (!isset($notices[$status])) {
+        return;
+    }
+    [$type, $message] = $notices[$status];
+    printf('<div class="notice notice-%s is-dismissible"><p>%s</p></div>', esc_attr($type), esc_html($message));
+}
+
 
 
 

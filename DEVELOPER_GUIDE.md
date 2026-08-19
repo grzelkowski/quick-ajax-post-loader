@@ -28,9 +28,10 @@ Below are some of the key benefits of using this plugin:
     - 3.3. [Templates: Customize "No Posts Found" Message](#33-templates-customize-no-posts-found-message)
     - 3.4. [Templates: Customize "End of Posts" Message](#34-templates-customize-end-of-posts-message)
     - 3.5. [Templates: Modify Taxonomy Filter Buttons](#35-templates-modify-taxonomy-filter-buttons)
-    - 3.6. [Templates: Customize "Load More" Button Design](#36-templates-customize-load-more-button-design)
-    - 3.7. [Templates: How to Create Custom Loading Icons](#37-templates-how-to-create-custom-loading-icons)
-    - 3.8. [Templates: Best Practices for Working with Post Layouts](#38-templates-best-practices-for-working-with-post-layouts)
+    - 3.6. [Templates: Modify the Search Button](#36-templates-modify-the-search-button)
+    - 3.7. [Templates: Customize "Load More" Button Design](#37-templates-customize-load-more-button-design)
+    - 3.8. [Templates: How to Create Custom Loading Icons](#38-templates-how-to-create-custom-loading-icons)
+    - 3.9. [Templates: Best Practices for Working with Post Layouts](#39-templates-best-practices-for-working-with-post-layouts)
 4. [Customization with Hooks & Filters](#4-customization-with-hooks--filters)
     - 4.1. [Hooks: Filter Container - Modify the Filtering Section](#41-hooks-filter-container---modify-the-filtering-section)
     - 4.2. [Hooks: Post Container - Modify Post List Display](#42-hooks-post-container---modify-post-list-display)
@@ -73,7 +74,7 @@ To install **Quick Ajax Post Loader**, download the latest version of the plugin
 
 ### Activation and First Steps
 After activating the plugin, a new **Quick Ajax** menu item will appear in the WordPress admin panel, where you can configure settings and shortcodes. Before you start using the plugin, make sure that:
-- Your WordPress version is up to date (recommended version: 5.6+).
+- Your WordPress version is up to date (recommended version: 6.2+).
 - Your server supports PHP version 7.4 or higher.
 - The plugin is compatible with your theme - if you encounter issues, check the **Error Log** or contact support.
 
@@ -105,6 +106,8 @@ To add a new shortcode:
     - **Select Specific Terms** - If enabled, you can manually choose specific terms to include in the filter.
     - **Choose Terms** - Select one or more terms from the selected taxonomy to be available in the filter. If no terms are selected, no results will be shown.
     - **Posts Per Page** - Define how many posts will be loaded in a single AJAX request.
+    - **Show Search Field** - Adds a search field, so visitors can find posts by phrase.
+    - **Search Field Position** - Place the search field before or after the taxonomy filter buttons.
 
 After saving the settings, copy the generated shortcode, e.g.:
 
@@ -121,6 +124,23 @@ This section allows you to configure how posts are sorted when loaded via AJAX.
 - **Show Sorting Button** - Allows users to switch between ascending and descending sorting.
 - **Available Sorting Options** - Choose which sorting methods will be available (e.g., newest, oldest, most popular).
 - **Inline Filter & Sorting** - Display sorting and filtering controls in a single row.
+
+### Search Settings
+
+This section allows you to add a search field to the AJAX loader.
+
+- **Show Search Field** - Displays a search field that finds posts by phrase. Disabled by default.
+- **Search Field Position** - Places the field before or after the taxonomy filter buttons.
+- **Inline Filter & Search** - Displays the search field in the same row as the filter and sorting controls. When disabled, the field is placed on its own line, above or below that row depending on the selected position.
+
+How the search behaves:
+
+- The search matches **post titles only** - post content and excerpts are not included.
+- A search phrase **replaces taxonomy filtering**. Results come from the whole post type and no filter button stays selected. Clearing the field returns to the term that was selected when the page loaded.
+- Picking a taxonomy term while a phrase is active **clears the phrase** - the two never apply at the same time.
+- **Sorting stays active** during a search, so the selected sort order applies to the search results.
+- Results are requested when the visitor presses **Enter**, clicks the **search button**, or stops typing a phrase longer than three characters.
+- The placeholder and the search button label can be changed in **Quick Ajax > Settings & Features**, in the **Global Options** tab. The button label is not shown next to the magnifier icon - it is the name announced by screen readers.
 
 ### Additional Settings
 
@@ -309,7 +329,38 @@ Create or edit the **taxonomy-filter-button.php** file.
 
 ---
 
-### 3.6. Templates: Customize "Load More" Button Design
+### 3.6. Templates: Modify the Search Button
+
+The search field is rendered together with a button that submits the phrase. The whole button, including its magnifier icon, comes from a template you can override - for example to replace the icon with a text label or with your own graphic.
+
+#### Template File Location
+
+The default search button template is located in the plugin directory:
+
+    quick-ajax-post-loader/templates/search-button/search-button.php
+
+To override it, copy it to your theme folder, keeping the same subdirectory:
+
+    wp-content/themes/your-theme/quick-ajax-post-loader/templates/search-button/
+
+#### Example File Structure
+
+    <button type="button" class="qapl-search-submit custom-class" aria-label="QUICK_AJAX_LABEL">
+       QUICK_AJAX_LABEL
+    </button>
+
+The example above renders a text button instead of the default icon.
+
+#### Note:
+
+- **`QUICK_AJAX_LABEL` is replaced with the search button label** set in **Global Options**. Use it as the accessible name, as visible text, or both - or replace it with your own wording.
+- The **`qapl-search-submit` class is required** - the click handler is attached to it.
+- The button markup is filtered through **wp_kses**. Inside the button only `svg`, `g`, `circle` and `path` tags are allowed, so an icon built from other SVG shapes will be removed. Plain text always works.
+- With the built-in plugin styles enabled, the button is positioned inside the search field, on its right side. A longer text label may require your own CSS.
+
+---
+
+### 3.7. Templates: Customize "Load More" Button Design
 
 The "Load More" button allows users to dynamically load additional posts via AJAX without refreshing the page.  
 The plugin provides a default button template, but you can override it with your custom design.
@@ -338,7 +389,7 @@ To override it, copy it to your theme folder:
 
 ---
 
-### 3.7. Templates: How to Create Custom Loading Icons
+### 3.8. Templates: How to Create Custom Loading Icons
 
 The **Quick Ajax Post Loader** plugin allows you to customize loading icons by creating your own templates. You can use HTML, CSS animations, or GIFs, and then select the icon in the plugin configuration.
 
@@ -381,7 +432,7 @@ This ensures that custom loading icons in the child theme take priority and are 
 
 ---
 
-### 3.8. Templates: Best Practices for Working with Post Layouts
+### 3.9. Templates: Best Practices for Working with Post Layouts
 
 - **Work with a child theme** - This ensures that your changes won't be lost when updating your theme or the plugin.
 - **Test all changes on a staging site** before deploying them to your live site.
@@ -973,6 +1024,14 @@ The following code enables dynamically displaying posts via AJAX without the nee
         );
     endif;
 
+    // Render the search field.
+    if(function_exists('qapl_render_search_field')):
+        qapl_render_search_field(
+            $quick_ajax_args,
+            $quick_ajax_attributes
+        );
+    endif;
+
     // Render the grid for 'post' type posts.
     if(function_exists('qapl_render_post_container')):
     qapl_render_post_container(
@@ -1014,6 +1073,16 @@ This function generates **sorting buttons**, allowing users to dynamically chang
 - **$quick_ajax_attributes** - display attributes array.
 - **$quick_ajax_sort_options** - available sorting options.
 
+### qapl_render_search_field
+
+This function renders a **search field**, allowing users to find posts by phrase without refreshing the page. The search matches **post titles only**, and while a phrase is active it **replaces taxonomy filtering** - results are returned from the whole post type.
+
+**Parameters:**
+
+- **$quick_ajax_args** - WP_Query arguments array.
+- **$quick_ajax_attributes** - display attributes array.
+- **$position** *(optional)* - `'after_filters'` (default) or `'before_filters'`. Controls the styling of the field when it is displayed next to taxonomy filter buttons.
+
 ### Advanced Features Tips
 
 - **Test all changes** in a staging environment before deploying them.
@@ -1051,6 +1120,9 @@ If you want to customize post loading behavior, use these parameters in the **qa
 - **selected_terms** *(array)* - array of term IDs that should appear in the filter navigation.
   If not defined or empty, **all terms** from the selected taxonomy will be included.
   If defined, **only the specified terms** will be displayed and used for filtering.
+- **s** *(string)* - search phrase. Only posts whose **title** matches the phrase are returned.
+  While a phrase is set, **taxonomy filtering is skipped**, so results come from the whole post type.
+  Phrases longer than 200 characters are truncated. Requires WordPress 6.2 or higher.
 
 ### Example Configuration of $quick_ajax_args
 

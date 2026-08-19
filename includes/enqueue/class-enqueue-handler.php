@@ -115,6 +115,7 @@ final class QAPL_Enqueue_Handler implements QAPL_Enqueue_Handler_Interface {
                 'block_id' => QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID,
                 'filter_data_button' => QAPL_Constants::TERM_FILTER_BUTTON_DATA_BUTTON,
                 'sort_button' => QAPL_Constants::SORT_OPTION_BUTTON_DATA_BUTTON,
+                'search_button' => QAPL_Constants::SEARCH_FIELD_BUTTON_DATA_BUTTON,
                 'load_more_data_button' => QAPL_Constants::LOAD_MORE_BUTTON_DATA_BUTTON,
             ]
         ];

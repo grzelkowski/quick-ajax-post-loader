@@ -1,5 +1,13 @@
 ## Changelog
 
+### 1.9.0 - 2026-08-19
+- Added a search option - the AJAX loader can now show a search field, so visitors can find posts by phrase alongside the existing filters and sorting.
+- Improved the plugin's admin menu - the main "Quick AJAX" item now opens your shortcodes list directly.
+- Improved reliability of AJAX post loading and filtering on sites using full-page caching or a CDN.
+- Improved the Purge Old Data tool with clear status messages after each action.
+- Minor code cleanup and coding standards improvements.
+- Minimum required WordPress version raised from 5.6 to 6.2.
+
 ### 1.8.14 - 2026-07-20
 - Security: hardened capability checks for admin menu access.
 - Security: improved sanitization and validation of form inputs and AJAX parameters.
@@ -309,6 +317,9 @@
 - Initial release.
 
 ## Upgrade Notice
+
+### 1.9.0
+Adds a search option that lets visitors find posts by phrase directly in the AJAX loader. Requires WordPress 6.2 or newer. Recommended for all users.
 
 ### 1.8.14
 Security release: hardened capability checks and improved input sanitization. Also improves performance by loading plugin assets only where needed. Update recommended for all users.
