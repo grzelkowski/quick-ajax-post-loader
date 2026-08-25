@@ -22,8 +22,13 @@
                     });
                     $(".quick-ajax-filter-container").on("click", `[data-button="${qapl_quick_ajax_data.constants.filter_data_button}"]`, function () {
                         const button = $(this);
+                        if (button.hasClass("loading")) {
+                            return;
+                        }
                         // taxonomy and search exclude each other - picking a term drops the phrase
                         self.qapl_quick_ajax_clear_search(button);
+                        // switch the highlight immediately, the request only confirms it
+                        self.qapl_quick_ajax_set_active_filter(button);
                         self.qapl_quick_ajax_handle_ajax(button);
                     });
                 }
@@ -178,6 +183,10 @@
                 },
                 error: function (xhr, status, error) {
                     console.error("Quick Ajax Post Loader: Error:", error);
+                    // the posts did not change, so the highlight goes back to the previous term
+                    if (button_type === qapl_quick_ajax_data.constants.filter_data_button) {
+                        self.qapl_quick_ajax_restore_active_filter(button);
+                    }
                     container.removeClass("loading");
                     setTimeout(function () {
                         container.removeClass("filter-update");
@@ -267,6 +276,29 @@
             }
             if (fallbackSettings.is("[data-action]")) {
                 fallbackSettings.trigger("click");
+            }
+        },
+        qapl_quick_ajax_set_active_filter: function (button) {
+            const filterContainer = button.closest(".quick-ajax-filter-container");
+            if (!filterContainer.length) {
+                return;
+            }
+            const buttons = filterContainer.find(".qapl-filter-button");
+            // keep the current selection, so a failed request can restore it
+            filterContainer.data("qaplPreviousActive", buttons.index(buttons.filter(".active")));
+            buttons.removeClass("active");
+            button.addClass("active");
+        },
+        qapl_quick_ajax_restore_active_filter: function (button) {
+            const filterContainer = button.closest(".quick-ajax-filter-container");
+            if (!filterContainer.length) {
+                return;
+            }
+            const buttons = filterContainer.find(".qapl-filter-button");
+            const previousIndex = filterContainer.data("qaplPreviousActive");
+            buttons.removeClass("active");
+            if (typeof previousIndex === "number" && previousIndex >= 0) {
+                buttons.eq(previousIndex).addClass("active");
             }
         },
         qapl_quick_ajax_reset_taxonomy_filter: function (quickAjaxId) {

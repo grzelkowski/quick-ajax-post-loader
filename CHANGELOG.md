@@ -1,5 +1,10 @@
 ## Changelog
 
+### 1.9.1 - 2026-08-25
+- Fixed minor CSS issues that could affect the layout of the filter, sorting, and search controls in some themes.
+- Improved taxonomy filter buttons - the selected term is now highlighted immediately after clicking and keeps its style while posts are loading.
+- Tested and confirmed compatible with WordPress 7.1.
+
 ### 1.9.0 - 2026-08-19
 - Added a search option - the AJAX loader can now show a search field, so visitors can find posts by phrase alongside the existing filters and sorting.
 - Improved the plugin's admin menu - the main "Quick AJAX" item now opens your shortcodes list directly.
@@ -317,6 +322,9 @@
 - Initial release.
 
 ## Upgrade Notice
+
+### 1.9.1
+Minor CSS and interface fixes for the filter, sorting, and search controls. Tested with WordPress 7.1.
 
 ### 1.9.0
 Adds a search option that lets visitors find posts by phrase directly in the AJAX loader. Requires WordPress 6.2 or newer. Recommended for all users.

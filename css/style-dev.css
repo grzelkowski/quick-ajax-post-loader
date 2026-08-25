@@ -26,7 +26,10 @@
     text-decoration-skip-ink: none;
 }
 .quick-ajax-filter-container.quick-ajax-theme button.qapl-button:hover,
-.quick-ajax-filter-container.quick-ajax-theme button.qapl-button.active{
+.quick-ajax-filter-container.quick-ajax-theme button.qapl-button.active,
+/* the clicked button gets .loading right away, .active only after the response arrives -
+   without this the button would flip back to the idle style when the cursor leaves */
+.quick-ajax-filter-container.quick-ajax-theme button.qapl-button.loading{
     border: 2px solid  #1e1e1e;
     background-color: transparent;
     color: #1e1e1e;
@@ -114,11 +117,16 @@
 .quick-ajax-search-container.quick-ajax-theme{
     display: flex;
     justify-content: center;
+    /* do not stretch: in the inline row the container grows with wrapped filter buttons,
+       and a stretched wrapper would push the absolutely positioned icon below the input */
+    align-items: flex-start;
     margin-bottom: 3rem;
 }
 .quick-ajax-search-container.quick-ajax-theme .quick-ajax-search-wrapper{
     display: inline-flex;
     position: relative;
+    /* the wrapper must hug the input, so the button height of 100% equals the input height */
+    align-self: flex-start;
     max-width: 100%;
 }
 .quick-ajax-search-container.quick-ajax-theme .qapl-search-input{

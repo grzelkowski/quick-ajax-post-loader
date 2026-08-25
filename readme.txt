@@ -3,8 +3,8 @@
 Contributors: grzelkowski
 Tags: ajax, load more, infinite scroll, filter, post grid
 Requires at least: 6.2
-Tested up to: 7.0
-Stable tag: 1.9.0
+Tested up to: 7.1
+Stable tag: 1.9.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -147,6 +147,11 @@ Yes. The plugin follows WordPress internationalization standards and can be tran
 
 == Changelog ==
 
+= 1.9.1 - 2026-08-25 =
+- Fixed minor CSS issues that could affect the layout of the filter, sorting, and search controls in some themes.
+- Improved taxonomy filter buttons - the selected term is now highlighted immediately after clicking and keeps its style while posts are loading.
+- Tested and confirmed compatible with WordPress 7.1.
+
 = 1.9.0 - 2026-08-19 =
 - Added a search option - the AJAX loader can now show a search field, so visitors can find posts by phrase alongside the existing filters and sorting.
 - Improved the plugin's admin menu - the main "Quick AJAX" item now opens your shortcodes list directly.
@@ -182,14 +187,12 @@ Yes. The plugin follows WordPress internationalization standards and can be tran
 - Minor improvements and refinements to code consistency and standards compliance.
 - Tested and confirmed compatibility with WordPress 7.0.
 
-= 1.8.11 - 2026-04-28 =
-- Fixed an issue where multi-select field values in global plugin settings could be lost when saving.
-- Minor internal improvements and refinements to enhance stability and consistency.
-- Minor improvements and refinements to translations.
-
 For the full changelog of earlier versions, see the CHANGELOG.md file included with the plugin or the [GitHub repository](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/CHANGELOG.md).
 
 == Upgrade Notice ==
+
+= 1.9.1 =
+Minor CSS and interface fixes for the filter, sorting, and search controls. Tested with WordPress 7.1.
 
 = 1.9.0 =
 Adds a search option that lets visitors find posts by phrase directly in the AJAX loader. Requires WordPress 6.2 or newer. Recommended for all users.

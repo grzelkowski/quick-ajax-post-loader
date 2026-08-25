@@ -5,13 +5,13 @@ if (!defined('ABSPATH')) {
 
 final class QAPL_Constants{
     // Plugin info
-    public const PLUGIN_VERSION = '1.9.0';
+    public const PLUGIN_VERSION = '1.9.1';
     public const PLUGIN_NAME = 'Quick Ajax Post Loader';
     public const PLUGIN_TEXT_DOMAIN = 'quick-ajax-post-loader';
     public const PLUGIN_SLUG = 'quick-ajax-post-loader';
     public const PLUGIN_MINIMUM_PHP_VERSION = '7.4';
     public const PLUGIN_MINIMUM_WP_VERSION = '6.2';
-    public const PLUGIN_TESTED_WP_VERSION = '7.0';
+    public const PLUGIN_TESTED_WP_VERSION = '7.1';
 
 
     // Menu and page slugs

@@ -229,6 +229,13 @@ class QAPL_Form_Field_Factory {
             'type' => 'checkbox',
             'default' => QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD_DEFAULT,
             'description' => __('Enable a search field that lets visitors find posts by title.', 'quick-ajax-post-loader'),
+            'tooltip' => [
+                'title'   => __('Search Labels', 'quick-ajax-post-loader'),
+                'content' => __('Search field labels can be changed in plugin settings.', 'quick-ajax-post-loader') .
+                    ' <a href="' . esc_url(admin_url(QAPL_Constants::PLUGIN_MENU_SLUG . '&page=' . QAPL_Constants::SETTINGS_PAGE_SLUG)) . '" target="_blank" rel="noopener noreferrer">' .
+                    __('Open settings', 'quick-ajax-post-loader') .
+                    '</a>.'
+            ],
         ];
         return self::create_field($field_config);
     }
