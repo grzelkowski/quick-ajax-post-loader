@@ -229,13 +229,6 @@ class QAPL_Form_Field_Factory {
             'type' => 'checkbox',
             'default' => QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD_DEFAULT,
             'description' => __('Enable a search field that lets visitors find posts by title.', 'quick-ajax-post-loader'),
-            'tooltip' => [
-                'title'   => __('Search Labels', 'quick-ajax-post-loader'),
-                'content' => __('Search field labels can be changed in plugin settings.', 'quick-ajax-post-loader') .
-                    ' <a href="' . esc_url(admin_url(QAPL_Constants::PLUGIN_MENU_SLUG . '&page=' . QAPL_Constants::SETTINGS_PAGE_SLUG)) . '" target="_blank" rel="noopener noreferrer">' .
-                    __('Open settings', 'quick-ajax-post-loader') .
-                    '</a>.'
-            ],
         ];
         return self::create_field($field_config);
     }
@@ -246,7 +239,7 @@ class QAPL_Form_Field_Factory {
             'label' => __('Inline Filter & Search', 'quick-ajax-post-loader'),
             'type' => 'checkbox',
             'default' => QAPL_Constants::QUERY_SETTING_SHOW_INLINE_FILTER_SEARCH_DEFAULT,
-            'description' => __('Display the search field in the same row as the filter and sorting controls. When disabled, the search field is placed on its own line.', 'quick-ajax-post-loader'),
+            'description' => __('Display the search field in the same row as the taxonomy filter and sorting options.', 'quick-ajax-post-loader'),
         ];
         return self::create_field($field_config);
     }
@@ -269,6 +262,96 @@ class QAPL_Form_Field_Factory {
             'options' => $position_options,
             'default' => QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT,
             'description' => __('Choose where the search field appears when filter or sorting controls are displayed.', 'quick-ajax-post-loader'),
+        ];
+        return self::create_field($field_config);
+    }
+    //override global search placeholder
+    public static function build_override_global_search_placeholder_field(): QAPL_Form_Field_Interface {
+        $field_config = [
+            'name' => QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_PLACEHOLDER,
+            'label' => __('Override Global Search Placeholder', 'quick-ajax-post-loader'),
+            'type' => 'checkbox',
+            'default' => QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_PLACEHOLDER_DEFAULT,
+            'description' => __('Set a different search field placeholder than the one specified in global options.', 'quick-ajax-post-loader'),
+        ];
+        return self::create_field($field_config);
+    }
+    //search field placeholder override
+    public static function build_search_placeholder_field(array $global_options = []): QAPL_Form_Field_Interface {
+        $global_placeholder = !empty($global_options['search_placeholder'])
+            ? $global_options['search_placeholder']
+            : __('Search', 'quick-ajax-post-loader');
+        $field_config = [
+            'name' => QAPL_Constants::QUERY_SETTING_SEARCH_PLACEHOLDER,
+            'label' => __('Search Field Placeholder', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'default' => QAPL_Constants::QUERY_SETTING_SEARCH_PLACEHOLDER_DEFAULT,
+            // shows the inherited value inside the empty input, so the editor sees what is used
+            'placeholder' => $global_placeholder,
+            'description' => sprintf(
+                // translators: %s is the placeholder set in the global plugin options.
+                __('Set the search field placeholder for this shortcode. If left empty, the global placeholder (%s) is used.', 'quick-ajax-post-loader'),
+                $global_placeholder
+            ),
+        ];
+        return self::create_field($field_config);
+    }
+    //search box template
+    public static function build_search_box_template_field(): QAPL_Form_Field_Interface {
+        $file_manager = new QAPL_File_Manager();
+        $templates = $file_manager->get_templates_items_array('search-box/search-box*.php', 'Search Box Name', QAPL_Constants::QUERY_SETTING_SEARCH_BOX_TEMPLATE_DEFAULT);
+        $options = [];
+        foreach ($templates as $template) {
+            $options[] = [
+                'label' => $template['template_name'],
+                'value' => $template['file_name'],
+            ];
+        }
+        $field_config = [
+            'name' => QAPL_Constants::QUERY_SETTING_SEARCH_BOX_TEMPLATE,
+            'label' => __('Select Search Box Template', 'quick-ajax-post-loader'),
+            'type' => 'select',
+            'options' => $options,
+            'default' => QAPL_Constants::QUERY_SETTING_SEARCH_BOX_TEMPLATE_DEFAULT,
+            'description' => __('Choose a template for displaying the search field.', 'quick-ajax-post-loader'),
+            'tooltip' => [
+                'title' => __('How to add a new search box template?', 'quick-ajax-post-loader'),
+                'content' => __('To add a new search box template you need to create a new PHP file in your theme\'s folder.', 'quick-ajax-post-loader') .
+                            ' <a href="' . esc_url(admin_url(QAPL_Constants::PLUGIN_MENU_SLUG . '&page=' . QAPL_Constants::SETTINGS_PAGE_SLUG . '&tab=3#qapl_help_3_custom_search_button')) . '" target="_blank" rel="noopener noreferrer">' .
+                            __('View detailed guide', 'quick-ajax-post-loader') .
+                            '</a>.',
+            ],
+        ];
+        return self::create_field($field_config);
+    }
+    //override global search button label
+    public static function build_override_global_search_button_label_field(): QAPL_Form_Field_Interface {
+        $field_config = [
+            'name' => QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_BUTTON_LABEL,
+            'label' => __('Override Global Search Button Label', 'quick-ajax-post-loader'),
+            'type' => 'checkbox',
+            'default' => QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_BUTTON_LABEL_DEFAULT,
+            'description' => __('Set a different search button label than the one specified in global options.', 'quick-ajax-post-loader'),
+        ];
+        return self::create_field($field_config);
+    }
+    //search button label override
+    public static function build_search_button_label_field(array $global_options = []): QAPL_Form_Field_Interface {
+        $global_label = !empty($global_options['search_button_label'])
+            ? $global_options['search_button_label']
+            : __('Search', 'quick-ajax-post-loader');
+        $field_config = [
+            'name' => QAPL_Constants::QUERY_SETTING_SEARCH_BUTTON_LABEL,
+            'label' => __('Search Button Label', 'quick-ajax-post-loader'),
+            'type' => 'text',
+            'default' => QAPL_Constants::QUERY_SETTING_SEARCH_BUTTON_LABEL_DEFAULT,
+            // shows the inherited value inside the empty input, so the editor sees what is used
+            'placeholder' => $global_label,
+            'description' => sprintf(
+                // translators: %s is the search button label set in the global plugin options.
+                __('Set the search button label for this shortcode. If left empty, the global label (%s) is used.', 'quick-ajax-post-loader'),
+                $global_label
+            ),
         ];
         return self::create_field($field_config);
     }
@@ -545,7 +628,7 @@ class QAPL_Form_Field_Factory {
             'type' => 'text',
             'default' => __('Search', 'quick-ajax-post-loader'),
             'placeholder' => __('Enter custom placeholder for the search field', 'quick-ajax-post-loader'),
-            'description' => __('Customize the text shown inside the empty search field. It is also used as the field label for screen readers. Match it to the content you display, for example "Search posts", "Find a product", or "Search news".', 'quick-ajax-post-loader'),
+            'description' => __('Customize the search field placeholder. This text will appear inside the empty search field. Examples: "Search", "Search posts", or "Find a product".', 'quick-ajax-post-loader'),
         ];
         return self::create_field($field_config);
     }
@@ -557,7 +640,7 @@ class QAPL_Form_Field_Factory {
             'type' => 'text',
             'default' => __('Search', 'quick-ajax-post-loader'),
             'placeholder' => __('Enter custom label for the search button', 'quick-ajax-post-loader'),
-            'description' => __('The default search button shows a magnifier icon, so this text is not displayed on screen - it is the name announced by screen readers. It becomes visible text only in a custom button template that prints the label instead of the icon.', 'quick-ajax-post-loader'),
+            'description' => __('Customize the search button label. This label will appear on the text button, or will be read by screen readers when the button shows an icon. Examples: "Search", "Find", or "Go".', 'quick-ajax-post-loader'),
         ];
         return self::create_field($field_config);
     }

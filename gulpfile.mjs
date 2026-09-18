@@ -3,7 +3,7 @@ import replace from 'gulp-replace';
 import prettier from 'gulp-prettier';
 import terser from 'gulp-terser';
 import rename from 'gulp-rename';
-import cleanCSS from 'gulp-clean-css';
+import cssnano from 'cssnano';
 import postcss from 'gulp-postcss';
 import autoprefixer from 'autoprefixer';
 
@@ -72,7 +72,7 @@ export const optimizeCss = gulp.task('optimize-css', function () {
 // Task to minify CSS files
 export const minifyCss = gulp.task('minify-css', function () {
     return gulp.src(['css/style.css', 'css/admin-style.css']) // optimized CSS files
-        .pipe(cleanCSS()) // minify CSS
+        .pipe(postcss([cssnano()])) // minify CSS - cssnano keeps @container, clean-css 4 silently broke it
         .pipe(rename({ suffix: '.min' })) // add ".min" suffix
         .pipe(gulp.dest('css')) // output minified CSS files
         .on('end', () => logMessage('CSS minified successfully!'));

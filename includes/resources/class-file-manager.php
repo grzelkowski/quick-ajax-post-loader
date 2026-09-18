@@ -151,7 +151,8 @@ final class QAPL_File_Manager implements QAPL_File_Manager_Interface, QAPL_Templ
         return $this->get_templates_dir_path('/load-more-button.php');
     }
     //template for search button
-    public function get_search_button_template(): string {
-        return $this->get_templates_dir_path('/search-button/search-button.php');
+    public function get_search_box_template(string $template_name = ''): string {
+        $default_name = QAPL_Constants::QUERY_SETTING_SEARCH_BOX_TEMPLATE_DEFAULT;
+        return $this->get_templates_file_path($template_name, $default_name, '/search-box/');
     }
 }

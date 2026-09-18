@@ -16,6 +16,10 @@ final class QAPL_Test_Ajax_Query_Builder {
         self::test_tax_exists();
         self::test_generate_tax_query();
         self::test_quick_ajax_id();
+        self::test_search_phrase();
+        self::test_search_replaces_tax_query();
+        self::test_search_phrase_limit();
+        self::test_empty_search_phrase();
         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- test runner logging
         error_log('[QAPL TEST]['.__CLASS__ .'] FINISHED');
     }
@@ -109,6 +113,67 @@ final class QAPL_Test_Ajax_Query_Builder {
         //strpos('abc123', 'c'); : 2
         //strpos('123', 'c');    : false
         QAPL_Test_Assert::assert(strpos($id, 'c') === 0, 'quick_ajax_id has prefix', $suite, $id, 'c123');
+     }
+
+     public static function test_search_phrase(): void {
+        //test 7 search phrase sanitized and limited to post titles
+        $builder = new QAPL_Ajax_Query_Builder();
+        $suite = QAPL_Test_Assert::suite(__CLASS__, __FUNCTION__);
+        $args = [
+            'post_type' => 'post',
+            's'         => '  <b>news</b>  ',
+        ];
+        $result = $builder->wp_query_args($args, []);
+        QAPL_Test_Assert::assert(isset($result['s']), 's exists', $suite);
+        QAPL_Test_Assert::assert(($result['s'] ?? null) === 'news', 'phrase sanitized and trimmed', $suite, $result['s'] ?? null, 'news');
+        QAPL_Test_Assert::assert(($result['search_columns'] ?? null) === ['post_title'], 'search limited to post_title', $suite, $result['search_columns'] ?? null, ['post_title']);
+     }
+
+     public static function test_search_replaces_tax_query(): void {
+        //test 8 search phrase replaces taxonomy filtering
+        $builder = new QAPL_Ajax_Query_Builder();
+        $suite = QAPL_Test_Assert::suite(__CLASS__, __FUNCTION__);
+        $args = [
+            'post_type'         => 'post',
+            'selected_taxonomy' => 'category',
+            'selected_terms'    => '1,2',
+            's'                 => 'news',
+        ];
+        $result = $builder->wp_query_args($args, []);
+        QAPL_Test_Assert::assert(!isset($result['tax_query']), 'tax_query removed when searching', $suite);
+        QAPL_Test_Assert::assert(($result['s'] ?? null) === 'news', 'phrase kept', $suite, $result['s'] ?? null, 'news');
+     }
+
+     public static function test_search_phrase_limit(): void {
+        //test 9 oversized phrase cut to 200 characters
+        $builder = new QAPL_Ajax_Query_Builder();
+        $suite = QAPL_Test_Assert::suite(__CLASS__, __FUNCTION__);
+        $args = [
+            'post_type' => 'post',
+            // 3-byte character on purpose - 200 is not divisible by 3,
+            // so a byte-based cut would break the last character
+            's'         => str_repeat('€', 250),
+        ];
+        $result = $builder->wp_query_args($args, []);
+        $phrase = $result['s'] ?? '';
+        QAPL_Test_Assert::assert(mb_strlen($phrase) === 200, 'phrase cut to 200 characters', $suite, mb_strlen($phrase), 200);
+        QAPL_Test_Assert::assert(mb_check_encoding($phrase, 'UTF-8'), 'phrase stays valid UTF-8', $suite);
+     }
+
+     public static function test_empty_search_phrase(): void {
+        //test 10 whitespace-only phrase is not a search
+        $builder = new QAPL_Ajax_Query_Builder();
+        $suite = QAPL_Test_Assert::suite(__CLASS__, __FUNCTION__);
+        $args = [
+            'post_type'         => 'post',
+            'selected_taxonomy' => 'category',
+            'selected_terms'    => '1,2',
+            's'                 => '   ',
+        ];
+        $result = $builder->wp_query_args($args, []);
+        QAPL_Test_Assert::assert(!isset($result['s']), 'empty phrase not added to query', $suite);
+        QAPL_Test_Assert::assert(!isset($result['search_columns']), 'search_columns not added without a phrase', $suite);
+        QAPL_Test_Assert::assert(isset($result['tax_query']), 'taxonomy filtering kept', $suite);
      }
 }
 QAPL_Test_Ajax_Query_Builder::run_all();

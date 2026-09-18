@@ -4,7 +4,7 @@ Contributors: grzelkowski
 Tags: ajax, load more, infinite scroll, filter, post grid
 Requires at least: 6.2
 Tested up to: 7.1
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -112,7 +112,7 @@ Yes. You can display posts, pages, and any registered custom post type, each wit
 Enable the taxonomy filter in your shortcode settings and choose a taxonomy (categories, tags, or a custom taxonomy). Filter buttons appear above the grid and update the posts via AJAX.
 
 = Can visitors search posts? =
-Yes. Enable the search field in your shortcode settings. Visitors can then find posts by phrase - results update via AJAX, work together with sorting, and the field can be placed next to the taxonomy filter or on its own line.
+Yes. Enable the search field in your shortcode settings. Visitors can then find posts by title - results update via AJAX, work together with sorting, and the field can be placed next to the taxonomy filter or on its own line. Each shortcode can also use its own placeholder, such as "Search news" or "Search products".
 
 = Can I customize the post templates? =
 Yes. Copy a template to the `/quick-ajax-post-loader/templates/` folder in your theme or child theme and edit it freely. You can also modify individual elements (title, image, excerpt, buttons) via filter hooks.
@@ -147,6 +147,18 @@ Yes. The plugin follows WordPress internationalization standards and can be tran
 
 == Changelog ==
 
+= 1.9.2 - 2026-09-18 =
+- Added per-shortcode search labels - a single shortcode can now use its own search field placeholder and search button label instead of the global ones, for example "Search news" or "Search products".
+- Added a choice of search box layouts - each shortcode can show the search button as a magnifier icon inside the field or as a text button next to it.
+- Improved the filter, search and sorting row on narrow screens - when there is not enough room, the search field and sorting move above the filter buttons, and the search field fits small phone screens.
+- The PHP Snippet Generator now includes the search box layout and the per-shortcode search labels.
+- The search field and its button are now rendered from a single template, so a theme can change the layout of both.
+- The `qapl_render_search_field()` PHP function now takes an optional `$quick_ajax_search` array, so grids added directly in a theme can set their own placeholder and button label.
+- Minor code cleanup and coding standards improvements.
+
+**Note:**
+- A search button template copied into a theme in 1.9.0 or 1.9.1 is no longer used. Move it to `templates/search-box/` and add the `QUICK_AJAX_SEARCH_FIELD` token where the search field should appear. Until then the built-in template is used, so the search keeps working.
+
 = 1.9.1 - 2026-08-25 =
 - Fixed minor CSS issues that could affect the layout of the filter, sorting, and search controls in some themes.
 - Improved taxonomy filter buttons - the selected term is now highlighted immediately after clicking and keeps its style while posts are loading.
@@ -180,16 +192,12 @@ Yes. The plugin follows WordPress internationalization standards and can be tran
 - Improved AJAX response handling for more reliable and consistent frontend behavior.
 - Improved internal term selection handling for more reliable and consistent behavior.
 
-= 1.8.12 - 2026-05-20 =
-- Updated admin URL handling in tooltip links to ensure proper compatibility across different WordPress setups.
-- Added min/max constraint support for number fields, with both browser-side and server-side validation.
-- Replaced inline display style with a dedicated CSS class for cleaner markup and better compatibility.
-- Minor improvements and refinements to code consistency and standards compliance.
-- Tested and confirmed compatibility with WordPress 7.0.
-
 For the full changelog of earlier versions, see the CHANGELOG.md file included with the plugin or the [GitHub repository](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/CHANGELOG.md).
 
 == Upgrade Notice ==
+
+= 1.9.2 =
+Adds a choice of search box layouts and per-shortcode search labels. Improves the filter, search and sorting row on narrow screens.
 
 = 1.9.1 =
 Minor CSS and interface fixes for the filter, sorting, and search controls. Tested with WordPress 7.1.
@@ -199,10 +207,6 @@ Adds a search option that lets visitors find posts by phrase directly in the AJA
 
 = 1.8.14 =
 Security release: hardened capability checks and improved input sanitization. Also improves performance by loading plugin assets only where needed. Update recommended for all users.
-
-= 1.8.12 =
-Improves admin URL handling, adds min/max validation for number fields, and replaces inline styles with dedicated CSS classes.
-Tested and confirmed compatible with WordPress 7.0.
 
 == Additional Links ==
 

@@ -264,6 +264,10 @@
             var result = postNotIn.join(", ");
             return result;
         },
+        escapePhpString: function (value) {
+            // the value is printed inside a single-quoted PHP string
+            return String(value).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+        },
         cleanClassNames: function (inputDataString) {
             // Replace commas with spaces
             let cleaned = inputDataString.replace(/,/g, " ");
@@ -466,14 +470,54 @@
             if (inputData.qapl_show_search_field !== 1) {
                 return formattedItem;
             }
+            // custom labels only when their override is enabled and the field is filled in
+            let searchPlaceholder = "";
+            if (inputData.qapl_override_global_search_placeholder === 1 && inputData.qapl_search_placeholder) {
+                searchPlaceholder = inputData.qapl_search_placeholder.trim();
+            }
+            let searchButtonLabel = "";
+            if (inputData.qapl_override_global_search_button_label === 1 && inputData.qapl_search_button_label) {
+                searchButtonLabel = inputData.qapl_search_button_label.trim();
+            }
+            // the select always holds a template, so the chosen one is always printed
+            let searchBoxTemplate = "";
+            if (inputData.qapl_search_box_template) {
+                searchBoxTemplate = inputData.qapl_search_box_template;
+            }
+            // only the keys that are actually set are printed, so nothing has to be passed as a filler
+            const searchOptions = [];
+            if (searchPlaceholder !== "") {
+                searchOptions.push("    '" + qapl_quick_ajax_admin_data.constants.search_option_placeholder + "' => '" + this.escapePhpString(searchPlaceholder) + "'");
+            }
+            if (searchButtonLabel !== "") {
+                searchOptions.push("    '" + qapl_quick_ajax_admin_data.constants.search_option_button_label + "' => '" + this.escapePhpString(searchButtonLabel) + "'");
+            }
+            if (searchBoxTemplate !== "") {
+                searchOptions.push("    '" + qapl_quick_ajax_admin_data.constants.search_option_template + "' => '" + this.escapePhpString(searchBoxTemplate) + "'");
+            }
+            let quickAjaxSearchOptionsValue = "";
+            if (searchOptions.length > 0) {
+                quickAjaxSearchOptionsValue += "$quick_ajax_search = [\n";
+                quickAjaxSearchOptionsValue += searchOptions.join(",\n") + "\n";
+                quickAjaxSearchOptionsValue += "];";
+            }
             //qapl_render_search_field
             quickAjaxSearchFieldText += "if(function_exists('qapl_render_search_field')){\n";
             quickAjaxSearchFieldText += "    qapl_render_search_field(\n";
             quickAjaxSearchFieldText += "        $quick_ajax_args,\n";
-            quickAjaxSearchFieldText += "        $quick_ajax_attributes\n";
+            if (searchOptions.length > 0) {
+                quickAjaxSearchFieldText += "        $quick_ajax_attributes,\n";
+                quickAjaxSearchFieldText += "        $quick_ajax_search\n";
+            } else {
+                quickAjaxSearchFieldText += "        $quick_ajax_attributes\n";
+            }
             quickAjaxSearchFieldText += "    );\n";
             quickAjaxSearchFieldText += "}";
 
+            if (quickAjaxSearchOptionsValue.trim() !== "") {
+                formattedItem += "\n// Set the options for the search field.\n";
+                formattedItem += quickAjaxSearchOptionsValue.trim() + "\n";
+            }
             if (quickAjaxSearchFieldText.trim() !== "") {
                 formattedItem += "\n// Render the search field for '" + inputData.qapl_select_post_type + "' type posts.\n";
                 formattedItem += quickAjaxSearchFieldText.trim() + "\n";

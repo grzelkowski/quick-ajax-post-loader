@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 
 final class QAPL_Constants{
     // Plugin info
-    public const PLUGIN_VERSION = '1.9.1';
+    public const PLUGIN_VERSION = '1.9.2';
     public const PLUGIN_NAME = 'Quick Ajax Post Loader';
     public const PLUGIN_TEXT_DOMAIN = 'quick-ajax-post-loader';
     public const PLUGIN_SLUG = 'quick-ajax-post-loader';
@@ -82,6 +82,21 @@ final class QAPL_Constants{
     public const QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT = 'after_filters';
     public const QUERY_SETTING_SEARCH_FIELD_POSITION_BEFORE_FILTERS = 'before_filters';
 
+    public const QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_PLACEHOLDER = 'qapl_override_global_search_placeholder';
+    public const QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_PLACEHOLDER_DEFAULT = 0;
+
+    public const QUERY_SETTING_SEARCH_PLACEHOLDER = 'qapl_search_placeholder';
+    public const QUERY_SETTING_SEARCH_PLACEHOLDER_DEFAULT = '';
+
+    public const QUERY_SETTING_SEARCH_BOX_TEMPLATE = 'qapl_search_box_template';
+    public const QUERY_SETTING_SEARCH_BOX_TEMPLATE_DEFAULT = 'search-box';
+
+    public const QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_BUTTON_LABEL = 'qapl_override_global_search_button_label';
+    public const QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_BUTTON_LABEL_DEFAULT = 0;
+
+    public const QUERY_SETTING_SEARCH_BUTTON_LABEL = 'qapl_search_button_label';
+    public const QUERY_SETTING_SEARCH_BUTTON_LABEL_DEFAULT = '';
+
     public const QUERY_SETTING_SELECT_POST_STATUS = 'qapl_select_post_status';
     public const QUERY_SETTING_SELECT_POST_STATUS_DEFAULT = 'publish';
 
@@ -130,6 +145,12 @@ final class QAPL_Constants{
 
     public const LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON = 'qapl_display_show_all_button';
     public const LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON_DEFAULT = 1;
+
+    // Search field options - keys of the $quick_ajax_search array
+    public const SEARCH_OPTION_TEMPLATE = 'template';
+    public const SEARCH_OPTION_POSITION = 'position';
+    public const SEARCH_OPTION_PLACEHOLDER = 'placeholder';
+    public const SEARCH_OPTION_BUTTON_LABEL = 'button_label';
 
     // Ajax settings
     public const AJAX_SETTING_AJAX_INITIAL_LOAD = 'ajax_initial_load';

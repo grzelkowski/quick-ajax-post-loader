@@ -8,6 +8,7 @@
     justify-content: center;
 }
 .quick-ajax-filter-container.quick-ajax-theme button.qapl-button,
+.quick-ajax-search-container.quick-ajax-theme button.qapl-button,
 .quick-ajax-sort-options-container.quick-ajax-theme select{
     padding: 0.625rem 1.25rem;
     font-size: 1rem;
@@ -20,12 +21,14 @@
     outline:unset;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
-.quick-ajax-filter-container.quick-ajax-theme button.qapl-button:focus{
+.quick-ajax-filter-container.quick-ajax-theme button.qapl-button:focus,
+.quick-ajax-search-container.quick-ajax-theme button.qapl-button:focus{
     outline: none;
     text-decoration: none;
     text-decoration-skip-ink: none;
 }
 .quick-ajax-filter-container.quick-ajax-theme button.qapl-button:hover,
+.quick-ajax-search-container.quick-ajax-theme button.qapl-button:hover,
 .quick-ajax-filter-container.quick-ajax-theme button.qapl-button.active,
 /* the clicked button gets .loading right away, .active only after the response arrives -
    without this the button would flip back to the idle style when the cursor leaves */
@@ -39,20 +42,37 @@
 /* Controls Container */
 .quick-ajax-controls-container{
     display: flex;
-    gap: 0.625rem;
+    /* wrapping lets the stacked layout below give the filter its own line */
+    flex-wrap: wrap;
+    /* only shows on a line with free space, so it centres the stacked controls while
+       the inline row, where the filter takes that space, stays as it was */
+    justify-content: center;
+    /* the wider row gap keeps the wrapped controls apart: with the same gap the
+       filter uses between its own rows, a text label search button reads as one
+       of the filter buttons */
+    gap: 1.75rem 0.625rem;
+    margin-bottom: 3rem;
 }
 .quick-ajax-posts-container .qapl-hidden {
     display: none;
 }
 .quick-ajax-controls-container .quick-ajax-filter-container{
     order:1;
+    /* no basis: the filter takes whatever the search field and the sort select leave,
+       so the row never wraps on its own and never puts the filter above the search
+       field - below the breakpoint the stacked layout takes over */
+    flex: 1 1 0;
 }
 .quick-ajax-controls-container .quick-ajax-sort-options-container{
     order:3;
 }
+.quick-ajax-controls-container .quick-ajax-sort-options-container.quick-ajax-theme select{
+    margin-bottom: 0;
+}
 .quick-ajax-controls-container .quick-ajax-filter-container.quick-ajax-theme{
     text-align: left;
     justify-content: start;
+    margin-bottom: 0;
 }
 /* Sort Button */
 .quick-ajax-sort-options-container.quick-ajax-theme{
@@ -116,6 +136,8 @@
 }
 .quick-ajax-search-container.quick-ajax-theme{
     display: flex;
+    /* lets the field shrink on narrow phones instead of overflowing the screen */
+    min-width: 0;
     justify-content: center;
     /* do not stretch: in the inline row the container grows with wrapped filter buttons,
        and a stretched wrapper would push the absolutely positioned icon below the input */
@@ -124,15 +146,25 @@
 }
 .quick-ajax-search-container.quick-ajax-theme .quick-ajax-search-wrapper{
     display: inline-flex;
-    position: relative;
+    min-width: 0;
     /* the wrapper must hug the input, so the button height of 100% equals the input height */
     align-self: flex-start;
     max-width: 100%;
 }
+/* the box comes from the template and decides how the field and the button are arranged */
+.quick-ajax-search-container.quick-ajax-theme .qapl-search-box{
+    display: inline-flex;
+    position: relative;
+    min-width: 0;
+    max-width: 100%;
+}
 .quick-ajax-search-container.quick-ajax-theme .qapl-search-input{
+    /* the input keeps its natural width while there is room and shrinks when there is not */
+    min-width: 0;
+    flex: 1 1 auto;
     /* fixed height keeps the field aligned with filter buttons and the sort select,
        regardless of the font size and line height inherited from the theme */
-    padding: 0 3.25rem 0 1.25rem;
+    padding: 0 1.25rem;
     height: 40px;
     min-height: 40px;
     font-size: 1rem;
@@ -146,6 +178,10 @@
     outline: unset;
     transition: box-shadow 0.3s ease;
 }
+/* room for the icon sitting inside the field */
+.quick-ajax-search-container.quick-ajax-theme .qapl-search-box-icon .qapl-search-input{
+    padding-right: 3.25rem;
+}
 .quick-ajax-search-container.quick-ajax-theme .qapl-search-input:focus{
     outline: none;
     box-shadow: 0 0 14px rgba(0,0,0,0.5);
@@ -153,7 +189,7 @@
 }
 /* themes style bare "button" with high specificity (Twenty Twenty-One uses :not() chains),
    so the icon button needs the full path to win without !important */
-.quick-ajax-search-container.quick-ajax-theme .quick-ajax-search-wrapper button.qapl-search-submit{
+.quick-ajax-search-container.quick-ajax-theme .qapl-search-box-icon button.qapl-search-submit{
     position: absolute;
     top: 0;
     /* inset from the rounded edge, so the icon does not sit on the pill curve */
@@ -179,14 +215,25 @@
     opacity: 1;
     transition: opacity 0.3s ease;
 }
-.quick-ajax-search-container.quick-ajax-theme .quick-ajax-search-wrapper button.qapl-search-submit:hover,
-.quick-ajax-search-container.quick-ajax-theme .quick-ajax-search-wrapper button.qapl-search-submit:focus{
+.quick-ajax-search-container.quick-ajax-theme .qapl-search-box-icon button.qapl-search-submit:hover,
+.quick-ajax-search-container.quick-ajax-theme .qapl-search-box-icon button.qapl-search-submit:focus{
     background: none;
     background-color: transparent;
     box-shadow: none;
     color: #1e1e1e;
     opacity: 0.6;
     transition: opacity 0.3s ease;
+}
+/* text label variant - the button stands next to the field and looks like the other plugin buttons */
+.quick-ajax-search-container.quick-ajax-theme .qapl-search-box-label{
+    gap: 0.5rem;
+}
+.quick-ajax-search-container.quick-ajax-theme .qapl-search-box-label button.qapl-search-submit{
+    position: static;
+    /* the box stretches its items, so the button keeps the height of the field */
+    flex: 0 0 auto;
+    white-space: nowrap;
+    cursor: pointer;
 }
 .quick-ajax-search-container .qapl-search-icon{
     display: block;
@@ -202,6 +249,87 @@
 }
 .quick-ajax-controls-container .quick-ajax-search-container.quick-ajax-theme{
     justify-content: flex-start;
+    /* no growing: the field would drift away from the sort select */
+    flex: 0 1 auto;
+    margin-bottom: 0;
+}
+/* stacked layout: the search field and the sort select take the top and the filter,
+   the only control of an unpredictable height, gets its own line below them.
+   The stacking is forced rather than left to flex wrapping, because a wrapped row
+   keeps the inline order and would put the search field under the filter.
+   Browsers with container queries decide by the width of the row itself. Older
+   browsers, and Safari 16 which lacks contain-intrinsic-inline-size, use the window */
+@supports not ((container-type: inline-size) and (contain-intrinsic-inline-size: 1px)){
+    /* 988px leaves the row about 58rem when the content column spans the window */
+    @media (max-width: 988px){
+        .quick-ajax-controls-container .quick-ajax-search-container.search-before-filters,
+        .quick-ajax-controls-container .quick-ajax-search-container.search-after-filters{
+            order: 0;
+        }
+        .quick-ajax-controls-container .quick-ajax-sort-options-container{
+            order: 1;
+        }
+        .quick-ajax-controls-container .quick-ajax-filter-container{
+            order: 2;
+            flex-basis: 100%;
+        }
+        /* stacked controls are centred, each on a line of its own */
+        .quick-ajax-controls-container .quick-ajax-filter-container.quick-ajax-theme{
+            justify-content: center;
+            text-align: center;
+        }
+        .quick-ajax-controls-container .quick-ajax-search-container.quick-ajax-theme{
+            justify-content: center;
+        }
+        .quick-ajax-controls-container .quick-ajax-sort-options-container.quick-ajax-theme{
+            justify-content: center;
+            /* the auto margin pushes the select to the right in the inline row */
+            margin-left: 0;
+        }
+    }
+    /* on one line the row must never wrap by itself, the controls shrink instead,
+       the search field first. This is the exact complement of the breakpoint above */
+    @media not all and (max-width: 988px){
+        .quick-ajax-controls-container{
+            flex-wrap: nowrap;
+        }
+    }
+}
+@supports (container-type: inline-size) and (contain-intrinsic-inline-size: 1px){
+    .quick-ajax-controls-container{
+        container-type: inline-size;
+        /* size containment ignores the content, so in a flex, grid or inline-block parent
+           the row would collapse to zero width without its own width and a fallback size */
+        width: 100%;
+        min-width: 0;
+        contain-intrinsic-inline-size: 40rem;
+    }
+    @container (max-width: 58rem){
+        .quick-ajax-controls-container .quick-ajax-search-container.search-before-filters,
+        .quick-ajax-controls-container .quick-ajax-search-container.search-after-filters{
+            order: 0;
+        }
+        .quick-ajax-controls-container .quick-ajax-sort-options-container{
+            order: 1;
+        }
+        .quick-ajax-controls-container .quick-ajax-filter-container{
+            order: 2;
+            flex-basis: 100%;
+        }
+        /* stacked controls are centred, each on a line of its own */
+        .quick-ajax-controls-container .quick-ajax-filter-container.quick-ajax-theme{
+            justify-content: center;
+            text-align: center;
+        }
+        .quick-ajax-controls-container .quick-ajax-search-container.quick-ajax-theme{
+            justify-content: center;
+        }
+        .quick-ajax-controls-container .quick-ajax-sort-options-container.quick-ajax-theme{
+            justify-content: center;
+            /* the auto margin pushes the select to the right in the inline row */
+            margin-left: 0;
+        }
+    }
 }
 /* Post Container */
 .quick-ajax-posts-container.quick-ajax-theme{

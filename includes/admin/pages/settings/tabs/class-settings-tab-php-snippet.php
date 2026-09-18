@@ -40,6 +40,16 @@ class QAPL_Settings_Tab_PHP_Snippet implements QAPL_Settings_Tab_Interface{
             QAPL_Form_Field_Factory::build_select_sort_button_options_field($global_options),
             //show search field
             QAPL_Form_Field_Factory::build_show_search_field(),
+            //search box template
+            QAPL_Form_Field_Factory::build_search_box_template_field(),
+            //override global search placeholder
+            QAPL_Form_Field_Factory::build_override_global_search_placeholder_field(),
+            //search placeholder
+            QAPL_Form_Field_Factory::build_search_placeholder_field($global_options),
+            //override global search button label
+            QAPL_Form_Field_Factory::build_override_global_search_button_label_field(),
+            //search button label
+            QAPL_Form_Field_Factory::build_search_button_label_field($global_options),
 
             //Additional Settings
             //add Excluded Post IDs
@@ -138,7 +148,51 @@ class QAPL_Settings_Tab_PHP_Snippet implements QAPL_Settings_Tab_Interface{
             $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SELECT_POSTS_PER_PAGE);
 
             //toggle search field - no position field here, the snippet order decides where the field is printed
-            $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD);
+            $field_options = $this->settings_page->field_options_wrapper([
+                'is_trigger' => true,
+            ]);
+            $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD, $field_options);
+            //search box template
+            $field_options = $this->settings_page->field_options_wrapper([
+                'visible_if' => [
+                    QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD => '1'
+                ]
+            ]);
+            $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SEARCH_BOX_TEMPLATE, $field_options);
+            //override global search placeholder
+            $field_options = $this->settings_page->field_options_wrapper([
+                'is_trigger' => true,
+                'visible_if' => [
+                    QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD => '1'
+                ]
+            ]);
+            $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_PLACEHOLDER, $field_options);
+            //search placeholder
+            $field_options = $this->settings_page->field_options_wrapper([
+                'is_trigger' => false,
+                'visible_if' => [
+                    QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD => '1',
+                    QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_PLACEHOLDER => '1'
+                ]
+            ]);
+            $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SEARCH_PLACEHOLDER, $field_options);
+            //override global search button label
+            $field_options = $this->settings_page->field_options_wrapper([
+                'is_trigger' => true,
+                'visible_if' => [
+                    QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD => '1'
+                ]
+            ]);
+            $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_BUTTON_LABEL, $field_options);
+            //search button label
+            $field_options = $this->settings_page->field_options_wrapper([
+                'is_trigger' => false,
+                'visible_if' => [
+                    QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD => '1',
+                    QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_BUTTON_LABEL => '1'
+                ]
+            ]);
+            $form_tab_function_generator .= $this->settings_page->render_field(QAPL_Constants::QUERY_SETTING_SEARCH_BUTTON_LABEL, $field_options);
             $form_tab_function_generator .= '</div>';
             //post settings
             $form_tab_function_generator .= '<div class="quick-ajax-layout-settings quick-ajax-mt-20">';

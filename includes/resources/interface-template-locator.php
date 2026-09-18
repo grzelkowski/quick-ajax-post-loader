@@ -13,5 +13,5 @@ interface QAPL_Template_Locator_Interface {
     public function get_end_posts_template(): string;
     public function get_taxonomy_filter_button_template(): string;
     public function get_load_more_button_template(): string;
-    public function get_search_button_template(): string;
+    public function get_search_box_template(string $template_name = ''): string;
 }

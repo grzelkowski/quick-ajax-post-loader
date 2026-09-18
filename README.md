@@ -108,7 +108,7 @@ Yes. You can display posts, pages, and any registered custom post type, each wit
 Enable the taxonomy filter in your shortcode settings and choose a taxonomy (categories, tags, or a custom taxonomy). Filter buttons appear above the grid and update the posts via AJAX.
 
 ### Can visitors search posts?
-Yes. Enable the search field in your shortcode settings. Visitors can then find posts by phrase - results update via AJAX, work together with sorting, and the field can be placed next to the taxonomy filter or on its own line.
+Yes. Enable the search field in your shortcode settings. Visitors can then find posts by title - results update via AJAX, work together with sorting, and the field can be placed next to the taxonomy filter or on its own line. Each shortcode can also use its own placeholder, such as "Search news" or "Search products".
 
 ### Can I customize the post templates?
 Yes. Copy a template to the `/quick-ajax-post-loader/templates/` folder in your theme or child theme and edit it freely. You can also modify individual elements (title, image, excerpt, buttons) via filter hooks.

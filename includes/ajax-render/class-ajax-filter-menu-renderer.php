@@ -280,7 +280,40 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
         $sort_option .= '</div>';                      
         return $sort_option;
     }
-    public function render_search_field($layout, $attributes, $source_args, $quick_ajax_id, $position = QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT) {
+    /**
+     * Accepts the named options array and, for backward compatibility, a plain
+     * position string as passed by themes before the array was introduced.
+     */
+    private function normalize_search_options($search_options): array {
+        if (is_string($search_options)) {
+            $search_options = [QAPL_Constants::SEARCH_OPTION_POSITION => $search_options];
+        }
+        if (!is_array($search_options)) {
+            $search_options = [];
+        }
+        $position = isset($search_options[QAPL_Constants::SEARCH_OPTION_POSITION])
+            ? sanitize_text_field($search_options[QAPL_Constants::SEARCH_OPTION_POSITION])
+            : '';
+        // any unknown value falls back to the default position
+        if ($position !== QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_BEFORE_FILTERS) {
+            $position = QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT;
+        }
+        $text_value = function ($key) use ($search_options) {
+            return isset($search_options[$key]) && is_string($search_options[$key])
+                ? trim($search_options[$key])
+                : '';
+        };
+        return [
+            QAPL_Constants::SEARCH_OPTION_TEMPLATE     => $text_value(QAPL_Constants::SEARCH_OPTION_TEMPLATE),
+            QAPL_Constants::SEARCH_OPTION_POSITION     => $position,
+            QAPL_Constants::SEARCH_OPTION_PLACEHOLDER  => $text_value(QAPL_Constants::SEARCH_OPTION_PLACEHOLDER),
+            QAPL_Constants::SEARCH_OPTION_BUTTON_LABEL => $text_value(QAPL_Constants::SEARCH_OPTION_BUTTON_LABEL),
+        ];
+    }
+    public function render_search_field($layout, $attributes, $source_args, $quick_ajax_id, $search_options = []) {
+        $search_options = $this->normalize_search_options($search_options);
+        // only the position is used here, the rest travels with the options array
+        $position = $search_options[QAPL_Constants::SEARCH_OPTION_POSITION];
         $block_id = 'quick-ajax-search-'.$quick_ajax_id;
         $class_container = 'quick-ajax-search-container';
         // position modifier - needed inside the inline controls container, where flex order decides the layout
@@ -313,40 +346,58 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
         ];
         ob_start();
         echo '<div id="'.esc_attr($block_id).'" class="'.esc_attr($container_class).'">';
-        echo wp_kses($this->create_search_input($attributes, $source_args, $quick_ajax_id), $allowed_search_html);
+        echo wp_kses($this->create_search_input($attributes, $source_args, $quick_ajax_id, $search_options), $allowed_search_html);
         echo '</div>';
         return ob_get_clean();
     }
-    private function create_search_input($attributes, $source_args, $quick_ajax_id) {
+    private function create_search_input($attributes, $source_args, $quick_ajax_id, $search_options = []) {
         $attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $quick_ajax_id;
         $input_id = 'quick-ajax-search-input-'.$quick_ajax_id;
         $current_phrase = isset($source_args['s']) ? sanitize_text_field($source_args['s']) : '';
-        // labels come from global options, with the translated defaults as fallback
-        $label = !empty($this->global_options['search_placeholder']) ? $this->global_options['search_placeholder'] : __('Search', 'quick-ajax-post-loader');
+        $button_label = $search_options[QAPL_Constants::SEARCH_OPTION_BUTTON_LABEL] ?? '';
+        $template_name = $search_options[QAPL_Constants::SEARCH_OPTION_TEMPLATE] ?? '';
+        // per-shortcode placeholder wins, then the global option, then the translated default
+        $label = $search_options[QAPL_Constants::SEARCH_OPTION_PLACEHOLDER] ?? '';
+        if ($label === '') {
+            $label = !empty($this->global_options['search_placeholder'])
+                ? $this->global_options['search_placeholder']
+                : __('Search', 'quick-ajax-post-loader');
+        }
 
-        $search_field = '<div class="quick-ajax-search-wrapper">';
-        $search_field .= '<input type="search" id="'.esc_attr($input_id).'" class="qapl-search-input"'
+        // the input is always built here - a template can place it, never change it
+        $input = '<input type="search" id="'.esc_attr($input_id).'" class="qapl-search-input"'
             .' name="quick_ajax_search_option" value="'.esc_attr($current_phrase).'"'
             .' placeholder="'.esc_attr($label).'" aria-label="'.esc_attr($label).'" autocomplete="off" />';
-        $search_field .= $this->create_search_button();
+
+        // the wrapper stays in PHP - the click handler reaches the input through it
+        $search_field = '<div class="quick-ajax-search-wrapper">';
+        $search_field .= $this->create_search_box($input, $button_label, $template_name);
+        $search_field .= '</div>';
+        // the settings sit next to the wrapper - the script looks for them inside the container
         $search_field .= '<span class="quick-ajax-settings" data-button="'.QAPL_Constants::SEARCH_FIELD_BUTTON_DATA_BUTTON.'"'
             .' data-attributes="'.esc_attr(wp_json_encode($attributes)).'"'
             .' data-action="'.esc_attr(wp_json_encode($source_args)).'"></span>';
-        $search_field .= '</div>';
         return $search_field;
     }
-    private function create_search_button() {
-        $button_template = $this->file_manager->get_search_button_template();
-        //skip the button if the template is missing or was removed by a theme override
-        if (empty($button_template) || !file_exists($button_template)) {
-            return '';
+    private function create_search_box($input, $button_label = '', $template_name = '') {
+        $box_template = $this->file_manager->get_search_box_template($template_name);
+        //without a template the field still works, only the button is missing
+        if (empty($box_template) || !file_exists($box_template)) {
+            return $input;
         }
         ob_start();
-        include($button_template);
-        $button = ob_get_clean();
-        $button_label = !empty($this->global_options['search_button_label']) ? $this->global_options['search_button_label'] : __('Search', 'quick-ajax-post-loader');
+        include($box_template);
+        $box = ob_get_clean();
+        // per-shortcode label wins, then the global option, then the translated default
+        if ($button_label === '') {
+            $button_label = !empty($this->global_options['search_button_label'])
+                ? $this->global_options['search_button_label']
+                : __('Search', 'quick-ajax-post-loader');
+        }
         //same token as the taxonomy filter button - screen reader name of the icon button, visible text in a text-only template
-        return str_replace('QUICK_AJAX_LABEL', esc_attr($button_label), $button);
+        $box = str_replace('QUICK_AJAX_LABEL', esc_attr($button_label), $box);
+        //the ready input is injected, so a template decides where it sits but not how it looks
+        return str_replace('QUICK_AJAX_SEARCH_FIELD', $input, $box);
     }
     public function update_button_template($button_data) {
         $button_label = isset($button_data['button_label']) ? esc_html($button_data['button_label']) : '';

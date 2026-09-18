@@ -53,7 +53,7 @@ function qapl_render_sort_controls($args, $attributes, $sort_options) {
     echo $controller->render_sort_controls($args, $attributes, $sort_options);
 }
 
-function qapl_render_search_field($args, $attributes, $position = QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT) {
+function qapl_render_search_field($args, $attributes, $search_options = []) {
     QAPL_Enqueue_Handler::enqueue_frontend_assets();
     if (!is_array($args)) {
         return;
@@ -61,5 +61,5 @@ function qapl_render_search_field($args, $attributes, $position = QAPL_Constants
     $manager = qapl_get_controller_registry();
     $controller = $manager->get_controller($args, $attributes);
     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-    echo $controller->render_search_controls($args, $attributes, $position);
+    echo $controller->render_search_controls($args, $attributes, $search_options);
 }

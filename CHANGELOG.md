@@ -1,5 +1,17 @@
 ## Changelog
 
+### 1.9.2 - 2026-09-18
+- Added per-shortcode search labels - a single shortcode can now use its own search field placeholder and search button label instead of the global ones, for example "Search news" or "Search products".
+- Added a choice of search box layouts - each shortcode can show the search button as a magnifier icon inside the field or as a text button next to it.
+- Improved the filter, search and sorting row on narrow screens - when there is not enough room, the search field and sorting move above the filter buttons, and the search field fits small phone screens.
+- The PHP Snippet Generator now includes the search box layout and the per-shortcode search labels.
+- The search field and its button are now rendered from a single template, so a theme can change the layout of both.
+- The `qapl_render_search_field()` PHP function now takes an optional `$quick_ajax_search` array, so grids added directly in a theme can set their own placeholder and button label.
+- Minor code cleanup and coding standards improvements.
+
+**Note:**
+- A search button template copied into a theme in 1.9.0 or 1.9.1 is no longer used. Move it to `templates/search-box/` and add the `QUICK_AJAX_SEARCH_FIELD` token where the search field should appear. Until then the built-in template is used, so the search keeps working.
+
 ### 1.9.1 - 2026-08-25
 - Fixed minor CSS issues that could affect the layout of the filter, sorting, and search controls in some themes.
 - Improved taxonomy filter buttons - the selected term is now highlighted immediately after clicking and keeps its style while posts are loading.
@@ -322,6 +334,9 @@
 - Initial release.
 
 ## Upgrade Notice
+
+### 1.9.2
+Adds a choice of search box layouts and per-shortcode search labels. Improves the filter, search and sorting row on narrow screens.
 
 ### 1.9.1
 Minor CSS and interface fixes for the filter, sorting, and search controls. Tested with WordPress 7.1.

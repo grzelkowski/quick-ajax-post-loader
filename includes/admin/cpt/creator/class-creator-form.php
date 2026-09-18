@@ -35,8 +35,18 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
             QAPL_Form_Field_Factory::build_show_inline_filter_sorting_field(),
             //show search field
             QAPL_Form_Field_Factory::build_show_search_field(),
+            //search box template
+            QAPL_Form_Field_Factory::build_search_box_template_field(),
             //search field position
             QAPL_Form_Field_Factory::build_search_field_position_field(),
+            //override global search placeholder
+            QAPL_Form_Field_Factory::build_override_global_search_placeholder_field(),
+            //search placeholder override
+            QAPL_Form_Field_Factory::build_search_placeholder_field($global_options),
+            //override global search button label
+            QAPL_Form_Field_Factory::build_override_global_search_button_label_field(),
+            //search button label override
+            QAPL_Form_Field_Factory::build_search_button_label_field($global_options),
             //inline Filter & Search
             QAPL_Form_Field_Factory::build_show_inline_filter_search_field(),
             //add Excluded Post IDs
@@ -136,6 +146,14 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
         ]);
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD, $field_options);
 
+        // search box template
+        $field_options = $this->field_options([
+            'visible_if' => [
+                QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD => '1'
+            ]
+        ]);
+        $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SEARCH_BOX_TEMPLATE, $field_options);
+
         // search field position
         $field_options = $this->field_options([
             'visible_if' => [
@@ -143,6 +161,44 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
             ]
         ]);
         $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION, $field_options);
+
+        // override global search placeholder
+        $field_options = $this->field_options([
+            'is_trigger' => true,
+            'visible_if' => [
+                QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD => '1'
+            ]
+        ]);
+        $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_PLACEHOLDER, $field_options);
+
+        // search placeholder
+        $field_options = $this->field_options([
+            'is_trigger' => false,
+            'visible_if' => [
+                QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD => '1',
+                QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_PLACEHOLDER => '1'
+            ]
+        ]);
+        $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SEARCH_PLACEHOLDER, $field_options);
+
+        // override global search button label
+        $field_options = $this->field_options([
+            'is_trigger' => true,
+            'visible_if' => [
+                QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD => '1'
+            ]
+        ]);
+        $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_BUTTON_LABEL, $field_options);
+
+        // search button label
+        $field_options = $this->field_options([
+            'is_trigger' => false,
+            'visible_if' => [
+                QAPL_Constants::QUERY_SETTING_SHOW_SEARCH_FIELD => '1',
+                QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_BUTTON_LABEL => '1'
+            ]
+        ]);
+        $shortcode_page .= $this->add_field(QAPL_Constants::QUERY_SETTING_SEARCH_BUTTON_LABEL, $field_options);
 
         // inline filter and search
         $field_options = $this->field_options([

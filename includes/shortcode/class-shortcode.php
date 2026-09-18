@@ -130,6 +130,40 @@ class QAPL_Shortcode {
         }
         return QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT;
     }
+    private function create_shortcode_search_placeholder(){
+        $override = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_PLACEHOLDER])
+            ? (int) $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_PLACEHOLDER]
+            : QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_PLACEHOLDER_DEFAULT;
+        // without the override checkbox the global placeholder is used
+        if($override !== 1){
+            return '';
+        }
+        $placeholder = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SEARCH_PLACEHOLDER])
+            ? trim((string) $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SEARCH_PLACEHOLDER])
+            : '';
+        // an empty field would leave the input without an accessible name - keep the global one
+        return $placeholder;
+    }
+    private function create_shortcode_search_button_label(){
+        $override = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_BUTTON_LABEL])
+            ? (int) $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_BUTTON_LABEL]
+            : QAPL_Constants::QUERY_SETTING_OVERRIDE_GLOBAL_SEARCH_BUTTON_LABEL_DEFAULT;
+        // without the override checkbox the global label is used
+        if($override !== 1){
+            return '';
+        }
+        $button_label = isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SEARCH_BUTTON_LABEL])
+            ? trim((string) $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SEARCH_BUTTON_LABEL])
+            : '';
+        // an empty field would leave the button without an accessible name - keep the global one
+        return $button_label;
+    }
+    private function create_shortcode_search_box_template(){
+        // an unknown name falls back to the default template in the file manager
+        return isset($this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SEARCH_BOX_TEMPLATE])
+            ? trim((string) $this->shortcode_postmeta[QAPL_Constants::QUERY_SETTING_SEARCH_BOX_TEMPLATE])
+            : '';
+    }
 
     public function render_quick_ajax_shortcode($params) {
         $this->get_shortcode_params($params);
@@ -147,6 +181,9 @@ class QAPL_Shortcode {
         $render_context['show_search'] = $this->create_shortcode_search_field();
         $render_context['search_position'] = $this->create_shortcode_search_position();
         $render_context['search_inline'] = $this->create_shortcode_search_inline();
+        $render_context['search_placeholder'] = $this->create_shortcode_search_placeholder();
+        $render_context['search_button_label'] = $this->create_shortcode_search_button_label();
+        $render_context['search_box_template'] = $this->create_shortcode_search_box_template();
         ob_start();
         if (!empty($this->query_args) && function_exists('qapl_render_post_container')) {
             qapl_render_post_container($this->query_args, $attributes, $render_context);

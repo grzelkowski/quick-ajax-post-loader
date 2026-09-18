@@ -44,9 +44,16 @@ final class QAPL_Ajax_Frontend_Render {
         $search_position = !empty($render_context['search_position'])
             ? $render_context['search_position']
             : QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT;
+        // named options - empty values mean: use the global ones
+        $search_options = [
+            QAPL_Constants::SEARCH_OPTION_TEMPLATE     => isset($render_context['search_box_template']) ? (string) $render_context['search_box_template'] : '',
+            QAPL_Constants::SEARCH_OPTION_POSITION     => $search_position,
+            QAPL_Constants::SEARCH_OPTION_PLACEHOLDER  => isset($render_context['search_placeholder']) ? (string) $render_context['search_placeholder'] : '',
+            QAPL_Constants::SEARCH_OPTION_BUTTON_LABEL => isset($render_context['search_button_label']) ? (string) $render_context['search_button_label'] : '',
+        ];
         $search_field = '';
         if (!empty($render_context['show_search'])) {
-            $search_field = $this->ui_renderer->render_search_field($layout, $attrs, $source_args, $quick_ajax_id, $search_position);
+            $search_field = $this->ui_renderer->render_search_field($layout, $attrs, $source_args, $quick_ajax_id, $search_options);
         }
         // each control can share the controls row or sit on its own line
         $search_inline = !isset($render_context['search_inline']) || !empty($render_context['search_inline']);
@@ -130,7 +137,7 @@ final class QAPL_Ajax_Frontend_Render {
         $quick_ajax_id      = $context['quick_ajax_id'];
         return $this->ui_renderer->render_sort_options($sort_options, $layout, $query_args, $attrs, $source_args, $quick_ajax_id);
     }
-    public function render_search_controls($source_args, $attributes, $position = QAPL_Constants::QUERY_SETTING_SEARCH_FIELD_POSITION_DEFAULT) {
+    public function render_search_controls($source_args, $attributes, $search_options = []) {
         $context = $this->build_render_context($source_args, $attributes);
         if (!$context) {
             return '';
@@ -138,7 +145,7 @@ final class QAPL_Ajax_Frontend_Render {
         $layout             = $context['layout'];
         $attrs              = $context['attrs'];
         $quick_ajax_id      = $context['quick_ajax_id'];
-        return $this->ui_renderer->render_search_field($layout, $attrs, $source_args, $quick_ajax_id, $position);
+        return $this->ui_renderer->render_search_field($layout, $attrs, $source_args, $quick_ajax_id, $search_options);
     }
     public function render_ajax_response(array $post_args, array $post_attributes) {
         $query_args = $this->query_builder->wp_query_args($post_args, $post_attributes);

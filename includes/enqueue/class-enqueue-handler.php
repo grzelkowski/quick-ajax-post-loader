@@ -143,6 +143,9 @@ final class QAPL_Enqueue_Handler implements QAPL_Enqueue_Handler_Interface {
                 'infinite_scroll' => QAPL_Constants::ATTRIBUTE_AJAX_INFINITE_SCROLL,
                 'show_end_message' => QAPL_Constants::ATTRIBUTE_SHOW_END_MESSAGE,
                 'quick_ajax_id' => QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID,
+                'search_option_template' => QAPL_Constants::SEARCH_OPTION_TEMPLATE,
+                'search_option_placeholder' => QAPL_Constants::SEARCH_OPTION_PLACEHOLDER,
+                'search_option_button_label' => QAPL_Constants::SEARCH_OPTION_BUTTON_LABEL,
             ]
         ];
     }

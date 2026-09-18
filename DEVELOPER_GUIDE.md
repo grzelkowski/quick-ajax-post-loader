@@ -28,7 +28,7 @@ Below are some of the key benefits of using this plugin:
     - 3.3. [Templates: Customize "No Posts Found" Message](#33-templates-customize-no-posts-found-message)
     - 3.4. [Templates: Customize "End of Posts" Message](#34-templates-customize-end-of-posts-message)
     - 3.5. [Templates: Modify Taxonomy Filter Buttons](#35-templates-modify-taxonomy-filter-buttons)
-    - 3.6. [Templates: Modify the Search Button](#36-templates-modify-the-search-button)
+    - 3.6. [Templates: Modify the Search Box](#36-templates-modify-the-search-box)
     - 3.7. [Templates: Customize "Load More" Button Design](#37-templates-customize-load-more-button-design)
     - 3.8. [Templates: How to Create Custom Loading Icons](#38-templates-how-to-create-custom-loading-icons)
     - 3.9. [Templates: Best Practices for Working with Post Layouts](#39-templates-best-practices-for-working-with-post-layouts)
@@ -107,7 +107,10 @@ To add a new shortcode:
     - **Choose Terms** - Select one or more terms from the selected taxonomy to be available in the filter. If no terms are selected, no results will be shown.
     - **Posts Per Page** - Define how many posts will be loaded in a single AJAX request.
     - **Show Search Field** - Adds a search field, so visitors can find posts by phrase.
+    - **Select Search Box Template** - Choose the template used to lay out the search field and its button.
     - **Search Field Position** - Place the search field before or after the taxonomy filter buttons.
+    - **Override Global Search Placeholder** - Give this shortcode its own search field placeholder instead of the global one.
+    - **Override Global Search Button Label** - Give this shortcode its own search button label instead of the global one.
 
 After saving the settings, copy the generated shortcode, e.g.:
 
@@ -123,15 +126,20 @@ This section allows you to configure how posts are sorted when loaded via AJAX.
 - **Default Sort By** - Select the sorting criteria (e.g., by title, date, or comment count).
 - **Show Sorting Button** - Allows users to switch between ascending and descending sorting.
 - **Available Sorting Options** - Choose which sorting methods will be available (e.g., newest, oldest, most popular).
-- **Inline Filter & Sorting** - Display sorting and filtering controls in a single row.
+- **Inline Filter & Sorting** - Display sorting and filtering controls in a single row. When the row is narrower than about 930px (in older browsers: on screens up to 988px wide), sorting is shown above the filter buttons.
 
 ### Search Settings
 
 This section allows you to add a search field to the AJAX loader.
 
 - **Show Search Field** - Displays a search field that finds posts by phrase. Disabled by default.
+- **Select Search Box Template** - Chooses the template that lays out the search field and its button, for example a magnifier icon inside the field. Templates added to your theme appear on this list as well.
 - **Search Field Position** - Places the field before or after the taxonomy filter buttons.
-- **Inline Filter & Search** - Displays the search field in the same row as the filter and sorting controls. When disabled, the field is placed on its own line, above or below that row depending on the selected position.
+- **Override Global Search Placeholder** - Lets this shortcode use its own placeholder instead of the one from Global Options. Disabled by default.
+- **Search Field Placeholder** - The wording shown inside the empty search field, for example "Search news" or "Search products". Available once the override is enabled; leaving it empty keeps the global placeholder.
+- **Override Global Search Button Label** - Lets this shortcode use its own search button label instead of the one from Global Options. Disabled by default.
+- **Search Button Label** - The name of the search button, for example "Find posts". With the magnifier icon template this text is not visible on screen - it is the name announced by screen readers; with the text button template it is the visible button text. Available once the override is enabled; leaving it empty keeps the global label.
+- **Inline Filter & Search** - Displays the search field in the same row as the filter and sorting controls. When disabled, the field is placed on its own line, above or below that row depending on the selected position. When the row is narrower than about 930px (in older browsers: on screens up to 988px wide), the controls are stacked: the search field and sorting are shown above the filter buttons, whatever the selected position.
 
 How the search behaves:
 
@@ -140,7 +148,7 @@ How the search behaves:
 - Picking a taxonomy term while a phrase is active **clears the phrase** - the two never apply at the same time.
 - **Sorting stays active** during a search, so the selected sort order applies to the search results.
 - Results are requested when the visitor presses **Enter**, clicks the **search button**, or stops typing a phrase longer than three characters.
-- The placeholder and the search button label can be changed in **Quick Ajax > Settings & Features**, in the **Global Options** tab. The button label is not shown next to the magnifier icon - it is the name announced by screen readers.
+- The default placeholder and the search button label are set in **Quick Ajax > Settings & Features**, in the **Global Options** tab. A single shortcode can replace either of them through **Override Global Search Placeholder** and **Override Global Search Button Label**, so different grids on one page can use their own wording. With the magnifier icon the button label is not shown on screen - it is the name announced by screen readers.
 
 ### Additional Settings
 
@@ -329,34 +337,55 @@ Create or edit the **taxonomy-filter-button.php** file.
 
 ---
 
-### 3.6. Templates: Modify the Search Button
+### 3.6. Templates: Modify the Search Box
 
-The search field is rendered together with a button that submits the phrase. The whole button, including its magnifier icon, comes from a template you can override - for example to replace the icon with a text label or with your own graphic.
+The search field and the button that submits the phrase come from one template, so you can change the arrangement of both - for example replace the magnifier icon with a text button placed next to the field.
+
+The input itself is always built by the plugin and inserted into the template, so its `id`, `name`, `value` and classes stay correct no matter how the template is edited.
 
 #### Template File Location
 
-The default search button template is located in the plugin directory:
+The plugin ships two search box templates - a magnifier icon inside the field (the default) and a text button next to the field:
 
-    quick-ajax-post-loader/templates/search-button/search-button.php
+    quick-ajax-post-loader/templates/search-box/search-box.php
+    quick-ajax-post-loader/templates/search-box/search-box-label.php
 
-To override it, copy it to your theme folder, keeping the same subdirectory:
+To override one, copy it to your theme folder, keeping the same subdirectory and file name:
 
-    wp-content/themes/your-theme/quick-ajax-post-loader/templates/search-button/
+    wp-content/themes/your-theme/quick-ajax-post-loader/templates/search-box/
+
+#### Creating a New Template File
+
+1. Create a new PHP file in that folder with a name starting with **"search-box"**, e.g.:
+
+    search-box-compact.php
+
+2. Add a header with the template name - it is the name shown in **Select Search Box Template**:
+
+    <?php
+    /* Search Box Name: My Search Box */
+    ?>
 
 #### Example File Structure
 
-    <button type="button" class="qapl-search-submit custom-class" aria-label="QUICK_AJAX_LABEL">
-       QUICK_AJAX_LABEL
-    </button>
+    <div class="qapl-search-box qapl-search-box-label">
+        QUICK_AJAX_SEARCH_FIELD
+        <button type="button" class="qapl-search-submit qapl-button custom-class">
+           QUICK_AJAX_LABEL
+        </button>
+    </div>
 
-The example above renders a text button instead of the default icon.
+The example above is the built-in text button template with an extra class. Its visible label already names the button for screen readers, so it needs no `aria-label` - the icon template, which has no visible text, uses one instead.
 
 #### Note:
 
-- **`QUICK_AJAX_LABEL` is replaced with the search button label** set in **Global Options**. Use it as the accessible name, as visible text, or both - or replace it with your own wording.
+- **`QUICK_AJAX_SEARCH_FIELD` is replaced with the search input.** Put it where the field should appear. Without the token the field is not rendered at all, so the change is easy to spot.
+- **`QUICK_AJAX_LABEL` is replaced with the search button label** - the one set for the shortcode, or the one from **Global Options** when the shortcode does not override it. Use it as the accessible name, as visible text, or both - or replace it with your own wording.
 - The **`qapl-search-submit` class is required** - the click handler is attached to it.
-- The button markup is filtered through **wp_kses**. Inside the button only `svg`, `g`, `circle` and `path` tags are allowed, so an icon built from other SVG shapes will be removed. Plain text always works.
-- With the built-in plugin styles enabled, the button is positioned inside the search field, on its right side. A longer text label may require your own CSS.
+- The **`qapl-button` class** gives a text button the look of the filter buttons when the plugin styles are enabled. Leave it out to style the button yourself.
+- The plugin wraps the template output in its own `quick-ajax-search-wrapper` element, which connects the button with the field, so you never add it yourself.
+- Give the outer element of your template its own class, as the built-in ones do with `qapl-search-box-icon` and `qapl-search-box-label`. It is the only element above the input, so it is what your CSS uses to change the field padding for a layout with the button outside the field.
+- The markup is filtered through **wp_kses**. Only `div`, `input`, `button`, `span` and the `svg`, `g`, `circle`, `path` tags are allowed, so an icon built from other SVG shapes will be removed. Plain text always works.
 
 ---
 
@@ -621,18 +650,18 @@ This filter allows modifying or extending the available sorting methods.
 **Example:**
 
     function modify_sorting_options_variants( $sorting_options, $quick_ajax_id ) {
-    if ($quick_ajax_id === 'p963') {
-        $sorting_options[] = [
-            'orderby' => 'modified',
-            'order'   => 'DESC',
-            'label'   => 'Modify date',
-        ];
+        if ($quick_ajax_id === 'p963') {
+            $sorting_options[] = [
+                'orderby' => 'modified',
+                'order'   => 'DESC',
+                'label'   => 'Modify date',
+            ];
+        }
+        return $sorting_options;
     }
-    return $sorting_options;
-}
-add_filter( 'qapl_modify_sorting_options_variants', 'modify_sorting_options_variants', 10, 2 );
+    add_filter( 'qapl_modify_sorting_options_variants', 'modify_sorting_options_variants', 10, 2 );
 
-This example adds a **sorting option based on the last modified date** for the AJAX instance with **quick_ajax_id = 'p369'**.
+This example adds a **sorting option based on the last modified date** for the AJAX instance with **quick_ajax_id = 'p963'**.
 
 ---
 
@@ -1024,11 +1053,17 @@ The following code enables dynamically displaying posts via AJAX without the nee
         );
     endif;
 
+    // Set the options for the search field.
+    $quick_ajax_search = [
+        'template' => 'search-box'
+    ];
+
     // Render the search field.
     if(function_exists('qapl_render_search_field')):
         qapl_render_search_field(
             $quick_ajax_args,
-            $quick_ajax_attributes
+            $quick_ajax_attributes,
+            $quick_ajax_search
         );
     endif;
 
@@ -1040,6 +1075,8 @@ The following code enables dynamically displaying posts via AJAX without the nee
     );
     endif;
     ?>
+
+The generator always passes the selected search box template to the search field function in a `$quick_ajax_search` array. When **Override Global Search Placeholder** or **Override Global Search Button Label** is enabled, the same array also holds the chosen wording.
 
 ---
 
@@ -1081,7 +1118,17 @@ This function renders a **search field**, allowing users to find posts by phrase
 
 - **$quick_ajax_args** - WP_Query arguments array.
 - **$quick_ajax_attributes** - display attributes array.
-- **$position** *(optional)* - `'after_filters'` (default) or `'before_filters'`. Controls the styling of the field when it is displayed next to taxonomy filter buttons.
+- **$quick_ajax_search** *(optional)* - array of search field options. Every key is optional:
+
+    $quick_ajax_search = [
+        'template'     => 'search-box-label',
+        'placeholder'  => 'Search news',
+        'button_label' => 'Find posts'
+    ];
+
+- **`template`** - search box template name without `.php`: `search-box` (magnifier icon inside the field) or `search-box-label` (text button next to the field). Templates added to your theme in `templates/search-box/` can be used as well. An omitted or unknown name uses `search-box`.
+- **`placeholder`** - wording shown inside the empty field. The same text becomes the field's accessible name. When omitted, the text from **Global Options** is used.
+- **`button_label`** - name of the search button. With the magnifier icon it is not visible on screen - it is the name announced by screen readers. With the text button it is the visible button text. When omitted, the text from **Global Options** is used.
 
 ### Advanced Features Tips
 
@@ -1152,10 +1199,12 @@ This setup fetches **the 6 most recent posts**, ignores **sticky posts**, and ex
 - **grid_num_columns** *(int)* - defines the number of columns in the post grid.
 - **post_item_template** *(string)* - allows selecting a custom post template, e.g., `'post-item-custom-name'` (use the file name without the `.php` extension).
 - **taxonomy_filter_class** *(string)* - adds custom CSS classes to the taxonomy filter.
+- **display_show_all_button** *(int)* - shows or hides the "Show All" button in the taxonomy filter. When it is hidden, the first term is selected on page load.
 - **container_class** *(string)* - adds custom CSS classes to the post grid container.
 - **load_more_posts** *(int)* - defines the number of posts to load when the **"Load More"** button is clicked.
-- **loader_icon** *(int)* - allows choosing a loading icon.
+- **loader_icon** *(string)* - name of the loader icon template, e.g., `'loader-icon'` (use the file name without the `.php` extension).
 - **infinite_scroll** *(int)* - enables or disables infinite scroll. When enabled, more posts will automatically load via AJAX as the user scrolls down the page.
+- **show_end_message** *(int)* - shows the "End of Posts" message once there are no more posts to load.
 - **ajax_initial_load** *(int)* - enables loading the initial set of posts via AJAX on page load. This feature ensures posts are up-to-date, especially in cases of caching issues.
 
 ### Example Configuration of $quick_ajax_attributes
@@ -1171,6 +1220,6 @@ This setup fetches **the 6 most recent posts**, ignores **sticky posts**, and ex
         'loader_icon'           => 'loader-icon',
         'infinite_scroll'       => 1,
         'ajax_initial_load'     => 1
-    );
+    ];
 
-This setup creates **a 3-column post grid**, uses a custom template **`post-item-custom-name`**, and loads **4 posts** when clicking **"Load More"**.
+This setup creates **a 3-column post grid**, uses a custom template **`post-item-custom-name`**, and loads **3 posts** when clicking **"Load More"**.
