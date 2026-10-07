@@ -4,32 +4,37 @@ if (!defined('ABSPATH')) {
 }
 
 final class QAPL_Deprecated_Hooks_Handler {
+    private $deprecated_actions = [];
+    private $deprecated_filters = [];
     private $deprecated_hooks = [];
 
-    public function __construct(array $deprecated_hooks) {
-        $this->deprecated_hooks = $deprecated_hooks;
+    public function __construct(array $deprecated_actions, array $deprecated_filters) {
+        $this->deprecated_actions = $deprecated_actions;
+        $this->deprecated_filters = $deprecated_filters;
+        $this->deprecated_hooks = array_merge($deprecated_actions, $deprecated_filters);
     }
 
     public static function register(): void {
-        $instance = new self(QAPL_Deprecated_Hooks_List::get_hooks());
+        $instance = new self(QAPL_Deprecated_Hooks_List::get_actions(), QAPL_Deprecated_Hooks_List::get_filters());
         add_action('init', [$instance, 'handle_deprecated_hooks']);
         add_action('admin_notices', [$instance, 'display_admin_notice']);
     }
 
+    // the plugin fires only the new names, so the bridge listens on the new hook
+    // and passes the call on to the old one, where the user's code is still attached
     public function handle_deprecated_hooks() {
         // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound
-        foreach ($this->deprecated_hooks as $old_hook => $new_hook) {
-            // Check for deprecated actions
+        foreach ($this->deprecated_actions as $old_hook => $new_hook) {
             if (has_action($old_hook)) {
-                add_action($old_hook, function (...$args) use ($new_hook) {
-                    do_action($new_hook, ...$args);
+                add_action($new_hook, function (...$args) use ($old_hook) {
+                    do_action($old_hook, ...$args);
                 }, 10, 99);
             }
-
-            // Check for deprecated filters
+        }
+        foreach ($this->deprecated_filters as $old_hook => $new_hook) {
             if (has_filter($old_hook)) {
-                add_filter($old_hook, function ($value, ...$args) use ($new_hook) {
-                    return apply_filters($new_hook, $value, ...$args);
+                add_filter($new_hook, function ($value, ...$args) use ($old_hook) {
+                    return apply_filters($old_hook, $value, ...$args);
                 }, 10, 99);
             }
         }
@@ -64,31 +69,3 @@ final class QAPL_Deprecated_Hooks_Handler {
         }
     }
 }
-
-final class QAPL_Deprecated_Hooks_List {
-    public static function get_hooks(): array {
-        return [
-            // Filter Wrapper Hooks
-            'qapl_filter_wrapper_pre'      => QAPL_Constants::HOOK_FILTER_CONTAINER_BEFORE,
-            'qapl_filter_wrapper_open'     => QAPL_Constants::HOOK_FILTER_CONTAINER_START,
-            'qapl_filter_wrapper_close'    => QAPL_Constants::HOOK_FILTER_CONTAINER_END,
-            'qapl_filter_wrapper_complete' => QAPL_Constants::HOOK_FILTER_CONTAINER_AFTER,
-
-            // Posts Wrapper Hooks
-            'qapl_posts_wrapper_pre'      => QAPL_Constants::HOOK_POSTS_CONTAINER_BEFORE,
-            'qapl_posts_wrapper_open'     => QAPL_Constants::HOOK_POSTS_CONTAINER_START,
-            'qapl_posts_wrapper_close'    => QAPL_Constants::HOOK_POSTS_CONTAINER_END,
-            'qapl_posts_wrapper_complete' => QAPL_Constants::HOOK_POSTS_CONTAINER_AFTER,
-
-            // Loader
-            'qapl_loader_icon_pre'        => QAPL_Constants::HOOK_LOADER_BEFORE,
-            'qapl_loader_icon_complete'   => QAPL_Constants::HOOK_LOADER_AFTER,
-
-            // Filters
-            'qapl_modify_query'           => QAPL_Constants::HOOK_MODIFY_POSTS_QUERY_ARGS,
-            'qapl_modify_term_buttons'    => QAPL_Constants::HOOK_MODIFY_TAXONOMY_FILTER_BUTTONS,
-        ];
-    }
-}
-
-QAPL_Deprecated_Hooks_Handler::register();

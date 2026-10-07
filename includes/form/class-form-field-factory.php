@@ -401,6 +401,18 @@ class QAPL_Form_Field_Factory {
 
         return self::create_field($field_config);
     }
+    //keep the current posts visible while new ones load
+    public static function build_keep_posts_while_loading_field(): QAPL_Form_Field_Interface {
+        $field_config = [
+            'name' => QAPL_Constants::LAYOUT_SETTING_KEEP_POSTS_WHILE_LOADING,
+            'label' => __('Keep Posts Visible While Loading', 'quick-ajax-post-loader'),
+            'type' => 'checkbox',
+            'default' => QAPL_Constants::LAYOUT_SETTING_KEEP_POSTS_WHILE_LOADING_DEFAULT,
+            'description' => __('Keep the current posts dimmed until new ones load, instead of clearing the grid.', 'quick-ajax-post-loader'),
+        ];
+
+        return self::create_field($field_config);
+    }
     // show end message
     public static function build_show_end_message_field(): QAPL_Form_Field_Interface {
         $field_config = [

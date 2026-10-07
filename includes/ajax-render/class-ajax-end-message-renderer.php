@@ -5,9 +5,11 @@ if (!defined('ABSPATH')) {
 
 final class QAPL_Ajax_End_Message_Renderer {
         private $file_manager;
+        private $global_options;
 
-    public function __construct(QAPL_Template_Locator_Interface $file_manager) {
-        $this->file_manager = $file_manager;
+    public function __construct(QAPL_Template_Locator_Interface $file_manager, array $global_options = []) {
+        $this->file_manager   = $file_manager;
+        $this->global_options = $global_options;
     }
     public function build_end_of_posts_message($load_more, $max_num_pages, $quick_ajax_id, $show_end_post_message = false) {
         if(!$show_end_post_message){
@@ -22,6 +24,8 @@ final class QAPL_Ajax_End_Message_Renderer {
         $end_post_message_settings = [ 
             'quick_ajax_id' => $quick_ajax_id, //$this->quick_ajax_id returns'c'
             'template_name' => 'end-post-message',
+            // injected, so the factory does not reach for get_option() itself
+            'global_options' => $this->global_options,
         ];
         $qapl_end_post_message_template = QAPL_Post_Template_Factory::get_template($end_post_message_settings);
         QAPL_Post_Template_Context::set_template($qapl_end_post_message_template);

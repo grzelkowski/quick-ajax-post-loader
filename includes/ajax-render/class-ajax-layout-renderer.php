@@ -7,11 +7,13 @@ final class QAPL_Ajax_Layout_Renderer{
     private $file_manager;
     private $load_more_renderer;
     private $helper;
+    private $global_options;
 
-    public function __construct(QAPL_Template_Locator_Interface $file_manager, QAPL_Ajax_Load_More_Renderer $load_more_renderer, QAPL_Ajax_Helper $helper) {
+    public function __construct(QAPL_Template_Locator_Interface $file_manager, QAPL_Ajax_Load_More_Renderer $load_more_renderer, QAPL_Ajax_Helper $helper, array $global_options = []) {
         $this->file_manager         = $file_manager;
         $this->load_more_renderer   = $load_more_renderer;
         $this->helper               = $helper;
+        $this->global_options       = $global_options;
     }
 
     public function render_layout($query_args, $source_args, $layout, $attributes, $ajax_initial_load, $quick_ajax_id) {
@@ -20,8 +22,6 @@ final class QAPL_Ajax_Layout_Renderer{
         }
 
         $query = new WP_Query($query_args);
-        //$this->attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID] = $this->quick_ajax_id;
-        //$layout_quick_ajax_id = esc_attr($this->attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID]);
         $class_container = '';
         $class_inner_container = '';
         if (isset($layout[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE]) && $layout[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_CSS_STYLE] != 0) {
@@ -47,6 +47,8 @@ final class QAPL_Ajax_Layout_Renderer{
             $container_settings = [
                 'quick_ajax_id' => $quick_ajax_id,
                 'template_name' => $attributes[QAPL_Constants::ATTRIBUTE_POST_ITEM_TEMPLATE],
+                // injected, so the factory does not reach for get_option() itself
+                'global_options' => $this->global_options,
             ];
             $qapl_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
             QAPL_Post_Template_Context::set_template($qapl_post_template);
@@ -68,6 +70,8 @@ final class QAPL_Ajax_Layout_Renderer{
             $container_settings = [
                 'quick_ajax_id' => $quick_ajax_id,
                 'template_name' => 'no-post-message',
+                // injected, so the factory does not reach for get_option() itself
+                'global_options' => $this->global_options,
             ];
             $qapl_no_post_template = QAPL_Post_Template_Factory::get_template($container_settings);
             QAPL_Post_Template_Context::set_template($qapl_no_post_template);
@@ -93,7 +97,6 @@ final class QAPL_Ajax_Layout_Renderer{
         // Get the buffered content into a variable
         $output = ob_get_clean(); 
         
-        //$output = $this->replace_placeholders($output); // not in use after removing placeholders
         return $output; // Return the content
     }
     private function render_loader($layout) {
@@ -114,8 +117,6 @@ final class QAPL_Ajax_Layout_Renderer{
             'post_count'      => intval($query->post_count),
             'infinite_scroll' => $infinite_scroll,
         ];
-        //echo wp_kses_post($this->load_more_button(intval($query->get('paged')), intval($query->max_num_pages), intval($query->found_posts), intval($query->post_count), $infinite_scroll));
-        //echo wp_kses_post($this->load_more_button($attributes, $source_args, $query_data, $quick_ajax_id));
         $load_more_data = $this->load_more_renderer->build_load_more_button($attributes, $source_args, $query_data, $quick_ajax_id);
         if (!$load_more_data) {
             return;

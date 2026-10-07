@@ -172,7 +172,6 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
         do_action(QAPL_Constants::HOOK_FILTER_CONTAINER_AFTER, $quick_ajax_id);
 
         $output = ob_get_clean(); // Get the buffered content into a variable
-        //$output = $this->replace_placeholders($output); // not in use after removing placeholders
         return $output; // Return the content
     }
 
@@ -249,7 +248,8 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
 
             $button_option = [
                 'label'   => __('Sort by', 'quick-ajax-post-loader'),
-                'id' => 'quick_ajax_sort_option',
+                // unique per instance - the script finds the select by name, so several instances can share it
+                'id' => 'quick-ajax-sort-select-'.$quick_ajax_id,
                 'name' => 'quick_ajax_sort_option',
                 'options' => $filtered_orderby_options
             ];
@@ -272,7 +272,7 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
         foreach ($button_data['options'] as $option) {
             $value = esc_attr($option['value']);
             $label = esc_html($option['label']);
-            $selected = ($default_option == $option['value']) ? ' selected' : '';
+            $selected = ($default_option === $option['value']) ? ' selected' : '';
             $sort_option .= '<option value="' . $value . '"'.$selected.'>' . $label . '</option>';
         }
         $sort_option .= '</select>';
@@ -408,11 +408,13 @@ final class QAPL_Ajax_Filter_Menu_Renderer{
         //skip rendering if template is missing or invalid
             return '';
         }
-        if($button_data['data-button'] == QAPL_Constants::LOAD_MORE_BUTTON_DATA_BUTTON){
+        if($button_data['data-button'] === QAPL_Constants::LOAD_MORE_BUTTON_DATA_BUTTON){
             $quick_ajax_id = $button_data['data-attributes'][QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID] ?? '';
             $load_more_settings = [
                 'quick_ajax_id' => $quick_ajax_id,
                 'template_name' => 'load-more-button',
+                // injected, so the factory does not reach for get_option() itself
+                'global_options' => $this->global_options,
             ];
             $qapl_load_more_template = QAPL_Post_Template_Factory::get_template($load_more_settings);
             QAPL_Post_Template_Context::set_template($qapl_load_more_template);

@@ -84,6 +84,12 @@ class QAPL_Shortcode_Attributes_Provider {
             'type' => 'bool',
             'default' => QAPL_Constants::LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON_DEFAULT,
         ]);
+        $attributes[QAPL_Constants::ATTRIBUTE_KEEP_POSTS_WHILE_LOADING] = $this->get_sanitized_attribute([
+            'shortcode_key' => QAPL_Constants::ATTRIBUTE_KEEP_POSTS_WHILE_LOADING,
+            'postmeta_key' => QAPL_Constants::LAYOUT_SETTING_KEEP_POSTS_WHILE_LOADING,
+            'type' => 'bool',
+            'default' => QAPL_Constants::LAYOUT_SETTING_KEEP_POSTS_WHILE_LOADING_DEFAULT,
+        ]);
         return $attributes;
     }
     private function get_sanitized_attribute(array $config) {

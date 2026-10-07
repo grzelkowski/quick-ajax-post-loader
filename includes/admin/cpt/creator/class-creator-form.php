@@ -77,6 +77,8 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
             QAPL_Form_Field_Factory::build_override_global_loader_icon_field(),
             //select loader icon
             QAPL_Form_Field_Factory::build_select_loader_icon(),
+            //keep posts visible while loading
+            QAPL_Form_Field_Factory::build_keep_posts_while_loading_field(),
         ]);
     }
     
@@ -329,6 +331,9 @@ class QAPL_CPT_Creator_Form extends QAPL_CPT_Editor_Form {
             ]
         ]);
         $shortcode_page .= $this->add_field(QAPL_Constants::LAYOUT_SETTING_SELECT_LOADER_ICON, $field_options);
+
+        // keep posts visible while loading
+        $shortcode_page .= $this->add_field(QAPL_Constants::LAYOUT_SETTING_KEEP_POSTS_WHILE_LOADING);
         $shortcode_page .= '</div>';
 
         return $shortcode_page;

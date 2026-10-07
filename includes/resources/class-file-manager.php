@@ -113,7 +113,7 @@ final class QAPL_File_Manager implements QAPL_File_Manager_Interface, QAPL_Templ
         if (!empty($default_file)) {
             // Iterate over the array to find the default file
             foreach ($file_names as $index => $file) {
-                if ($file['file_name'] == $default_file) {
+                if ($file['file_name'] === $default_file) {
                     // Remove the item from its current position
                     $item = array_splice($file_names, $index, 1)[0];
                     // Add the item at the beginning of the array

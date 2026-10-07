@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Quick Ajax Post Loader\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-03 00:00+0000\n"
-"PO-Revision-Date: 2026-09-18 16:22+0000\n"
+"PO-Revision-Date: 2026-10-07 15:45+0000\n"
 "Last-Translator: \n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -17,32 +17,32 @@ msgstr ""
 "X-Domain: quick-ajax-post-loader\n"
 
 #. %s: plugin name
-#: includes/deprecated/class-deprecated-hooks-handler.php:54
+#: includes/deprecated/class-deprecated-hooks-handler.php:59
 #, php-format
 msgid "%s: Some hooks have been renamed. Please update your code:"
 msgstr "%s: Niektóre hooki zostały przemianowane. Zaktualizuj swój kod:"
 
 #: includes/form/class-form-field-factory.php:184
-#: includes/form/class-form-field-factory.php:727
-#: includes/form/class-form-field-factory.php:728
+#: includes/form/class-form-field-factory.php:739
+#: includes/form/class-form-field-factory.php:740
 msgid "A → Z"
 msgstr "A → Z"
 
-#: includes/form/class-form-field-factory.php:500
+#: includes/form/class-form-field-factory.php:512
 #| msgid "Add class to post container"
 msgid "Add Class to Post Container"
 msgstr "Dodaj klasy do kontenera wpisów"
 
-#: includes/form/class-form-field-factory.php:488
+#: includes/form/class-form-field-factory.php:500
 #| msgid "Add class to taxonomy filter"
 msgid "Add Class to Taxonomy Filter"
 msgstr "Dodaj klasy do filtra taksonomii"
 
-#: includes/form/class-form-field-factory.php:492
+#: includes/form/class-form-field-factory.php:504
 msgid "Add classes to the filter: class-one, class-two, class-three"
 msgstr "Dodaj klasy do filtra: class-one, class-two, class-three"
 
-#: includes/form/class-form-field-factory.php:504
+#: includes/form/class-form-field-factory.php:516
 msgid "Add classes to the post container: class-one, class-two, class-three"
 msgstr "Dodaj klasy do kontenera wpisów: class-one, class-two, class-three"
 
@@ -51,7 +51,7 @@ msgstr "Dodaj klasy do kontenera wpisów: class-one, class-two, class-three"
 msgid "Add New"
 msgstr "Dodaj nowy"
 
-#: includes/admin/cpt/creator/class-creator-form.php:251
+#: includes/admin/cpt/creator/class-creator-form.php:253
 #: includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:214
 msgid "Additional Settings"
 msgstr "Ustawienia dodatkowe"
@@ -60,11 +60,11 @@ msgstr "Ustawienia dodatkowe"
 msgid "After the filter buttons"
 msgstr "Po przyciskach filtrowania"
 
-#: includes/form/class-form-field-factory.php:427
+#: includes/form/class-form-field-factory.php:439
 msgid "Apply Quick AJAX CSS Style"
 msgstr "Zastosuj style CSS Quick AJAX"
 
-#: includes/form/class-form-field-factory.php:430
+#: includes/form/class-form-field-factory.php:442
 msgid "Apply Quick AJAX CSS styles and column layout."
 msgstr "Zastosuj style CSS Quick AJAX oraz układ kolumnowy."
 
@@ -84,7 +84,7 @@ msgstr "Dostępne opcje sortowania"
 msgid "Before the filter buttons"
 msgstr "Przed przyciskami filtrowania"
 
-#: includes/form/class-form-field-factory.php:472
+#: includes/form/class-form-field-factory.php:484
 msgid "Choose a template for displaying post items."
 msgstr "Wybierz szablon do wyświetlania elementów wpisu."
 
@@ -92,7 +92,7 @@ msgstr "Wybierz szablon do wyświetlania elementów wpisu."
 msgid "Choose a template for displaying the search field."
 msgstr "Wybierz szablon do wyświetlania pola wyszukiwania."
 
-#: includes/form/class-form-field-factory.php:575
+#: includes/form/class-form-field-factory.php:587
 msgid ""
 "Choose an icon to display as the loading indicator when the \"Load More\" "
 "button is clicked."
@@ -112,7 +112,7 @@ msgstr "Wybierz typ wpisu, który chcesz wyświetlać za pomocą AJAX."
 msgid "Choose the sorting criteria for posts."
 msgstr "Wybierz kryteria sortowania wpisów."
 
-#: includes/form/class-form-field-factory.php:774
+#: includes/form/class-form-field-factory.php:786
 msgid ""
 "Choose this option to remove old, unused data from the database. This will "
 "help keep your site clean and efficient. Be aware that if you switch back to "
@@ -131,8 +131,8 @@ msgstr ""
 "Wybierz, gdzie ma się pojawiać pole wyszukiwania, gdy wyświetlane są "
 "kontrolki filtrowania lub sortowania."
 
-#: includes/form/class-form-field-factory.php:491
 #: includes/form/class-form-field-factory.php:503
+#: includes/form/class-form-field-factory.php:515
 msgid "class-name, another-class-name"
 msgstr "nazwa-klasy, inna-nazwa-klasy"
 
@@ -140,7 +140,7 @@ msgstr "nazwa-klasy, inna-nazwa-klasy"
 msgid "Comments: Sort by comment count"
 msgstr "Komentarze: Sortuj według liczby komentarzy"
 
-#: includes/form/class-form-field-factory.php:771
+#: includes/form/class-form-field-factory.php:783
 #| msgid "Enable Purge of Old Data"
 msgid "Confirm Purge of Old Data"
 msgstr "Potwierdź czyszczenie starych danych"
@@ -166,7 +166,7 @@ msgstr "Kopiuj kod"
 msgid "Custom labels for sorting options"
 msgstr "Własne etykiety opcji sortowania"
 
-#: includes/form/class-form-field-factory.php:619
+#: includes/form/class-form-field-factory.php:631
 msgid ""
 "Customize the \"Load More\" button text. This label will appear on the "
 "button used to load additional posts dynamically. Examples: \"Load More\", "
@@ -176,7 +176,7 @@ msgstr ""
 "używanym do dynamicznego ładowania dodatkowych wpisów. Przykłady: „Załaduj "
 "więcej”, „Pokaż więcej” lub „Zobacz więcej”."
 
-#: includes/form/class-form-field-factory.php:595
+#: includes/form/class-form-field-factory.php:607
 msgid ""
 "Customize the \"Read More\" text for your templates. This label will appear "
 "as a link or button for each post item. Examples: \"Read More\", \"Continue "
@@ -186,7 +186,7 @@ msgstr ""
 "jako link lub przycisk dla każdego elementu postu. Przykłady: \"Czytaj "
 "więcej\", \"Kontynuuj czytanie\" lub \"Dowiedz się więcej\"."
 
-#: includes/form/class-form-field-factory.php:607
+#: includes/form/class-form-field-factory.php:619
 msgid ""
 "Customize the \"Show All\" text label for the filter. This label will appear "
 "as an option to display all posts without filtering. Examples: \"Show All\", "
@@ -196,7 +196,7 @@ msgstr ""
 "jako opcja wyświetlenia wszystkich postów bez filtrowania. Przykłady: "
 "\"Pokaż wszystko\", \"Zobacz wszystko\" lub \"Wyświetl wszystko\"."
 
-#: includes/form/class-form-field-factory.php:655
+#: includes/form/class-form-field-factory.php:667
 msgid ""
 "Customize the message shown when no posts match the selected filters. "
 "Examples: \"No posts found\", \"Nothing to display\", or \"Try adjusting "
@@ -206,7 +206,7 @@ msgstr ""
 "filtrów. Przykłady: \"Brak wpisów\", \"Brak treści do wyświetlenia\" lub "
 "\"Spróbuj zmienić filtry\""
 
-#: includes/form/class-form-field-factory.php:667
+#: includes/form/class-form-field-factory.php:679
 msgid ""
 "Customize the message that appears when there are no more posts to load. "
 "Examples: \"No more posts\", \"You have reached the end\", or \"That's all "
@@ -216,7 +216,7 @@ msgstr ""
 "załadowania. Przykłady: \"Brak kolejnych wpisów\", \"Osiągnięto koniec\" lub "
 "\"To już wszystko na teraz\"."
 
-#: includes/form/class-form-field-factory.php:643
+#: includes/form/class-form-field-factory.php:655
 msgid ""
 "Customize the search button label. This label will appear on the text button,"
 " or will be read by screen readers when the button shows an icon. Examples: "
@@ -226,7 +226,7 @@ msgstr ""
 "przycisku tekstowym lub zostanie odczytana przez czytniki ekranu, gdy "
 "przycisk wyświetla ikonę. Przykłady: „Szukaj\" lub „Znajdź\"."
 
-#: includes/form/class-form-field-factory.php:631
+#: includes/form/class-form-field-factory.php:643
 msgid ""
 "Customize the search field placeholder. This text will appear inside the "
 "empty search field. Examples: \"Search\", \"Search posts\", or \"Find a "
@@ -248,7 +248,7 @@ msgstr "Domyślne sortowanie według"
 msgid "Default Sort Order"
 msgstr "Domyślny porządek sortowania"
 
-#: includes/form/class-form-field-factory.php:760
+#: includes/form/class-form-field-factory.php:772
 msgid "Delete All Data on Uninstall"
 msgstr "Usuń wszystkie dane przy odinstalowaniu"
 
@@ -264,7 +264,7 @@ msgstr "Określ liczbę wpisów do załadowania przy każdym żądaniu AJAX."
 msgid "Display \"Show All\" Button"
 msgstr "Wyświetl przycisk \"Pokaż wszystko\""
 
-#: includes/form/class-form-field-factory.php:411
+#: includes/form/class-form-field-factory.php:423
 msgid "Display a message when there are no more posts to load via AJAX."
 msgstr ""
 "Wyświetl komunikat, gdy nie ma już więcej wpisów do załadowania przez AJAX."
@@ -342,7 +342,7 @@ msgstr ""
 "podczas ładowania strony. Może to pomóc w sytuacjach, gdy pamięć podręczna "
 "powoduje wyświetlanie nieaktualnych treści."
 
-#: includes/form/class-form-field-factory.php:413
+#: includes/form/class-form-field-factory.php:425
 msgid "End message content"
 msgstr "Treść komunikatu końcowego"
 
@@ -350,31 +350,31 @@ msgstr "Treść komunikatu końcowego"
 msgid "Enter a list of post IDs to exclude from the query."
 msgstr "Wprowadź listę identyfikatorów postów do wykluczenia z zapytania."
 
-#: includes/form/class-form-field-factory.php:618
+#: includes/form/class-form-field-factory.php:630
 msgid "Enter custom label for Load More"
 msgstr "Wprowadź własną etykietę dla przycisku Załaduj więcej"
 
-#: includes/form/class-form-field-factory.php:594
+#: includes/form/class-form-field-factory.php:606
 msgid "Enter custom label for Read More"
 msgstr "Wprowadź własną etykietę dla przycisku Czytaj więcej"
 
-#: includes/form/class-form-field-factory.php:606
+#: includes/form/class-form-field-factory.php:618
 msgid "Enter custom label for Show All"
 msgstr "Wprowadź własną etykietę dla przycisku Pokaż wszystko"
 
-#: includes/form/class-form-field-factory.php:642
+#: includes/form/class-form-field-factory.php:654
 msgid "Enter custom label for the search button"
 msgstr "Wpisz własną etykietę przycisku wyszukiwania"
 
-#: includes/form/class-form-field-factory.php:630
+#: includes/form/class-form-field-factory.php:642
 msgid "Enter custom placeholder for the search field"
 msgstr "Wpisz własny placeholder dla pola wyszukiwania"
 
-#: includes/form/class-form-field-factory.php:666
+#: includes/form/class-form-field-factory.php:678
 msgid "Enter message for end of posts"
 msgstr "Wprowadź komunikat na koniec listy wpisów"
 
-#: includes/form/class-form-field-factory.php:654
+#: includes/form/class-form-field-factory.php:666
 msgid "Enter message for no posts found"
 msgstr "Wprowadź komunikat, gdy nie znaleziono żadnych wpisów"
 
@@ -382,7 +382,7 @@ msgstr "Wprowadź komunikat, gdy nie znaleziono żadnych wpisów"
 msgid "Excluded Post IDs"
 msgstr "Wykluczone identyfikatory postów"
 
-#: includes/admin/cpt/creator/class-creator-form.php:88
+#: includes/admin/cpt/creator/class-creator-form.php:90
 #: includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:98
 msgid "General Settings"
 msgstr "Ustawienia ogólne"
@@ -412,11 +412,11 @@ msgstr "Pomoc"
 msgid "Help Content"
 msgstr "Treść pomocy"
 
-#: includes/form/class-form-field-factory.php:577
+#: includes/form/class-form-field-factory.php:589
 msgid "How to add a new loader icon?"
 msgstr "Jak dodać nową ikonę ładowania?"
 
-#: includes/form/class-form-field-factory.php:474
+#: includes/form/class-form-field-factory.php:486
 msgid "How to add a new post item template?"
 msgstr "Jak dodać nowy szablon elementu wpisu?"
 
@@ -444,16 +444,28 @@ msgstr "Filtrowanie i wyszukiwanie w jednym wierszu"
 msgid "Inline Filter & Sorting"
 msgstr "Filtrowanie i sortowanie w jednym wierszu"
 
-#: includes/maintenance/class-updater.php:405
+#: includes/maintenance/class-cleaner.php:96
 msgid "Invalid request. The purge was not performed."
 msgstr "Nieprawidłowe żądanie. Czyszczenie nie zostało wykonane."
 
-#: includes/admin/cpt/creator/class-creator-form.php:272
+#: includes/form/class-form-field-factory.php:408
+msgid "Keep Posts Visible While Loading"
+msgstr "Pozostaw wpisy widoczne podczas wczytywania"
+
+#: includes/form/class-form-field-factory.php:411
+msgid ""
+"Keep the current posts dimmed until new ones load, instead of clearing the "
+"grid."
+msgstr ""
+"Zamiast czyścić siatkę, pokazuj bieżące wpisy przyciemnione do czasu "
+"wczytania nowych."
+
+#: includes/admin/cpt/creator/class-creator-form.php:274
 #: includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:222
 msgid "Layout Settings"
 msgstr "Ustawienia układu"
 
-#: includes/form/class-form-field-factory.php:515
+#: includes/form/class-form-field-factory.php:527
 msgid "Load a different number of posts after the initial display."
 msgstr "Załaduj inną liczbę wpisów po początkowym wyświetleniu."
 
@@ -461,13 +473,13 @@ msgstr "Załaduj inną liczbę wpisów po początkowym wyświetleniu."
 msgid "Load Initial Posts via AJAX"
 msgstr "Załaduj początkowe wpisy za pomocą AJAX"
 
-#: includes/ajax-render/class-ajax-load-more-renderer.php:71
-#: includes/form/class-form-field-factory.php:617
-#: includes/template-renderers/class-template-hooks.php:143
+#: includes/ajax-render/class-ajax-load-more-renderer.php:60
+#: includes/form/class-form-field-factory.php:629
+#: includes/template-renderers/class-template-base.php:53
 msgid "Load More"
 msgstr "Załaduj więcej"
 
-#: includes/form/class-form-field-factory.php:512
+#: includes/form/class-form-field-factory.php:524
 #| msgid "Custom Load More Post Quantity"
 msgid "Load More Post Quantity"
 msgstr "Liczba postów dla \"Załaduj więcej\""
@@ -490,8 +502,8 @@ msgid "New Quick Ajax"
 msgstr "Nowy Quick Ajax"
 
 #: includes/form/class-form-field-factory.php:172
-#: includes/form/class-form-field-factory.php:691
-#: includes/form/class-form-field-factory.php:692
+#: includes/form/class-form-field-factory.php:703
+#: includes/form/class-form-field-factory.php:704
 msgid "Newest"
 msgstr "Najnowsze"
 
@@ -503,49 +515,49 @@ msgstr "Nie znaleziono żadnych elementów"
 msgid "No Items found in trash"
 msgstr "Nie znaleziono żadnych elementów w koszu"
 
-#: includes/form/class-form-field-factory.php:665
-#: includes/template-renderers/class-template-hooks.php:149
+#: includes/form/class-form-field-factory.php:677
+#: includes/template-renderers/class-template-base.php:59
 #| msgid "No more posts to load."
 msgid "No more posts to load"
 msgstr "Brak kolejnych wpisów do załadowania"
 
-#: includes/form/class-form-field-factory.php:653
-#: includes/template-renderers/class-template-hooks.php:146
+#: includes/form/class-form-field-factory.php:665
+#: includes/template-renderers/class-template-base.php:56
 msgid "No posts found"
 msgstr "Nie znaleziono wpisów"
 
-#: includes/ajax-controller/class-ajax-admin-controller.php:49
+#: includes/ajax-controller/class-ajax-admin-controller.php:47
 #: includes/form/class-form-content-builder.php:311
 msgid "No taxonomy available"
 msgstr "Brak dostępnej taksonomii"
 
-#: includes/ajax-controller/class-ajax-admin-controller.php:35
+#: includes/ajax-controller/class-ajax-admin-controller.php:33
 #: includes/form/class-taxonomy-options-provider.php:26
 msgid "No taxonomy found"
 msgstr "Nie znaleziono taksonomii"
 
-#: includes/ajax-controller/class-ajax-admin-controller.php:85
+#: includes/ajax-controller/class-ajax-admin-controller.php:83
 #: includes/form/class-taxonomy-options-provider.php:42
 msgid "No terms found"
 msgstr "Brak dostępnych terminów"
 
-#: includes/form/class-form-field-factory.php:446
+#: includes/form/class-form-field-factory.php:458
 #| msgid "Number of columns"
 msgid "Number of Columns"
 msgstr "Liczba kolumn"
 
 #: includes/form/class-form-field-factory.php:176
-#: includes/form/class-form-field-factory.php:703
-#: includes/form/class-form-field-factory.php:704
+#: includes/form/class-form-field-factory.php:715
+#: includes/form/class-form-field-factory.php:716
 msgid "Oldest"
 msgstr "Najstarsze"
 
 #: includes/form/class-form-field-factory.php:199
-#: includes/form/class-form-field-factory.php:416
+#: includes/form/class-form-field-factory.php:428
 msgid "Open settings"
 msgstr "Otwórz ustawienia"
 
-#: includes/form/class-form-field-factory.php:537
+#: includes/form/class-form-field-factory.php:549
 msgid "Override Global Loader Icon"
 msgstr "Zastąp globalną ikonę ładowania"
 
@@ -566,17 +578,17 @@ msgstr "Paweł Grzelkowski"
 msgid "PHP Snippet Generator"
 msgstr "Generator kodu PHP"
 
-#: includes/maintenance/class-updater.php:403
+#: includes/maintenance/class-cleaner.php:94
 msgid "Please confirm the purge by selecting the checkbox before submitting."
 msgstr "Potwierdź czyszczenie, zaznaczając pole wyboru przed wysłaniem."
 
 #: includes/form/class-form-field-factory.php:180
-#: includes/form/class-form-field-factory.php:715
-#: includes/form/class-form-field-factory.php:716
+#: includes/form/class-form-field-factory.php:727
+#: includes/form/class-form-field-factory.php:728
 msgid "Popular"
 msgstr "Popularne"
 
-#: includes/form/class-form-field-factory.php:523
+#: includes/form/class-form-field-factory.php:535
 msgid "Posts Per Load (After Initial)"
 msgstr "Wpisy na każde doładowanie (po początkowym)"
 
@@ -615,8 +627,8 @@ msgid "Quick Ajax Shortcodes"
 msgstr "Shortcodes Quick Ajax"
 
 #: includes/form/class-form-field-factory.php:192
-#: includes/form/class-form-field-factory.php:751
-#: includes/form/class-form-field-factory.php:752
+#: includes/form/class-form-field-factory.php:763
+#: includes/form/class-form-field-factory.php:764
 msgid "Random"
 msgstr "Losowe"
 
@@ -624,8 +636,8 @@ msgstr "Losowe"
 msgid "Random: Random order"
 msgstr "Losowo: Losowa kolejność"
 
-#: includes/form/class-form-field-factory.php:593
-#: includes/template-renderers/class-template-hooks.php:140
+#: includes/form/class-form-field-factory.php:605
+#: includes/template-renderers/class-template-base.php:50
 msgid "Read More"
 msgstr "Czytaj więcej"
 
@@ -637,8 +649,8 @@ msgstr "Zapisz ustawienia"
 #: includes/ajax-render/class-ajax-filter-menu-renderer.php:395
 #: includes/form/class-form-field-factory.php:283
 #: includes/form/class-form-field-factory.php:342
-#: includes/form/class-form-field-factory.php:629
 #: includes/form/class-form-field-factory.php:641
+#: includes/form/class-form-field-factory.php:653
 msgid "Search"
 msgstr "Szukaj"
 
@@ -662,17 +674,17 @@ msgstr "Etykiety wyszukiwania"
 msgid "Search Quick Ajax"
 msgstr "Szukaj Quick Ajax"
 
-#: includes/maintenance/class-updater.php:404
+#: includes/maintenance/class-cleaner.php:95
 msgid "Security check failed. Please reload the page and try again."
 msgstr ""
 "Weryfikacja bezpieczeństwa nie powiodła się. Odśwież stronę i spróbuj "
 "ponownie."
 
-#: includes/form/class-form-field-factory.php:571
+#: includes/form/class-form-field-factory.php:583
 msgid "Select Loader Icon"
 msgstr "Wybierz ikonę ładowania"
 
-#: includes/form/class-form-field-factory.php:468
+#: includes/form/class-form-field-factory.php:480
 msgid "Select Post Item Template"
 msgstr "Wybierz szablon elementu wpisu"
 
@@ -710,54 +722,54 @@ msgstr "Wybierz taksonomię do filtrowania wpisów."
 msgid "Select which sorting options will be available to users."
 msgstr "Wybierz, które opcje sortowania będą dostępne dla użytkowników."
 
-#: includes/form/class-form-field-factory.php:725
+#: includes/form/class-form-field-factory.php:737
 msgid "Set \"A → Z\" Label"
 msgstr "Ustaw etykietę \"A → Z\""
 
-#: includes/form/class-form-field-factory.php:663
+#: includes/form/class-form-field-factory.php:675
 msgid "Set \"End of Posts\" Message"
 msgstr "Ustaw komunikat \"Koniec wpisów\""
 
-#: includes/form/class-form-field-factory.php:615
+#: includes/form/class-form-field-factory.php:627
 #| msgid "Set Load More Label"
 msgid "Set \"Load More\" Label"
 msgstr "Ustaw etykietę \"Załaduj więcej\""
 
-#: includes/form/class-form-field-factory.php:689
+#: includes/form/class-form-field-factory.php:701
 msgid "Set \"Newest\" Label"
 msgstr "Ustaw etykietę \"Najnowsze\""
 
-#: includes/form/class-form-field-factory.php:651
+#: includes/form/class-form-field-factory.php:663
 msgid "Set \"No Posts Found\" Message"
 msgstr "Ustaw komunikat \"Brak wpisów\""
 
-#: includes/form/class-form-field-factory.php:701
+#: includes/form/class-form-field-factory.php:713
 msgid "Set \"Oldest\" Label"
 msgstr "Ustaw etykietę \"Najstarsze\""
 
-#: includes/form/class-form-field-factory.php:713
+#: includes/form/class-form-field-factory.php:725
 msgid "Set \"Popular\" Label"
 msgstr "Ustaw etykietę \"Popularne\""
 
-#: includes/form/class-form-field-factory.php:749
+#: includes/form/class-form-field-factory.php:761
 msgid "Set \"Random\" Label"
 msgstr "Ustaw etykietę \"Losowe\""
 
-#: includes/form/class-form-field-factory.php:591
+#: includes/form/class-form-field-factory.php:603
 #| msgid "Set Read More Label"
 msgid "Set \"Read More\" Label"
 msgstr "Ustaw etykietę \"Czytaj więcej\""
 
-#: includes/form/class-form-field-factory.php:603
+#: includes/form/class-form-field-factory.php:615
 #| msgid "Set Show All Label"
 msgid "Set \"Show All\" Label"
 msgstr "Ustaw etykietę \"Pokaż wszystko\""
 
-#: includes/form/class-form-field-factory.php:737
+#: includes/form/class-form-field-factory.php:749
 msgid "Set \"Z → A\" Label"
 msgstr "Ustaw etykietę \"Z → A\""
 
-#: includes/form/class-form-field-factory.php:540
+#: includes/form/class-form-field-factory.php:552
 msgid "Set a different loader icon than the one specified in global options."
 msgstr "Ustaw inną ikonę ładowania niż określono w opcjach globalnych."
 
@@ -775,22 +787,22 @@ msgid ""
 msgstr ""
 "Ustaw inny placeholder pola wyszukiwania niż ten podany w opcjach globalnych."
 
-#: includes/form/class-form-field-factory.php:526
+#: includes/form/class-form-field-factory.php:538
 msgid ""
 "Set how many posts to load each time the \"Load More\" button is clicked."
 msgstr ""
 "Ustaw, ile wpisów ma być ładowanych po każdym kliknięciu przycisku „Załaduj "
 "więcej”."
 
-#: includes/form/class-form-field-factory.php:639
+#: includes/form/class-form-field-factory.php:651
 msgid "Set Search Button Label"
 msgstr "Ustaw etykietę przycisku wyszukiwania"
 
-#: includes/form/class-form-field-factory.php:627
+#: includes/form/class-form-field-factory.php:639
 msgid "Set Search Field Placeholder"
 msgstr "Ustaw placeholder pola wyszukiwania"
 
-#: includes/form/class-form-field-factory.php:729
+#: includes/form/class-form-field-factory.php:741
 msgid ""
 "Set the label for sorting posts alphabetically (A to Z) based on the post "
 "title. Examples: \"Alphabetical\", \"A → Z\", \"Sort by Name\"."
@@ -798,7 +810,7 @@ msgstr ""
 "Ustaw etykietę dla sortowania wpisów alfabetycznie (A do Z) na podstawie "
 "tytułu wpisu. Przykłady: „Alfabetycznie”, „A → Z”, „Sortuj według nazwy”."
 
-#: includes/form/class-form-field-factory.php:741
+#: includes/form/class-form-field-factory.php:753
 msgid ""
 "Set the label for sorting posts alphabetically (Z to A) based on the post "
 "title. Examples: \"Reverse Alphabetical\", \"Z → A\", \"Sort by Name "
@@ -808,7 +820,7 @@ msgstr ""
 "tytułu wpisu. Przykłady: „Odwrotna kolejność alfabetyczna”, „Z → A”, „Sortuj "
 "według nazwy malejąco”."
 
-#: includes/form/class-form-field-factory.php:717
+#: includes/form/class-form-field-factory.php:729
 msgid ""
 "Set the label for sorting posts by the highest number of comments. Examples: "
 "\"Popular\", \"Trending\", \"Most Discussed\"."
@@ -816,7 +828,7 @@ msgstr ""
 "Ustaw etykietę dla sortowania wpisów według największej liczby komentarzy. "
 "Przykłady: „Popularne”, „Najczęściej komentowane”, „Trendujące”."
 
-#: includes/form/class-form-field-factory.php:693
+#: includes/form/class-form-field-factory.php:705
 msgid ""
 "Set the label for sorting posts from newest to oldest (based on publication "
 "date). Examples: \"Newest\", \"Latest\", \"Recent\"."
@@ -824,7 +836,7 @@ msgstr ""
 "Ustaw etykietę dla sortowania wpisów od najnowszych do najstarszych (według "
 "daty publikacji). Przykłady: „Najnowsze”, „Ostatnie”, „Niedawne”."
 
-#: includes/form/class-form-field-factory.php:705
+#: includes/form/class-form-field-factory.php:717
 msgid ""
 "Set the label for sorting posts from oldest to newest (based on publication "
 "date). Examples: \"Oldest\", \"First\", \"Earliest\"."
@@ -832,7 +844,7 @@ msgstr ""
 "Ustaw etykietę dla sortowania wpisów od najstarszych do najnowszych (według "
 "daty publikacji). Przykłady: „Najstarsze”, „Pierwsze”, „Najwcześniejsze”."
 
-#: includes/form/class-form-field-factory.php:753
+#: includes/form/class-form-field-factory.php:765
 msgid ""
 "Set the label for sorting posts in a random order. Examples: \"Shuffle\", "
 "\"Random\", \"Surprise Me\"."
@@ -875,11 +887,11 @@ msgstr "Shortcodes"
 
 #: includes/ajax-render/class-ajax-filter-menu-renderer.php:107
 #: includes/form/class-form-field-factory.php:68
-#: includes/form/class-form-field-factory.php:605
+#: includes/form/class-form-field-factory.php:617
 msgid "Show All"
 msgstr "Pokaż wszystko"
 
-#: includes/form/class-form-field-factory.php:408
+#: includes/form/class-form-field-factory.php:420
 msgid "Show End Message"
 msgstr "Pokaż komunikat końcowy"
 
@@ -895,7 +907,7 @@ msgstr "Pokaż przycisk sortowania"
 msgid "Show Taxonomy Filter"
 msgstr "Pokaż filtr taksonomii"
 
-#: includes/ajax-render/class-ajax-filter-menu-renderer.php:251
+#: includes/ajax-render/class-ajax-filter-menu-renderer.php:250
 msgid "Sort by"
 msgstr "Sortuj według"
 
@@ -907,7 +919,7 @@ msgstr "Etykiety opcji sortowania"
 msgid "Sorting option labels can be changed in plugin settings."
 msgstr "Etykiety opcji sortowania można zmienić w ustawieniach wtyczki."
 
-#: includes/admin/cpt/creator/class-creator-form.php:216
+#: includes/admin/cpt/creator/class-creator-form.php:218
 #: includes/admin/pages/settings/tabs/class-settings-tab-php-snippet.php:199
 msgid "Sorting Settings"
 msgstr "Ustawienia sortowania"
@@ -916,7 +928,7 @@ msgstr "Ustawienia sortowania"
 msgid "Specify the order of posts."
 msgstr "Określ kolejność wpisów."
 
-#: includes/form/class-form-field-factory.php:450
+#: includes/form/class-form-field-factory.php:462
 msgid "Specify the quantity of columns."
 msgstr "Określ liczbę kolumn."
 
@@ -927,7 +939,7 @@ msgstr ""
 "Zaznacz, aby ignorować przypięte wpisy i traktować je w zapytaniu jak zwykłe "
 "wpisy."
 
-#: includes/form/class-form-field-factory.php:414
+#: includes/form/class-form-field-factory.php:426
 msgid "The end message text can be changed in plugin settings."
 msgstr "Tekst komunikatu końcowego można zmienić w ustawieniach wtyczki."
 
@@ -953,7 +965,7 @@ msgstr ""
 msgid "Title: Sort by post title"
 msgstr "Tytuł: Sortuj według tytułu wpisu"
 
-#: includes/form/class-form-field-factory.php:578
+#: includes/form/class-form-field-factory.php:590
 msgid ""
 "To add a new loader icon you need to create a new PHP file in your theme's "
 "folder."
@@ -961,7 +973,7 @@ msgstr ""
 "Aby dodać nową ikonę ładowania, musisz utworzyć nowy plik PHP w folderze "
 "motywu."
 
-#: includes/form/class-form-field-factory.php:475
+#: includes/form/class-form-field-factory.php:487
 msgid ""
 "To add a new post item template you need to create a new PHP file in your "
 "theme's folder."
@@ -981,13 +993,13 @@ msgstr ""
 msgid "Uninstall"
 msgstr "Odinstaluj"
 
-#: includes/maintenance/class-updater.php:402
+#: includes/maintenance/class-cleaner.php:93
 msgid "Unused data has been purged successfully."
 msgstr "Nieużywane dane zostały pomyślnie usunięte."
 
 #: includes/form/class-form-field-factory.php:321
-#: includes/form/class-form-field-factory.php:477
-#: includes/form/class-form-field-factory.php:580
+#: includes/form/class-form-field-factory.php:489
+#: includes/form/class-form-field-factory.php:592
 msgid "View detailed guide"
 msgstr "Zobacz szczegółowy poradnik"
 
@@ -995,7 +1007,7 @@ msgstr "Zobacz szczegółowy poradnik"
 msgid "View Quick Ajax"
 msgstr "Zobacz Quick Ajax"
 
-#: includes/form/class-form-field-factory.php:763
+#: includes/form/class-form-field-factory.php:775
 msgid ""
 "When enabled, deleting the plugin will permanently remove all its data: "
 "global settings and all created shortcodes. Leave disabled to keep your "
@@ -1007,13 +1019,13 @@ msgstr ""
 "ponownej instalacji wtyczki w przyszłości."
 
 #: includes/admin/class-admin-menu.php:39
-#: includes/maintenance/class-updater.php:329
-#: includes/maintenance/class-updater.php:357
+#: includes/maintenance/class-cleaner.php:22
+#: includes/maintenance/class-cleaner.php:49
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Nie masz wystarczających uprawnień, aby uzyskać dostęp do tej strony."
 
 #: includes/form/class-form-field-factory.php:188
-#: includes/form/class-form-field-factory.php:739
-#: includes/form/class-form-field-factory.php:740
+#: includes/form/class-form-field-factory.php:751
+#: includes/form/class-form-field-factory.php:752
 msgid "Z → A"
 msgstr "Z → A"

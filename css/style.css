@@ -91,7 +91,7 @@
         -ms-flex-order:3;
             order:3;
 }
-.quick-ajax-controls-container .quick-ajax-sort-options-container.quick-ajax-theme select{
+.quick-ajax-controls-container .quick-ajax-sort-options-container.quick-ajax-theme{
     margin-bottom: 0;
 }
 .quick-ajax-controls-container .quick-ajax-filter-container.quick-ajax-theme{
@@ -113,6 +113,9 @@
     -webkit-box-align: start;
         -ms-flex-align: start;
             align-items: flex-start;
+    /* a standalone sort control sits above the filter, so it keeps the same distance
+       as the lines of the stacked controls row */
+    margin-bottom: 1.75rem;
 }
 .quick-ajax-sort-options-container.quick-ajax-theme .quick-ajax-sort-option-wrapper {
     display: -webkit-inline-box;
@@ -127,7 +130,6 @@
     background-position: calc(100% - 1.25rem) 0.5rem;
     background-size: 0.625rem;
     padding: 0.3125rem 2.5rem 0.3125rem 1.25rem;
-    margin-bottom: 3rem;
     min-height: 40px;
     font-weight: 500;
     text-align: center;
@@ -799,6 +801,21 @@
             transform: translate(-50%, -50%);
     -webkit-transition: opacity 0.3s ease;
     transition: opacity 0.3s ease;
+}
+/* with "Keep Posts Visible While Loading" the current posts stay in place, dimmed,
+   until the new ones arrive - a failed request simply brings them back.
+   filter: opacity() rather than opacity, because jQuery animates the opacity of this
+   element when the posts are swapped and the two would fight over one property */
+.quick-ajax-posts-container .quick-ajax-posts-wrapper{
+    -webkit-transition: -webkit-filter 0.3s ease;
+    transition: -webkit-filter 0.3s ease;
+    transition: filter 0.3s ease;
+    transition: filter 0.3s ease, -webkit-filter 0.3s ease;
+}
+.quick-ajax-posts-container .quick-ajax-posts-wrapper.qapl-updating{
+    -webkit-filter: opacity(0.35);
+            filter: opacity(0.35);
+    pointer-events: none;
 }
 /* Loader Icon Default */
 .qapl-loader-default {

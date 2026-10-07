@@ -36,7 +36,7 @@ if (!class_exists('QAPL_Admin_Menu')) {
         }
         public function render_quick_ajax_settings_page() {
             if (!current_user_can('manage_options')) {
-                wp_die(esc_html(__('You do not have sufficient permissions to access this page.', 'quick-ajax-post-loader')));
+                wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'quick-ajax-post-loader'));
             }
             $form = $this->get_settings_page();
             if ($form) {

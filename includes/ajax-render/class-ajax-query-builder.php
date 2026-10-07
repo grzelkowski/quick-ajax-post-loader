@@ -212,7 +212,8 @@ final class QAPL_Ajax_Query_Builder{
         if (isset($attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID])) {
             $existing_id = sanitize_text_field($attributes[QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID]);
             // if id already starts with 'p' or 'c', keep it untouched
-            if (preg_match('/^[pc]\d+$/', $existing_id)) {
+            // hex, not only digits - uniqid('c') ids come back in AJAX attributes and must not get a second prefix
+            if (preg_match('/^[pc][0-9a-f]+$/', $existing_id)) {
                 $this->quick_ajax_id = $existing_id;
                 return;
             }

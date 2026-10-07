@@ -36,4 +36,3 @@ final class QAPL_Ajax_Frontend_Controller {
     }
 }
 // phpcs:enable WordPress.Security.NonceVerification.Missing
-QAPL_Ajax_Frontend_Controller::register();

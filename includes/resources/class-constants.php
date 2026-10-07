@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 
 final class QAPL_Constants{
     // Plugin info
-    public const PLUGIN_VERSION = '1.9.2';
+    public const PLUGIN_VERSION = '1.9.3';
     public const PLUGIN_NAME = 'Quick Ajax Post Loader';
     public const PLUGIN_TEXT_DOMAIN = 'quick-ajax-post-loader';
     public const PLUGIN_SLUG = 'quick-ajax-post-loader';
@@ -142,6 +142,8 @@ final class QAPL_Constants{
 
     public const LAYOUT_SETTING_SELECT_LOADER_ICON = 'qapl_loader_icon';
     public const LAYOUT_SETTING_SELECT_LOADER_ICON_DEFAULT = 'loader-icon';
+    public const LAYOUT_SETTING_KEEP_POSTS_WHILE_LOADING = 'qapl_layout_keep_posts_while_loading';
+    public const LAYOUT_SETTING_KEEP_POSTS_WHILE_LOADING_DEFAULT = 0;
 
     public const LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON = 'qapl_display_show_all_button';
     public const LAYOUT_SETTING_DISPLAY_SHOW_ALL_BUTTON_DEFAULT = 1;
@@ -164,6 +166,7 @@ final class QAPL_Constants{
     public const ATTRIBUTE_CONTAINER_CLASS = 'container_class';
     public const ATTRIBUTE_LOAD_MORE_POSTS = 'load_more_posts';
     public const ATTRIBUTE_LOADER_ICON = 'loader_icon';
+    public const ATTRIBUTE_KEEP_POSTS_WHILE_LOADING = 'keep_posts_while_loading';
     public const ATTRIBUTE_AJAX_INFINITE_SCROLL = 'infinite_scroll';
     public const ATTRIBUTE_SHOW_END_MESSAGE = 'show_end_message';
     public const ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON = 'display_show_all_button';

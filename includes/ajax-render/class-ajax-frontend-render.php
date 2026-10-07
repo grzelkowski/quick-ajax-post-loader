@@ -24,8 +24,8 @@ final class QAPL_Ajax_Frontend_Render {
         $this->ui_renderer          = new QAPL_Ajax_Filter_Menu_Renderer($this->file_manager, $this->helper, $this->global_options);
         $this->layout_builder       = new QAPL_Ajax_Layout_Builder($this->file_manager, $this->helper);
         $this->load_more_renderer   = new QAPL_Ajax_Load_More_Renderer($this->file_manager, $this->ui_renderer, $this->helper);
-        $this->layout_renderer      = new QAPL_Ajax_Layout_Renderer($this->file_manager, $this->load_more_renderer, $this->helper);
-        $this->end_posts_renderer   = new QAPL_Ajax_End_Message_Renderer($this->file_manager);
+        $this->layout_renderer      = new QAPL_Ajax_Layout_Renderer($this->file_manager, $this->load_more_renderer, $this->helper, $this->global_options);
+        $this->end_posts_renderer   = new QAPL_Ajax_End_Message_Renderer($this->file_manager, $this->global_options);
     }
 
     public function render_post_container($source_args, $attributes = [], $render_context = [], $meta_query = null) {
@@ -210,7 +210,6 @@ final class QAPL_Ajax_Frontend_Render {
         );
         return [
             'output'           => $output,
-            'args'             => $query_args,
             'load_more'        => $load_more,
             'show_end_message' => $show_end_message,
         ];

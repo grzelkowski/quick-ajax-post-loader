@@ -107,16 +107,15 @@ final class QAPL_Enqueue_Handler implements QAPL_Enqueue_Handler_Interface {
     }
     
     private function get_localized_data() {
-        $nonce = wp_create_nonce(QAPL_Constants::NONCE_FORM_QUICK_AJAX_ACTION);
         return [
             'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce' =>  $nonce,
             'constants' => [
                 'block_id' => QAPL_Constants::ATTRIBUTE_QUICK_AJAX_ID,
                 'filter_data_button' => QAPL_Constants::TERM_FILTER_BUTTON_DATA_BUTTON,
                 'sort_button' => QAPL_Constants::SORT_OPTION_BUTTON_DATA_BUTTON,
                 'search_button' => QAPL_Constants::SEARCH_FIELD_BUTTON_DATA_BUTTON,
                 'load_more_data_button' => QAPL_Constants::LOAD_MORE_BUTTON_DATA_BUTTON,
+                'keep_posts_while_loading' => QAPL_Constants::ATTRIBUTE_KEEP_POSTS_WHILE_LOADING,
             ]
         ];
     }

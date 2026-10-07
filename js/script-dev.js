@@ -48,14 +48,19 @@
                 });
 
                 // event listeners for search
-                $('body').on('keyup', '.qapl-search-input', function(e) {
-                    const input = $(this);
-                    clearTimeout(input.data('qaplSearchTimer'));
-                    // enter - search immediately
-                    if (e.key === 'Enter') {
-                        self.qapl_quick_ajax_handle_search(input);
+                $('body').on('keydown', '.qapl-search-input', function(e) {
+                    // enter - search immediately, skipped while an IME is still composing the word
+                    if (e.key !== 'Enter' || (e.originalEvent && e.originalEvent.isComposing)) {
                         return;
                     }
+                    const input = $(this);
+                    clearTimeout(input.data('qaplSearchTimer'));
+                    self.qapl_quick_ajax_handle_search(input);
+                });
+                // input, not keyup - also catches pasting with the mouse, autofill and the clear (x) button of the search field
+                $('body').on('input', '.qapl-search-input', function() {
+                    const input = $(this);
+                    clearTimeout(input.data('qaplSearchTimer'));
                     const phrase = (input.val() || '').trim();
                     // auto search from 4 characters, or when the field is cleared
                     if (phrase.length > 0 && phrase.length <= 3) {
@@ -86,6 +91,11 @@
             const self = this;
             // check if any infinite scroll container exists
             $('.quick-ajax-load-more-container.infinite-scroll').each(function() {
+                const loadMoreContainer = $(this);
+                // runs again after every load more - containers of other instances are already observed
+                if (loadMoreContainer.data('qaplObserver')) {
+                    return;
+                }
                 const observer = new IntersectionObserver(function(entries) {
                     entries.forEach(function(entry) {
                         if (entry.isIntersecting) {
@@ -102,8 +112,24 @@
                 });
         
                 observer.observe(this);
+                loadMoreContainer.data('qaplObserver', observer);
             });
-        },        
+        },
+        qapl_quick_ajax_disconnect_infinite_scroll: function(loadMoreContainers) {
+            // an observer keeps a removed container alive, so it is released before removal
+            loadMoreContainers.each(function() {
+                const observer = $(this).data('qaplObserver');
+                if (observer) {
+                    observer.disconnect();
+                    $(this).removeData('qaplObserver');
+                }
+            });
+        },
+        qapl_quick_ajax_remove_load_more: function(container) {
+            const loadMoreContainers = container.parent().find('.quick-ajax-load-more-container');
+            this.qapl_quick_ajax_disconnect_infinite_scroll(loadMoreContainers);
+            loadMoreContainers.remove();
+        },
         qapl_quick_ajax_handle_ajax: function(button) {
             if (button.hasClass("loading")) {
                 return;
@@ -143,16 +169,21 @@
             }
             if((button_type === qapl_quick_ajax_data.constants.filter_data_button) || (button_type === qapl_quick_ajax_data.constants.sort_button) || (button_type === qapl_quick_ajax_data.constants.search_button)){
                 container.addClass('filter-update');
-                container_inner.fadeOut(100, function() {
-                    $(this).empty().fadeIn(100);
-                });
+                if (Number(attributes[qapl_quick_ajax_data.constants.keep_posts_while_loading]) === 1) {
+                    // the current posts stay in place, dimmed, until the new ones arrive,
+                    // so a failed request can simply bring them back
+                    container_inner.addClass('qapl-updating');
+                } else {
+                    container_inner.fadeOut(100, function() {
+                        $(this).empty().fadeIn(100);
+                    });
+                }
             }
             $.ajax({
                 url: qapl_quick_ajax_data.ajax_url,
                 type: 'POST',
                 data: {
                     action: 'qapl_action_load_posts',
-                    nonce: qapl_quick_ajax_data.nonce,
                     args: args,
                     attributes: attributes,
                     button_type: button_type,
@@ -169,7 +200,9 @@
                     } else {
                         const errorMessage = response && response.data && response.data.message ? response.data.message : "Unexpected response";
                         console.error("Quick Ajax Post Loader: Error:", errorMessage);
-                    }
+                        self.qapl_quick_ajax_restore_after_failure(container, container_inner, button, button_type, containerId);
+                        return;
+                    }                    
                     container.removeClass("loading");
                     setTimeout(function () {
                         container.removeClass("filter-update");
@@ -177,19 +210,26 @@
                 },
                 error: function(xhr, status, error) {
                     console.error('Quick Ajax Post Loader: Error:', error);
-                    // the posts did not change, so the highlight goes back to the previous term
-                    if (button_type === qapl_quick_ajax_data.constants.filter_data_button) {
-                        self.qapl_quick_ajax_restore_active_filter(button);
-                    }
-                    container.removeClass('loading');                    
-                    setTimeout(function() {
-                            container.removeClass('filter-update');
-                    }, 200);
+                    self.qapl_quick_ajax_restore_after_failure(container, container_inner, button, button_type, containerId);
                 },
                 complete: function () {
                     button.removeClass('loading');
                 }
             });
+        },
+        qapl_quick_ajax_restore_after_failure: function(container, container_inner, button, button_type, containerId) {
+            // the posts did not change, so the highlight goes back to the previous term
+            if (button_type === qapl_quick_ajax_data.constants.filter_data_button) {
+                this.qapl_quick_ajax_restore_active_filter(button);
+            } else if (button_type === qapl_quick_ajax_data.constants.search_button) {
+                // the search field sits outside the filter container, so it restores by id
+                this.qapl_quick_ajax_restore_active_filter_by_id(containerId);
+            }
+            container_inner.removeClass('qapl-updating');
+            container.removeClass('loading');
+            setTimeout(function() {
+                container.removeClass('filter-update');
+            }, 200);
         },
         qapl_quick_ajax_load_more_add_posts: function(container, button, response) {
             button.parent().remove();
@@ -206,8 +246,10 @@
                 filterContainer.find(`[data-button="${qapl_quick_ajax_data.constants.filter_data_button}"]`).removeClass("active");
             }
             button.addClass('active');
-            container.parent().find('.quick-ajax-load-more-container').remove();
+            this.qapl_quick_ajax_remove_load_more(container);
             container.stop(true, true).fadeOut(100, function () {
+                // undimmed while hidden, so the new posts fade in at full opacity
+                container.removeClass('qapl-updating');
                 const new_posts = $(response).css("opacity", "0");
                 container.html(new_posts).fadeIn(400);
                 new_posts.animate({ opacity: 1 }, {
@@ -220,9 +262,12 @@
         },
         qapl_quick_ajax_append_load_more_button: function(container, load_more_html) {
             if (load_more_html) {
-                container.parent().find('.quick-ajax-load-more-container').remove();
+                this.qapl_quick_ajax_remove_load_more(container);
                 container.parent().append(load_more_html);
                 this.qapl_quick_ajax_infinite_scroll();
+            } else {
+                // last page - the emptied container stays, but there is nothing left to observe
+                this.qapl_quick_ajax_disconnect_infinite_scroll(container.parent().find('.quick-ajax-load-more-container'));
             }
         },
         qapl_quick_ajax_append_end_message: function(container, end_message) {
@@ -281,7 +326,12 @@
             button.addClass('active');
         },
         qapl_quick_ajax_restore_active_filter: function(button) {
-            const filterContainer = button.closest('.quick-ajax-filter-container');
+            this.qapl_quick_ajax_restore_filter_container(button.closest('.quick-ajax-filter-container'));
+        },
+        qapl_quick_ajax_restore_active_filter_by_id: function(quickAjaxId) {
+            this.qapl_quick_ajax_restore_filter_container($('#quick-ajax-filter-' + quickAjaxId));
+        },
+        qapl_quick_ajax_restore_filter_container: function(filterContainer) {
             if (!filterContainer.length) {
                 return;
             }
@@ -294,7 +344,11 @@
         },
         qapl_quick_ajax_reset_taxonomy_filter: function(quickAjaxId) {
             // a search phrase returns posts from the whole post type, so no term stays selected
-            $('#quick-ajax-filter-' + quickAjaxId).find('.qapl-filter-button').removeClass('active');
+            const filterContainer = $('#quick-ajax-filter-' + quickAjaxId);
+            const buttons = filterContainer.find('.qapl-filter-button');
+            // keep the current selection, so a failed search can put it back
+            filterContainer.data('qaplPreviousActive', buttons.index(buttons.filter('.active')));
+            buttons.removeClass('active');
         },
         qapl_quick_ajax_clear_search: function(button) {
             // called when a term is picked - the phrase is dropped before the request is built

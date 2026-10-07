@@ -4,7 +4,7 @@ Contributors: grzelkowski
 Tags: ajax, load more, infinite scroll, filter, post grid
 Requires at least: 6.2
 Tested up to: 7.1
-Stable tag: 1.9.2
+Stable tag: 1.9.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -147,6 +147,14 @@ Yes. The plugin follows WordPress internationalization standards and can be tran
 
 == Changelog ==
 
+= 1.9.3 - 2026-10-07 =
+- Improved the spacing around the sorting control when it is shown on its own line.
+- Improved the filter buttons during searching - the previously selected category stays highlighted when a search cannot be completed.
+- Added a "Keep Posts Visible While Loading" option - the current posts stay on screen, dimmed, until the new ones are loaded.
+- Minor code cleanup and coding standards improvements.
+- Fixed loading more posts in some grids added with PHP functions.
+- Fixed backward compatibility for renamed hooks.
+
 = 1.9.2 - 2026-09-18 =
 - Added per-shortcode search labels - a single shortcode can now use its own search field placeholder and search button label instead of the global ones, for example "Search news" or "Search products".
 - Added a choice of search box layouts - each shortcode can show the search button as a magnifier icon inside the field or as a text button next to it.
@@ -184,17 +192,12 @@ Yes. The plugin follows WordPress internationalization standards and can be tran
 - Minor code cleanup and coding standards improvements.
 - Plugin styles and scripts are now loaded only on pages that actually use Quick Ajax, improving performance across the rest of the site.
 
-= 1.8.13 - 2026-06-22 =
-- Improved number field handling for more accurate and consistent value processing.
-- Enhanced required field support across select, number, and text input fields.
-- Minor improvements and refinements to code consistency and standards compliance.
-- Improved support for negative numeric values in query parameters for more flexible post display options.
-- Improved AJAX response handling for more reliable and consistent frontend behavior.
-- Improved internal term selection handling for more reliable and consistent behavior.
-
 For the full changelog of earlier versions, see the CHANGELOG.md file included with the plugin or the [GitHub repository](https://github.com/grzelkowski/quick-ajax-post-loader/blob/main/CHANGELOG.md).
 
 == Upgrade Notice ==
+
+= 1.9.3 =
+Adds an option to keep posts visible while new ones load. Fixes loading more posts in some PHP-based grids and backward compatibility for renamed hooks.
 
 = 1.9.2 =
 Adds a choice of search box layouts and per-shortcode search labels. Improves the filter, search and sorting row on narrow screens.

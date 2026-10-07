@@ -44,4 +44,3 @@ class QAPL_Creator_Post_Type {
     }
 }
 
-QAPL_Creator_Post_Type::init();

@@ -26,4 +26,3 @@ class QAPL_Creator_Shortcode_Box {
     }
 }
 }
-QAPL_Creator_Shortcode_Box::init();

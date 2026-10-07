@@ -25,10 +25,7 @@ final class QAPL_Ajax_Load_More_Renderer {
         $found_posts     = intval($query_data['found_posts'] ?? 0);
         $post_count      = intval($query_data['post_count'] ?? 0);
         $infinite_scroll = !empty($query_data['infinite_scroll']);
-        //echo 'paged:'.$paged.'<br />$max_num_pages:'.$max_num_pages.'<br />$found_posts:'.$found_posts.'<br />';
-        //print_r($this->args);
         $load_more_args = $source_args;
-        //$load_more_args['paged'] = isset($this->args['paged']) ? intval($this->args['paged']) : 1;
         $load_more_args['paged'] = $paged;
         if (isset($attributes[QAPL_Constants::ATTRIBUTE_LOAD_MORE_POSTS]) && !empty($attributes[QAPL_Constants::ATTRIBUTE_LOAD_MORE_POSTS])) {
         // Check if load_more_posts attribute is set
@@ -37,15 +34,7 @@ final class QAPL_Ajax_Load_More_Renderer {
             $load_more_posts = intval($attributes[QAPL_Constants::ATTRIBUTE_LOAD_MORE_POSTS]);
             //get initial offset and number of posts per page
             $initial_offset = isset($load_more_args['offset']) ? intval($load_more_args['offset']) : 0;
-            //get number of posts per page
-            //$posts_per_page = intval($load_more_args['posts_per_page']);
-                        
-            //old logic
-            //if post_found smaller than initial offset and post per page
-            //if ($found_posts <= $initial_offset + $posts_per_page) {
-            //   return false;
-            //}
-            //new logic
+            // no more posts once everything that was found has been shown
             $shown_posts = $initial_offset + $post_count;
             if ($found_posts <= $shown_posts) {
                 return false;

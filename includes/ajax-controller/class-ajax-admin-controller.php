@@ -9,11 +9,9 @@ final class QAPL_Ajax_Admin_Controller {
     public static function register(): void {
         // get taxonomies
         add_action('wp_ajax_qapl_action_get_taxonomies_by_post_type', [self::class, 'get_taxonomies_by_post_type']);
-        //add_action('wp_ajax_nopriv_qapl_action_get_taxonomies_by_post_type', [self::class, 'get_taxonomies_by_post_type']);
 
         // get terms
         add_action('wp_ajax_qapl_action_get_terms_by_taxonomy', [self::class, 'get_terms_by_taxonomy']);
-        //add_action('wp_ajax_nopriv_qapl_action_get_terms_by_taxonomy', [self::class, 'get_terms_by_taxonomy']);
     }
     public static function get_taxonomies_by_post_type(): void {
         self::verify_request();
@@ -91,6 +89,3 @@ final class QAPL_Ajax_Admin_Controller {
     }
 }
 // phpcs:enable WordPress.Security.NonceVerification.Missing
-if (is_admin()){
-    QAPL_Ajax_Admin_Controller::register();
-}

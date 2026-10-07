@@ -192,5 +192,4 @@ class QAPL_Shortcode {
         return $output;
     }
 }
-add_shortcode('qapl-quick-ajax', array(new QAPL_Shortcode(), 'render_quick_ajax_shortcode'));
 

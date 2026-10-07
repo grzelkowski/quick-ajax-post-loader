@@ -67,11 +67,15 @@ final class QAPL_Resource_Manager implements QAPL_Resource_Manager_Interface {
         'class-ajax-frontend-controller'    => 'includes/ajax-controller/class-ajax-frontend-controller.php',
         'class-controller-registry'         => 'includes/ajax-controller/class-controller-registry.php',
         //template-renderers
+        'template-base'                     => 'includes/template-renderers/class-template-base.php', //before templates, they extend it
         'template-renderers'                => 'includes/template-renderers/class-template-hooks.php',
+        'post-template-factory'             => 'includes/template-renderers/class-post-template-factory.php',
         //functions
         'functions'                         => 'includes/functions.php',
         //maintenance / compatibility
         'updater'                           => 'includes/maintenance/class-updater.php',
+        'cleaner'                           => 'includes/maintenance/class-cleaner.php',
+        'deprecated-hooks-list'             => 'includes/deprecated/class-deprecated-hooks-list.php',
         'deprecated-hooks-handler'          => 'includes/deprecated/class-deprecated-hooks-handler.php',
     ];
     

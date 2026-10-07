@@ -55,6 +55,10 @@ final class QAPL_Ajax_Layout_Builder {
         if(isset($attributes[QAPL_Constants::ATTRIBUTE_SHOW_END_MESSAGE])){
             $attrs[QAPL_Constants::ATTRIBUTE_SHOW_END_MESSAGE] = intval($attributes[QAPL_Constants::ATTRIBUTE_SHOW_END_MESSAGE]);
         }
+        // keep the current posts visible while new ones load
+        if(isset($attributes[QAPL_Constants::ATTRIBUTE_KEEP_POSTS_WHILE_LOADING])){
+            $attrs[QAPL_Constants::ATTRIBUTE_KEEP_POSTS_WHILE_LOADING] = intval($attributes[QAPL_Constants::ATTRIBUTE_KEEP_POSTS_WHILE_LOADING]);
+        }
         $ajax_initial_load = isset($attributes[QAPL_Constants::AJAX_SETTING_AJAX_INITIAL_LOAD]) ? intval($attributes[QAPL_Constants::AJAX_SETTING_AJAX_INITIAL_LOAD]) : QAPL_Constants::QUERY_SETTING_AJAX_ON_INITIAL_LOAD_DEFAULT;
         // display show all button
         if(isset($attributes[QAPL_Constants::ATTRIBUTE_DISPLAY_SHOW_ALL_BUTTON])){

@@ -53,4 +53,3 @@ class QAPL_Creator_Columns {
     }
 }
 
-QAPL_Creator_Columns::init();

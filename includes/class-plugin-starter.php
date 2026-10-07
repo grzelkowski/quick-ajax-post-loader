@@ -72,11 +72,31 @@ final class QAPL_Plugin_Starter{
         ];
         QAPL_Utilities::verify_classes_exist($classes, 'Plugin_Starter (admin)');
     }
+    // all hook registration lives here, loaded files only declare classes and functions
+    private function register_component_hooks(): void {
+        add_shortcode('qapl-quick-ajax', [new QAPL_Shortcode(), 'render_quick_ajax_shortcode']);
+        QAPL_Ajax_Frontend_Controller::register();
+        if (is_admin()) {
+            QAPL_Ajax_Admin_Controller::register();
+        }
+        add_action('init', 'qapl_action_quick_ajax_check_version_and_run_updates');
+        add_action('admin_post_qapl_purge_unused_data', 'qapl_action_quick_ajax_handle_purge_unused_data_request');
+        add_action('admin_notices', 'qapl_action_quick_ajax_display_purge_notice');
+        QAPL_Deprecated_Hooks_Handler::register();
+    }
+    private function register_admin_hooks(): void {
+        QAPL_Creator_Post_Type::init();
+        QAPL_Creator_Columns::init();
+        QAPL_Creator_Shortcode_Box::init();
+        QAPL_Creator_Editor::init();
+        new QAPL_Admin_Menu();
+    }
     public function start():void{
-        $this->resources->initialize_components(); //init components        
+        $this->resources->initialize_components(); //init components
+        $this->register_component_hooks();
         if (is_admin()) {
             $this->resources->initialize_pages(); //init admin pages
-            new QAPL_Admin_Menu();
+            $this->register_admin_hooks();
             $this->verify_admin_classes();
         } 
         $this->verify_classes();
